@@ -4,12 +4,13 @@ import { StatusBar } from 'expo-status-bar';
 import { AuthProvider } from '../src/context/AuthContext';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { View, ActivityIndicator, StyleSheet, Text } from 'react-native';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
-    // You can add custom fonts here
+    'TraditionalArabic': require('../assets/fonts/TraditionalArabic-Regular.ttf'),
   });
 
   useEffect(() => {
@@ -19,7 +20,11 @@ export default function RootLayout() {
   }, [fontsLoaded]);
 
   if (!fontsLoaded) {
-    return null;
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#00b4d8" />
+      </View>
+    );
   }
 
   return (
@@ -43,3 +48,12 @@ export default function RootLayout() {
     </AuthProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: '#0a1628',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

@@ -20,7 +20,11 @@ export default function WelcomeScreen() {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>WANDERING YACHT</Text>
+        <Image
+          source={require('../assets/images/wy-logo.png')}
+          style={styles.loadingLogo}
+          resizeMode="contain"
+        />
       </View>
     );
   }
@@ -38,9 +42,13 @@ export default function WelcomeScreen() {
       
       <View style={styles.content}>
         <View style={styles.logoContainer}>
-          <Ionicons name="boat" size={50} color="#00b4d8" />
-          <Text style={styles.logo}>WANDERING</Text>
-          <Text style={styles.logoSub}>YACHT</Text>
+          <Image
+            source={require('../assets/images/wy-logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+          <Text style={styles.brandName}>WANDERING</Text>
+          <Text style={styles.brandNameSub}>YACHT</Text>
         </View>
         
         <View style={styles.taglineContainer}>
@@ -89,11 +97,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  loadingText: {
-    color: '#00b4d8',
-    fontSize: 24,
-    fontWeight: '700',
-    letterSpacing: 4,
+  loadingLogo: {
+    width: 120,
+    height: 120,
   },
   backgroundImage: {
     position: 'absolute',
@@ -119,16 +125,22 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   logo: {
-    fontSize: 36,
-    fontWeight: '800',
-    color: '#fff',
-    letterSpacing: 6,
-    marginTop: 10,
+    width: 100,
+    height: 100,
+    marginBottom: 10,
   },
-  logoSub: {
+  brandName: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 32,
+    fontWeight: '800',
+    color: '#1a365d',
+    letterSpacing: 6,
+  },
+  brandNameSub: {
+    fontFamily: 'TraditionalArabic',
     fontSize: 24,
     fontWeight: '300',
-    color: '#00b4d8',
+    color: '#e53e3e',
     letterSpacing: 12,
   },
   taglineContainer: {
@@ -136,12 +148,14 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   tagline: {
+    fontFamily: 'TraditionalArabic',
     fontSize: 20,
     fontWeight: '600',
     color: '#fff',
     marginBottom: 8,
   },
   subtitle: {
+    fontFamily: 'TraditionalArabic',
     fontSize: 14,
     color: '#8899a6',
     textAlign: 'center',
@@ -151,7 +165,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   primaryButton: {
-    backgroundColor: '#00b4d8',
+    backgroundColor: '#1a365d',
     borderRadius: 12,
     paddingVertical: 16,
     flexDirection: 'row',
@@ -160,6 +174,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   primaryButtonText: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
@@ -169,10 +184,11 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 16,
     borderWidth: 1,
-    borderColor: '#00b4d8',
+    borderColor: '#e53e3e',
   },
   secondaryButtonText: {
-    color: '#00b4d8',
+    fontFamily: 'TraditionalArabic',
+    color: '#e53e3e',
     fontSize: 16,
     fontWeight: '600',
     textAlign: 'center',
@@ -181,6 +197,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   guestButtonText: {
+    fontFamily: 'TraditionalArabic',
     color: '#8899a6',
     fontSize: 14,
     textAlign: 'center',

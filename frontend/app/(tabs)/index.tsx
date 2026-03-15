@@ -98,17 +98,24 @@ export default function HomeScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor="#00b4d8"
+            tintColor="#1a365d"
           />
         }
       >
         {/* Header */}
         <View style={styles.header}>
-          <View>
-            <Text style={styles.welcomeText}>
-              {user ? `Welcome back, ${user.full_name.split(' ')[0]}` : 'Welcome'}
-            </Text>
-            <Text style={styles.headerTitle}>WANDERING YACHT</Text>
+          <View style={styles.headerLeft}>
+            <Image
+              source={require('../../assets/images/wy-logo.png')}
+              style={styles.headerLogo}
+              resizeMode="contain"
+            />
+            <View>
+              <Text style={styles.welcomeText}>
+                {user ? `Welcome, ${user.full_name.split(' ')[0]}` : 'Welcome'}
+              </Text>
+              <Text style={styles.headerTitle}>WANDERING YACHT</Text>
+            </View>
           </View>
           <TouchableOpacity
             style={styles.notificationBtn}
@@ -223,13 +230,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
   },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  headerLogo: {
+    width: 40,
+    height: 40,
+  },
   welcomeText: {
+    fontFamily: 'TraditionalArabic',
     color: '#8899a6',
     fontSize: 14,
   },
   headerTitle: {
-    color: '#00b4d8',
-    fontSize: 20,
+    fontFamily: 'TraditionalArabic',
+    color: '#1a365d',
+    fontSize: 16,
     fontWeight: '700',
     letterSpacing: 2,
   },
@@ -260,17 +278,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(10, 22, 40, 0.7)',
   },
   heroTitle: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 24,
     fontWeight: '700',
   },
   heroSubtitle: {
+    fontFamily: 'TraditionalArabic',
     color: '#8899a6',
     fontSize: 14,
     marginTop: 4,
   },
   heroButton: {
-    backgroundColor: '#00b4d8',
+    backgroundColor: '#1a365d',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 8,
@@ -278,6 +298,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   heroButtonText: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontWeight: '600',
   },
@@ -292,6 +313,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   sectionTitle: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 20,
     fontWeight: '600',
@@ -299,7 +321,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   seeAll: {
-    color: '#00b4d8',
+    fontFamily: 'TraditionalArabic',
+    color: '#e53e3e',
     fontSize: 14,
   },
   categoriesContainer: {
@@ -323,11 +346,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     top: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: 'rgba(26, 54, 93, 0.6)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   categoryName: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 14,
     fontWeight: '600',
@@ -353,6 +377,7 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   experienceTitle: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 14,
     fontWeight: '600',
@@ -364,12 +389,14 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   experienceLocation: {
+    fontFamily: 'TraditionalArabic',
     color: '#8899a6',
     fontSize: 12,
     flex: 1,
   },
   experiencePrice: {
-    color: '#00b4d8',
+    fontFamily: 'TraditionalArabic',
+    color: '#e53e3e',
     fontSize: 14,
     fontWeight: '600',
     marginTop: 8,
