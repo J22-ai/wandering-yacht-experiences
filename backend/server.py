@@ -339,6 +339,21 @@ async def get_categories():
 
 # ======================== EXPERIENCES ROUTES ========================
 
+class UpdateExperienceImage(BaseModel):
+    title: str
+    image_url: str
+
+@api_router.patch("/experiences/update-image")
+async def update_experience_image(data: UpdateExperienceImage):
+    """Update experience image by title"""
+    result = await db.experiences.update_one(
+        {"title": data.title},
+        {"$set": {"image_url": data.image_url}}
+    )
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Experience not found")
+    return {"message": "Image updated successfully", "title": data.title}
+
 @api_router.post("/experiences", response_model=Experience)
 async def create_experience(experience_data: ExperienceCreate):
     experience = Experience(
