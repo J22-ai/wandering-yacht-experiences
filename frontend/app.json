@@ -33,7 +33,9 @@
           "resizeMode": "contain",
           "backgroundColor": "#000"
         }
-      ]
+      ],
+      "@stripe/stripe-react-native",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
