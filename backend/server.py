@@ -829,7 +829,7 @@ async def seed_data_internal():
             "category": "experiences",
             "location": "Lovćen National Park",
             "date": "2025-08-01",
-            "image_url": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800",
+            "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/djmjwkiz_IMG_2446.jpeg",
             "capacity": 15,
             "available_spots": 15,
             "duration_hours": 6,
