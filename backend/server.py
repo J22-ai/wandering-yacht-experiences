@@ -1012,6 +1012,38 @@ async def seed_data():
             "is_active": True,
             "created_at": datetime.utcnow()
         },
+        
+        # ==================== BOAT RENTAL CATEGORY ====================
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Speedboat Adventure",
+            "description": "Rent our premium speedboat for an exhilarating day on the water. Perfect for island hopping.",
+            "category": "boat_rental",
+            "location": "Montenegro Marina",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1622789095468-2afd0589b011?w=800",
+            "capacity": 8,
+            "available_spots": 8,
+            "duration_hours": 8,
+            "amenities": ["GPS Navigation", "Bluetooth Audio", "Cooler"],
+            "included": ["Fuel", "Safety equipment", "Brief training"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Half Day (4hr)", "description": "4 hours rental", "price": 400, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Full Day (8hr)", "description": "8 hours rental", "price": 700, "max_per_booking": 1}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Luxury Pontoon Cruise",
+            "description": "Spacious pontoon perfect for family gatherings and leisurely cruises.",
+            "category": "boat_rental",
+            "location": "Kotor Bay Marina",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1700731713986-c35dedba158a?w=800",
+            "capacity": 12,
+            "available_spots": 12,
             "duration_hours": 8,
             "amenities": ["Sun Shade", "Bluetooth Audio", "Swim Ladder", "Cooler"],
             "included": ["Fuel", "Captain optional", "Safety gear"],
@@ -1022,13 +1054,14 @@ async def seed_data():
             "is_active": True,
             "created_at": datetime.utcnow()
         },
-        # Yacht Charter Category
+        
+        # ==================== YACHT CHARTER CATEGORY ====================
         {
             "id": str(uuid.uuid4()),
             "title": "50ft Luxury Yacht Charter",
             "description": "Experience ultimate luxury aboard our 50ft yacht with professional crew. Perfect for celebrations.",
             "category": "yacht_charter",
-            "location": "Miami Beach Marina",
+            "location": "Porto Montenegro",
             "date": "2025-08-01",
             "image_url": "https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?w=800",
             "capacity": 12,
@@ -1048,7 +1081,7 @@ async def seed_data():
             "title": "80ft Mega Yacht Experience",
             "description": "Our flagship 80ft mega yacht offers unparalleled luxury with multiple decks and jacuzzi.",
             "category": "yacht_charter",
-            "location": "Fort Lauderdale Marina",
+            "location": "Porto Montenegro",
             "date": "2025-08-01",
             "image_url": "https://images.unsplash.com/photo-1523496922380-91d5afba98a3?w=800",
             "capacity": 20,
@@ -1063,13 +1096,14 @@ async def seed_data():
             "is_active": True,
             "created_at": datetime.utcnow()
         },
-        # Management Category
+        
+        # ==================== MANAGEMENT CATEGORY ====================
         {
             "id": str(uuid.uuid4()),
             "title": "Full Yacht Management Package",
             "description": "Complete management of your yacht including maintenance, crew, and charter operations.",
             "category": "management",
-            "location": "South Florida",
+            "location": "Montenegro",
             "date": "2025-08-01",
             "image_url": "https://images.unsplash.com/photo-1523496922380-91d5afba98a3?w=800",
             "capacity": 10,
