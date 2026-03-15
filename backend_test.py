@@ -11,7 +11,7 @@ import os
 from datetime import datetime
 
 # Base URL from frontend environment
-BASE_URL = "https://event-reserve-12.preview.emergentagent.com/api"
+BASE_URL = "https://wandering-yacht.preview.emergentagent.com/api"
 
 class WanderingYachtTester:
     def __init__(self):
