@@ -185,6 +185,9 @@ backend:
       - working: true
         agent: "main"
         comment: "Confirms payment and generates QR code as base64 PNG. Demo mode allows confirmation without actual Stripe payment."
+      - working: true
+        agent: "testing"
+        comment: "Payment confirmation working perfectly. Updates booking status to 'confirmed', payment_status to 'paid', and generates QR code as base64 PNG. QR code format verified: data:image/png;base64,... Demo mode allows testing without actual payment processing."
 
 frontend:
   - task: "Welcome/Landing Screen"
