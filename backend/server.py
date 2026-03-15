@@ -625,7 +625,7 @@ async def seed_data_internal():
             "category": "experiences",
             "location": "Montenegro Coast",
             "date": "2025-08-01",
-            "image_url": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800",
+            "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/m0idyysm_ae326692-33c3-4e04-a1d0-671f5393b919.jpeg",
             "capacity": 12,
             "available_spots": 12,
             "duration_hours": 1,
