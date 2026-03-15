@@ -120,7 +120,7 @@ export default function CheckoutScreen() {
   if (loading) {
     return (
       <View style={[styles.container, styles.loadingContainer]}>
-        <ActivityIndicator size="large" color="#00b4d8" />
+        <ActivityIndicator size="large" color="#2d5a5a" />
         <Text style={styles.loadingText}>Loading checkout...</Text>
       </View>
     );
@@ -129,6 +129,7 @@ export default function CheckoutScreen() {
   if (!booking) {
     return (
       <View style={[styles.container, styles.loadingContainer]}>
+        <Ionicons name="alert-circle-outline" size={64} color="#c4c9c9" />
         <Text style={styles.errorText}>Booking not found</Text>
         <TouchableOpacity
           style={styles.backToHomeButton}
@@ -143,14 +144,17 @@ export default function CheckoutScreen() {
   if (booking.payment_status === 'paid') {
     return (
       <View style={[styles.container, styles.loadingContainer]}>
-        <Ionicons name="checkmark-circle" size={64} color="#10b981" />
+        <View style={styles.successIcon}>
+          <Ionicons name="checkmark" size={40} color="#fff" />
+        </View>
         <Text style={styles.paidTitle}>Already Paid</Text>
-        <Text style={styles.paidText}>This booking has already been paid.</Text>
+        <Text style={styles.paidText}>This booking has already been completed.</Text>
         <TouchableOpacity
           style={styles.viewTicketButton}
           onPress={() => router.replace(`/ticket/${booking.id}`)}
         >
           <Text style={styles.viewTicketText}>View Ticket</Text>
+          <Ionicons name="arrow-forward" size={18} color="#fff" />
         </TouchableOpacity>
       </View>
     );
@@ -164,7 +168,7 @@ export default function CheckoutScreen() {
           style={styles.backButton}
           onPress={() => router.back()}
         >
-          <Ionicons name="arrow-back" size={24} color="#fff" />
+          <Ionicons name="arrow-back" size={24} color="#2d3a3a" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Checkout</Text>
         <View style={{ width: 44 }} />
@@ -173,28 +177,34 @@ export default function CheckoutScreen() {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Booking Summary */}
         <View style={styles.summaryCard}>
-          <Text style={styles.cardTitle}>Booking Summary</Text>
+          <Text style={styles.cardLabel}>BOOKING SUMMARY</Text>
           <Text style={styles.experienceTitle}>{booking.experience_title}</Text>
           
-          <View style={styles.detailRow}>
-            <Ionicons name="calendar" size={16} color="#8899a6" />
-            <Text style={styles.detailText}>{formatDate(booking.experience_date)}</Text>
-          </View>
-          
-          <View style={styles.detailRow}>
-            <Ionicons name="location" size={16} color="#8899a6" />
-            <Text style={styles.detailText}>{booking.experience_location}</Text>
+          <View style={styles.detailsContainer}>
+            <View style={styles.detailRow}>
+              <View style={styles.detailIcon}>
+                <Ionicons name="calendar-outline" size={18} color="#2d5a5a" />
+              </View>
+              <Text style={styles.detailText}>{formatDate(booking.experience_date)}</Text>
+            </View>
+            
+            <View style={styles.detailRow}>
+              <View style={styles.detailIcon}>
+                <Ionicons name="location-outline" size={18} color="#2d5a5a" />
+              </View>
+              <Text style={styles.detailText}>{booking.experience_location}</Text>
+            </View>
           </View>
         </View>
 
         {/* Tickets */}
         <View style={styles.ticketsCard}>
-          <Text style={styles.cardTitle}>Tickets</Text>
+          <Text style={styles.cardLabel}>TICKETS</Text>
           {booking.tickets.map((ticket, idx) => (
             <View key={idx} style={styles.ticketRow}>
               <View>
                 <Text style={styles.ticketName}>{ticket.ticket_name}</Text>
-                <Text style={styles.ticketQty}>{ticket.quantity}x @ ${ticket.price_per_ticket}</Text>
+                <Text style={styles.ticketQty}>{ticket.quantity} × ${ticket.price_per_ticket}</Text>
               </View>
               <Text style={styles.ticketTotal}>
                 ${(ticket.quantity * ticket.price_per_ticket).toFixed(2)}
@@ -208,26 +218,30 @@ export default function CheckoutScreen() {
           </View>
         </View>
 
-        {/* Payment Info */}
-        <View style={styles.paymentInfo}>
+        {/* Security Notice */}
+        <View style={styles.securityNotice}>
           <Ionicons name="shield-checkmark" size={20} color="#10b981" />
-          <Text style={styles.paymentInfoText}>
-            Demo Mode - Stripe integration available on mobile app
+          <Text style={styles.securityText}>
+            Your payment information is secure and encrypted
           </Text>
         </View>
 
+        {/* Demo Notice */}
         <View style={styles.demoNotice}>
-          <Ionicons name="information-circle" size={20} color="#00b4d8" />
-          <Text style={styles.demoNoticeText}>
-            This is a demo checkout. In production, you would enter your card details via Stripe's secure payment form.
-          </Text>
+          <Ionicons name="information-circle-outline" size={22} color="#2d5a5a" />
+          <View style={styles.demoTextContainer}>
+            <Text style={styles.demoTitle}>Demo Mode</Text>
+            <Text style={styles.demoText}>
+              This is a demo checkout. Tap "Complete Payment" to simulate a successful transaction.
+            </Text>
+          </View>
         </View>
 
-        <View style={{ height: 120 }} />
+        <View style={{ height: 140 }} />
       </ScrollView>
 
       {/* Bottom Bar */}
-      <View style={[styles.bottomBar, { paddingBottom: Math.max(insets.bottom, 10) + 10 }]}>
+      <View style={[styles.bottomBar, { paddingBottom: Math.max(insets.bottom, 16) + 16 }]}>
         <View style={styles.priceContainer}>
           <Text style={styles.priceLabel}>Total</Text>
           <Text style={styles.priceValue}>${booking.total_amount.toFixed(2)}</Text>
@@ -259,40 +273,61 @@ export default function CheckoutScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a1628',
+    backgroundColor: '#f8f6f3',
   },
   loadingContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 40,
   },
   loadingText: {
-    color: '#8899a6',
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
     fontSize: 16,
     marginTop: 16,
   },
   errorText: {
-    color: '#fff',
-    fontSize: 16,
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
+    fontSize: 18,
+    fontWeight: '500',
+    marginTop: 16,
+  },
+  successIcon: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: '#10b981',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
   },
   paidTitle: {
-    color: '#fff',
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
     fontSize: 24,
     fontWeight: '600',
     marginTop: 16,
   },
   paidText: {
-    color: '#8899a6',
-    fontSize: 14,
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
+    fontSize: 15,
     marginTop: 8,
+    textAlign: 'center',
   },
   viewTicketButton: {
-    backgroundColor: '#00b4d8',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#2d5a5a',
     paddingHorizontal: 32,
-    paddingVertical: 14,
-    borderRadius: 12,
-    marginTop: 24,
+    paddingVertical: 16,
+    borderRadius: 28,
+    marginTop: 32,
+    gap: 8,
   },
   viewTicketText: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
@@ -302,8 +337,10 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   backToHomeText: {
-    color: '#00b4d8',
+    fontFamily: 'TraditionalArabic',
+    color: '#2d5a5a',
     fontSize: 16,
+    fontWeight: '600',
   },
   header: {
     flexDirection: 'row',
@@ -316,13 +353,19 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#1a2d4a',
+    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
   headerTitle: {
-    color: '#fff',
-    fontSize: 18,
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
+    fontSize: 20,
     fontWeight: '600',
   },
   content: {
@@ -330,61 +373,80 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   summaryCard: {
-    backgroundColor: '#1a2d4a',
+    backgroundColor: '#fff',
     borderRadius: 16,
     padding: 20,
     marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#e8e5e0',
   },
-  cardTitle: {
-    color: '#8899a6',
-    fontSize: 12,
+  cardLabel: {
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
+    fontSize: 11,
     fontWeight: '600',
     letterSpacing: 1,
-    textTransform: 'uppercase',
     marginBottom: 12,
   },
   experienceTitle: {
-    color: '#fff',
-    fontSize: 20,
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
+    fontSize: 22,
     fontWeight: '600',
     marginBottom: 16,
+  },
+  detailsContainer: {
+    gap: 12,
   },
   detailRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    marginBottom: 8,
+    gap: 12,
+  },
+  detailIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    backgroundColor: '#e8f4f4',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   detailText: {
-    color: '#8899a6',
-    fontSize: 14,
+    fontFamily: 'TraditionalArabic',
+    color: '#5a6a6a',
+    fontSize: 15,
   },
   ticketsCard: {
-    backgroundColor: '#1a2d4a',
+    backgroundColor: '#fff',
     borderRadius: 16,
     padding: 20,
     marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#e8e5e0',
   },
   ticketRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: 14,
     borderBottomWidth: 1,
-    borderBottomColor: '#2a3d5a',
+    borderBottomColor: '#f0ebe4',
   },
   ticketName: {
-    color: '#fff',
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
     fontSize: 16,
     fontWeight: '500',
   },
   ticketQty: {
-    color: '#8899a6',
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
     fontSize: 13,
     marginTop: 2,
   },
   ticketTotal: {
-    color: '#fff',
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
     fontSize: 16,
     fontWeight: '600',
   },
@@ -396,38 +458,51 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   totalLabel: {
-    color: '#fff',
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
     fontSize: 18,
     fontWeight: '600',
   },
   totalAmount: {
-    color: '#00b4d8',
-    fontSize: 24,
+    fontFamily: 'TraditionalArabic',
+    color: '#2d5a5a',
+    fontSize: 26,
     fontWeight: '700',
   },
-  paymentInfo: {
+  securityNotice: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
     padding: 16,
   },
-  paymentInfoText: {
-    color: '#8899a6',
+  securityText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
     fontSize: 13,
   },
   demoNotice: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    backgroundColor: 'rgba(0, 180, 216, 0.1)',
+    backgroundColor: '#e8f4f4',
     padding: 16,
-    borderRadius: 12,
-    gap: 10,
+    borderRadius: 14,
+    gap: 12,
   },
-  demoNoticeText: {
-    color: '#00b4d8',
-    fontSize: 13,
+  demoTextContainer: {
     flex: 1,
+  },
+  demoTitle: {
+    fontFamily: 'TraditionalArabic',
+    color: '#2d5a5a',
+    fontSize: 15,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  demoText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#5a6a6a',
+    fontSize: 13,
     lineHeight: 20,
   },
   bottomBar: {
@@ -438,35 +513,43 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#1a2d4a',
+    backgroundColor: '#fff',
     paddingHorizontal: 20,
-    paddingTop: 16,
+    paddingTop: 20,
     borderTopWidth: 1,
-    borderTopColor: '#2a3d5a',
+    borderTopColor: '#e8e5e0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 12,
+    elevation: 10,
   },
   priceContainer: {},
   priceLabel: {
-    color: '#8899a6',
-    fontSize: 12,
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
+    fontSize: 13,
   },
   priceValue: {
-    color: '#fff',
-    fontSize: 24,
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
+    fontSize: 26,
     fontWeight: '700',
   },
   payButton: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    backgroundColor: '#00b4d8',
-    paddingHorizontal: 32,
+    backgroundColor: '#2d5a5a',
+    paddingHorizontal: 28,
     paddingVertical: 16,
-    borderRadius: 12,
+    borderRadius: 28,
   },
   payButtonDisabled: {
     opacity: 0.5,
   },
   payButtonText: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',

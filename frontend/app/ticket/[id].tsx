@@ -95,7 +95,7 @@ export default function TicketScreen() {
   if (loading) {
     return (
       <View style={[styles.container, styles.loadingContainer]}>
-        <ActivityIndicator size="large" color="#00b4d8" />
+        <ActivityIndicator size="large" color="#2d5a5a" />
       </View>
     );
   }
@@ -103,14 +103,14 @@ export default function TicketScreen() {
   if (!booking || !booking.qr_code) {
     return (
       <View style={[styles.container, styles.loadingContainer]}>
-        <Ionicons name="ticket-outline" size={64} color="#5c6f7f" />
+        <Ionicons name="ticket-outline" size={64} color="#c4c9c9" />
         <Text style={styles.errorTitle}>Ticket Not Available</Text>
         <Text style={styles.errorText}>Payment may not be completed yet.</Text>
         <TouchableOpacity
-          style={styles.backButton}
+          style={styles.backButtonLarge}
           onPress={() => router.back()}
         >
-          <Text style={styles.backButtonText}>Go Back</Text>
+          <Text style={styles.backButtonLargeText}>Go Back</Text>
         </TouchableOpacity>
       </View>
     );
@@ -124,11 +124,11 @@ export default function TicketScreen() {
           style={styles.closeButton}
           onPress={() => router.back()}
         >
-          <Ionicons name="close" size={24} color="#fff" />
+          <Ionicons name="close" size={24} color="#2d3a3a" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Your Ticket</Text>
         <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
-          <Ionicons name="share-outline" size={24} color="#fff" />
+          <Ionicons name="share-outline" size={24} color="#2d5a5a" />
         </TouchableOpacity>
       </View>
 
@@ -142,7 +142,11 @@ export default function TicketScreen() {
           {/* Top Section */}
           <View style={styles.ticketTop}>
             <View style={styles.brandRow}>
-              <Ionicons name="boat" size={24} color="#00b4d8" />
+              <Image
+                source={require('../../assets/images/wy-logo.png')}
+                style={styles.brandLogo}
+                resizeMode="contain"
+              />
               <Text style={styles.brandText}>WANDERING YACHT</Text>
             </View>
             
@@ -158,15 +162,21 @@ export default function TicketScreen() {
             
             <View style={styles.eventDetails}>
               <View style={styles.detailItem}>
-                <Ionicons name="calendar" size={18} color="#00b4d8" />
+                <View style={styles.detailIcon}>
+                  <Ionicons name="calendar-outline" size={18} color="#2d5a5a" />
+                </View>
                 <Text style={styles.detailText}>{formatDate(booking.experience_date)}</Text>
               </View>
               <View style={styles.detailItem}>
-                <Ionicons name="location" size={18} color="#00b4d8" />
+                <View style={styles.detailIcon}>
+                  <Ionicons name="location-outline" size={18} color="#2d5a5a" />
+                </View>
                 <Text style={styles.detailText}>{booking.experience_location}</Text>
               </View>
               <View style={styles.detailItem}>
-                <Ionicons name="people" size={18} color="#00b4d8" />
+                <View style={styles.detailIcon}>
+                  <Ionicons name="people-outline" size={18} color="#2d5a5a" />
+                </View>
                 <Text style={styles.detailText}>{getTotalTickets()} Guest(s)</Text>
               </View>
             </View>
@@ -181,7 +191,7 @@ export default function TicketScreen() {
 
           {/* QR Code Section */}
           <View style={styles.qrSection}>
-            <Text style={styles.qrLabel}>Scan at entrance</Text>
+            <Text style={styles.qrLabel}>SCAN AT ENTRANCE</Text>
             <View style={styles.qrContainer}>
               {booking.qr_code ? (
                 <Image
@@ -191,7 +201,7 @@ export default function TicketScreen() {
                 />
               ) : (
                 <View style={styles.qrPlaceholder}>
-                  <Ionicons name="qr-code" size={100} color="#5c6f7f" />
+                  <Ionicons name="qr-code" size={100} color="#c4c9c9" />
                 </View>
               )}
             </View>
@@ -203,7 +213,7 @@ export default function TicketScreen() {
             {booking.tickets.map((ticket, idx) => (
               <View key={idx} style={styles.ticketSummaryRow}>
                 <Text style={styles.ticketSummaryName}>
-                  {ticket.quantity}x {ticket.ticket_name}
+                  {ticket.quantity}× {ticket.ticket_name}
                 </Text>
                 <Text style={styles.ticketSummaryPrice}>
                   ${(ticket.quantity * ticket.price_per_ticket).toFixed(2)}
@@ -221,19 +231,25 @@ export default function TicketScreen() {
         <View style={styles.instructions}>
           <Text style={styles.instructionsTitle}>Instructions</Text>
           <View style={styles.instructionItem}>
-            <Ionicons name="checkmark" size={16} color="#00b4d8" />
+            <View style={styles.instructionIcon}>
+              <Ionicons name="checkmark" size={14} color="#fff" />
+            </View>
             <Text style={styles.instructionText}>
               Please arrive 15 minutes before the scheduled time
             </Text>
           </View>
           <View style={styles.instructionItem}>
-            <Ionicons name="checkmark" size={16} color="#00b4d8" />
+            <View style={styles.instructionIcon}>
+              <Ionicons name="checkmark" size={14} color="#fff" />
+            </View>
             <Text style={styles.instructionText}>
               Show this QR code at the entrance for check-in
             </Text>
           </View>
           <View style={styles.instructionItem}>
-            <Ionicons name="checkmark" size={16} color="#00b4d8" />
+            <View style={styles.instructionIcon}>
+              <Ionicons name="checkmark" size={14} color="#fff" />
+            </View>
             <Text style={styles.instructionText}>
               Bring a valid photo ID for verification
             </Text>
@@ -249,31 +265,36 @@ export default function TicketScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a1628',
+    backgroundColor: '#f8f6f3',
   },
   loadingContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 40,
   },
   errorTitle: {
-    color: '#fff',
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
     fontSize: 20,
     fontWeight: '600',
     marginTop: 16,
   },
   errorText: {
-    color: '#8899a6',
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
     fontSize: 14,
     marginTop: 8,
+    textAlign: 'center',
   },
-  backButton: {
-    backgroundColor: '#00b4d8',
+  backButtonLarge: {
+    backgroundColor: '#2d5a5a',
     paddingHorizontal: 32,
     paddingVertical: 14,
-    borderRadius: 12,
+    borderRadius: 25,
     marginTop: 24,
   },
-  backButtonText: {
+  backButtonLargeText: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
@@ -289,22 +310,33 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#1a2d4a',
+    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
   headerTitle: {
-    color: '#fff',
-    fontSize: 18,
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
+    fontSize: 20,
     fontWeight: '600',
   },
   shareButton: {
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#1a2d4a',
+    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
   content: {
     flex: 1,
@@ -313,9 +345,14 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   ticketCard: {
-    backgroundColor: '#1a2d4a',
-    borderRadius: 20,
+    backgroundColor: '#fff',
+    borderRadius: 24,
     overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    elevation: 4,
   },
   ticketTop: {
     flexDirection: 'row',
@@ -323,16 +360,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#2a3d5a',
+    borderBottomColor: '#f0ebe4',
   },
   brandRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 10,
+  },
+  brandLogo: {
+    width: 28,
+    height: 28,
   },
   brandText: {
-    color: '#00b4d8',
-    fontSize: 12,
+    fontFamily: 'TraditionalArabic',
+    color: '#2d5a5a',
+    fontSize: 11,
     fontWeight: '700',
     letterSpacing: 2,
   },
@@ -340,12 +382,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+    backgroundColor: '#e8f9f0',
     paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingVertical: 6,
     borderRadius: 12,
   },
   confirmedText: {
+    fontFamily: 'TraditionalArabic',
     color: '#10b981',
     fontSize: 10,
     fontWeight: '700',
@@ -355,22 +398,33 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   eventTitle: {
-    color: '#fff',
-    fontSize: 22,
-    fontWeight: '700',
-    marginBottom: 16,
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
+    fontSize: 24,
+    fontWeight: '600',
+    marginBottom: 20,
+    lineHeight: 30,
   },
   eventDetails: {
-    gap: 10,
+    gap: 14,
   },
   detailItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: 12,
+  },
+  detailIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    backgroundColor: '#e8f4f4',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   detailText: {
-    color: '#8899a6',
-    fontSize: 14,
+    fontFamily: 'TraditionalArabic',
+    color: '#5a6a6a',
+    fontSize: 15,
   },
   dividerContainer: {
     flexDirection: 'row',
@@ -378,41 +432,43 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   cutoutLeft: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#0a1628',
-    marginLeft: -10,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#f8f6f3',
+    marginLeft: -12,
   },
   dividerLine: {
     flex: 1,
     borderStyle: 'dashed',
     borderWidth: 1,
-    borderColor: '#2a3d5a',
-    marginHorizontal: 10,
+    borderColor: '#e8e5e0',
+    marginHorizontal: 12,
   },
   cutoutRight: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#0a1628',
-    marginRight: -10,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#f8f6f3',
+    marginRight: -12,
   },
   qrSection: {
     alignItems: 'center',
-    padding: 20,
+    padding: 24,
   },
   qrLabel: {
-    color: '#8899a6',
-    fontSize: 12,
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-    marginBottom: 16,
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
+    fontSize: 11,
+    letterSpacing: 2,
+    marginBottom: 20,
   },
   qrContainer: {
     backgroundColor: '#fff',
     padding: 16,
-    borderRadius: 12,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#e8e5e0',
   },
   qrCode: {
     width: 180,
@@ -425,67 +481,84 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bookingId: {
-    color: '#8899a6',
-    fontSize: 12,
-    marginTop: 16,
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
+    fontSize: 13,
+    marginTop: 20,
   },
   ticketsSummary: {
-    backgroundColor: '#0d1a2e',
+    backgroundColor: '#f8f6f3',
     padding: 20,
   },
   ticketSummaryRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 8,
+    marginBottom: 10,
   },
   ticketSummaryName: {
-    color: '#8899a6',
+    fontFamily: 'TraditionalArabic',
+    color: '#5a6a6a',
     fontSize: 14,
   },
   ticketSummaryPrice: {
-    color: '#8899a6',
+    fontFamily: 'TraditionalArabic',
+    color: '#5a6a6a',
     fontSize: 14,
   },
   totalRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 12,
-    paddingTop: 12,
+    paddingTop: 14,
     borderTopWidth: 1,
-    borderTopColor: '#2a3d5a',
+    borderTopColor: '#e8e5e0',
   },
   totalLabel: {
-    color: '#fff',
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
     fontSize: 16,
     fontWeight: '600',
   },
   totalValue: {
-    color: '#00b4d8',
-    fontSize: 18,
+    fontFamily: 'TraditionalArabic',
+    color: '#2d5a5a',
+    fontSize: 20,
     fontWeight: '700',
   },
   instructions: {
     marginTop: 24,
-    backgroundColor: '#1a2d4a',
-    borderRadius: 16,
+    backgroundColor: '#fff',
+    borderRadius: 18,
     padding: 20,
+    borderWidth: 1,
+    borderColor: '#e8e5e0',
   },
   instructionsTitle: {
-    color: '#fff',
-    fontSize: 16,
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
+    fontSize: 18,
     fontWeight: '600',
-    marginBottom: 16,
+    marginBottom: 18,
   },
   instructionItem: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: 10,
-    marginBottom: 10,
+    gap: 12,
+    marginBottom: 14,
+  },
+  instructionIcon: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: '#2d5a5a',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   instructionText: {
-    color: '#8899a6',
+    fontFamily: 'TraditionalArabic',
+    color: '#5a6a6a',
     fontSize: 14,
     flex: 1,
-    lineHeight: 20,
+    lineHeight: 22,
   },
 });
