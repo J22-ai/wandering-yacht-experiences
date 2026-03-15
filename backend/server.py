@@ -712,7 +712,7 @@ async def seed_data_internal():
             "category": "experiences",
             "location": "Kotor Bay",
             "date": "2025-08-01",
-            "image_url": "https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=800",
+            "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/u3t3xj7a_IMG_2438.jpeg",
             "capacity": 6,
             "available_spots": 6,
             "duration_hours": 1,
