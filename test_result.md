@@ -154,7 +154,10 @@ backend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Create booking with multiple ticket types, get user bookings. Tested successfully."
+        comment: "CRUD for experiences with filtering by category. Seeded 7 sample experiences."
+      - working: true
+        agent: "testing"
+        comment: "Booking creation and retrieval tested successfully. Created booking with 2 tickets at $150 each, total calculated correctly as $300. User bookings endpoint returns proper list. Available spots decremented correctly."
 
   - task: "Stripe Payment Integration"
     implemented: true
