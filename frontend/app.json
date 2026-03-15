@@ -34,7 +34,13 @@
           "backgroundColor": "#000"
         }
       ],
-      "@stripe/stripe-react-native",
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "merchant.com.wanderingyacht",
+          "enableGooglePay": true
+        }
+      ],
       "expo-secure-store"
     ],
     "experiments": {
