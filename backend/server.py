@@ -808,7 +808,7 @@ async def seed_data_internal():
             "category": "experiences",
             "location": "Ulcinj Velika Plaza",
             "date": "2025-08-01",
-            "image_url": "https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=800",
+            "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/hwzkxeki_IMG_2444.jpeg",
             "capacity": 8,
             "available_spots": 8,
             "duration_hours": 30,
