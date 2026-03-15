@@ -53,7 +53,7 @@ export default function LoginScreen() {
           style={styles.backButton}
           onPress={() => router.back()}
         >
-          <Ionicons name="close" size={24} color="#fff" />
+          <Ionicons name="close" size={24} color="#2d3a3a" />
         </TouchableOpacity>
       </View>
 
@@ -75,11 +75,11 @@ export default function LoginScreen() {
 
         <View style={styles.form}>
           <View style={styles.inputContainer}>
-            <Ionicons name="mail-outline" size={20} color="#8899a6" />
+            <Ionicons name="mail-outline" size={20} color="#9ca3a3" />
             <TextInput
               style={styles.input}
               placeholder="Email"
-              placeholderTextColor="#8899a6"
+              placeholderTextColor="#9ca3a3"
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
@@ -89,11 +89,11 @@ export default function LoginScreen() {
           </View>
 
           <View style={styles.inputContainer}>
-            <Ionicons name="lock-closed-outline" size={20} color="#8899a6" />
+            <Ionicons name="lock-closed-outline" size={20} color="#9ca3a3" />
             <TextInput
               style={styles.input}
               placeholder="Password"
-              placeholderTextColor="#8899a6"
+              placeholderTextColor="#9ca3a3"
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!showPassword}
@@ -103,7 +103,7 @@ export default function LoginScreen() {
               <Ionicons
                 name={showPassword ? 'eye-off-outline' : 'eye-outline'}
                 size={20}
-                color="#8899a6"
+                color="#9ca3a3"
               />
             </TouchableOpacity>
           </View>
@@ -139,7 +139,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a1628',
+    backgroundColor: '#f8f6f3',
   },
   header: {
     paddingHorizontal: 20,
@@ -149,9 +149,14 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#1a2d4a',
+    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
   content: {
     flex: 1,
@@ -171,14 +176,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'TraditionalArabic',
-    color: '#fff',
+    color: '#2d3a3a',
     fontSize: 28,
-    fontWeight: '700',
+    fontWeight: '300',
     marginTop: 8,
   },
   subtitle: {
     fontFamily: 'TraditionalArabic',
-    color: '#8899a6',
+    color: '#7a8a8a',
     fontSize: 16,
     marginTop: 8,
   },
@@ -188,16 +193,18 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1a2d4a',
+    backgroundColor: '#fff',
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 4,
     gap: 12,
+    borderWidth: 1,
+    borderColor: '#e8e5e0',
   },
   input: {
     flex: 1,
     fontFamily: 'TraditionalArabic',
-    color: '#fff',
+    color: '#2d3a3a',
     fontSize: 16,
     paddingVertical: 14,
   },
@@ -206,12 +213,12 @@ const styles = StyleSheet.create({
   },
   forgotPasswordText: {
     fontFamily: 'TraditionalArabic',
-    color: '#e53e3e',
+    color: '#2d5a5a',
     fontSize: 14,
   },
   loginButton: {
-    backgroundColor: '#1a365d',
-    borderRadius: 12,
+    backgroundColor: '#2d5a5a',
+    borderRadius: 25,
     paddingVertical: 16,
     alignItems: 'center',
     marginTop: 16,
@@ -233,12 +240,12 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontFamily: 'TraditionalArabic',
-    color: '#8899a6',
+    color: '#7a8a8a',
     fontSize: 14,
   },
   footerLink: {
     fontFamily: 'TraditionalArabic',
-    color: '#e53e3e',
+    color: '#2d5a5a',
     fontSize: 14,
     fontWeight: '600',
   },
