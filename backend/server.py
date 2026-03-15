@@ -909,7 +909,7 @@ async def seed_data_internal():
             "category": "experiences",
             "location": "Montenegro Hidden Gems",
             "date": "2025-08-01",
-            "image_url": "https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=800",
+            "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/xbfs85ot_PHOTO-2026-03-15-19-47-54.jpg",
             "capacity": 8,
             "available_spots": 8,
             "duration_hours": 8,
