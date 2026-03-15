@@ -149,7 +149,7 @@ export default function ExploreScreen() {
             key={category.id}
             style={[
               styles.categoryChip,
-              selectedCategory === category.slug && styles.categoryChipActive,
+              (selectedCategory === category.slug || (!selectedCategory && category.slug === 'all')) && styles.categoryChipActive,
             ]}
             onPress={() =>
               setSelectedCategory(category.slug === 'all' ? null : category.slug)
@@ -158,7 +158,7 @@ export default function ExploreScreen() {
             <Text
               style={[
                 styles.categoryChipText,
-                selectedCategory === category.slug && styles.categoryChipTextActive,
+                (selectedCategory === category.slug || (!selectedCategory && category.slug === 'all')) && styles.categoryChipTextActive,
               ]}
             >
               {category.name}
@@ -175,7 +175,7 @@ export default function ExploreScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor="#00b4d8"
+            tintColor="#1a365d"
           />
         }
       >
@@ -221,7 +221,7 @@ export default function ExploreScreen() {
                   From ${getLowestPrice(experience)}
                 </Text>
                 <View style={styles.spotsContainer}>
-                  <Ionicons name="people" size={14} color="#00b4d8" />
+                  <Ionicons name="people" size={14} color="#1a365d" />
                   <Text style={styles.spotsText}>
                     {experience.available_spots} spots left
                   </Text>
@@ -247,6 +247,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   headerTitle: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 28,
     fontWeight: '700',
@@ -263,6 +264,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
   },
@@ -279,9 +281,10 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   categoryChipActive: {
-    backgroundColor: '#00b4d8',
+    backgroundColor: '#1a365d',
   },
   categoryChipText: {
+    fontFamily: 'TraditionalArabic',
     color: '#8899a6',
     fontSize: 14,
     fontWeight: '500',
@@ -294,6 +297,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   resultsCount: {
+    fontFamily: 'TraditionalArabic',
     color: '#8899a6',
     fontSize: 14,
     marginBottom: 16,
@@ -312,7 +316,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   experienceBadge: {
-    backgroundColor: 'rgba(0, 180, 216, 0.2)',
+    backgroundColor: 'rgba(26, 54, 93, 0.3)',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 6,
@@ -320,12 +324,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   experienceBadgeText: {
-    color: '#00b4d8',
+    fontFamily: 'TraditionalArabic',
+    color: '#1a365d',
     fontSize: 10,
     fontWeight: '600',
     letterSpacing: 1,
   },
   experienceTitle: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
@@ -343,6 +349,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   detailText: {
+    fontFamily: 'TraditionalArabic',
     color: '#8899a6',
     fontSize: 13,
   },
@@ -355,7 +362,8 @@ const styles = StyleSheet.create({
     borderTopColor: '#2a3d5a',
   },
   experiencePrice: {
-    color: '#00b4d8',
+    fontFamily: 'TraditionalArabic',
+    color: '#e53e3e',
     fontSize: 18,
     fontWeight: '700',
   },
@@ -365,7 +373,8 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   spotsText: {
-    color: '#00b4d8',
+    fontFamily: 'TraditionalArabic',
+    color: '#1a365d',
     fontSize: 13,
   },
 });

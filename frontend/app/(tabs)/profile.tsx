@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -38,10 +39,12 @@ export default function ProfileScreen() {
           <Text style={styles.headerTitle}>Profile</Text>
         </View>
         <View style={styles.guestContainer}>
-          <View style={styles.avatarPlaceholder}>
-            <Ionicons name="person" size={48} color="#5c6f7f" />
-          </View>
-          <Text style={styles.guestTitle}>Welcome, Guest</Text>
+          <Image
+            source={require('../../assets/images/wy-logo.png')}
+            style={styles.guestLogo}
+            resizeMode="contain"
+          />
+          <Text style={styles.guestTitle}>Welcome to Wandering Yacht</Text>
           <Text style={styles.guestText}>
             Sign in to manage your bookings and access exclusive features
           </Text>
@@ -124,7 +127,7 @@ export default function ProfileScreen() {
             <Text style={styles.userEmail}>{user.email}</Text>
           </View>
           <TouchableOpacity style={styles.editButton}>
-            <Ionicons name="pencil" size={18} color="#00b4d8" />
+            <Ionicons name="pencil" size={18} color="#1a365d" />
           </TouchableOpacity>
         </View>
 
@@ -137,7 +140,7 @@ export default function ProfileScreen() {
               onPress={item.onPress}
             >
               <View style={styles.menuIconContainer}>
-                <Ionicons name={item.icon} size={22} color="#00b4d8" />
+                <Ionicons name={item.icon} size={22} color="#1a365d" />
               </View>
               <View style={styles.menuContent}>
                 <Text style={styles.menuTitle}>{item.title}</Text>
@@ -150,7 +153,7 @@ export default function ProfileScreen() {
 
         {/* Sign Out */}
         <TouchableOpacity style={styles.signOutButton} onPress={handleLogout}>
-          <Ionicons name="log-out-outline" size={22} color="#ef4444" />
+          <Ionicons name="log-out-outline" size={22} color="#e53e3e" />
           <Text style={styles.signOutText}>Sign Out</Text>
         </TouchableOpacity>
 
@@ -170,6 +173,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   headerTitle: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 28,
     fontWeight: '700',
@@ -180,29 +184,28 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     paddingHorizontal: 40,
   },
-  avatarPlaceholder: {
+  guestLogo: {
     width: 100,
     height: 100,
-    borderRadius: 50,
-    backgroundColor: '#1a2d4a',
-    justifyContent: 'center',
-    alignItems: 'center',
     marginBottom: 20,
   },
   guestTitle: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '600',
     marginBottom: 8,
+    textAlign: 'center',
   },
   guestText: {
+    fontFamily: 'TraditionalArabic',
     color: '#8899a6',
     fontSize: 14,
     textAlign: 'center',
     lineHeight: 20,
   },
   signInButton: {
-    backgroundColor: '#00b4d8',
+    backgroundColor: '#1a365d',
     paddingHorizontal: 48,
     paddingVertical: 14,
     borderRadius: 12,
@@ -210,6 +213,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   signInButtonText: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
@@ -217,7 +221,7 @@ const styles = StyleSheet.create({
   },
   registerButton: {
     borderWidth: 1,
-    borderColor: '#00b4d8',
+    borderColor: '#e53e3e',
     paddingHorizontal: 48,
     paddingVertical: 14,
     borderRadius: 12,
@@ -225,7 +229,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   registerButtonText: {
-    color: '#00b4d8',
+    fontFamily: 'TraditionalArabic',
+    color: '#e53e3e',
     fontSize: 16,
     fontWeight: '600',
     textAlign: 'center',
@@ -243,11 +248,12 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#00b4d8',
+    backgroundColor: '#1a365d',
     justifyContent: 'center',
     alignItems: 'center',
   },
   avatarText: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 20,
     fontWeight: '700',
@@ -257,11 +263,13 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
   userName: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
   },
   userEmail: {
+    fontFamily: 'TraditionalArabic',
     color: '#8899a6',
     fontSize: 14,
     marginTop: 2,
@@ -291,7 +299,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 10,
-    backgroundColor: 'rgba(0, 180, 216, 0.1)',
+    backgroundColor: 'rgba(26, 54, 93, 0.2)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -300,11 +308,13 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   menuTitle: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
     fontWeight: '500',
   },
   menuSubtitle: {
+    fontFamily: 'TraditionalArabic',
     color: '#8899a6',
     fontSize: 12,
     marginTop: 2,
@@ -316,12 +326,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 24,
     padding: 16,
-    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+    backgroundColor: 'rgba(229, 62, 62, 0.1)',
     borderRadius: 12,
     gap: 8,
   },
   signOutText: {
-    color: '#ef4444',
+    fontFamily: 'TraditionalArabic',
+    color: '#e53e3e',
     fontSize: 16,
     fontWeight: '600',
   },

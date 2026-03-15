@@ -126,7 +126,7 @@ export default function BookingsScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor="#00b4d8"
+            tintColor="#1a365d"
           />
         }
       >
@@ -178,7 +178,7 @@ export default function BookingsScreen() {
                   </Text>
                 </View>
                 {booking.qr_code && (
-                  <Ionicons name="qr-code" size={20} color="#00b4d8" />
+                  <Ionicons name="qr-code" size={20} color="#1a365d" />
                 )}
               </View>
 
@@ -216,7 +216,7 @@ export default function BookingsScreen() {
                 {booking.status === 'confirmed' && booking.qr_code && (
                   <View style={styles.viewTicketBadge}>
                     <Text style={styles.viewTicketText}>View Ticket</Text>
-                    <Ionicons name="arrow-forward" size={14} color="#00b4d8" />
+                    <Ionicons name="arrow-forward" size={14} color="#1a365d" />
                   </View>
                 )}
               </View>
@@ -240,6 +240,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   headerTitle: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 28,
     fontWeight: '700',
@@ -255,6 +256,7 @@ const styles = StyleSheet.create({
     paddingTop: 100,
   },
   loadingText: {
+    fontFamily: 'TraditionalArabic',
     color: '#8899a6',
     fontSize: 16,
   },
@@ -265,12 +267,14 @@ const styles = StyleSheet.create({
     paddingTop: 100,
   },
   emptyTitle: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 20,
     fontWeight: '600',
     marginTop: 16,
   },
   emptyText: {
+    fontFamily: 'TraditionalArabic',
     color: '#8899a6',
     fontSize: 14,
     textAlign: 'center',
@@ -278,25 +282,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   signInButton: {
-    backgroundColor: '#00b4d8',
+    backgroundColor: '#1a365d',
     paddingHorizontal: 32,
     paddingVertical: 14,
     borderRadius: 12,
     marginTop: 24,
   },
   signInButtonText: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
   },
   exploreButton: {
-    backgroundColor: '#00b4d8',
+    backgroundColor: '#1a365d',
     paddingHorizontal: 32,
     paddingVertical: 14,
     borderRadius: 12,
     marginTop: 24,
   },
   exploreButtonText: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
@@ -319,11 +325,13 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   statusText: {
+    fontFamily: 'TraditionalArabic',
     fontSize: 10,
     fontWeight: '700',
     letterSpacing: 1,
   },
   bookingTitle: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
@@ -339,6 +347,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   detailText: {
+    fontFamily: 'TraditionalArabic',
     color: '#8899a6',
     fontSize: 14,
   },
@@ -349,6 +358,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   ticketText: {
+    fontFamily: 'TraditionalArabic',
     color: '#8899a6',
     fontSize: 13,
   },
@@ -361,6 +371,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#2a3d5a',
   },
   totalAmount: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 20,
     fontWeight: '700',
@@ -368,13 +379,14 @@ const styles = StyleSheet.create({
   payNowBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#00b4d8',
+    backgroundColor: '#1a365d',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 8,
     gap: 6,
   },
   payNowText: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 14,
     fontWeight: '600',
@@ -385,7 +397,8 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   viewTicketText: {
-    color: '#00b4d8',
+    fontFamily: 'TraditionalArabic',
+    color: '#1a365d',
     fontSize: 14,
     fontWeight: '600',
   },
