@@ -216,13 +216,13 @@ export default function TicketScreen() {
                   {ticket.quantity}× {ticket.ticket_name}
                 </Text>
                 <Text style={styles.ticketSummaryPrice}>
-                  ${(ticket.quantity * ticket.price_per_ticket).toFixed(2)}
+                  €{(ticket.quantity * ticket.price_per_ticket).toFixed(2)}
                 </Text>
               </View>
             ))}
             <View style={styles.totalRow}>
               <Text style={styles.totalLabel}>Total Paid</Text>
-              <Text style={styles.totalValue}>${booking.total_amount.toFixed(2)}</Text>
+              <Text style={styles.totalValue}>€{booking.total_amount.toFixed(2)}</Text>
             </View>
           </View>
         </View>
