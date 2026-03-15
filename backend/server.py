@@ -561,6 +561,12 @@ async def stripe_webhook(request: Request):
 
 # ======================== SEED DATA ROUTE ========================
 
+@api_router.post("/seed/reset")
+async def reset_and_seed():
+    """Reset and reseed experiences data"""
+    await db.experiences.delete_many({})
+    return await seed_data_internal()
+
 @api_router.post("/seed")
 async def seed_data():
     """Seed initial experiences data"""
@@ -568,6 +574,9 @@ async def seed_data():
     count = await db.experiences.count_documents({})
     if count > 0:
         return {"message": "Data already seeded", "count": count}
+    return await seed_data_internal()
+
+async def seed_data_internal():
     
     experiences = [
         # ==================== EXPERIENCES CATEGORY ====================
