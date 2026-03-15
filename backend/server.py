@@ -647,7 +647,7 @@ async def seed_data_internal():
             "category": "experiences",
             "location": "Adriatic Sea",
             "date": "2025-08-01",
-            "image_url": "https://images.unsplash.com/photo-1540555700478-4be289fbec6c?w=800",
+            "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/my6orjbp_08f50b63-3db6-4f07-9ab8-90f11ed0cb63.jpeg",
             "capacity": 10,
             "available_spots": 10,
             "duration_hours": 4,
