@@ -116,6 +116,9 @@ backend:
       - working: true
         agent: "main"
         comment: "JWT auth with bcrypt password hashing. Tested registration and login endpoints successfully."
+      - working: true
+        agent: "testing"
+        comment: "Comprehensive testing completed. User registration creates new user with JWT token. Login validates credentials and returns access token. JWT authentication working properly for protected endpoints. Test user: marina.yacht@example.com"
 
   - task: "Categories API"
     implemented: true
