@@ -8,13 +8,19 @@ import {
   Alert,
   ActivityIndicator,
   Platform,
+  Linking,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useStripe } from '@stripe/stripe-react-native';
 import { api } from '../../src/services/api';
 import { useAuth } from '../../src/context/AuthContext';
+
+// Conditionally import Stripe only for native
+let useStripe: any;
+if (Platform.OS !== 'web') {
+  useStripe = require('@stripe/stripe-react-native').useStripe;
+}
 
 interface Booking {
   id: string;
@@ -38,7 +44,11 @@ export default function CheckoutScreen() {
   const { bookingId } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const { token } = useAuth();
-  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+  
+  // Use Stripe hooks only on native
+  const stripeHooks = Platform.OS !== 'web' ? useStripe() : { initPaymentSheet: null, presentPaymentSheet: null };
+  const { initPaymentSheet, presentPaymentSheet } = stripeHooks;
+  
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
@@ -55,8 +65,10 @@ export default function CheckoutScreen() {
     try {
       const data = await api.getBooking(bookingId as string);
       setBooking(data);
-      if (data.payment_status === 'unpaid') {
+      if (data.payment_status === 'unpaid' && Platform.OS !== 'web') {
         await initializePayment(data.id);
+      } else if (Platform.OS === 'web') {
+        setPaymentReady(true);
       }
     } catch (error) {
       console.error('Error loading booking:', error);
@@ -67,6 +79,8 @@ export default function CheckoutScreen() {
   };
 
   const initializePayment = async (bookingId: string) => {
+    if (!initPaymentSheet) return;
+    
     try {
       const paymentIntent = await api.createPaymentIntent(bookingId);
       
@@ -92,7 +106,13 @@ export default function CheckoutScreen() {
   };
 
   const handlePayment = async () => {
-    if (!paymentReady) return;
+    if (Platform.OS === 'web') {
+      // For web, simulate payment (in production you'd use Stripe Elements)
+      await handleWebPayment();
+      return;
+    }
+    
+    if (!paymentReady || !presentPaymentSheet) return;
 
     setProcessing(true);
     try {
@@ -118,6 +138,34 @@ export default function CheckoutScreen() {
       }
     } catch (error: any) {
       Alert.alert('Error', error.message || 'Payment failed');
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const handleWebPayment = async () => {
+    setProcessing(true);
+    try {
+      // For web demo, create payment intent and simulate success
+      await api.createPaymentIntent(booking!.id);
+      await api.confirmPayment(booking!.id);
+      
+      if (Platform.OS === 'web') {
+        alert('Payment Successful! Your booking has been confirmed.');
+        router.replace(`/ticket/${booking!.id}`);
+      } else {
+        Alert.alert(
+          'Payment Successful',
+          'Your booking has been confirmed!',
+          [{ text: 'View Ticket', onPress: () => router.replace(`/ticket/${booking!.id}`) }]
+        );
+      }
+    } catch (error: any) {
+      if (Platform.OS === 'web') {
+        alert(error.message || 'Payment failed');
+      } else {
+        Alert.alert('Error', error.message || 'Payment failed');
+      }
     } finally {
       setProcessing(false);
     }
@@ -228,15 +276,26 @@ export default function CheckoutScreen() {
         <View style={styles.paymentInfo}>
           <Ionicons name="shield-checkmark" size={20} color="#10b981" />
           <Text style={styles.paymentInfoText}>
-            Secure payment powered by Stripe
+            {Platform.OS === 'web' 
+              ? 'Demo mode - Click Pay Now to complete' 
+              : 'Secure payment powered by Stripe'}
           </Text>
         </View>
+
+        {Platform.OS === 'web' && (
+          <View style={styles.webNotice}>
+            <Ionicons name="information-circle" size={20} color="#f59e0b" />
+            <Text style={styles.webNoticeText}>
+              For the full payment experience with card input, please use the mobile app
+            </Text>
+          </View>
+        )}
 
         <View style={{ height: 120 }} />
       </ScrollView>
 
       {/* Bottom Bar */}
-      <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 10 }]}>
+      <View style={[styles.bottomBar, { paddingBottom: Math.max(insets.bottom, 10) + 10 }]}>
         <View style={styles.priceContainer}>
           <Text style={styles.priceLabel}>Total</Text>
           <Text style={styles.priceValue}>${booking.total_amount.toFixed(2)}</Text>
@@ -424,6 +483,19 @@ const styles = StyleSheet.create({
   paymentInfoText: {
     color: '#8899a6',
     fontSize: 13,
+  },
+  webNotice: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+    padding: 16,
+    borderRadius: 12,
+    gap: 10,
+  },
+  webNoticeText: {
+    color: '#f59e0b',
+    fontSize: 13,
+    flex: 1,
   },
   bottomBar: {
     position: 'absolute',
