@@ -163,10 +163,20 @@ export default function ExperienceDetailScreen() {
     });
   };
 
+  const getCategoryLabel = (category: string) => {
+    const labels: { [key: string]: string } = {
+      experiences: 'Wellness',
+      boat_rental: 'Adventure',
+      yacht_charter: 'Luxury',
+      management: 'Service',
+    };
+    return labels[category] || category;
+  };
+
   if (loading) {
     return (
       <View style={[styles.container, styles.loadingContainer]}>
-        <ActivityIndicator size="large" color="#00b4d8" />
+        <ActivityIndicator size="large" color="#2d5a5a" />
       </View>
     );
   }
@@ -193,7 +203,10 @@ export default function ExperienceDetailScreen() {
               style={styles.backButton}
               onPress={() => router.back()}
             >
-              <Ionicons name="arrow-back" size={24} color="#fff" />
+              <Ionicons name="arrow-back" size={24} color="#2d3a3a" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.shareButton}>
+              <Ionicons name="heart-outline" size={24} color="#2d3a3a" />
             </TouchableOpacity>
           </View>
         </View>
@@ -202,38 +215,43 @@ export default function ExperienceDetailScreen() {
           {/* Category Badge */}
           <View style={styles.categoryBadge}>
             <Text style={styles.categoryText}>
-              {experience.category.replace('_', ' ').toUpperCase()}
+              {getCategoryLabel(experience.category).toUpperCase()}
             </Text>
           </View>
 
-          {/* Title and Location */}
+          {/* Title */}
           <Text style={styles.title}>{experience.title}</Text>
+          
+          {/* Location */}
           <View style={styles.locationRow}>
-            <Ionicons name="location" size={16} color="#8899a6" />
+            <Ionicons name="location-outline" size={18} color="#7a8a8a" />
             <Text style={styles.location}>{experience.location}</Text>
           </View>
 
-          {/* Quick Info */}
+          {/* Quick Info Cards */}
           <View style={styles.quickInfo}>
-            <View style={styles.infoItem}>
-              <Ionicons name="calendar" size={20} color="#00b4d8" />
-              <Text style={styles.infoText}>{formatDate(experience.date)}</Text>
+            <View style={styles.infoCard}>
+              <Ionicons name="calendar-outline" size={22} color="#2d5a5a" />
+              <Text style={styles.infoLabel}>Date</Text>
+              <Text style={styles.infoValue}>{formatDate(experience.date)}</Text>
             </View>
             {experience.duration_hours > 0 && (
-              <View style={styles.infoItem}>
-                <Ionicons name="time" size={20} color="#00b4d8" />
-                <Text style={styles.infoText}>{experience.duration_hours} hours</Text>
+              <View style={styles.infoCard}>
+                <Ionicons name="time-outline" size={22} color="#2d5a5a" />
+                <Text style={styles.infoLabel}>Duration</Text>
+                <Text style={styles.infoValue}>{experience.duration_hours} hours</Text>
               </View>
             )}
-            <View style={styles.infoItem}>
-              <Ionicons name="people" size={20} color="#00b4d8" />
-              <Text style={styles.infoText}>{experience.available_spots} spots left</Text>
+            <View style={styles.infoCard}>
+              <Ionicons name="people-outline" size={22} color="#2d5a5a" />
+              <Text style={styles.infoLabel}>Availability</Text>
+              <Text style={styles.infoValue}>{experience.available_spots} spots</Text>
             </View>
           </View>
 
           {/* Description */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>About</Text>
+            <Text style={styles.sectionTitle}>About This Experience</Text>
             <Text style={styles.description}>{experience.description}</Text>
           </View>
 
@@ -241,12 +259,16 @@ export default function ExperienceDetailScreen() {
           {experience.included && experience.included.length > 0 && (
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>What's Included</Text>
-              {experience.included.map((item, idx) => (
-                <View key={idx} style={styles.includedItem}>
-                  <Ionicons name="checkmark-circle" size={18} color="#10b981" />
-                  <Text style={styles.includedText}>{item}</Text>
-                </View>
-              ))}
+              <View style={styles.includedList}>
+                {experience.included.map((item, idx) => (
+                  <View key={idx} style={styles.includedItem}>
+                    <View style={styles.checkCircle}>
+                      <Ionicons name="checkmark" size={14} color="#fff" />
+                    </View>
+                    <Text style={styles.includedText}>{item}</Text>
+                  </View>
+                ))}
+              </View>
             </View>
           )}
 
@@ -304,29 +326,33 @@ export default function ExperienceDetailScreen() {
                 </View>
                 <View style={styles.ticketCounter}>
                   <TouchableOpacity
-                    style={styles.counterButton}
+                    style={[
+                      styles.counterButton,
+                      ticketCounts[ticket.id] === 0 && styles.counterButtonDisabled,
+                    ]}
                     onPress={() => updateTicketCount(ticket.id, -1)}
+                    disabled={ticketCounts[ticket.id] === 0}
                   >
-                    <Ionicons name="remove" size={20} color="#fff" />
+                    <Ionicons name="remove" size={18} color={ticketCounts[ticket.id] === 0 ? '#c4c9c9' : '#2d5a5a'} />
                   </TouchableOpacity>
                   <Text style={styles.counterValue}>{ticketCounts[ticket.id] || 0}</Text>
                   <TouchableOpacity
                     style={styles.counterButton}
                     onPress={() => updateTicketCount(ticket.id, 1)}
                   >
-                    <Ionicons name="add" size={20} color="#fff" />
+                    <Ionicons name="add" size={18} color="#2d5a5a" />
                   </TouchableOpacity>
                 </View>
               </View>
             ))}
           </View>
 
-          <View style={{ height: 120 }} />
+          <View style={{ height: 140 }} />
         </View>
       </ScrollView>
 
       {/* Bottom Bar */}
-      <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 10 }]}>
+      <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 16 }]}>
         <View style={styles.priceContainer}>
           <Text style={styles.priceLabel}>Total</Text>
           <Text style={styles.priceValue}>${getTotalPrice().toFixed(2)}</Text>
@@ -342,9 +368,14 @@ export default function ExperienceDetailScreen() {
           {booking ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <Text style={styles.bookButtonText}>
-              {getTotalTickets() === 0 ? 'Select Tickets' : `Book Now (${getTotalTickets()})`}
-            </Text>
+            <>
+              <Text style={styles.bookButtonText}>
+                {getTotalTickets() === 0 ? 'Select Tickets' : `Book Now`}
+              </Text>
+              {getTotalTickets() > 0 && (
+                <Ionicons name="arrow-forward" size={18} color="#fff" />
+              )}
+            </>
           )}
         </TouchableOpacity>
       </View>
@@ -355,18 +386,19 @@ export default function ExperienceDetailScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a1628',
+    backgroundColor: '#f8f6f3',
   },
   loadingContainer: {
     justifyContent: 'center',
     alignItems: 'center',
   },
   errorText: {
-    color: '#fff',
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
     fontSize: 16,
   },
   heroContainer: {
-    height: 300,
+    height: 320,
     position: 'relative',
   },
   heroImage: {
@@ -378,152 +410,213 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     padding: 20,
   },
   backButton: {
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  shareButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
   },
   content: {
     padding: 20,
+    marginTop: -30,
+    backgroundColor: '#f8f6f3',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
   },
   categoryBadge: {
-    backgroundColor: 'rgba(0, 180, 216, 0.2)',
-    paddingHorizontal: 12,
+    backgroundColor: '#e8f4f4',
+    paddingHorizontal: 14,
     paddingVertical: 6,
-    borderRadius: 8,
+    borderRadius: 6,
     alignSelf: 'flex-start',
     marginBottom: 12,
   },
   categoryText: {
-    color: '#00b4d8',
-    fontSize: 12,
+    fontFamily: 'TraditionalArabic',
+    color: '#2d5a5a',
+    fontSize: 11,
     fontWeight: '600',
     letterSpacing: 1,
   },
   title: {
-    color: '#fff',
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
     fontSize: 28,
-    fontWeight: '700',
+    fontWeight: '600',
     marginBottom: 8,
+    lineHeight: 34,
   },
   locationRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    marginBottom: 20,
+    marginBottom: 24,
   },
   location: {
-    color: '#8899a6',
-    fontSize: 14,
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
+    fontSize: 15,
   },
   quickInfo: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 16,
-    backgroundColor: '#1a2d4a',
+    gap: 12,
+    marginBottom: 28,
+  },
+  infoCard: {
+    flex: 1,
+    backgroundColor: '#fff',
     padding: 16,
-    borderRadius: 12,
-    marginBottom: 24,
-  },
-  infoItem: {
-    flexDirection: 'row',
+    borderRadius: 14,
     alignItems: 'center',
-    gap: 8,
+    borderWidth: 1,
+    borderColor: '#e8e5e0',
   },
-  infoText: {
-    color: '#fff',
-    fontSize: 14,
+  infoLabel: {
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
+    fontSize: 12,
+    marginTop: 8,
+  },
+  infoValue: {
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
+    fontSize: 13,
+    fontWeight: '600',
+    marginTop: 4,
+    textAlign: 'center',
   },
   section: {
-    marginBottom: 24,
+    marginBottom: 28,
   },
   sectionTitle: {
-    color: '#fff',
-    fontSize: 18,
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
+    fontSize: 20,
     fontWeight: '600',
-    marginBottom: 12,
+    marginBottom: 16,
   },
   description: {
-    color: '#8899a6',
+    fontFamily: 'TraditionalArabic',
+    color: '#5a6a6a',
     fontSize: 15,
     lineHeight: 24,
+  },
+  includedList: {
+    gap: 12,
   },
   includedItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    marginBottom: 8,
+    gap: 12,
+  },
+  checkCircle: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#2d5a5a',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   includedText: {
-    color: '#fff',
-    fontSize: 14,
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
+    fontSize: 15,
   },
   amenitiesGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 10,
   },
   amenityChip: {
-    backgroundColor: '#1a2d4a',
-    paddingHorizontal: 14,
-    paddingVertical: 8,
+    backgroundColor: '#fff',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
     borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#e8e5e0',
   },
   amenityText: {
-    color: '#8899a6',
-    fontSize: 13,
+    fontFamily: 'TraditionalArabic',
+    color: '#5a6a6a',
+    fontSize: 14,
   },
   timeSlot: {
-    backgroundColor: '#1a2d4a',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 10,
-    marginRight: 10,
+    backgroundColor: '#fff',
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    borderRadius: 12,
+    marginRight: 12,
     borderWidth: 2,
-    borderColor: 'transparent',
+    borderColor: '#e8e5e0',
   },
   timeSlotSelected: {
-    borderColor: '#00b4d8',
+    borderColor: '#2d5a5a',
+    backgroundColor: '#e8f4f4',
   },
   timeSlotText: {
-    color: '#8899a6',
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
     fontSize: 14,
     fontWeight: '500',
   },
   timeSlotTextSelected: {
-    color: '#00b4d8',
+    color: '#2d5a5a',
   },
   ticketCard: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#1a2d4a',
-    padding: 16,
-    borderRadius: 12,
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 16,
     marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#e8e5e0',
   },
   ticketInfo: {
     flex: 1,
     marginRight: 16,
   },
   ticketName: {
-    color: '#fff',
-    fontSize: 16,
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
+    fontSize: 17,
     fontWeight: '600',
   },
   ticketDescription: {
-    color: '#8899a6',
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
     fontSize: 13,
     marginTop: 4,
   },
   ticketPrice: {
-    color: '#00b4d8',
-    fontSize: 18,
+    fontFamily: 'TraditionalArabic',
+    color: '#2d5a5a',
+    fontSize: 20,
     fontWeight: '700',
     marginTop: 8,
   },
@@ -533,18 +626,22 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   counterButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#00b4d8',
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: '#f0ebe4',
     justifyContent: 'center',
     alignItems: 'center',
   },
+  counterButtonDisabled: {
+    opacity: 0.5,
+  },
   counterValue: {
-    color: '#fff',
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
     fontSize: 18,
     fontWeight: '600',
-    minWidth: 24,
+    minWidth: 28,
     textAlign: 'center',
   },
   bottomBar: {
@@ -555,32 +652,43 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#1a2d4a',
+    backgroundColor: '#fff',
     paddingHorizontal: 20,
-    paddingTop: 16,
+    paddingTop: 20,
     borderTopWidth: 1,
-    borderTopColor: '#2a3d5a',
+    borderTopColor: '#e8e5e0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 12,
+    elevation: 10,
   },
   priceContainer: {},
   priceLabel: {
-    color: '#8899a6',
-    fontSize: 12,
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
+    fontSize: 13,
   },
   priceValue: {
-    color: '#fff',
-    fontSize: 24,
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
+    fontSize: 26,
     fontWeight: '700',
   },
   bookButton: {
-    backgroundColor: '#00b4d8',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#2d5a5a',
     paddingHorizontal: 32,
     paddingVertical: 16,
-    borderRadius: 12,
+    borderRadius: 28,
+    gap: 8,
   },
   bookButtonDisabled: {
     opacity: 0.5,
   },
   bookButtonText: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
