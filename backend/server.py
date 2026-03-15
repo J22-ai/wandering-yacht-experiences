@@ -570,84 +570,448 @@ async def seed_data():
         return {"message": "Data already seeded", "count": count}
     
     experiences = [
-        # Experiences Category
+        # ==================== EXPERIENCES CATEGORY ====================
+        # Yoga & Wellness
         {
             "id": str(uuid.uuid4()),
-            "title": "Sunset Yacht Party",
-            "description": "Experience the magic of a Mediterranean sunset aboard our luxury yacht. Includes champagne, canapés, and live DJ.",
+            "title": "Sunrise Yoga on Deck",
+            "description": "Start your day with a rejuvenating yoga session on our yacht deck as the sun rises over the Adriatic. Perfect for all skill levels.",
             "category": "experiences",
-            "location": "Miami Beach Marina",
-            "date": "2025-08-15",
-            "image_url": "https://images.unsplash.com/photo-1531419746980-63af10612bf3?w=800",
-            "capacity": 50,
-            "available_spots": 50,
-            "duration_hours": 4,
-            "amenities": ["Open Bar", "Live DJ", "Catering", "Photo Booth"],
-            "included": ["Welcome drink", "Gourmet dinner", "Party favors"],
-            "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Standard", "description": "Access to main deck", "price": 150, "max_per_booking": 10},
-                {"id": str(uuid.uuid4()), "name": "VIP", "description": "Access to VIP lounge + premium bar", "price": 300, "max_per_booking": 6}
-            ],
-            "time_slots": [
-                {"id": str(uuid.uuid4()), "start_time": "18:00", "end_time": "22:00", "available_spots": 50}
-            ],
-            "is_active": True,
-            "created_at": datetime.utcnow()
-        },
-        {
-            "id": str(uuid.uuid4()),
-            "title": "Private Island Excursion",
-            "description": "Escape to a secluded private island with swimming, snorkeling, and a beach BBQ.",
-            "category": "experiences",
-            "location": "Key Biscayne",
-            "date": "2025-08-20",
-            "image_url": "https://images.unsplash.com/photo-1570911274539-77ee179c3ab5?w=800",
-            "capacity": 30,
-            "available_spots": 30,
-            "duration_hours": 6,
-            "amenities": ["Snorkel Gear", "Beach Setup", "Water Sports"],
-            "included": ["Lunch", "Drinks", "Equipment rental"],
-            "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Adult", "description": "Full experience", "price": 250, "max_per_booking": 8},
-                {"id": str(uuid.uuid4()), "name": "Child (5-12)", "description": "Kids activities included", "price": 125, "max_per_booking": 8}
-            ],
-            "time_slots": [
-                {"id": str(uuid.uuid4()), "start_time": "09:00", "end_time": "15:00", "available_spots": 30}
-            ],
-            "is_active": True,
-            "created_at": datetime.utcnow()
-        },
-        # Boat Rental Category
-        {
-            "id": str(uuid.uuid4()),
-            "title": "Speedboat Adventure",
-            "description": "Rent our premium speedboat for an exhilarating day on the water. Perfect for island hopping.",
-            "category": "boat_rental",
-            "location": "Fort Lauderdale Marina",
+            "location": "Montenegro Coast",
             "date": "2025-08-01",
-            "image_url": "https://images.unsplash.com/photo-1622789095468-2afd0589b011?w=800",
+            "image_url": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800",
+            "capacity": 12,
+            "available_spots": 12,
+            "duration_hours": 1,
+            "amenities": ["Yoga Mats", "Towels", "Water"],
+            "included": ["Professional instructor", "Healthy snacks", "Herbal tea"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Single Session", "description": "One sunrise yoga session", "price": 45, "max_per_booking": 4}
+            ],
+            "time_slots": [
+                {"id": str(uuid.uuid4()), "start_time": "06:00", "end_time": "07:00", "available_spots": 12}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Sunset Yoga on Deck",
+            "description": "Unwind with a peaceful yoga session as the sun sets over the sea. A magical experience combining wellness and natural beauty.",
+            "category": "experiences",
+            "location": "Montenegro Coast",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800",
+            "capacity": 12,
+            "available_spots": 12,
+            "duration_hours": 1,
+            "amenities": ["Yoga Mats", "Towels", "Ambient Music"],
+            "included": ["Professional instructor", "Refreshments", "Meditation session"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Single Session", "description": "One sunset yoga session", "price": 50, "max_per_booking": 4}
+            ],
+            "time_slots": [
+                {"id": str(uuid.uuid4()), "start_time": "18:30", "end_time": "19:30", "available_spots": 12}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Wellness Morning at Sea",
+            "description": "A complete morning wellness experience including yoga, meditation, healthy breakfast, and swimming in crystal-clear waters.",
+            "category": "experiences",
+            "location": "Adriatic Sea",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1540555700478-4be289fbec6c?w=800",
+            "capacity": 10,
+            "available_spots": 10,
+            "duration_hours": 4,
+            "amenities": ["Spa Amenities", "Swimming Access", "Wellness Kit"],
+            "included": ["Yoga session", "Meditation", "Organic breakfast", "Wellness consultation"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Wellness Package", "description": "Complete morning wellness", "price": 120, "max_per_booking": 4}
+            ],
+            "time_slots": [
+                {"id": str(uuid.uuid4()), "start_time": "07:00", "end_time": "11:00", "available_spots": 10}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Wellness Afternoon at Sea",
+            "description": "Relax and rejuvenate with an afternoon of wellness activities at sea, including gentle yoga, sound healing, and a healthy lunch.",
+            "category": "experiences",
+            "location": "Adriatic Sea",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1599447421416-3414500d18a5?w=800",
+            "capacity": 10,
+            "available_spots": 10,
+            "duration_hours": 4,
+            "amenities": ["Spa Amenities", "Swimming Access", "Relaxation Area"],
+            "included": ["Yoga session", "Sound healing", "Healthy lunch", "Aromatherapy"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Wellness Package", "description": "Complete afternoon wellness", "price": 130, "max_per_booking": 4}
+            ],
+            "time_slots": [
+                {"id": str(uuid.uuid4()), "start_time": "13:00", "end_time": "17:00", "available_spots": 10}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        # Water Sports
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Jet Ski on the River",
+            "description": "Thrilling jet ski adventure along the scenic river routes. Experience the adrenaline rush with stunning mountain views.",
+            "category": "experiences",
+            "location": "Bojana River",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1626447857058-2ba6a8868cb5?w=800",
+            "capacity": 8,
+            "available_spots": 8,
+            "duration_hours": 3,
+            "amenities": ["Life Jackets", "Safety Briefing", "Guide"],
+            "included": ["Jet ski rental", "Fuel", "Professional guide", "Safety equipment"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Single Rider", "description": "Solo jet ski experience", "price": 180, "max_per_booking": 2},
+                {"id": str(uuid.uuid4()), "name": "Double Rider", "description": "Tandem jet ski experience", "price": 250, "max_per_booking": 2}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Jet Ski on the Bay",
+            "description": "High-speed jet ski experience in the beautiful bay. Perfect for thrill-seekers looking for quick aquatic adventure.",
+            "category": "experiences",
+            "location": "Kotor Bay",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=800",
+            "capacity": 6,
+            "available_spots": 6,
+            "duration_hours": 1,
+            "amenities": ["Life Jackets", "GoPro Rental Available"],
+            "included": ["Jet ski rental", "Fuel", "Safety briefing"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Quick Ride", "description": "1 hour jet ski", "price": 80, "max_per_booking": 3}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Kayaking Adventure",
+            "description": "Explore hidden coves and crystal-clear waters by kayak. A peaceful way to discover the stunning coastline.",
+            "category": "experiences",
+            "location": "Montenegro Coast",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1604715892639-5040769dd271?w=800",
+            "capacity": 12,
+            "available_spots": 12,
+            "duration_hours": 2,
+            "amenities": ["Waterproof Bags", "Snorkeling Gear"],
+            "included": ["Kayak rental", "Paddle", "Guide", "Snacks"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Single Kayak", "description": "Solo kayaking", "price": 45, "max_per_booking": 4},
+                {"id": str(uuid.uuid4()), "name": "Double Kayak", "description": "Tandem kayaking", "price": 70, "max_per_booking": 4}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "SUP - Stand Up Paddleboarding",
+            "description": "Glide across calm waters on a paddleboard. Perfect for fitness enthusiasts and those seeking a unique water experience.",
+            "category": "experiences",
+            "location": "Montenegro Coast",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1526188717906-ab4a2f949f2d?w=800",
+            "capacity": 10,
+            "available_spots": 10,
+            "duration_hours": 4,
+            "amenities": ["Waterproof Phone Case", "Storage"],
+            "included": ["SUP board", "Paddle", "Lesson for beginners"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "4 Hour Rental", "description": "Half day SUP", "price": 55, "max_per_booking": 4}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "SUP Full Day",
+            "description": "Full day paddleboarding adventure with guided tours to the best spots along the coast.",
+            "category": "experiences",
+            "location": "Montenegro Coast",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800",
             "capacity": 8,
             "available_spots": 8,
             "duration_hours": 8,
-            "amenities": ["GPS Navigation", "Bluetooth Audio", "Cooler"],
-            "included": ["Fuel", "Safety equipment", "Brief training"],
+            "amenities": ["Lunch Included", "Guide", "Photos"],
+            "included": ["SUP board", "Paddle", "Lunch", "Professional guide", "Photos"],
             "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Half Day (4hr)", "description": "4 hours rental", "price": 400, "max_per_booking": 1},
-                {"id": str(uuid.uuid4()), "name": "Full Day (8hr)", "description": "8 hours rental", "price": 700, "max_per_booking": 1}
+                {"id": str(uuid.uuid4()), "name": "Full Day", "description": "Complete SUP day experience", "price": 95, "max_per_booking": 4}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
         },
         {
             "id": str(uuid.uuid4()),
-            "title": "Luxury Pontoon Cruise",
-            "description": "Spacious pontoon perfect for family gatherings and leisurely cruises.",
-            "category": "boat_rental",
-            "location": "Miami Beach Marina",
+            "title": "SUP Full Week",
+            "description": "Week-long SUP pass with unlimited access to boards and exclusive guided tours.",
+            "category": "experiences",
+            "location": "Montenegro Coast",
             "date": "2025-08-01",
-            "image_url": "https://images.unsplash.com/photo-1700731713986-c35dedba158a?w=800",
+            "image_url": "https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800",
+            "capacity": 20,
+            "available_spots": 20,
+            "duration_hours": 0,
+            "amenities": ["Unlimited Access", "Priority Booking", "Free Lessons"],
+            "included": ["7 days unlimited SUP", "Storage", "3 guided tours", "Advanced lessons"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Weekly Pass", "description": "7 days unlimited SUP", "price": 350, "max_per_booking": 4}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Kite Surfing Overnight",
+            "description": "Learn or perfect your kite surfing skills with overnight camping by the beach. An unforgettable adventure experience.",
+            "category": "experiences",
+            "location": "Ulcinj Velika Plaza",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=800",
+            "capacity": 8,
+            "available_spots": 8,
+            "duration_hours": 30,
+            "amenities": ["Camping Gear", "BBQ", "Beach Access"],
+            "included": ["Kite equipment", "Lessons", "Tent", "Meals", "Instructor"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Beginner Package", "description": "Full instruction + overnight", "price": 450, "max_per_booking": 2},
+                {"id": str(uuid.uuid4()), "name": "Advanced Package", "description": "Equipment + overnight", "price": 350, "max_per_booking": 2}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        # Nature & Adventure
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Nature Hike",
+            "description": "Discover Montenegro's breathtaking landscapes on a guided nature hike through mountains and forests.",
+            "category": "experiences",
+            "location": "Lovćen National Park",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800",
+            "capacity": 15,
+            "available_spots": 15,
+            "duration_hours": 6,
+            "amenities": ["Hiking Poles Available", "First Aid Kit"],
+            "included": ["Professional guide", "Picnic lunch", "Water", "Transport"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Adult", "description": "Full hike experience", "price": 85, "max_per_booking": 6},
+                {"id": str(uuid.uuid4()), "name": "Child (8-14)", "description": "Youth rate", "price": 55, "max_per_booking": 4}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Glamping Experience",
+            "description": "Luxury camping in nature with all modern amenities. Wake up to stunning views and enjoy the outdoors in style.",
+            "category": "experiences",
+            "location": "Durmitor Mountains",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800",
+            "capacity": 8,
+            "available_spots": 8,
+            "duration_hours": 30,
+            "amenities": ["Luxury Tent", "Private Bathroom", "Stargazing Deck"],
+            "included": ["Luxury accommodation", "All meals", "Activities", "Bonfire evening"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Single Tent", "description": "Solo glamping", "price": 280, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Couple Tent", "description": "Romantic glamping for 2", "price": 420, "max_per_booking": 1}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Mountain Retreat",
+            "description": "Escape to the mountains for a complete retreat experience with yoga, meditation, and nature activities.",
+            "category": "experiences",
+            "location": "Bjelasica Mountains",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
             "capacity": 12,
             "available_spots": 12,
+            "duration_hours": 30,
+            "amenities": ["Mountain Lodge", "Spa Access", "Guided Trails"],
+            "included": ["Accommodation", "All meals", "Yoga sessions", "Guided hikes", "Spa treatment"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Standard Room", "description": "Shared accommodation", "price": 350, "max_per_booking": 2},
+                {"id": str(uuid.uuid4()), "name": "Private Room", "description": "Private mountain room", "price": 520, "max_per_booking": 2}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        # Cultural & Culinary
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Vintage Italian Picnic",
+            "description": "A charming Italian-style picnic in a scenic vineyard setting with gourmet food and fine wines.",
+            "category": "experiences",
+            "location": "Crmnica Wine Region",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1506368249639-73a05d6f6488?w=800",
+            "capacity": 20,
+            "available_spots": 20,
+            "duration_hours": 4,
+            "amenities": ["Vintage Decor", "Live Music", "Photo Setup"],
+            "included": ["Gourmet Italian food", "Premium wines", "Vintage photo session"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Per Person", "description": "Full picnic experience", "price": 95, "max_per_booking": 8}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Secret Places to Visit",
+            "description": "Discover hidden gems and secret spots that only locals know. A curated journey off the beaten path.",
+            "category": "experiences",
+            "location": "Montenegro Hidden Gems",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=800",
+            "capacity": 8,
+            "available_spots": 8,
+            "duration_hours": 8,
+            "amenities": ["Private Transport", "Local Guide"],
+            "included": ["Private guide", "Transport", "Lunch at secret location", "Surprise experiences"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Explorer Pass", "description": "Full day secret tour", "price": 185, "max_per_booking": 4}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Fiat Riva Team Tour Drive",
+            "description": "Drive vintage Fiat 500s along the stunning Riva coastline. A unique way to explore the Adriatic.",
+            "category": "experiences",
+            "location": "Coastal Montenegro",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800",
+            "capacity": 10,
+            "available_spots": 10,
+            "duration_hours": 4,
+            "amenities": ["Vintage Fiat 500", "Picnic Hamper", "Maps"],
+            "included": ["Fiat 500 rental", "Fuel", "Gourmet picnic", "Guide car"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Per Car (2 people)", "description": "Vintage Fiat experience", "price": 220, "max_per_booking": 3}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Fiat Riva Montenegro Drive",
+            "description": "Full day vintage Fiat adventure exploring Montenegro's most scenic coastal and mountain roads.",
+            "category": "experiences",
+            "location": "Montenegro Grand Tour",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800",
+            "capacity": 8,
+            "available_spots": 8,
+            "duration_hours": 10,
+            "amenities": ["Vintage Fiat 500", "Lunch Stop", "Photo Opportunities"],
+            "included": ["Fiat 500 rental", "Fuel", "Breakfast", "Lunch", "Guide car", "Roadside assistance"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Full Day Per Car", "description": "Complete Montenegro tour", "price": 380, "max_per_booking": 3}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Wine Tasting with Art",
+            "description": "Combine wine tasting with contemporary art in a stunning gallery setting. A feast for all senses.",
+            "category": "experiences",
+            "location": "Podgorica Art Gallery",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800",
+            "capacity": 20,
+            "available_spots": 20,
+            "duration_hours": 2,
+            "amenities": ["Art Exhibition", "Sommelier Service"],
+            "included": ["6 premium wines", "Art curator guide", "Cheese pairing", "Art catalog"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Tasting Experience", "description": "Wine & art session", "price": 75, "max_per_booking": 6}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Winery Tour Drive",
+            "description": "Drive through Montenegro's wine country visiting traditional wineries and tasting local varieties.",
+            "category": "experiences",
+            "location": "Montenegro Wine Region",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800",
+            "capacity": 12,
+            "available_spots": 12,
+            "duration_hours": 4,
+            "amenities": ["Transport", "Multiple Wineries"],
+            "included": ["Transport", "3 winery visits", "10+ wine tastings", "Local snacks"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Wine Tour", "description": "Half day winery tour", "price": 110, "max_per_booking": 6}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Skadar Lake Day Visit",
+            "description": "Explore the largest lake in Southern Europe with boat tours, bird watching, and traditional lunch.",
+            "category": "experiences",
+            "location": "Skadar Lake",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800",
+            "capacity": 15,
+            "available_spots": 15,
+            "duration_hours": 4,
+            "amenities": ["Boat Cruise", "Binoculars"],
+            "included": ["Boat tour", "Guide", "Traditional lunch", "Wine tasting"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Day Explorer", "description": "Half day lake experience", "price": 90, "max_per_booking": 6}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Skadar Lake Overnight Villa",
+            "description": "Stay in a traditional lakeside villa with full board. Experience authentic Montenegrin hospitality.",
+            "category": "experiences",
+            "location": "Skadar Lake",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800",
+            "capacity": 10,
+            "available_spots": 10,
+            "duration_hours": 30,
+            "amenities": ["Private Villa", "Lake Access", "Fishing Equipment"],
+            "included": ["Villa accommodation", "All meals", "Boat tours", "Fishing", "Wine tasting"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Per Person", "description": "Overnight villa stay", "price": 240, "max_per_booking": 4},
+                {"id": str(uuid.uuid4()), "name": "Private Villa (up to 6)", "description": "Exclusive villa rental", "price": 980, "max_per_booking": 1}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
             "duration_hours": 8,
             "amenities": ["Sun Shade", "Bluetooth Audio", "Swim Ladder", "Cooler"],
             "included": ["Fuel", "Captain optional", "Safety gear"],
