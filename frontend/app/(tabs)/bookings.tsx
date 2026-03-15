@@ -77,7 +77,7 @@ export default function BookingsScreen() {
       case 'cancelled':
         return '#ef4444';
       default:
-        return '#8899a6';
+        return '#7a8a8a';
     }
   };
 
@@ -97,7 +97,7 @@ export default function BookingsScreen() {
           <Text style={styles.headerTitle}>My Bookings</Text>
         </View>
         <View style={styles.emptyContainer}>
-          <Ionicons name="ticket-outline" size={64} color="#5c6f7f" />
+          <Ionicons name="ticket-outline" size={64} color="#c4c9c9" />
           <Text style={styles.emptyTitle}>Sign in to view bookings</Text>
           <Text style={styles.emptyText}>
             Create an account or sign in to see your booking history
@@ -126,7 +126,7 @@ export default function BookingsScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor="#1a365d"
+            tintColor="#2d5a5a"
           />
         }
       >
@@ -136,7 +136,7 @@ export default function BookingsScreen() {
           </View>
         ) : bookings.length === 0 ? (
           <View style={styles.emptyContainer}>
-            <Ionicons name="ticket-outline" size={64} color="#5c6f7f" />
+            <Ionicons name="ticket-outline" size={64} color="#c4c9c9" />
             <Text style={styles.emptyTitle}>No bookings yet</Text>
             <Text style={styles.emptyText}>
               Explore our experiences and make your first booking
@@ -178,7 +178,7 @@ export default function BookingsScreen() {
                   </Text>
                 </View>
                 {booking.qr_code && (
-                  <Ionicons name="qr-code" size={20} color="#1a365d" />
+                  <Ionicons name="qr-code" size={20} color="#2d5a5a" />
                 )}
               </View>
 
@@ -186,13 +186,13 @@ export default function BookingsScreen() {
 
               <View style={styles.bookingDetails}>
                 <View style={styles.detailRow}>
-                  <Ionicons name="calendar" size={16} color="#8899a6" />
+                  <Ionicons name="calendar-outline" size={16} color="#7a8a8a" />
                   <Text style={styles.detailText}>
                     {formatDate(booking.experience_date)}
                   </Text>
                 </View>
                 <View style={styles.detailRow}>
-                  <Ionicons name="location" size={16} color="#8899a6" />
+                  <Ionicons name="location-outline" size={16} color="#7a8a8a" />
                   <Text style={styles.detailText}>{booking.experience_location}</Text>
                 </View>
               </View>
@@ -216,7 +216,7 @@ export default function BookingsScreen() {
                 {booking.status === 'confirmed' && booking.qr_code && (
                   <View style={styles.viewTicketBadge}>
                     <Text style={styles.viewTicketText}>View Ticket</Text>
-                    <Ionicons name="arrow-forward" size={14} color="#1a365d" />
+                    <Ionicons name="arrow-forward" size={14} color="#2d5a5a" />
                   </View>
                 )}
               </View>
@@ -233,7 +233,7 @@ export default function BookingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a1628',
+    backgroundColor: '#f8f6f3',
   },
   header: {
     paddingHorizontal: 20,
@@ -241,9 +241,9 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontFamily: 'TraditionalArabic',
-    color: '#fff',
+    color: '#2d3a3a',
     fontSize: 28,
-    fontWeight: '700',
+    fontWeight: '300',
   },
   content: {
     flex: 1,
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontFamily: 'TraditionalArabic',
-    color: '#8899a6',
+    color: '#7a8a8a',
     fontSize: 16,
   },
   emptyContainer: {
@@ -268,24 +268,24 @@ const styles = StyleSheet.create({
   },
   emptyTitle: {
     fontFamily: 'TraditionalArabic',
-    color: '#fff',
+    color: '#2d3a3a',
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: '500',
     marginTop: 16,
   },
   emptyText: {
     fontFamily: 'TraditionalArabic',
-    color: '#8899a6',
+    color: '#7a8a8a',
     fontSize: 14,
     textAlign: 'center',
     marginTop: 8,
     paddingHorizontal: 40,
   },
   signInButton: {
-    backgroundColor: '#1a365d',
+    backgroundColor: '#2d5a5a',
     paddingHorizontal: 32,
     paddingVertical: 14,
-    borderRadius: 12,
+    borderRadius: 25,
     marginTop: 24,
   },
   signInButtonText: {
@@ -295,10 +295,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   exploreButton: {
-    backgroundColor: '#1a365d',
+    backgroundColor: '#2d5a5a',
     paddingHorizontal: 32,
     paddingVertical: 14,
-    borderRadius: 12,
+    borderRadius: 25,
     marginTop: 24,
   },
   exploreButtonText: {
@@ -308,10 +308,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   bookingCard: {
-    backgroundColor: '#1a2d4a',
+    backgroundColor: '#fff',
     borderRadius: 16,
-    padding: 16,
+    padding: 20,
     marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
   bookingHeader: {
     flexDirection: 'row',
@@ -322,7 +327,7 @@ const styles = StyleSheet.create({
   statusBadge: {
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 6,
+    borderRadius: 4,
   },
   statusText: {
     fontFamily: 'TraditionalArabic',
@@ -332,7 +337,7 @@ const styles = StyleSheet.create({
   },
   bookingTitle: {
     fontFamily: 'TraditionalArabic',
-    color: '#fff',
+    color: '#2d3a3a',
     fontSize: 18,
     fontWeight: '600',
     marginBottom: 12,
@@ -348,18 +353,18 @@ const styles = StyleSheet.create({
   },
   detailText: {
     fontFamily: 'TraditionalArabic',
-    color: '#8899a6',
+    color: '#7a8a8a',
     fontSize: 14,
   },
   ticketsSummary: {
-    backgroundColor: '#0a1628',
+    backgroundColor: '#f8f6f3',
     borderRadius: 8,
     padding: 12,
     marginBottom: 12,
   },
   ticketText: {
     fontFamily: 'TraditionalArabic',
-    color: '#8899a6',
+    color: '#5a6a6a',
     fontSize: 13,
   },
   bookingFooter: {
@@ -368,21 +373,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: '#2a3d5a',
+    borderTopColor: '#e8e5e0',
   },
   totalAmount: {
     fontFamily: 'TraditionalArabic',
-    color: '#fff',
+    color: '#2d3a3a',
     fontSize: 20,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   payNowBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1a365d',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 8,
+    backgroundColor: '#2d5a5a',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 20,
     gap: 6,
   },
   payNowText: {
@@ -398,7 +403,7 @@ const styles = StyleSheet.create({
   },
   viewTicketText: {
     fontFamily: 'TraditionalArabic',
-    color: '#1a365d',
+    color: '#2d5a5a',
     fontSize: 14,
     fontWeight: '600',
   },

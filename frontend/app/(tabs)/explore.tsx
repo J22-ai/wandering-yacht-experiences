@@ -109,31 +109,42 @@ export default function ExploreScreen() {
     return Math.min(...experience.ticket_types.map((t) => t.price));
   };
 
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const getCategoryLabel = (category: string) => {
+    const labels: { [key: string]: string } = {
+      experiences: 'Wellness',
+      boat_rental: 'Adventure',
+      yacht_charter: 'Luxury',
+      management: 'Service',
+    };
+    return labels[category] || category;
+  };
+
+  const formatDuration = (hours: number) => {
+    if (hours === 0) return '';
+    if (hours >= 24) return `${Math.round(hours / 24)} days`;
+    return `${hours} hours`;
   };
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Explore</Text>
+        <Text style={styles.headerTitle}>All Experiences</Text>
       </View>
 
       {/* Search Bar */}
       <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color="#8899a6" />
+        <Ionicons name="search" size={20} color="#9ca3a3" />
         <TextInput
           style={styles.searchInput}
           placeholder="Search experiences..."
-          placeholderTextColor="#8899a6"
+          placeholderTextColor="#9ca3a3"
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
         {searchQuery ? (
           <TouchableOpacity onPress={() => setSearchQuery('')}>
-            <Ionicons name="close-circle" size={20} color="#8899a6" />
+            <Ionicons name="close-circle" size={20} color="#9ca3a3" />
           </TouchableOpacity>
         ) : null}
       </View>
@@ -175,7 +186,7 @@ export default function ExploreScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor="#1a365d"
+            tintColor="#2d5a5a"
           />
         }
       >
@@ -190,42 +201,30 @@ export default function ExploreScreen() {
             onPress={() => router.push(`/experience/${experience.id}`)}
           >
             <Image
-              source={{ uri: experience.image_url || 'https://images.unsplash.com/photo-1531419746980-63af10612bf3?w=600' }}
+              source={{ uri: experience.image_url || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800' }}
               style={styles.experienceImage}
             />
-            <View style={styles.experienceInfo}>
-              <View style={styles.experienceBadge}>
-                <Text style={styles.experienceBadgeText}>
-                  {experience.category.replace('_', ' ').toUpperCase()}
+            <View style={styles.experienceContent}>
+              <View style={styles.categoryBadge}>
+                <Text style={styles.categoryBadgeText}>
+                  {getCategoryLabel(experience.category).toUpperCase()}
                 </Text>
               </View>
               <Text style={styles.experienceTitle}>{experience.title}</Text>
-              <View style={styles.experienceDetails}>
-                <View style={styles.detailItem}>
-                  <Ionicons name="location" size={14} color="#8899a6" />
-                  <Text style={styles.detailText}>{experience.location}</Text>
-                </View>
-                <View style={styles.detailItem}>
-                  <Ionicons name="calendar" size={14} color="#8899a6" />
-                  <Text style={styles.detailText}>{formatDate(experience.date)}</Text>
-                </View>
+              <View style={styles.experienceMeta}>
+                <Text style={styles.experienceLocation}>{experience.location}</Text>
                 {experience.duration_hours > 0 && (
-                  <View style={styles.detailItem}>
-                    <Ionicons name="time" size={14} color="#8899a6" />
-                    <Text style={styles.detailText}>{experience.duration_hours}h</Text>
-                  </View>
+                  <Text style={styles.experienceDuration}>
+                    {formatDuration(experience.duration_hours)}
+                  </Text>
                 )}
               </View>
+              <Text style={styles.experienceDescription} numberOfLines={2}>
+                {experience.description}
+              </Text>
               <View style={styles.experienceFooter}>
-                <Text style={styles.experiencePrice}>
-                  From ${getLowestPrice(experience)}
-                </Text>
-                <View style={styles.spotsContainer}>
-                  <Ionicons name="people" size={14} color="#1a365d" />
-                  <Text style={styles.spotsText}>
-                    {experience.available_spots} spots left
-                  </Text>
-                </View>
+                <Text style={styles.priceLabel}>from</Text>
+                <Text style={styles.experiencePrice}>${getLowestPrice(experience)}</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -240,7 +239,7 @@ export default function ExploreScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a1628',
+    backgroundColor: '#f8f6f3',
   },
   header: {
     paddingHorizontal: 20,
@@ -248,24 +247,26 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontFamily: 'TraditionalArabic',
-    color: '#fff',
+    color: '#2d3a3a',
     fontSize: 28,
-    fontWeight: '700',
+    fontWeight: '300',
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1a2d4a',
+    backgroundColor: '#fff',
     marginHorizontal: 20,
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#e8e5e0',
     gap: 10,
   },
   searchInput: {
     flex: 1,
     fontFamily: 'TraditionalArabic',
-    color: '#fff',
+    color: '#2d3a3a',
     fontSize: 16,
   },
   categoriesContainer: {
@@ -274,18 +275,21 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   categoryChip: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: '#1a2d4a',
+    paddingHorizontal: 18,
+    paddingVertical: 10,
+    borderRadius: 25,
+    backgroundColor: '#fff',
     marginRight: 10,
+    borderWidth: 1,
+    borderColor: '#e8e5e0',
   },
   categoryChipActive: {
-    backgroundColor: '#1a365d',
+    backgroundColor: '#2d5a5a',
+    borderColor: '#2d5a5a',
   },
   categoryChipText: {
     fontFamily: 'TraditionalArabic',
-    color: '#8899a6',
+    color: '#5a6a6a',
     fontSize: 14,
     fontWeight: '500',
   },
@@ -298,83 +302,86 @@ const styles = StyleSheet.create({
   },
   resultsCount: {
     fontFamily: 'TraditionalArabic',
-    color: '#8899a6',
+    color: '#7a8a8a',
     fontSize: 14,
     marginBottom: 16,
   },
   experienceCard: {
-    backgroundColor: '#1a2d4a',
+    backgroundColor: '#fff',
     borderRadius: 16,
     overflow: 'hidden',
-    marginBottom: 16,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
   experienceImage: {
     width: '100%',
-    height: 180,
+    height: 200,
   },
-  experienceInfo: {
-    padding: 16,
+  experienceContent: {
+    padding: 20,
   },
-  experienceBadge: {
-    backgroundColor: 'rgba(26, 54, 93, 0.3)',
-    paddingHorizontal: 10,
+  categoryBadge: {
+    backgroundColor: '#e8f4f4',
+    paddingHorizontal: 12,
     paddingVertical: 4,
-    borderRadius: 6,
+    borderRadius: 4,
     alignSelf: 'flex-start',
-    marginBottom: 8,
+    marginBottom: 12,
   },
-  experienceBadgeText: {
+  categoryBadgeText: {
     fontFamily: 'TraditionalArabic',
-    color: '#1a365d',
-    fontSize: 10,
+    fontSize: 11,
+    color: '#2d5a5a',
     fontWeight: '600',
     letterSpacing: 1,
   },
   experienceTitle: {
     fontFamily: 'TraditionalArabic',
-    color: '#fff',
-    fontSize: 18,
+    fontSize: 20,
+    color: '#2d3a3a',
     fontWeight: '600',
+    marginBottom: 8,
+  },
+  experienceMeta: {
+    flexDirection: 'row',
+    gap: 12,
     marginBottom: 10,
   },
-  experienceDetails: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-    marginBottom: 12,
-  },
-  detailItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  detailText: {
+  experienceLocation: {
     fontFamily: 'TraditionalArabic',
-    color: '#8899a6',
-    fontSize: 13,
+    fontSize: 14,
+    color: '#7a8a8a',
+  },
+  experienceDuration: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 14,
+    color: '#7a8a8a',
+  },
+  experienceDescription: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 14,
+    color: '#5a6a6a',
+    lineHeight: 22,
+    marginBottom: 16,
   },
   experienceFooter: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: '#2a3d5a',
+    alignItems: 'baseline',
+    gap: 6,
+  },
+  priceLabel: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    color: '#7a8a8a',
   },
   experiencePrice: {
     fontFamily: 'TraditionalArabic',
-    color: '#e53e3e',
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  spotsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  spotsText: {
-    fontFamily: 'TraditionalArabic',
-    color: '#1a365d',
-    fontSize: 13,
+    fontSize: 22,
+    color: '#2d3a3a',
+    fontWeight: '600',
   },
 });

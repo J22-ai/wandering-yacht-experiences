@@ -127,7 +127,7 @@ export default function ProfileScreen() {
             <Text style={styles.userEmail}>{user.email}</Text>
           </View>
           <TouchableOpacity style={styles.editButton}>
-            <Ionicons name="pencil" size={18} color="#1a365d" />
+            <Ionicons name="pencil" size={18} color="#2d5a5a" />
           </TouchableOpacity>
         </View>
 
@@ -140,20 +140,20 @@ export default function ProfileScreen() {
               onPress={item.onPress}
             >
               <View style={styles.menuIconContainer}>
-                <Ionicons name={item.icon} size={22} color="#1a365d" />
+                <Ionicons name={item.icon} size={22} color="#2d5a5a" />
               </View>
               <View style={styles.menuContent}>
                 <Text style={styles.menuTitle}>{item.title}</Text>
                 <Text style={styles.menuSubtitle}>{item.subtitle}</Text>
               </View>
-              <Ionicons name="chevron-forward" size={20} color="#5c6f7f" />
+              <Ionicons name="chevron-forward" size={20} color="#c4c9c9" />
             </TouchableOpacity>
           ))}
         </View>
 
         {/* Sign Out */}
         <TouchableOpacity style={styles.signOutButton} onPress={handleLogout}>
-          <Ionicons name="log-out-outline" size={22} color="#e53e3e" />
+          <Ionicons name="log-out-outline" size={22} color="#e74c3c" />
           <Text style={styles.signOutText}>Sign Out</Text>
         </TouchableOpacity>
 
@@ -166,7 +166,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a1628',
+    backgroundColor: '#f8f6f3',
   },
   header: {
     paddingHorizontal: 20,
@@ -174,9 +174,9 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontFamily: 'TraditionalArabic',
-    color: '#fff',
+    color: '#2d3a3a',
     fontSize: 28,
-    fontWeight: '700',
+    fontWeight: '300',
   },
   guestContainer: {
     flex: 1,
@@ -191,24 +191,24 @@ const styles = StyleSheet.create({
   },
   guestTitle: {
     fontFamily: 'TraditionalArabic',
-    color: '#fff',
+    color: '#2d3a3a',
     fontSize: 22,
-    fontWeight: '600',
+    fontWeight: '500',
     marginBottom: 8,
     textAlign: 'center',
   },
   guestText: {
     fontFamily: 'TraditionalArabic',
-    color: '#8899a6',
+    color: '#7a8a8a',
     fontSize: 14,
     textAlign: 'center',
     lineHeight: 20,
   },
   signInButton: {
-    backgroundColor: '#1a365d',
+    backgroundColor: '#2d5a5a',
     paddingHorizontal: 48,
     paddingVertical: 14,
-    borderRadius: 12,
+    borderRadius: 25,
     marginTop: 32,
     width: '100%',
   },
@@ -221,16 +221,16 @@ const styles = StyleSheet.create({
   },
   registerButton: {
     borderWidth: 1,
-    borderColor: '#e53e3e',
+    borderColor: '#2d5a5a',
     paddingHorizontal: 48,
     paddingVertical: 14,
-    borderRadius: 12,
+    borderRadius: 25,
     marginTop: 12,
     width: '100%',
   },
   registerButtonText: {
     fontFamily: 'TraditionalArabic',
-    color: '#e53e3e',
+    color: '#2d5a5a',
     fontSize: 16,
     fontWeight: '600',
     textAlign: 'center',
@@ -238,17 +238,22 @@ const styles = StyleSheet.create({
   userCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1a2d4a',
+    backgroundColor: '#fff',
     marginHorizontal: 20,
     padding: 16,
     borderRadius: 16,
     marginBottom: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
   avatar: {
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#1a365d',
+    backgroundColor: '#2d5a5a',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -256,7 +261,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 20,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   userInfo: {
     flex: 1,
@@ -264,13 +269,13 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontFamily: 'TraditionalArabic',
-    color: '#fff',
+    color: '#2d3a3a',
     fontSize: 18,
     fontWeight: '600',
   },
   userEmail: {
     fontFamily: 'TraditionalArabic',
-    color: '#8899a6',
+    color: '#7a8a8a',
     fontSize: 14,
     marginTop: 2,
   },
@@ -278,28 +283,33 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#0a1628',
+    backgroundColor: '#f8f6f3',
     justifyContent: 'center',
     alignItems: 'center',
   },
   menuSection: {
-    backgroundColor: '#1a2d4a',
+    backgroundColor: '#fff',
     marginHorizontal: 20,
     borderRadius: 16,
     overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#2a3d5a',
+    borderBottomColor: '#f0ebe4',
   },
   menuIconContainer: {
     width: 40,
     height: 40,
     borderRadius: 10,
-    backgroundColor: 'rgba(26, 54, 93, 0.2)',
+    backgroundColor: '#e8f4f4',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -309,13 +319,13 @@ const styles = StyleSheet.create({
   },
   menuTitle: {
     fontFamily: 'TraditionalArabic',
-    color: '#fff',
+    color: '#2d3a3a',
     fontSize: 16,
     fontWeight: '500',
   },
   menuSubtitle: {
     fontFamily: 'TraditionalArabic',
-    color: '#8899a6',
+    color: '#7a8a8a',
     fontSize: 12,
     marginTop: 2,
   },
@@ -326,13 +336,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 24,
     padding: 16,
-    backgroundColor: 'rgba(229, 62, 62, 0.1)',
+    backgroundColor: '#fef2f2',
     borderRadius: 12,
     gap: 8,
   },
   signOutText: {
     fontFamily: 'TraditionalArabic',
-    color: '#e53e3e',
+    color: '#e74c3c',
     fontSize: 16,
     fontWeight: '600',
   },
