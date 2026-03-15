@@ -204,17 +204,17 @@ export default function CheckoutScreen() {
             <View key={idx} style={styles.ticketRow}>
               <View>
                 <Text style={styles.ticketName}>{ticket.ticket_name}</Text>
-                <Text style={styles.ticketQty}>{ticket.quantity} × ${ticket.price_per_ticket}</Text>
+                <Text style={styles.ticketQty}>{ticket.quantity} × €{ticket.price_per_ticket}</Text>
               </View>
               <Text style={styles.ticketTotal}>
-                ${(ticket.quantity * ticket.price_per_ticket).toFixed(2)}
+                €{(ticket.quantity * ticket.price_per_ticket).toFixed(2)}
               </Text>
             </View>
           ))}
           
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Total</Text>
-            <Text style={styles.totalAmount}>${booking.total_amount.toFixed(2)}</Text>
+            <Text style={styles.totalAmount}>€{booking.total_amount.toFixed(2)}</Text>
           </View>
         </View>
 
@@ -244,7 +244,7 @@ export default function CheckoutScreen() {
       <View style={[styles.bottomBar, { paddingBottom: Math.max(insets.bottom, 16) + 16 }]}>
         <View style={styles.priceContainer}>
           <Text style={styles.priceLabel}>Total</Text>
-          <Text style={styles.priceValue}>${booking.total_amount.toFixed(2)}</Text>
+          <Text style={styles.priceValue}>€{booking.total_amount.toFixed(2)}</Text>
         </View>
         <TouchableOpacity
           style={[

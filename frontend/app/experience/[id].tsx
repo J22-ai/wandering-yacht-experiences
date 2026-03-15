@@ -355,7 +355,7 @@ export default function ExperienceDetailScreen() {
       <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 16 }]}>
         <View style={styles.priceContainer}>
           <Text style={styles.priceLabel}>Total</Text>
-          <Text style={styles.priceValue}>${getTotalPrice().toFixed(2)}</Text>
+          <Text style={styles.priceValue}>€{getTotalPrice().toFixed(2)}</Text>
         </View>
         <TouchableOpacity
           style={[
