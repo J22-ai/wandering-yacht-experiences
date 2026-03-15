@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { Platform, View, StyleSheet } from 'react-native';
+import { Platform, View, StyleSheet, Text } from 'react-native';
 
 export default function TabLayout() {
   return (
@@ -16,9 +16,10 @@ export default function TabLayout() {
           paddingBottom: Platform.OS === 'ios' ? 25 : 10,
           paddingTop: 10,
         },
-        tabBarActiveTintColor: '#00b4d8',
+        tabBarActiveTintColor: '#1a365d',
         tabBarInactiveTintColor: '#5c6f7f',
         tabBarLabelStyle: {
+          fontFamily: 'TraditionalArabic',
           fontSize: 11,
           fontWeight: '500',
         },

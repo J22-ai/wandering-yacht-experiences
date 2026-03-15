@@ -10,6 +10,7 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -76,7 +77,11 @@ export default function RegisterScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.logoContainer}>
-          <Ionicons name="boat" size={50} color="#00b4d8" />
+          <Image
+            source={require('../../assets/images/wy-logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
           <Text style={styles.title}>Create Account</Text>
           <Text style={styles.subtitle}>Join the Wandering Yacht family</Text>
         </View>
@@ -205,13 +210,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 32,
   },
+  logo: {
+    width: 80,
+    height: 80,
+    marginBottom: 16,
+  },
   title: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 28,
     fontWeight: '700',
-    marginTop: 16,
+    marginTop: 8,
   },
   subtitle: {
+    fontFamily: 'TraditionalArabic',
     color: '#8899a6',
     fontSize: 16,
     marginTop: 8,
@@ -230,12 +242,13 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
     paddingVertical: 14,
   },
   registerButton: {
-    backgroundColor: '#00b4d8',
+    backgroundColor: '#1a365d',
     borderRadius: 12,
     paddingVertical: 16,
     alignItems: 'center',
@@ -245,6 +258,7 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   registerButtonText: {
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
@@ -256,11 +270,13 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   footerText: {
+    fontFamily: 'TraditionalArabic',
     color: '#8899a6',
     fontSize: 14,
   },
   footerLink: {
-    color: '#00b4d8',
+    fontFamily: 'TraditionalArabic',
+    color: '#e53e3e',
     fontSize: 14,
     fontWeight: '600',
   },
