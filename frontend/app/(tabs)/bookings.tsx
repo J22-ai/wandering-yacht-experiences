@@ -206,7 +206,7 @@ export default function BookingsScreen() {
               </View>
 
               <View style={styles.bookingFooter}>
-                <Text style={styles.totalAmount}>${booking.total_amount.toFixed(2)}</Text>
+                <Text style={styles.totalAmount}>€{booking.total_amount.toFixed(2)}</Text>
                 {booking.payment_status === 'unpaid' && (
                   <View style={styles.payNowBadge}>
                     <Text style={styles.payNowText}>Pay Now</Text>

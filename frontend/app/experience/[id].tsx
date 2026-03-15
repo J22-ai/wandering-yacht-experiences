@@ -322,7 +322,7 @@ export default function ExperienceDetailScreen() {
                 <View style={styles.ticketInfo}>
                   <Text style={styles.ticketName}>{ticket.name}</Text>
                   <Text style={styles.ticketDescription}>{ticket.description}</Text>
-                  <Text style={styles.ticketPrice}>${ticket.price}</Text>
+                  <Text style={styles.ticketPrice}>€{ticket.price}</Text>
                 </View>
                 <View style={styles.ticketCounter}>
                   <TouchableOpacity

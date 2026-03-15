@@ -203,7 +203,7 @@ export default function HomeScreen() {
                 </Text>
                 <View style={styles.experienceFooter}>
                   <Text style={styles.priceLabel}>from</Text>
-                  <Text style={styles.experiencePrice}>${getLowestPrice(experience)}</Text>
+                  <Text style={styles.experiencePrice}>€{getLowestPrice(experience)}</Text>
                 </View>
               </View>
             </TouchableOpacity>
