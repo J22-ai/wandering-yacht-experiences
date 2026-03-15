@@ -610,7 +610,7 @@ async def seed_data_internal():
             "amenities": ["Yoga Mats", "Towels", "Water"],
             "included": ["Professional instructor", "Healthy snacks", "Herbal tea"],
             "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Single Session", "description": "One sunrise yoga session", "price": 45, "max_per_booking": 4}
+                {"id": str(uuid.uuid4()), "name": "Single Session", "description": "One sunrise yoga session", "price": 35, "max_per_booking": 4}
             ],
             "time_slots": [
                 {"id": str(uuid.uuid4()), "start_time": "06:00", "end_time": "07:00", "available_spots": 12}
@@ -632,7 +632,7 @@ async def seed_data_internal():
             "amenities": ["Yoga Mats", "Towels", "Ambient Music"],
             "included": ["Professional instructor", "Refreshments", "Meditation session"],
             "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Single Session", "description": "One sunset yoga session", "price": 50, "max_per_booking": 4}
+                {"id": str(uuid.uuid4()), "name": "Single Session", "description": "One sunset yoga session", "price": 35, "max_per_booking": 4}
             ],
             "time_slots": [
                 {"id": str(uuid.uuid4()), "start_time": "18:30", "end_time": "19:30", "available_spots": 12}
