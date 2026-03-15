@@ -22,18 +22,18 @@ export default function RootLayout() {
   if (!fontsLoaded) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#00b4d8" />
+        <ActivityIndicator size="large" color="#2d5a5a" />
       </View>
     );
   }
 
   return (
     <AuthProvider>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <Stack
         screenOptions={{
           headerShown: false,
-          contentStyle: { backgroundColor: '#0a1628' },
+          contentStyle: { backgroundColor: '#f8f6f3' },
           animation: 'slide_from_right',
         }}
       >
@@ -52,7 +52,7 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
-    backgroundColor: '#0a1628',
+    backgroundColor: '#f8f6f3',
     justifyContent: 'center',
     alignItems: 'center',
   },
