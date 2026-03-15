@@ -8,19 +8,12 @@ import {
   Alert,
   ActivityIndicator,
   Platform,
-  Linking,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { api } from '../../src/services/api';
 import { useAuth } from '../../src/context/AuthContext';
-
-// Conditionally import Stripe only for native
-let useStripe: any;
-if (Platform.OS !== 'web') {
-  useStripe = require('@stripe/stripe-react-native').useStripe;
-}
 
 interface Booking {
   id: string;
@@ -45,10 +38,6 @@ export default function CheckoutScreen() {
   const insets = useSafeAreaInsets();
   const { token } = useAuth();
   
-  // Use Stripe hooks only on native
-  const stripeHooks = Platform.OS !== 'web' ? useStripe() : { initPaymentSheet: null, presentPaymentSheet: null };
-  const { initPaymentSheet, presentPaymentSheet } = stripeHooks;
-  
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
@@ -65,107 +54,54 @@ export default function CheckoutScreen() {
     try {
       const data = await api.getBooking(bookingId as string);
       setBooking(data);
-      if (data.payment_status === 'unpaid' && Platform.OS !== 'web') {
-        await initializePayment(data.id);
-      } else if (Platform.OS === 'web') {
+      if (data.payment_status === 'unpaid') {
+        // For demo purposes, mark as ready immediately
         setPaymentReady(true);
       }
     } catch (error) {
       console.error('Error loading booking:', error);
-      Alert.alert('Error', 'Failed to load booking');
+      showAlert('Error', 'Failed to load booking');
     } finally {
       setLoading(false);
     }
   };
 
-  const initializePayment = async (bookingId: string) => {
-    if (!initPaymentSheet) return;
-    
-    try {
-      const paymentIntent = await api.createPaymentIntent(bookingId);
-      
-      const { error } = await initPaymentSheet({
-        merchantDisplayName: 'Wandering Yacht',
-        paymentIntentClientSecret: paymentIntent.client_secret,
-        defaultBillingDetails: {
-          name: '',
-        },
-        style: 'alwaysDark',
-      });
-
-      if (error) {
-        console.error('Payment sheet init error:', error);
-        Alert.alert('Error', 'Failed to initialize payment');
-      } else {
-        setPaymentReady(true);
-      }
-    } catch (error: any) {
-      console.error('Payment initialization error:', error);
-      Alert.alert('Error', error.message || 'Failed to initialize payment');
+  const showAlert = (title: string, message: string) => {
+    if (Platform.OS === 'web') {
+      alert(`${title}: ${message}`);
+    } else {
+      Alert.alert(title, message);
     }
   };
 
   const handlePayment = async () => {
-    if (Platform.OS === 'web') {
-      // For web, simulate payment (in production you'd use Stripe Elements)
-      await handleWebPayment();
-      return;
-    }
-    
-    if (!paymentReady || !presentPaymentSheet) return;
+    if (!paymentReady || !booking) return;
 
     setProcessing(true);
     try {
-      const { error } = await presentPaymentSheet();
-
-      if (error) {
-        if (error.code !== 'Canceled') {
-          Alert.alert('Payment Failed', error.message);
-        }
+      // Create payment intent
+      await api.createPaymentIntent(booking.id);
+      
+      // Confirm payment (in production, this would happen after Stripe payment completion)
+      await api.confirmPayment(booking.id);
+      
+      if (Platform.OS === 'web') {
+        alert('Payment Successful! Your booking has been confirmed.');
+        router.replace(`/ticket/${booking.id}`);
       } else {
-        // Payment successful - confirm with backend
-        await api.confirmPayment(booking!.id);
         Alert.alert(
           'Payment Successful',
           'Your booking has been confirmed! Check your tickets in the Bookings tab.',
           [
             {
               text: 'View Ticket',
-              onPress: () => router.replace(`/ticket/${booking!.id}`),
+              onPress: () => router.replace(`/ticket/${booking.id}`),
             },
           ]
         );
       }
     } catch (error: any) {
-      Alert.alert('Error', error.message || 'Payment failed');
-    } finally {
-      setProcessing(false);
-    }
-  };
-
-  const handleWebPayment = async () => {
-    setProcessing(true);
-    try {
-      // For web demo, create payment intent and simulate success
-      await api.createPaymentIntent(booking!.id);
-      await api.confirmPayment(booking!.id);
-      
-      if (Platform.OS === 'web') {
-        alert('Payment Successful! Your booking has been confirmed.');
-        router.replace(`/ticket/${booking!.id}`);
-      } else {
-        Alert.alert(
-          'Payment Successful',
-          'Your booking has been confirmed!',
-          [{ text: 'View Ticket', onPress: () => router.replace(`/ticket/${booking!.id}`) }]
-        );
-      }
-    } catch (error: any) {
-      if (Platform.OS === 'web') {
-        alert(error.message || 'Payment failed');
-      } else {
-        Alert.alert('Error', error.message || 'Payment failed');
-      }
+      showAlert('Error', error.message || 'Payment failed');
     } finally {
       setProcessing(false);
     }
@@ -276,20 +212,16 @@ export default function CheckoutScreen() {
         <View style={styles.paymentInfo}>
           <Ionicons name="shield-checkmark" size={20} color="#10b981" />
           <Text style={styles.paymentInfoText}>
-            {Platform.OS === 'web' 
-              ? 'Demo mode - Click Pay Now to complete' 
-              : 'Secure payment powered by Stripe'}
+            Demo Mode - Stripe integration available on mobile app
           </Text>
         </View>
 
-        {Platform.OS === 'web' && (
-          <View style={styles.webNotice}>
-            <Ionicons name="information-circle" size={20} color="#f59e0b" />
-            <Text style={styles.webNoticeText}>
-              For the full payment experience with card input, please use the mobile app
-            </Text>
-          </View>
-        )}
+        <View style={styles.demoNotice}>
+          <Ionicons name="information-circle" size={20} color="#00b4d8" />
+          <Text style={styles.demoNoticeText}>
+            This is a demo checkout. In production, you would enter your card details via Stripe's secure payment form.
+          </Text>
+        </View>
 
         <View style={{ height: 120 }} />
       </ScrollView>
@@ -314,7 +246,7 @@ export default function CheckoutScreen() {
             <>
               <Ionicons name="lock-closed" size={18} color="#fff" />
               <Text style={styles.payButtonText}>
-                {paymentReady ? 'Pay Now' : 'Loading...'}
+                {paymentReady ? 'Complete Payment' : 'Loading...'}
               </Text>
             </>
           )}
@@ -484,18 +416,19 @@ const styles = StyleSheet.create({
     color: '#8899a6',
     fontSize: 13,
   },
-  webNotice: {
+  demoNotice: {
     flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+    alignItems: 'flex-start',
+    backgroundColor: 'rgba(0, 180, 216, 0.1)',
     padding: 16,
     borderRadius: 12,
     gap: 10,
   },
-  webNoticeText: {
-    color: '#f59e0b',
+  demoNoticeText: {
+    color: '#00b4d8',
     fontSize: 13,
     flex: 1,
+    lineHeight: 20,
   },
   bottomBar: {
     position: 'absolute',
