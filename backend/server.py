@@ -849,7 +849,7 @@ async def seed_data_internal():
             "category": "experiences",
             "location": "Durmitor Mountains",
             "date": "2025-08-01",
-            "image_url": "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800",
+            "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/vt4m38xp_Glamping%20Tent%20Night.jpg",
             "capacity": 8,
             "available_spots": 8,
             "duration_hours": 30,
