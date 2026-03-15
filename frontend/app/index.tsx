@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Platform } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Platform, ScrollView, ImageBackground } from 'react-native';
 import { useRouter } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../src/context/AuthContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { width, height } = Dimensions.get('window');
 
 export default function WelcomeScreen() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { user, isLoading } = useAuth();
 
   useEffect(() => {
@@ -31,56 +32,53 @@ export default function WelcomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: 'https://images.unsplash.com/photo-1523496922380-91d5afba98a3?w=1200' }}
-        style={styles.backgroundImage}
-      />
-      <LinearGradient
-        colors={['transparent', 'rgba(10, 22, 40, 0.8)', '#0a1628']}
-        style={styles.gradient}
-      />
-      
-      <View style={styles.content}>
-        <View style={styles.logoContainer}>
-          <Image
-            source={require('../assets/images/wy-logo.png')}
-            style={styles.logo}
-            resizeMode="contain"
-          />
-          <Text style={styles.brandName}>WANDERING</Text>
-          <Text style={styles.brandNameSub}>YACHT</Text>
+      <ImageBackground
+        source={{ uri: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=1200' }}
+        style={styles.heroBackground}
+        resizeMode="cover"
+      >
+        <View style={styles.heroOverlay}>
+          {/* Header */}
+          <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
+            <View style={styles.logoContainer}>
+              <Image
+                source={require('../assets/images/wy-logo.png')}
+                style={styles.headerLogo}
+                resizeMode="contain"
+              />
+              <Text style={styles.headerTitle}>Wandering Yacht</Text>
+            </View>
+            <TouchableOpacity style={styles.menuButton}>
+              <Ionicons name="menu" size={24} color="#fff" />
+            </TouchableOpacity>
+          </View>
+
+          {/* Hero Content */}
+          <View style={styles.heroContent}>
+            <Text style={styles.heroTitle}>Unforgettable{"\n"}Adriatic{"\n"}Experiences</Text>
+            <Text style={styles.heroSubtitle}>
+              Discover curated adventures—from sunrise yoga on luxury yachts to vintage car tours through Montenegro's most scenic routes.
+            </Text>
+            <TouchableOpacity
+              style={styles.heroButton}
+              onPress={() => router.replace('/(tabs)')}
+            >
+              <Text style={styles.heroButtonText}>Explore Experiences</Text>
+              <Ionicons name="arrow-forward" size={18} color="#2d5a5a" />
+            </TouchableOpacity>
+          </View>
         </View>
-        
-        <View style={styles.taglineContainer}>
-          <Text style={styles.tagline}>Experience Luxury on Water</Text>
-          <Text style={styles.subtitle}>
-            Charter yachts, rent boats, and book unforgettable experiences
-          </Text>
-        </View>
-        
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.primaryButton}
-            onPress={() => router.push('/auth/register')}
-          >
-            <Text style={styles.primaryButtonText}>Get Started</Text>
-            <Ionicons name="arrow-forward" size={20} color="#fff" />
-          </TouchableOpacity>
-          
-          <TouchableOpacity
-            style={styles.secondaryButton}
-            onPress={() => router.push('/auth/login')}
-          >
-            <Text style={styles.secondaryButtonText}>Sign In</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity
-            style={styles.guestButton}
-            onPress={() => router.replace('/(tabs)')}
-          >
-            <Text style={styles.guestButtonText}>Browse as Guest</Text>
-          </TouchableOpacity>
-        </View>
+      </ImageBackground>
+
+      {/* Bottom Actions */}
+      <View style={[styles.bottomActions, { paddingBottom: insets.bottom + 20 }]}>
+        <TouchableOpacity
+          style={styles.signInLink}
+          onPress={() => router.push('/auth/login')}
+        >
+          <Text style={styles.signInText}>Already have an account? </Text>
+          <Text style={styles.signInTextBold}>Sign In</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -89,11 +87,11 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a1628',
+    backgroundColor: '#f8f6f3',
   },
   loadingContainer: {
     flex: 1,
-    backgroundColor: '#0a1628',
+    backgroundColor: '#f8f6f3',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -101,105 +99,99 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
   },
-  backgroundImage: {
-    position: 'absolute',
-    width: width,
-    height: height * 0.7,
-    top: 0,
-  },
-  gradient: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: height * 0.3,
-    height: height * 0.7,
-  },
-  content: {
+  heroBackground: {
     flex: 1,
-    justifyContent: 'flex-end',
-    paddingHorizontal: 24,
-    paddingBottom: Platform.OS === 'ios' ? 50 : 30,
+    width: '100%',
+  },
+  heroOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(45, 90, 90, 0.4)',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingBottom: 10,
   },
   logoContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 10,
-  },
-  brandName: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 32,
-    fontWeight: '800',
-    color: '#1a365d',
-    letterSpacing: 6,
-  },
-  brandNameSub: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 24,
-    fontWeight: '300',
-    color: '#e53e3e',
-    letterSpacing: 12,
-  },
-  taglineContainer: {
-    alignItems: 'center',
-    marginBottom: 40,
-  },
-  tagline: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#fff',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 14,
-    color: '#8899a6',
-    textAlign: 'center',
-    lineHeight: 20,
-  },
-  buttonContainer: {
-    gap: 12,
-  },
-  primaryButton: {
-    backgroundColor: '#1a365d',
-    borderRadius: 12,
-    paddingVertical: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
+    gap: 10,
   },
-  primaryButtonText: {
+  headerLogo: {
+    width: 32,
+    height: 32,
+  },
+  headerTitle: {
     fontFamily: 'TraditionalArabic',
+    fontSize: 18,
     color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '500',
   },
-  secondaryButton: {
-    backgroundColor: 'transparent',
-    borderRadius: 12,
+  menuButton: {
+    width: 44,
+    height: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  heroContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 30,
+  },
+  heroTitle: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 42,
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '300',
+    lineHeight: 52,
+    letterSpacing: 1,
+  },
+  heroSubtitle: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 16,
+    color: 'rgba(255, 255, 255, 0.9)',
+    textAlign: 'center',
+    marginTop: 20,
+    lineHeight: 24,
+    paddingHorizontal: 10,
+  },
+  heroButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
     paddingVertical: 16,
-    borderWidth: 1,
-    borderColor: '#e53e3e',
+    paddingHorizontal: 32,
+    borderRadius: 30,
+    marginTop: 30,
+    gap: 10,
   },
-  secondaryButtonText: {
+  heroButtonText: {
     fontFamily: 'TraditionalArabic',
-    color: '#e53e3e',
     fontSize: 16,
+    color: '#2d5a5a',
     fontWeight: '600',
-    textAlign: 'center',
   },
-  guestButton: {
-    paddingVertical: 12,
+  bottomActions: {
+    backgroundColor: '#f8f6f3',
+    paddingTop: 20,
+    alignItems: 'center',
   },
-  guestButtonText: {
+  signInLink: {
+    flexDirection: 'row',
+  },
+  signInText: {
     fontFamily: 'TraditionalArabic',
-    color: '#8899a6',
     fontSize: 14,
-    textAlign: 'center',
+    color: '#666',
+  },
+  signInTextBold: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 14,
+    color: '#2d5a5a',
+    fontWeight: '600',
   },
 });

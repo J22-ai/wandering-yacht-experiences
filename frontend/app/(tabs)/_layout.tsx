@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { Platform, View, StyleSheet, Text } from 'react-native';
+import { Platform } from 'react-native';
 
 export default function TabLayout() {
   return (
@@ -9,15 +9,15 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#0a1628',
-          borderTopColor: '#1a2d4a',
+          backgroundColor: '#fff',
+          borderTopColor: '#e8e5e0',
           borderTopWidth: 1,
           height: Platform.OS === 'ios' ? 85 : 65,
           paddingBottom: Platform.OS === 'ios' ? 25 : 10,
           paddingTop: 10,
         },
-        tabBarActiveTintColor: '#1a365d',
-        tabBarInactiveTintColor: '#5c6f7f',
+        tabBarActiveTintColor: '#2d5a5a',
+        tabBarInactiveTintColor: '#9ca3a3',
         tabBarLabelStyle: {
           fontFamily: 'TraditionalArabic',
           fontSize: 11,
@@ -30,7 +30,7 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={size} color={color} />
+            <Ionicons name="home-outline" size={size} color={color} />
           ),
         }}
       />
@@ -39,7 +39,7 @@ export default function TabLayout() {
         options={{
           title: 'Explore',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="compass" size={size} color={color} />
+            <Ionicons name="compass-outline" size={size} color={color} />
           ),
         }}
       />
@@ -48,7 +48,7 @@ export default function TabLayout() {
         options={{
           title: 'Bookings',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="ticket" size={size} color={color} />
+            <Ionicons name="ticket-outline" size={size} color={color} />
           ),
         }}
       />
@@ -57,7 +57,7 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" size={size} color={color} />
+            <Ionicons name="person-outline" size={size} color={color} />
           ),
         }}
       />
