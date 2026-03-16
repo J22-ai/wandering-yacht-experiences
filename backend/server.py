@@ -935,7 +935,7 @@ async def seed_data_internal():
             "amenities": ["Vintage Fiat 500", "Picnic Hamper", "Maps"],
             "included": ["Fiat 500 rental", "Fuel", "Gourmet picnic", "Guide car"],
             "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Per Car (2 people)", "description": "Vintage Fiat experience", "price": 220, "max_per_booking": 3}
+                {"id": str(uuid.uuid4()), "name": "Per Car (2 people)", "description": "Vintage Fiat experience", "price": 380, "max_per_booking": 3}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
@@ -954,7 +954,7 @@ async def seed_data_internal():
             "amenities": ["Vintage Fiat 500", "Lunch Stop", "Photo Opportunities"],
             "included": ["Fiat 500 rental", "Fuel", "Breakfast", "Lunch", "Guide car", "Roadside assistance"],
             "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Full Day Per Car", "description": "Complete Montenegro tour", "price": 380, "max_per_booking": 3}
+                {"id": str(uuid.uuid4()), "name": "Full Day Per Car", "description": "Complete Montenegro tour", "price": 220, "max_per_booking": 3}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
