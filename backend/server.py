@@ -1004,7 +1004,7 @@ async def seed_data_internal():
             "category": "experiences",
             "location": "Skadar Lake",
             "date": "2025-08-01",
-            "image_url": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800",
+            "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/kwh2dut1_IMG_2463.jpeg",
             "capacity": 15,
             "available_spots": 15,
             "duration_hours": 4,
