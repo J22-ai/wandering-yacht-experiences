@@ -1030,7 +1030,7 @@ async def seed_data_internal():
             "amenities": ["Private Villa", "Lake Access", "Fishing Equipment"],
             "included": ["Villa accommodation", "All meals", "Boat tours", "Fishing", "Wine tasting"],
             "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Per Person", "description": "Overnight villa stay", "price": 240, "max_per_booking": 4},
+                {"id": str(uuid.uuid4()), "name": "Per Person", "description": "Overnight villa stay", "price": 475, "max_per_booking": 4},
                 {"id": str(uuid.uuid4()), "name": "Private Villa (up to 6)", "description": "Exclusive villa rental", "price": 980, "max_per_booking": 1}
             ],
             "is_active": True,
