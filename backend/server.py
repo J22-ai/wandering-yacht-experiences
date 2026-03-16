@@ -966,7 +966,7 @@ async def seed_data_internal():
             "category": "experiences",
             "location": "Podgorica Art Gallery",
             "date": "2025-08-01",
-            "image_url": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800",
+            "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/qcjuamnp_PHOTO-2026-03-16-15-05-01.jpg",
             "capacity": 20,
             "available_spots": 20,
             "duration_hours": 2,
