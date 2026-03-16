@@ -973,7 +973,7 @@ async def seed_data_internal():
             "amenities": ["Art Exhibition", "Sommelier Service"],
             "included": ["6 premium wines", "Art curator guide", "Cheese pairing", "Art catalog"],
             "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Tasting Experience", "description": "Wine & art session", "price": 75, "max_per_booking": 6}
+                {"id": str(uuid.uuid4()), "name": "Tasting Experience", "description": "Wine & art session", "price": 65, "max_per_booking": 6}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
