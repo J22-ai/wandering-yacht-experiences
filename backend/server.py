@@ -1011,7 +1011,7 @@ async def seed_data_internal():
             "amenities": ["Boat Cruise", "Binoculars"],
             "included": ["Boat tour", "Guide", "Traditional lunch", "Wine tasting"],
             "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Day Explorer", "description": "Half day lake experience", "price": 90, "max_per_booking": 6}
+                {"id": str(uuid.uuid4()), "name": "Day Explorer", "description": "Half day lake experience", "price": 250, "max_per_booking": 6}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
