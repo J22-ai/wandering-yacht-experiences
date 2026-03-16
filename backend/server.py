@@ -699,8 +699,8 @@ async def seed_data_internal():
             "amenities": ["Life Jackets", "Safety Briefing", "Guide"],
             "included": ["Jet ski rental", "Fuel", "Professional guide", "Safety equipment"],
             "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Single Rider", "description": "Solo jet ski experience", "price": 180, "max_per_booking": 2},
-                {"id": str(uuid.uuid4()), "name": "Double Rider", "description": "Tandem jet ski experience", "price": 250, "max_per_booking": 2}
+                {"id": str(uuid.uuid4()), "name": "Single Rider", "description": "Solo jet ski experience", "price": 350, "max_per_booking": 2},
+                {"id": str(uuid.uuid4()), "name": "Double Rider", "description": "Tandem jet ski experience", "price": 350, "max_per_booking": 2}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
