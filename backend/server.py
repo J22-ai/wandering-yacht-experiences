@@ -992,7 +992,7 @@ async def seed_data_internal():
             "amenities": ["Transport", "Multiple Wineries"],
             "included": ["Transport", "3 winery visits", "10+ wine tastings", "Local snacks"],
             "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Wine Tour", "description": "Half day winery tour", "price": 110, "max_per_booking": 6}
+                {"id": str(uuid.uuid4()), "name": "Wine Tour", "description": "Half day winery tour", "price": 180, "max_per_booking": 6}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
