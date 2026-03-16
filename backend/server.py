@@ -1053,7 +1053,7 @@ async def seed_data_internal():
             "included": ["Fuel", "Safety equipment", "Brief training"],
             "ticket_types": [
                 {"id": str(uuid.uuid4()), "name": "Half Day (4hr)", "description": "4 hours rental", "price": 400, "max_per_booking": 1},
-                {"id": str(uuid.uuid4()), "name": "Full Day (8hr)", "description": "8 hours rental", "price": 700, "max_per_booking": 1}
+                {"id": str(uuid.uuid4()), "name": "Full Day (8hr)", "description": "8 hours rental", "price": 1980, "max_per_booking": 1}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
