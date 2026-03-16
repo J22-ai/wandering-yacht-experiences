@@ -1045,7 +1045,7 @@ async def seed_data_internal():
             "category": "boat_rental",
             "location": "Montenegro Marina",
             "date": "2025-08-01",
-            "image_url": "https://images.unsplash.com/photo-1622789095468-2afd0589b011?w=800",
+            "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/kl7bkeuo_PHOTO-2026-03-16-15-11-12.jpg",
             "capacity": 8,
             "available_spots": 8,
             "duration_hours": 8,
