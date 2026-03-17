@@ -1063,20 +1063,20 @@ async def seed_data_internal():
         },
         {
             "id": str(uuid.uuid4()),
-            "title": "80ft Mega Yacht Experience",
-            "description": "Our flagship 80ft mega yacht offers unparalleled luxury with multiple decks and jacuzzi.",
+            "title": "Classic Heritage Sail \"The Sea that Taught Kings\"",
+            "description": "Experience the timeless elegance of classic sailing aboard our heritage vessel.",
             "category": "yacht_charter",
             "location": "Porto Montenegro",
             "date": "2025-08-01",
-            "image_url": "https://images.unsplash.com/photo-1523496922380-91d5afba98a3?w=800",
+            "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/192b6z9z_PHOTO-2026-03-17-11-07-56.jpg",
             "capacity": 20,
             "available_spots": 20,
-            "duration_hours": 8,
-            "amenities": ["Jacuzzi", "Multiple Decks", "Jet Skis", "Professional Chef"],
-            "included": ["Crew of 4", "Fuel", "Gourmet lunch", "Premium bar"],
+            "duration_hours": 4,
+            "amenities": ["Classic Sails", "Wooden Deck", "Professional Crew", "Authentic Experience"],
+            "included": ["Captain", "Crew", "Refreshments", "Safety equipment"],
             "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Half Day Charter", "description": "4 hours of luxury", "price": 5000, "max_per_booking": 1},
-                {"id": str(uuid.uuid4()), "name": "Full Day Charter", "description": "8 hours ultimate experience", "price": 8500, "max_per_booking": 1}
+                {"id": str(uuid.uuid4()), "name": "4H Low Season", "description": "4 hour low season charter", "price": 1690, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "4H High Season", "description": "4 hour high season charter", "price": 2690, "max_per_booking": 1}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
