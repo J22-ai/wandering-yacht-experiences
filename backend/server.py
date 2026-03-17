@@ -1064,7 +1064,7 @@ async def seed_data_internal():
         {
             "id": str(uuid.uuid4()),
             "title": "Classic Heritage Sail\n\"The Sea that Taught Kings\"",
-            "description": "Experience the timeless elegance of classic sailing aboard our heritage vessel.",
+            "description": "Our vintage 82 Ft ship offers a curated cultural journey, with the life and legacy of Marko Martinovic, captain, diplomat and educator who taught the European Nobility the art of the sea.",
             "category": "yacht_charter",
             "location": "Porto Montenegro",
             "date": "2025-08-01",
