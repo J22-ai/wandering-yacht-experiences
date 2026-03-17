@@ -1,52 +1,105 @@
-diff --git a/test_result.md b/test_result.md
-index 73f5d3c..d5cf34b 100644
---- a/test_result.md
-+++ b/test_result.md
-@@ -116,6 +116,9 @@ backend:
-       - working: true
-         agent: "main"
-         comment: "JWT auth with bcrypt password hashing. Tested registration and login endpoints successfully."
-+      - working: true
-+        agent: "testing"
-+        comment: "Comprehensive testing completed. User registration creates new user with JWT token. Login validates credentials and returns access token. JWT authentication working properly for protected endpoints. Test user: marina.yacht@example.com"
- 
-   - task: "Categories API"
-     implemented: true
-@@ -151,7 +154,10 @@ backend:
-     status_history:
-       - working: true
-         agent: "main"
--        comment: "Create booking with multiple ticket types, get user bookings. Tested successfully."
-+        comment: "CRUD for experiences with filtering by category. Seeded 7 sample experiences."
-+      - working: true
-+        agent: "testing"
-+        comment: "Booking creation and retrieval tested successfully. Created booking with 2 tickets at $150 each, total calculated correctly as $300. User bookings endpoint returns proper list. Available spots decremented correctly."
- 
-   - task: "Stripe Payment Integration"
-     implemented: true
-@@ -164,6 +170,9 @@ backend:
-       - working: true
-         agent: "main"
-         comment: "Payment intent creation works with real Stripe test keys. Returns client_secret for frontend."
-+      - working: true
-+        agent: "testing"
-+        comment: "Stripe integration fully functional. Payment intent created successfully with correct amount ($300 = 30000 cents). Returns client_secret, payment_intent_id, amount, and publishable_key. Real Stripe API calls working with test keys."
- 
-   - task: "Payment Confirmation & QR Ticket Generation"
-     implemented: true
-@@ -176,6 +185,9 @@ backend:
-       - working: true
-         agent: "main"
-         comment: "Confirms payment and generates QR code as base64 PNG. Demo mode allows confirmation without actual Stripe payment."
-+      - working: true
-+        agent: "testing"
-+        comment: "Payment confirmation working perfectly. Updates booking status to 'confirmed', payment_status to 'paid', and generates QR code as base64 PNG. QR code format verified: data:image/png;base64,... Demo mode allows testing without actual payment processing."
- 
- frontend:
-   - task: "Welcome/Landing Screen"
-@@ -315,3 +327,5 @@ test_plan:
- agent_communication:
-   - agent: "main"
-     message: "MVP completed. All core features implemented: 4 service categories, experience listings, booking system, Stripe payment integration, QR code ticket generation. Backend APIs tested via curl. Frontend screenshot verification shows UI working correctly."
-+  - agent: "testing"
-+    message: "Comprehensive backend API testing completed. All 10 test scenarios passed with 100% success rate. Full booking flow verified: user registration/login, experience browsing, booking creation with correct total calculation, Stripe payment intent creation, and payment confirmation with QR code generation. JWT authentication working properly. All APIs responding correctly at https://wandering-yacht.preview.emergentagent.com/api"
+diff --git a/backend/server.py b/backend/server.py
+index a0389ec..4fbc62c 100644
+--- a/backend/server.py
++++ b/backend/server.py
+@@ -771,8 +771,8 @@ async def seed_data_internal():
+             "location": "Montenegro Coast",
+             "date": "2025-08-01",
+             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/yenjr0js_IMG_2443.jpeg",
+-            "capacity": 20,
+-            "available_spots": 20,
++            "capacity": 10,
++            "available_spots": 10,
+             "duration_hours": 0,
+             "amenities": ["Unlimited Access", "Priority Booking", "Free Lessons"],
+             "included": ["7 days unlimited SUP", "Storage", "3 guided tours", "Advanced lessons"],
+@@ -872,8 +872,8 @@ async def seed_data_internal():
+             "location": "Crmnica Wine Region",
+             "date": "2025-08-01",
+             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/z1kg6p28_PHOTO-2026-03-15-19-40-45.jpg",
+-            "capacity": 20,
+-            "available_spots": 20,
++            "capacity": 10,
++            "available_spots": 10,
+             "duration_hours": 4,
+             "amenities": ["Vintage Decor", "Live Music", "Photo Setup"],
+             "included": ["Gourmet Italian food", "Premium wines", "Vintage photo session"],
+@@ -948,8 +948,8 @@ async def seed_data_internal():
+             "location": "Podgorica Art Gallery",
+             "date": "2025-08-01",
+             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/qcjuamnp_PHOTO-2026-03-16-15-05-01.jpg",
+-            "capacity": 20,
+-            "available_spots": 20,
++            "capacity": 10,
++            "available_spots": 10,
+             "duration_hours": 2,
+             "amenities": ["Art Exhibition", "Sommelier Service"],
+             "included": ["6 premium wines", "Art curator guide", "Cheese pairing", "Art catalog"],
+@@ -1069,8 +1069,8 @@ async def seed_data_internal():
+             "location": "Porto Montenegro",
+             "date": "2025-08-01",
+             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/192b6z9z_PHOTO-2026-03-17-11-07-56.jpg",
+-            "capacity": 20,
+-            "available_spots": 20,
++            "capacity": 10,
++            "available_spots": 10,
+             "duration_hours": 4,
+             "amenities": ["Classic Sails", "Wooden Deck", "Professional Crew", "Authentic Experience"],
+             "included": ["Captain", "Crew", "Refreshments", "Safety equipment"],
+diff --git a/model.patch b/model.patch
+index 31c6825..e69de29 100644
+--- a/model.patch
++++ b/model.patch
+@@ -1,52 +0,0 @@
+-diff --git a/test_result.md b/test_result.md
+-index 73f5d3c..d5cf34b 100644
+---- a/test_result.md
+-+++ b/test_result.md
+-@@ -116,6 +116,9 @@ backend:
+-       - working: true
+-         agent: "main"
+-         comment: "JWT auth with bcrypt password hashing. Tested registration and login endpoints successfully."
+-+      - working: true
+-+        agent: "testing"
+-+        comment: "Comprehensive testing completed. User registration creates new user with JWT token. Login validates credentials and returns access token. JWT authentication working properly for protected endpoints. Test user: marina.yacht@example.com"
+- 
+-   - task: "Categories API"
+-     implemented: true
+-@@ -151,7 +154,10 @@ backend:
+-     status_history:
+-       - working: true
+-         agent: "main"
+--        comment: "Create booking with multiple ticket types, get user bookings. Tested successfully."
+-+        comment: "CRUD for experiences with filtering by category. Seeded 7 sample experiences."
+-+      - working: true
+-+        agent: "testing"
+-+        comment: "Booking creation and retrieval tested successfully. Created booking with 2 tickets at $150 each, total calculated correctly as $300. User bookings endpoint returns proper list. Available spots decremented correctly."
+- 
+-   - task: "Stripe Payment Integration"
+-     implemented: true
+-@@ -164,6 +170,9 @@ backend:
+-       - working: true
+-         agent: "main"
+-         comment: "Payment intent creation works with real Stripe test keys. Returns client_secret for frontend."
+-+      - working: true
+-+        agent: "testing"
+-+        comment: "Stripe integration fully functional. Payment intent created successfully with correct amount ($300 = 30000 cents). Returns client_secret, payment_intent_id, amount, and publishable_key. Real Stripe API calls working with test keys."
+- 
+-   - task: "Payment Confirmation & QR Ticket Generation"
+-     implemented: true
+-@@ -176,6 +185,9 @@ backend:
+-       - working: true
+-         agent: "main"
+-         comment: "Confirms payment and generates QR code as base64 PNG. Demo mode allows confirmation without actual Stripe payment."
+-+      - working: true
+-+        agent: "testing"
+-+        comment: "Payment confirmation working perfectly. Updates booking status to 'confirmed', payment_status to 'paid', and generates QR code as base64 PNG. QR code format verified: data:image/png;base64,... Demo mode allows testing without actual payment processing."
+- 
+- frontend:
+-   - task: "Welcome/Landing Screen"
+-@@ -315,3 +327,5 @@ test_plan:
+- agent_communication:
+-   - agent: "main"
+-     message: "MVP completed. All core features implemented: 4 service categories, experience listings, booking system, Stripe payment integration, QR code ticket generation. Backend APIs tested via curl. Frontend screenshot verification shows UI working correctly."
+-+  - agent: "testing"
+-+    message: "Comprehensive backend API testing completed. All 10 test scenarios passed with 100% success rate. Full booking flow verified: user registration/login, experience browsing, booking creation with correct total calculation, Stripe payment intent creation, and payment confirmation with QR code generation. JWT authentication working properly. All APIs responding correctly at https://wandering-yacht.preview.emergentagent.com/api"
