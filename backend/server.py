@@ -1048,7 +1048,7 @@ async def seed_data_internal():
             "category": "yacht_charter",
             "location": "Porto Montenegro",
             "date": "2025-08-01",
-            "image_url": "https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?w=800",
+            "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/zu34x02w_PHOTO-2026-03-17-10-58-52.jpg",
             "capacity": 12,
             "available_spots": 12,
             "duration_hours": 8,
