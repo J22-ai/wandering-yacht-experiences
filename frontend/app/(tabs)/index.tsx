@@ -189,7 +189,7 @@ export default function HomeScreen() {
                     {getCategoryLabel(experience.category).toUpperCase()}
                   </Text>
                 </View>
-                <Text style={styles.experienceTitle} numberOfLines={1}>{experience.title}</Text>
+                <Text style={styles.experienceTitle} numberOfLines={2}>{experience.title}</Text>
                 <View style={styles.experienceMeta}>
                   <Text style={styles.experienceLocation}>{experience.location}</Text>
                   {experience.duration_hours > 0 && (
