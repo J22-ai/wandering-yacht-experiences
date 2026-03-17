@@ -1043,20 +1043,20 @@ async def seed_data_internal():
         # ==================== YACHT CHARTER CATEGORY ====================
         {
             "id": str(uuid.uuid4()),
-            "title": "Catamaran Privelege 510 Yacht Charter",
-            "description": "Experience ultimate luxury aboard our Catamaran Privelege 510 with professional crew. Perfect for celebrations.",
+            "title": "Catamaran Privilege 510 Yacht Charter",
+            "description": "Experience our 2025 new 52Ft Catamaran. Dedicated Owners Cabin. 4 Double Cabins, 4 Heads. A/C - Heating. WiFi onboard. Available for Half day, Full Day, Weekly Charters.",
             "category": "yacht_charter",
             "location": "Porto Montenegro",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/zu34x02w_PHOTO-2026-03-17-10-58-52.jpg",
             "capacity": 12,
             "available_spots": 12,
-            "duration_hours": 8,
+            "duration_hours": 4,
             "amenities": ["Professional Crew", "Water Toys", "Sound System", "Air Conditioning"],
             "included": ["Captain", "Fuel", "Water toys", "Ice & water"],
             "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Low Season", "description": "Low season charter", "price": 1690, "max_per_booking": 1},
-                {"id": str(uuid.uuid4()), "name": "High Season", "description": "High season charter", "price": 2680, "max_per_booking": 1}
+                {"id": str(uuid.uuid4()), "name": "Low Season", "description": "4 hour low season charter", "price": 1690, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "High Season", "description": "4 hour high season charter", "price": 2600, "max_per_booking": 1}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
