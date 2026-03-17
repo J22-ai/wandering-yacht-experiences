@@ -1081,6 +1081,27 @@ async def seed_data_internal():
             "is_active": True,
             "created_at": datetime.utcnow()
         },
+        
+        # Private Dining
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Private Dining on a Yacht",
+            "description": "Experience an unforgettable gourmet dining experience aboard a luxury yacht with stunning sea views.",
+            "category": "experiences",
+            "location": "Montenegro Coast",
+            "date": "2025-08-01",
+            "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/zxx0hst1_PHOTO-2026-03-17-11-23-00.jpg",
+            "capacity": 12,
+            "available_spots": 12,
+            "duration_hours": 3,
+            "amenities": ["Gourmet Menu", "Fine Wines", "Private Chef", "Sunset Views"],
+            "included": ["Multi-course dinner", "Wine pairing", "Private chef service", "Yacht cruise"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Per Person", "description": "Private dining experience", "price": 350, "max_per_booking": 12}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
     ]
     
     await db.experiences.insert_many(experiences)
