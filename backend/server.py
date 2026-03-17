@@ -707,25 +707,6 @@ async def seed_data_internal():
         },
         {
             "id": str(uuid.uuid4()),
-            "title": "Jet Ski on the Bay",
-            "description": "High-speed jet ski experience in the beautiful bay. Perfect for thrill-seekers looking for quick aquatic adventure.",
-            "category": "experiences",
-            "location": "Kotor Bay",
-            "date": "2025-08-01",
-            "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/u3t3xj7a_IMG_2438.jpeg",
-            "capacity": 6,
-            "available_spots": 6,
-            "duration_hours": 1,
-            "amenities": ["Life Jackets", "GoPro Rental Available"],
-            "included": ["Jet ski rental", "Fuel", "Safety briefing"],
-            "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Quick Ride", "description": "1 hour jet ski", "price": 80, "max_per_booking": 3}
-            ],
-            "is_active": True,
-            "created_at": datetime.utcnow()
-        },
-        {
-            "id": str(uuid.uuid4()),
             "title": "Kayaking Adventure",
             "description": "Explore hidden coves and crystal-clear waters by kayak. A peaceful way to discover the stunning coastline.",
             "category": "experiences",
