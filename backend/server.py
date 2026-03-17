@@ -1075,8 +1075,8 @@ async def seed_data_internal():
             "amenities": ["Classic Sails", "Wooden Deck", "Professional Crew", "Authentic Experience"],
             "included": ["Captain", "Crew", "Refreshments", "Safety equipment"],
             "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "4H Low Season", "description": "4 hour low season charter", "price": 1690, "max_per_booking": 1},
-                {"id": str(uuid.uuid4()), "name": "4H High Season", "description": "4 hour high season charter", "price": 2690, "max_per_booking": 1}
+                {"id": str(uuid.uuid4()), "name": "Low Season", "description": "4 hour low season charter", "price": 1690, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "High Season", "description": "4 hour high season charter", "price": 2690, "max_per_booking": 1}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
