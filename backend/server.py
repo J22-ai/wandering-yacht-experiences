@@ -1081,28 +1081,6 @@ async def seed_data_internal():
             "is_active": True,
             "created_at": datetime.utcnow()
         },
-        
-        # ==================== MANAGEMENT CATEGORY ====================
-        {
-            "id": str(uuid.uuid4()),
-            "title": "Full Yacht Management Package",
-            "description": "Complete management of your yacht including maintenance, crew, and charter operations.",
-            "category": "management",
-            "location": "Montenegro",
-            "date": "2025-08-01",
-            "image_url": "https://images.unsplash.com/photo-1523496922380-91d5afba98a3?w=800",
-            "capacity": 10,
-            "available_spots": 10,
-            "duration_hours": 0,
-            "amenities": ["24/7 Support", "Maintenance", "Crew Management", "Charter Services"],
-            "included": ["Monthly reports", "Insurance handling", "Compliance management"],
-            "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Consultation", "description": "Initial consultation and assessment", "price": 500, "max_per_booking": 1},
-                {"id": str(uuid.uuid4()), "name": "Monthly Retainer", "description": "Full management services", "price": 3000, "max_per_booking": 1}
-            ],
-            "is_active": True,
-            "created_at": datetime.utcnow()
-        }
     ]
     
     await db.experiences.insert_many(experiences)
