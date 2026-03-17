@@ -1039,26 +1039,6 @@ async def seed_data_internal():
             "is_active": True,
             "created_at": datetime.utcnow()
         },
-        {
-            "id": str(uuid.uuid4()),
-            "title": "Luxury Pontoon Cruise",
-            "description": "Spacious pontoon perfect for family gatherings and leisurely cruises.",
-            "category": "boat_rental",
-            "location": "Kotor Bay Marina",
-            "date": "2025-08-01",
-            "image_url": "https://images.unsplash.com/photo-1700731713986-c35dedba158a?w=800",
-            "capacity": 12,
-            "available_spots": 12,
-            "duration_hours": 8,
-            "amenities": ["Sun Shade", "Bluetooth Audio", "Swim Ladder", "Cooler"],
-            "included": ["Fuel", "Captain optional", "Safety gear"],
-            "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Half Day (4hr)", "description": "4 hours rental", "price": 350, "max_per_booking": 1},
-                {"id": str(uuid.uuid4()), "name": "Full Day (8hr)", "description": "8 hours rental", "price": 600, "max_per_booking": 1}
-            ],
-            "is_active": True,
-            "created_at": datetime.utcnow()
-        },
         
         # ==================== YACHT CHARTER CATEGORY ====================
         {
