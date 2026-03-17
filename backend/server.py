@@ -1043,8 +1043,8 @@ async def seed_data_internal():
         # ==================== YACHT CHARTER CATEGORY ====================
         {
             "id": str(uuid.uuid4()),
-            "title": "50ft Luxury Yacht Charter",
-            "description": "Experience ultimate luxury aboard our 50ft yacht with professional crew. Perfect for celebrations.",
+            "title": "Catamaran Privelege 510 Yacht Charter",
+            "description": "Experience ultimate luxury aboard our Catamaran Privelege 510 with professional crew. Perfect for celebrations.",
             "category": "yacht_charter",
             "location": "Porto Montenegro",
             "date": "2025-08-01",
@@ -1055,8 +1055,8 @@ async def seed_data_internal():
             "amenities": ["Professional Crew", "Water Toys", "Sound System", "Air Conditioning"],
             "included": ["Captain", "Fuel", "Water toys", "Ice & water"],
             "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "4 Hour Charter", "description": "Half day luxury experience", "price": 2000, "max_per_booking": 1},
-                {"id": str(uuid.uuid4()), "name": "8 Hour Charter", "description": "Full day adventure", "price": 3500, "max_per_booking": 1}
+                {"id": str(uuid.uuid4()), "name": "Low Season", "description": "Low season charter", "price": 1690, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "High Season", "description": "High season charter", "price": 2680, "max_per_booking": 1}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
