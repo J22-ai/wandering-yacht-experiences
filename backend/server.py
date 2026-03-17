@@ -1063,7 +1063,7 @@ async def seed_data_internal():
         },
         {
             "id": str(uuid.uuid4()),
-            "title": "Classic Heritage Sail \"The Sea that Taught Kings\"",
+            "title": "Classic Heritage Sail\n\"The Sea that Taught Kings\"",
             "description": "Experience the timeless elegance of classic sailing aboard our heritage vessel.",
             "category": "yacht_charter",
             "location": "Porto Montenegro",
