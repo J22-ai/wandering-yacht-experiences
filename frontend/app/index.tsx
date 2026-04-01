@@ -51,7 +51,7 @@ export default function WelcomeScreen() {
       {/* Hero Content */}
       <View style={styles.heroContent}>
         <Text style={styles.heroTitle}>
-          Our{'\n'}Unforgettable{'\n'}Experiences
+          Our{'\n'}Immersive{'\n'}Experiences
         </Text>
         <Text style={styles.heroCountry}>MONTENEGRO</Text>
         <Text style={styles.heroSubtitle}>
