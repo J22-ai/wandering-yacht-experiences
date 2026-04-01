@@ -204,6 +204,8 @@ export default function ExperienceDetailScreen() {
             <TouchableOpacity
               style={styles.backButton}
               onPress={() => router.back()}
+              hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
+              activeOpacity={0.6}
             >
               <Ionicons name="arrow-back" size={24} color="#1a2a30" />
             </TouchableOpacity>
@@ -453,6 +455,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 20,
+    zIndex: 10,
   },
   backButton: {
     width: 44,
