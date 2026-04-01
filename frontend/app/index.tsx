@@ -32,18 +32,18 @@ export default function WelcomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* White Header */}
+      {/* White Header - exactly like Experience Pass */}
       <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
         <Text style={styles.headerTitle}>Wandering Yacht</Text>
         <TouchableOpacity style={styles.menuButton}>
-          <Ionicons name="menu" size={28} color="#4a7c7c" />
+          <Ionicons name="menu" size={26} color="#5d8a8a" />
         </TouchableOpacity>
       </View>
 
-      {/* Hero Section - Marina Background */}
+      {/* Hero Section - Marina/Water Background like Experience Pass */}
       <View style={styles.heroSection}>
         <ImageBackground
-          source={{ uri: 'https://images.unsplash.com/photo-1740482881422-899f17e54d61?w=1200' }}
+          source={{ uri: 'https://images.unsplash.com/photo-1514649923863-ceaf75b7ec00?w=1200' }}
           style={styles.heroBackground}
           resizeMode="cover"
         >
@@ -59,14 +59,14 @@ export default function WelcomeScreen() {
               onPress={() => router.replace('/(tabs)')}
             >
               <Text style={styles.exploreButtonText}>Explore Experiences</Text>
-              <Ionicons name="arrow-forward" size={18} color="#4a7c7c" />
+              <Ionicons name="arrow-forward" size={18} color="#5d8a8a" />
             </TouchableOpacity>
           </View>
         </ImageBackground>
       </View>
 
-      {/* Bottom Sign In Bar */}
-      <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 12 }]}>
+      {/* Bottom Sign In Bar - teal like Experience Pass */}
+      <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 16 }]}>
         <TouchableOpacity
           style={styles.signInLink}
           onPress={() => router.push('/auth/login')}
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
   loadingContainer: {
     flex: 1,
-    backgroundColor: '#f8f6f3',
+    backgroundColor: '#f5f5f0',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -98,19 +98,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingBottom: 12,
+    paddingHorizontal: 18,
+    paddingBottom: 14,
     backgroundColor: '#fff',
   },
   headerTitle: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 24,
-    color: '#4a7c7c',
+    fontSize: 22,
+    color: '#5d8a8a',
     fontStyle: 'italic',
     fontWeight: '400',
   },
   menuButton: {
-    padding: 8,
+    padding: 4,
   },
   heroSection: {
     flex: 1,
@@ -121,28 +121,28 @@ const styles = StyleSheet.create({
   },
   heroOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(74, 124, 124, 0.55)',
+    backgroundColor: 'rgba(93, 138, 138, 0.45)',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
   },
   heroTitle: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 42,
+    fontSize: 40,
     color: '#fff',
     textAlign: 'center',
     fontStyle: 'italic',
     fontWeight: '300',
-    lineHeight: 52,
+    lineHeight: 50,
   },
   heroSubtitle: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 16,
-    color: 'rgba(255, 255, 255, 0.9)',
+    fontSize: 15,
+    color: 'rgba(255, 255, 255, 0.95)',
     textAlign: 'center',
-    marginTop: 24,
-    lineHeight: 26,
-    paddingHorizontal: 10,
+    marginTop: 20,
+    lineHeight: 24,
+    paddingHorizontal: 8,
   },
   exploreButton: {
     flexDirection: 'row',
@@ -151,21 +151,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingVertical: 16,
     paddingHorizontal: 20,
-    borderRadius: 4,
-    marginTop: 32,
+    borderRadius: 2,
+    marginTop: 28,
     marginHorizontal: 16,
     width: '100%',
-    gap: 12,
+    gap: 10,
   },
   exploreButtonText: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 17,
-    color: '#4a7c7c',
+    fontSize: 16,
+    color: '#5d8a8a',
     fontWeight: '500',
   },
   bottomBar: {
-    backgroundColor: '#4a7c7c',
-    paddingTop: 14,
+    backgroundColor: '#5d8a8a',
+    paddingTop: 16,
     alignItems: 'center',
   },
   signInLink: {
@@ -173,12 +173,12 @@ const styles = StyleSheet.create({
   },
   signInText: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 15,
-    color: 'rgba(255, 255, 255, 0.8)',
+    fontSize: 14,
+    color: 'rgba(255, 255, 255, 0.85)',
   },
   signInBold: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 15,
+    fontSize: 14,
     color: '#fff',
     fontWeight: '600',
   },
