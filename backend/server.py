@@ -309,6 +309,14 @@ async def get_categories():
     # Return predefined categories
     categories = [
         ServiceCategory(
+            id="yacht_experiences",
+            name="YACHT EXPERIENCES",
+            slug="yacht_experiences",
+            description="Luxury experiences on board",
+            image_url="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=800",
+            icon="boat"
+        ),
+        ServiceCategory(
             id="experiences",
             name="MONTENEGRO Experiences",
             slug="experiences",
@@ -576,13 +584,13 @@ async def seed_data():
 async def seed_data_internal():
     
     experiences = [
-        # ==================== EXPERIENCES CATEGORY ====================
+        # ==================== YACHT EXPERIENCES CATEGORY ====================
         # Yoga & Wellness
         {
             "id": str(uuid.uuid4()),
             "title": "Sunrise Yoga on Deck",
             "description": "Start your day with a rejuvenating yoga session on our yacht deck as the sun rises over the Adriatic. Perfect for all skill levels.",
-            "category": "experiences",
+            "category": "yacht_experiences",
             "location": "Montenegro Coast",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/icfzdqff_IMG_2436.jpeg",
@@ -604,7 +612,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Sunset Yoga on Deck",
             "description": "Unwind with a peaceful yoga session as the sun sets over the sea. A magical experience combining wellness and natural beauty.",
-            "category": "experiences",
+            "category": "yacht_experiences",
             "location": "Montenegro Coast",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/m0idyysm_ae326692-33c3-4e04-a1d0-671f5393b919.jpeg",
@@ -626,7 +634,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Wellness Morning at Sea",
             "description": "A complete morning wellness experience including yoga, meditation, healthy breakfast, and swimming in crystal-clear waters.",
-            "category": "experiences",
+            "category": "yacht_experiences",
             "location": "Adriatic Sea",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/my6orjbp_08f50b63-3db6-4f07-9ab8-90f11ed0cb63.jpeg",
@@ -648,7 +656,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Wellness Afternoon at Sea",
             "description": "Relax and rejuvenate with an afternoon of wellness activities at sea, including gentle yoga, sound healing, and a healthy lunch.",
-            "category": "experiences",
+            "category": "yacht_experiences",
             "location": "Adriatic Sea",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_929cb53c-78ce-4c19-b0ec-09f72d93df42/artifacts/qsdqxslg_c28d2bde-e1a8-45d4-b6e6-e5313fd061ea.jpeg",
@@ -869,7 +877,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Secret Places to Visit",
             "description": "Discover hidden gems and secret spots that only locals know. A curated journey off the beaten path.",
-            "category": "experiences",
+            "category": "yacht_experiences",
             "location": "Montenegro Hidden Gems",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/xbfs85ot_PHOTO-2026-03-15-19-47-54.jpg",
@@ -1070,7 +1078,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Private Dining on a Yacht",
             "description": "Experience an unforgettable gourmet dining experience aboard a luxury yacht with stunning sea views.",
-            "category": "experiences",
+            "category": "yacht_experiences",
             "location": "Montenegro Coast",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/zxx0hst1_PHOTO-2026-03-17-11-23-00.jpg",
@@ -1099,6 +1107,23 @@ async def root():
 @api_router.get("/health")
 async def health():
     return {"status": "healthy"}
+
+@api_router.post("/admin/update-categories")
+async def update_experience_categories():
+    """Update category for specific experiences to yacht_experiences"""
+    yacht_titles = [
+        "Sunrise Yoga on Deck",
+        "Sunset Yoga on Deck",
+        "Wellness Morning at Sea",
+        "Wellness Afternoon at Sea",
+        "Secret Places to Visit",
+        "Private Dining on a Yacht",
+    ]
+    result = await db.experiences.update_many(
+        {"title": {"$in": yacht_titles}},
+        {"$set": {"category": "yacht_experiences"}}
+    )
+    return {"message": f"Updated {result.modified_count} experiences to yacht_experiences"}
 
 # Include the router in the main app
 app.include_router(api_router)
