@@ -51,8 +51,9 @@ export default function WelcomeScreen() {
       {/* Hero Content */}
       <View style={styles.heroContent}>
         <Text style={styles.heroTitle}>
-          OUR{'\n'}Unforgettable{'\n'}EXPERIENCES{'\n'}Montenegro
+          Our{'\n'}Unforgettable{'\n'}Experiences
         </Text>
+        <Text style={styles.heroCountry}>MONTENEGRO</Text>
         <Text style={styles.heroSubtitle}>
           Discover curated adventures—from Sunrise Yoga on luxury yachts to wild beauty Fiat Car Tours through Montenegro's most scenic routes.
         </Text>
@@ -122,6 +123,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '300',
     lineHeight: 54,
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 8,
+  },
+  heroCountry: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 20,
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '600',
+    letterSpacing: 6,
+    marginTop: 8,
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 8,
