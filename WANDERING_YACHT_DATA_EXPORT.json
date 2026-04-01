@@ -1,0 +1,834 @@
+{
+  "app_name": "WANDERING YACHT",
+  "category": "MONTENEGRO Experiences",
+  "font": "Traditional Arabic",
+  "currency": "EUR",
+  "total_experiences": 22,
+  "experiences": [
+    {
+      "id": "21d586c7-619e-4842-84cd-a3d3a6a8d3f0",
+      "title": "Sunrise Yoga on Deck",
+      "description": "Start your day with a rejuvenating yoga session on our yacht deck as the sun rises over the Adriatic. Perfect for all skill levels.",
+      "category": "experiences",
+      "location": "Montenegro Coast",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/icfzdqff_IMG_2436.jpeg",
+      "capacity": 8,
+      "available_spots": 8,
+      "duration_hours": 1,
+      "amenities": [
+        "Yoga Mats",
+        "Towels",
+        "Water"
+      ],
+      "included": [
+        "Professional instructor",
+        "Healthy snacks",
+        "Herbal tea"
+      ],
+      "ticket_types": [
+        {
+          "id": "f84ac2d8-b0bc-4561-ba58-92daef5a5970",
+          "name": "Single Session",
+          "description": "One sunrise yoga session",
+          "price": 35,
+          "max_per_booking": 4
+        }
+      ],
+      "time_slots": [
+        {
+          "id": "dd6116b9-b7c3-4ddd-a9ec-b41149a63a97",
+          "start_time": "06:00",
+          "end_time": "07:00",
+          "available_spots": 12
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "4494fc05-2474-480d-89ad-e90c262ecd49",
+      "title": "Sunset Yoga on Deck",
+      "description": "Unwind with a peaceful yoga session as the sun sets over the sea. A magical experience combining wellness and natural beauty.",
+      "category": "experiences",
+      "location": "Montenegro Coast",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/m0idyysm_ae326692-33c3-4e04-a1d0-671f5393b919.jpeg",
+      "capacity": 8,
+      "available_spots": 8,
+      "duration_hours": 1,
+      "amenities": [
+        "Yoga Mats",
+        "Towels",
+        "Ambient Music"
+      ],
+      "included": [
+        "Professional instructor",
+        "Refreshments",
+        "Meditation session"
+      ],
+      "ticket_types": [
+        {
+          "id": "01d85017-a1fe-4d42-80b9-15cc4cbdf31f",
+          "name": "Single Session",
+          "description": "One sunset yoga session",
+          "price": 35,
+          "max_per_booking": 4
+        }
+      ],
+      "time_slots": [
+        {
+          "id": "9768f824-7163-49cb-b945-08ac3d7c8a7b",
+          "start_time": "18:30",
+          "end_time": "19:30",
+          "available_spots": 12
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "34c39af6-35df-443a-91c3-aa8e2ee2b52e",
+      "title": "Wellness Morning at Sea",
+      "description": "A complete morning wellness experience including yoga, meditation, healthy breakfast, and swimming in crystal-clear waters.",
+      "category": "experiences",
+      "location": "Adriatic Sea",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/my6orjbp_08f50b63-3db6-4f07-9ab8-90f11ed0cb63.jpeg",
+      "capacity": 10,
+      "available_spots": 10,
+      "duration_hours": 4,
+      "amenities": [
+        "Spa Amenities",
+        "Swimming Access",
+        "Wellness Kit"
+      ],
+      "included": [
+        "Yoga session",
+        "Meditation",
+        "Organic breakfast",
+        "Wellness consultation"
+      ],
+      "ticket_types": [
+        {
+          "id": "2ee10e7f-40c0-4395-88f0-fb39a7ff6979",
+          "name": "Wellness Package",
+          "description": "Complete morning wellness",
+          "price": 120,
+          "max_per_booking": 4
+        }
+      ],
+      "time_slots": [
+        {
+          "id": "79d20a08-0ff7-4636-8afa-6088108c4c6f",
+          "start_time": "07:00",
+          "end_time": "11:00",
+          "available_spots": 10
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "74ae86c7-2f69-414a-a520-486992a73165",
+      "title": "Wellness Afternoon at Sea",
+      "description": "Relax and rejuvenate with an afternoon of wellness activities at sea, including gentle yoga, sound healing, and a healthy lunch.",
+      "category": "experiences",
+      "location": "Adriatic Sea",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_929cb53c-78ce-4c19-b0ec-09f72d93df42/artifacts/qsdqxslg_c28d2bde-e1a8-45d4-b6e6-e5313fd061ea.jpeg",
+      "capacity": 10,
+      "available_spots": 10,
+      "duration_hours": 4,
+      "amenities": [
+        "Spa Amenities",
+        "Swimming Access",
+        "Relaxation Area"
+      ],
+      "included": [
+        "Yoga session",
+        "Sound healing",
+        "Healthy lunch",
+        "Aromatherapy"
+      ],
+      "ticket_types": [
+        {
+          "id": "d0b4fb84-1ef4-4b79-b428-1b5ce52056e1",
+          "name": "Wellness Package",
+          "description": "Complete afternoon wellness",
+          "price": 130,
+          "max_per_booking": 4
+        }
+      ],
+      "time_slots": [
+        {
+          "id": "ab2fff41-682e-465e-ac2c-b5e01195e036",
+          "start_time": "13:00",
+          "end_time": "17:00",
+          "available_spots": 10
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "0b8f4f69-691a-4ed0-9f62-51be37262a64",
+      "title": "Jet Ski on the River",
+      "description": "Thrilling jet ski adventure along the scenic river routes. Experience the adrenaline rush with stunning mountain views.",
+      "category": "experiences",
+      "location": "Bojana River",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/bida74n1_IMG_2437.jpeg",
+      "capacity": 8,
+      "available_spots": 8,
+      "duration_hours": 3,
+      "amenities": [
+        "Life Jackets",
+        "Safety Briefing",
+        "Guide"
+      ],
+      "included": [
+        "Jet ski rental",
+        "Fuel",
+        "Professional guide",
+        "Safety equipment"
+      ],
+      "ticket_types": [
+        {
+          "id": "4a27d519-dcf1-4fdf-a46f-ddd81a6dcebc",
+          "name": "Single Rider",
+          "description": "Solo jet ski experience",
+          "price": 350,
+          "max_per_booking": 2
+        },
+        {
+          "id": "1f75458d-892b-44c2-8ca2-465b645884ec",
+          "name": "Double Rider",
+          "description": "Tandem jet ski experience",
+          "price": 350,
+          "max_per_booking": 2
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "4fbbc7f8-f515-4dfc-8953-d121b7dbc16b",
+      "title": "Kayaking Adventure",
+      "description": "Explore hidden coves and crystal-clear waters by kayak. A peaceful way to discover the stunning coastline.",
+      "category": "experiences",
+      "location": "Montenegro Coast",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/4kaj0mgg_IMG_2440.jpeg",
+      "capacity": 12,
+      "available_spots": 12,
+      "duration_hours": 2,
+      "amenities": [
+        "Waterproof Bags",
+        "Snorkeling Gear"
+      ],
+      "included": [
+        "Kayak rental",
+        "Paddle",
+        "Guide",
+        "Snacks"
+      ],
+      "ticket_types": [
+        {
+          "id": "5d54f6bd-a921-498b-8537-98a5e6912ed4",
+          "name": "Single Kayak",
+          "description": "Solo kayaking",
+          "price": 45,
+          "max_per_booking": 4
+        },
+        {
+          "id": "9e14942c-0ace-4f18-8815-fb6032fff380",
+          "name": "Double Kayak",
+          "description": "Tandem kayaking",
+          "price": 70,
+          "max_per_booking": 4
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "3278f0c3-6a00-4894-8a47-308c17a10582",
+      "title": "SUP - Stand Up Paddleboarding",
+      "description": "Glide across calm waters on a paddleboard. Perfect for fitness enthusiasts and those seeking a unique water experience.",
+      "category": "experiences",
+      "location": "Montenegro Coast",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/e8yq3bve_IMG_2441.jpeg",
+      "capacity": 10,
+      "available_spots": 10,
+      "duration_hours": 4,
+      "amenities": [
+        "Waterproof Phone Case",
+        "Storage"
+      ],
+      "included": [
+        "SUP board",
+        "Paddle",
+        "Lesson for beginners"
+      ],
+      "ticket_types": [
+        {
+          "id": "9438ab31-d85f-4b62-970f-b07912f91f11",
+          "name": "4 Hour Rental",
+          "description": "Half day SUP",
+          "price": 55,
+          "max_per_booking": 4
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "95d0ab68-27e0-4dbc-83e0-1070ee0164a9",
+      "title": "SUP Full Day",
+      "description": "Full day paddleboarding adventure with guided tours to the best spots along the coast.",
+      "category": "experiences",
+      "location": "Montenegro Coast",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/gfzn9wnx_IMG_2442.jpeg",
+      "capacity": 8,
+      "available_spots": 8,
+      "duration_hours": 8,
+      "amenities": [
+        "Lunch Included",
+        "Guide",
+        "Photos"
+      ],
+      "included": [
+        "SUP board",
+        "Paddle",
+        "Lunch",
+        "Professional guide",
+        "Photos"
+      ],
+      "ticket_types": [
+        {
+          "id": "48096391-f649-471a-bf47-e65d1cfaf68c",
+          "name": "Full Day",
+          "description": "Complete SUP day experience",
+          "price": 95,
+          "max_per_booking": 4
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "d1bdbbd0-1a80-414a-aed7-3d318bf58507",
+      "title": "SUP Full Week",
+      "description": "Week-long SUP pass with unlimited access to boards and exclusive guided tours.",
+      "category": "experiences",
+      "location": "Montenegro Coast",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/yenjr0js_IMG_2443.jpeg",
+      "capacity": 20,
+      "available_spots": 20,
+      "duration_hours": 0,
+      "amenities": [
+        "Unlimited Access",
+        "Priority Booking",
+        "Free Lessons"
+      ],
+      "included": [
+        "7 days unlimited SUP",
+        "Storage",
+        "3 guided tours",
+        "Advanced lessons"
+      ],
+      "ticket_types": [
+        {
+          "id": "58231750-e9b5-4569-997d-00015c6aae8a",
+          "name": "Weekly Pass",
+          "description": "7 days unlimited SUP",
+          "price": 350,
+          "max_per_booking": 4
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "8bdd220e-4e68-4d62-b509-062679449d24",
+      "title": "Kite Surfing Overnight",
+      "description": "Learn or perfect your kite surfing skills with overnight camping by the beach. An unforgettable adventure experience.",
+      "category": "experiences",
+      "location": "Ulcinj Velika Plaza",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/hwzkxeki_IMG_2444.jpeg",
+      "capacity": 8,
+      "available_spots": 8,
+      "duration_hours": 30,
+      "amenities": [
+        "Camping Gear",
+        "BBQ",
+        "Beach Access"
+      ],
+      "included": [
+        "Kite equipment",
+        "Lessons",
+        "Tent",
+        "Meals",
+        "Instructor"
+      ],
+      "ticket_types": [
+        {
+          "id": "17cc6400-9c6c-4a14-9e6a-03db295de6b2",
+          "name": "Beginner Package",
+          "description": "Full instruction + overnight",
+          "price": 450,
+          "max_per_booking": 2
+        },
+        {
+          "id": "23e63257-2c6b-49c9-92c5-6ace4a09234a",
+          "name": "Advanced Package",
+          "description": "Equipment + overnight",
+          "price": 350,
+          "max_per_booking": 2
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "27a153ce-cf29-4a43-a90a-6895a1418a4b",
+      "title": "Nature Hike",
+      "description": "Discover Montenegro's breathtaking landscapes on a guided nature hike through mountains and forests.",
+      "category": "experiences",
+      "location": "Lov\u0107en National Park",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/djmjwkiz_IMG_2446.jpeg",
+      "capacity": 15,
+      "available_spots": 15,
+      "duration_hours": 6,
+      "amenities": [
+        "Hiking Poles Available",
+        "First Aid Kit"
+      ],
+      "included": [
+        "Professional guide",
+        "Picnic lunch",
+        "Water",
+        "Transport"
+      ],
+      "ticket_types": [
+        {
+          "id": "db9a5aa1-c499-4532-8b7c-3d98b2c19175",
+          "name": "Adult",
+          "description": "Full hike experience",
+          "price": 85,
+          "max_per_booking": 6
+        },
+        {
+          "id": "f0dd6c56-a43f-4e2c-93ff-98c732215f7f",
+          "name": "Child (8-14)",
+          "description": "Youth rate",
+          "price": 55,
+          "max_per_booking": 4
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "5b645cc1-2417-4ab2-8429-1f5fc704825b",
+      "title": "Glamping Experience",
+      "description": "Luxury camping in nature with all modern amenities. Wake up to stunning views and enjoy the outdoors in style.",
+      "category": "experiences",
+      "location": "Durmitor Mountains",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/vt4m38xp_Glamping%20Tent%20Night.jpg",
+      "capacity": 8,
+      "available_spots": 8,
+      "duration_hours": 30,
+      "amenities": [
+        "Luxury Tent",
+        "Private Bathroom",
+        "Stargazing Deck"
+      ],
+      "included": [
+        "Luxury accommodation",
+        "All meals",
+        "Activities",
+        "Bonfire evening"
+      ],
+      "ticket_types": [
+        {
+          "id": "01777e28-2b10-4a32-989e-c136172fa6c1",
+          "name": "Single Tent",
+          "description": "Solo glamping",
+          "price": 280,
+          "max_per_booking": 1
+        },
+        {
+          "id": "8b511336-0f7b-45c3-a27f-340139b3c5d6",
+          "name": "Couple Tent",
+          "description": "Romantic glamping for 2",
+          "price": 420,
+          "max_per_booking": 1
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "aee027be-0e6b-4257-8e1c-2876aac046f6",
+      "title": "Mountain Retreat",
+      "description": "Escape to the mountains for a complete retreat experience with yoga, meditation, and nature activities.",
+      "category": "experiences",
+      "location": "Bjelasica Mountains",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/15v0svwn_PHOTO-2026-03-15-19-30-05.jpg",
+      "capacity": 12,
+      "available_spots": 12,
+      "duration_hours": 30,
+      "amenities": [
+        "Mountain Lodge",
+        "Spa Access",
+        "Guided Trails"
+      ],
+      "included": [
+        "Accommodation",
+        "All meals",
+        "Yoga sessions",
+        "Guided hikes",
+        "Spa treatment"
+      ],
+      "ticket_types": [
+        {
+          "id": "2d35c3c2-aca3-487c-8667-30e3b010044a",
+          "name": "Standard Room",
+          "description": "Shared accommodation",
+          "price": 350,
+          "max_per_booking": 2
+        },
+        {
+          "id": "3d2b7375-a59b-4aa8-8ea0-09cbf32fdeb2",
+          "name": "Private Room",
+          "description": "Private mountain room",
+          "price": 520,
+          "max_per_booking": 2
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "94b6e66b-97c6-4cac-911c-050680424ad1",
+      "title": "Vintage Italian Picnic",
+      "description": "A charming Italian-style picnic in a scenic vineyard setting with gourmet food and fine wines.",
+      "category": "experiences",
+      "location": "Crmnica Wine Region",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/z1kg6p28_PHOTO-2026-03-15-19-40-45.jpg",
+      "capacity": 20,
+      "available_spots": 20,
+      "duration_hours": 4,
+      "amenities": [
+        "Vintage Decor",
+        "Live Music",
+        "Photo Setup"
+      ],
+      "included": [
+        "Gourmet Italian food",
+        "Premium wines",
+        "Vintage photo session"
+      ],
+      "ticket_types": [
+        {
+          "id": "6771e010-ce79-470e-a454-e86751fe26e1",
+          "name": "Per Person",
+          "description": "Full picnic experience",
+          "price": 95,
+          "max_per_booking": 8
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "3f30bb3f-4362-4820-97ad-981e81f979e0",
+      "title": "Secret Places to Visit",
+      "description": "Discover hidden gems and secret spots that only locals know. A curated journey off the beaten path.",
+      "category": "experiences",
+      "location": "Montenegro Hidden Gems",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/xbfs85ot_PHOTO-2026-03-15-19-47-54.jpg",
+      "capacity": 8,
+      "available_spots": 8,
+      "duration_hours": 8,
+      "amenities": [
+        "Private Transport",
+        "Local Guide"
+      ],
+      "included": [
+        "Private guide",
+        "Transport",
+        "Lunch at secret location",
+        "Surprise experiences"
+      ],
+      "ticket_types": [
+        {
+          "id": "09ac1b1f-d227-4e86-a5e7-600909918298",
+          "name": "Explorer Pass",
+          "description": "Full day secret tour",
+          "price": 185,
+          "max_per_booking": 4
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "a15ebdee-18fa-42b4-a254-995b00a00715",
+      "title": "Fiat Riva Team Tour Drive",
+      "description": "Drive vintage Fiat 500s along the stunning Riva coastline. A unique way to explore the Adriatic.",
+      "category": "experiences",
+      "location": "Coastal Montenegro",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/nzoudtt7_73S-hlFB.jpg",
+      "capacity": 10,
+      "available_spots": 10,
+      "duration_hours": 4,
+      "amenities": [
+        "Vintage Fiat 500",
+        "Picnic Hamper",
+        "Maps"
+      ],
+      "included": [
+        "Fiat 500 rental",
+        "Fuel",
+        "Gourmet picnic",
+        "Guide car"
+      ],
+      "ticket_types": [
+        {
+          "id": "884f3f18-05ec-462d-a903-a40bd64e4cf0",
+          "name": "Per Car (2 people)",
+          "description": "Vintage Fiat experience",
+          "price": 380,
+          "max_per_booking": 3
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "2ccbeab9-c293-4544-888c-5e210b014396",
+      "title": "Fiat Riva Montenegro Drive",
+      "description": "Full day vintage Fiat adventure exploring Montenegro's most scenic coastal and mountain roads.",
+      "category": "experiences",
+      "location": "Montenegro Grand Tour",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/nzoudtt7_73S-hlFB.jpg",
+      "capacity": 8,
+      "available_spots": 8,
+      "duration_hours": 10,
+      "amenities": [
+        "Vintage Fiat 500",
+        "Lunch Stop",
+        "Photo Opportunities"
+      ],
+      "included": [
+        "Fiat 500 rental",
+        "Fuel",
+        "Breakfast",
+        "Lunch",
+        "Guide car",
+        "Roadside assistance"
+      ],
+      "ticket_types": [
+        {
+          "id": "ca34c186-93b1-4433-acb7-d62d7e6ae25a",
+          "name": "Full Day Per Car",
+          "description": "Complete Montenegro tour",
+          "price": 220,
+          "max_per_booking": 3
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "a2d1bead-95c6-48c9-b83b-a25ad3f20ee8",
+      "title": "Wine Tasting with Art",
+      "description": "Combine wine tasting with contemporary art in a stunning gallery setting. A feast for all senses.",
+      "category": "experiences",
+      "location": "Podgorica Art Gallery",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/qcjuamnp_PHOTO-2026-03-16-15-05-01.jpg",
+      "capacity": 20,
+      "available_spots": 20,
+      "duration_hours": 2,
+      "amenities": [
+        "Art Exhibition",
+        "Sommelier Service"
+      ],
+      "included": [
+        "6 premium wines",
+        "Art curator guide",
+        "Cheese pairing",
+        "Art catalog"
+      ],
+      "ticket_types": [
+        {
+          "id": "57ab4a1d-b854-4d76-8752-3a7ef2d7f350",
+          "name": "Tasting Experience",
+          "description": "Wine & art session",
+          "price": 65,
+          "max_per_booking": 6
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "bd688e1d-6f74-44dc-b024-8d1c23abd835",
+      "title": "Winery Tour Drive",
+      "description": "Drive through Montenegro's wine country visiting traditional wineries and tasting local varieties.",
+      "category": "experiences",
+      "location": "Montenegro Wine Region",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/fbrpc92a_PHOTO-2026-03-16-14-47-29.jpg",
+      "capacity": 12,
+      "available_spots": 12,
+      "duration_hours": 4,
+      "amenities": [
+        "Transport",
+        "Multiple Wineries"
+      ],
+      "included": [
+        "Transport",
+        "3 winery visits",
+        "10+ wine tastings",
+        "Local snacks"
+      ],
+      "ticket_types": [
+        {
+          "id": "1f182eba-9098-451d-8c14-2300fd741166",
+          "name": "Wine Tour",
+          "description": "Half day winery tour",
+          "price": 180,
+          "max_per_booking": 6
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "8da9e11a-6020-401a-9185-d806e023a1f0",
+      "title": "Skadar Lake Day Visit",
+      "description": "Explore the largest lake in Southern Europe with boat tours, bird watching, and traditional lunch.",
+      "category": "experiences",
+      "location": "Skadar Lake",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/kwh2dut1_IMG_2463.jpeg",
+      "capacity": 15,
+      "available_spots": 15,
+      "duration_hours": 4,
+      "amenities": [
+        "Boat Cruise",
+        "Binoculars"
+      ],
+      "included": [
+        "Boat tour",
+        "Guide",
+        "Traditional lunch",
+        "Wine tasting"
+      ],
+      "ticket_types": [
+        {
+          "id": "a1c69405-3772-4cff-850b-b61f053ea00f",
+          "name": "Day Explorer",
+          "description": "Half day lake experience",
+          "price": 250,
+          "max_per_booking": 6
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "78f99ea4-6d33-44e5-b42d-50c464d173ac",
+      "title": "Skadar Lake Overnight Villa",
+      "description": "Stay in a traditional lakeside villa with full board. Experience authentic Montenegrin hospitality.",
+      "category": "experiences",
+      "location": "Skadar Lake",
+      "date": "2025-08-01",
+      "image_url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800",
+      "capacity": 10,
+      "available_spots": 10,
+      "duration_hours": 30,
+      "amenities": [
+        "Private Villa",
+        "Lake Access",
+        "Fishing Equipment"
+      ],
+      "included": [
+        "Villa accommodation",
+        "All meals",
+        "Boat tours",
+        "Fishing",
+        "Wine tasting"
+      ],
+      "ticket_types": [
+        {
+          "id": "66ffd994-44ee-4dbe-9bcd-10b9a57db60f",
+          "name": "Per Person",
+          "description": "Overnight villa stay",
+          "price": 475,
+          "max_per_booking": 4
+        },
+        {
+          "id": "ecc75049-35fa-496b-9b61-1ac843b2cb7a",
+          "name": "Private Villa (up to 6)",
+          "description": "Exclusive villa rental",
+          "price": 980,
+          "max_per_booking": 1
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-15 08:36:49.050000"
+    },
+    {
+      "id": "9c9d7092-7fa1-429a-ab6d-ee3cac241ea5",
+      "title": "Private Dining on a Yacht",
+      "description": "Experience an unforgettable gourmet dining experience aboard a luxury yacht with stunning sea views.",
+      "category": "experiences",
+      "location": "Montenegro Coast",
+      "date": "2025-08-01",
+      "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/zxx0hst1_PHOTO-2026-03-17-11-23-00.jpg",
+      "capacity": 12,
+      "available_spots": 12,
+      "duration_hours": 3,
+      "amenities": [
+        "Gourmet Menu",
+        "Fine Wines",
+        "Private Chef",
+        "Sunset Views"
+      ],
+      "included": [
+        "Multi-course dinner",
+        "Wine pairing",
+        "Private chef service",
+        "Yacht cruise"
+      ],
+      "ticket_types": [
+        {
+          "id": "a09a71da-05de-41d0-a962-2a81f065b0e7",
+          "name": "Per Person",
+          "description": "Private dining experience",
+          "price": 350,
+          "max_per_booking": 12
+        }
+      ],
+      "is_active": true,
+      "created_at": "2026-03-17 10:24:49.844000"
+    }
+  ]
+}
