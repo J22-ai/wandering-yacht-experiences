@@ -111,9 +111,10 @@ const styles = StyleSheet.create({
   },
   heroContent: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     paddingHorizontal: 24,
+    paddingTop: 80,
     backgroundColor: 'rgba(30, 60, 70, 0.35)',
   },
   heroTitle: {
