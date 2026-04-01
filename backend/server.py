@@ -56,6 +56,7 @@ class UserCreate(BaseModel):
     password: str
     full_name: str
     phone: Optional[str] = None
+    whatsapp_number: Optional[str] = None
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -66,6 +67,7 @@ class UserResponse(BaseModel):
     email: str
     full_name: str
     phone: Optional[str] = None
+    whatsapp_number: Optional[str] = None
     created_at: datetime
 
 class TokenResponse(BaseModel):
@@ -249,6 +251,7 @@ async def register(user_data: UserCreate):
         "password_hash": get_password_hash(user_data.password),
         "full_name": user_data.full_name,
         "phone": user_data.phone,
+        "whatsapp_number": user_data.whatsapp_number,
         "created_at": datetime.utcnow()
     }
     await db.users.insert_one(user)
@@ -263,6 +266,7 @@ async def register(user_data: UserCreate):
             email=user_data.email,
             full_name=user_data.full_name,
             phone=user_data.phone,
+            whatsapp_number=user_data.whatsapp_number,
             created_at=user["created_at"]
         )
     )
@@ -282,6 +286,7 @@ async def login(credentials: UserLogin):
             email=user["email"],
             full_name=user["full_name"],
             phone=user.get("phone"),
+            whatsapp_number=user.get("whatsapp_number"),
             created_at=user["created_at"]
         )
     )
@@ -293,6 +298,7 @@ async def get_me(current_user: dict = Depends(get_current_user)):
         email=current_user["email"],
         full_name=current_user["full_name"],
         phone=current_user.get("phone"),
+        whatsapp_number=current_user.get("whatsapp_number"),
         created_at=current_user["created_at"]
     )
 

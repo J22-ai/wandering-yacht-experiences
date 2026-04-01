@@ -95,7 +95,7 @@ export default function TicketScreen() {
   if (loading) {
     return (
       <View style={[styles.container, styles.loadingContainer]}>
-        <ActivityIndicator size="large" color="#2d5a5a" />
+        <ActivityIndicator size="large" color="#1a3a4a" />
       </View>
     );
   }
@@ -128,7 +128,7 @@ export default function TicketScreen() {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Your Ticket</Text>
         <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
-          <Ionicons name="share-outline" size={24} color="#2d5a5a" />
+          <Ionicons name="share-outline" size={24} color="#1a3a4a" />
         </TouchableOpacity>
       </View>
 
@@ -163,19 +163,19 @@ export default function TicketScreen() {
             <View style={styles.eventDetails}>
               <View style={styles.detailItem}>
                 <View style={styles.detailIcon}>
-                  <Ionicons name="calendar-outline" size={18} color="#2d5a5a" />
+                  <Ionicons name="calendar-outline" size={18} color="#1a3a4a" />
                 </View>
                 <Text style={styles.detailText}>{formatDate(booking.experience_date)}</Text>
               </View>
               <View style={styles.detailItem}>
                 <View style={styles.detailIcon}>
-                  <Ionicons name="location-outline" size={18} color="#2d5a5a" />
+                  <Ionicons name="location-outline" size={18} color="#1a3a4a" />
                 </View>
                 <Text style={styles.detailText}>{booking.experience_location}</Text>
               </View>
               <View style={styles.detailItem}>
                 <View style={styles.detailIcon}>
-                  <Ionicons name="people-outline" size={18} color="#2d5a5a" />
+                  <Ionicons name="people-outline" size={18} color="#1a3a4a" />
                 </View>
                 <Text style={styles.detailText}>{getTotalTickets()} Guest(s)</Text>
               </View>
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   backButtonLarge: {
-    backgroundColor: '#2d5a5a',
+    backgroundColor: '#1a3a4a',
     paddingHorizontal: 32,
     paddingVertical: 14,
     borderRadius: 25,
@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
   },
   brandText: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d5a5a',
+    color: '#1a3a4a',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 2,
@@ -521,7 +521,7 @@ const styles = StyleSheet.create({
   },
   totalValue: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d5a5a',
+    color: '#1a3a4a',
     fontSize: 20,
     fontWeight: '700',
   },
@@ -550,7 +550,7 @@ const styles = StyleSheet.create({
     width: 22,
     height: 22,
     borderRadius: 11,
-    backgroundColor: '#2d5a5a',
+    backgroundColor: '#1a3a4a',
     justifyContent: 'center',
     alignItems: 'center',
   },

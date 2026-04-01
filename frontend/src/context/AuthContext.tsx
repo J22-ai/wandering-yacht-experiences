@@ -7,6 +7,7 @@ interface User {
   email: string;
   full_name: string;
   phone?: string;
+  whatsapp_number?: string;
   created_at: string;
 }
 
@@ -15,7 +16,7 @@ interface AuthContextType {
   token: string | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, fullName: string, phone?: string) => Promise<void>;
+  register: (email: string, password: string, fullName: string, phone?: string, whatsappNumber?: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -56,8 +57,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(response.user);
   };
 
-  const register = async (email: string, password: string, fullName: string, phone?: string) => {
-    const response = await api.register(email, password, fullName, phone);
+  const register = async (email: string, password: string, fullName: string, phone?: string, whatsappNumber?: string) => {
+    const response = await api.register(email, password, fullName, phone, whatsappNumber);
     
     await AsyncStorage.setItem('auth_token', response.access_token);
     await AsyncStorage.setItem('auth_user', JSON.stringify(response.user));

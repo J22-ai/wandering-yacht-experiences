@@ -78,7 +78,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f6f3',
+    backgroundColor: '#faf9f7',
   },
   logoContainer: {
     flex: 1,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   brandName: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d5a5a',
+    color: '#1a3a4a',
     fontSize: 18,
     fontWeight: '400',
     letterSpacing: 3,
@@ -104,15 +104,15 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d3a3a',
+    color: '#1a2a30',
     fontSize: 16,
     marginBottom: 16,
   },
   signInButton: {
-    backgroundColor: '#2d5a5a',
+    backgroundColor: '#1a3a4a',
     paddingHorizontal: 48,
     paddingVertical: 14,
-    borderRadius: 25,
+    borderRadius: 8,
     width: '100%',
     marginBottom: 12,
   },
@@ -125,15 +125,15 @@ const styles = StyleSheet.create({
   },
   registerButton: {
     borderWidth: 1,
-    borderColor: '#2d5a5a',
+    borderColor: '#1a3a4a',
     paddingHorizontal: 48,
     paddingVertical: 14,
-    borderRadius: 25,
+    borderRadius: 8,
     width: '100%',
   },
   registerButtonText: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d5a5a',
+    color: '#1a3a4a',
     fontSize: 16,
     fontWeight: '600',
     textAlign: 'center',
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     borderColor: '#e74c3c',
     paddingHorizontal: 48,
     paddingVertical: 14,
-    borderRadius: 25,
+    borderRadius: 8,
     width: '100%',
   },
   signOutButtonText: {

@@ -126,7 +126,7 @@ export default function BookingsScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor="#2d5a5a"
+            tintColor="#1a3a4a"
           />
         }
       >
@@ -178,7 +178,7 @@ export default function BookingsScreen() {
                   </Text>
                 </View>
                 {booking.qr_code && (
-                  <Ionicons name="qr-code" size={20} color="#2d5a5a" />
+                  <Ionicons name="qr-code" size={20} color="#1a3a4a" />
                 )}
               </View>
 
@@ -216,7 +216,7 @@ export default function BookingsScreen() {
                 {booking.status === 'confirmed' && booking.qr_code && (
                   <View style={styles.viewTicketBadge}>
                     <Text style={styles.viewTicketText}>View Ticket</Text>
-                    <Ionicons name="arrow-forward" size={14} color="#2d5a5a" />
+                    <Ionicons name="arrow-forward" size={14} color="#1a3a4a" />
                   </View>
                 )}
               </View>
@@ -233,7 +233,7 @@ export default function BookingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f6f3',
+    backgroundColor: '#faf9f7',
   },
   header: {
     paddingHorizontal: 20,
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   signInButton: {
-    backgroundColor: '#2d5a5a',
+    backgroundColor: '#1a3a4a',
     paddingHorizontal: 32,
     paddingVertical: 14,
     borderRadius: 25,
@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   exploreButton: {
-    backgroundColor: '#2d5a5a',
+    backgroundColor: '#1a3a4a',
     paddingHorizontal: 32,
     paddingVertical: 14,
     borderRadius: 25,
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   ticketsSummary: {
-    backgroundColor: '#f8f6f3',
+    backgroundColor: '#faf9f7',
     borderRadius: 8,
     padding: 12,
     marginBottom: 12,
@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
   payNowBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#2d5a5a',
+    backgroundColor: '#1a3a4a',
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 20,
@@ -403,7 +403,7 @@ const styles = StyleSheet.create({
   },
   viewTicketText: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d5a5a',
+    color: '#1a3a4a',
     fontSize: 14,
     fontWeight: '600',
   },

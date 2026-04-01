@@ -10,13 +10,13 @@ export default function TabLayout() {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: '#fff',
-          borderTopColor: '#e8e5e0',
+          borderTopColor: '#f0ede8',
           borderTopWidth: 1,
           height: Platform.OS === 'ios' ? 85 : 65,
           paddingBottom: Platform.OS === 'ios' ? 25 : 10,
           paddingTop: 10,
         },
-        tabBarActiveTintColor: '#2d5a5a',
+        tabBarActiveTintColor: '#1a3a4a',
         tabBarInactiveTintColor: '#9ca3a3',
         tabBarLabelStyle: {
           fontFamily: 'TraditionalArabic',

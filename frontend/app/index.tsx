@@ -31,42 +31,42 @@ export default function WelcomeScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      {/* White Header - exactly like Experience Pass */}
+    <ImageBackground
+      source={{ uri: 'https://images.unsplash.com/photo-1763467941364-3d0d6ba474a1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjB5YWNodCUyMHlvZ2ElMjBkZWNrJTIwbWVkaXRlcnJhbmVhbnxlbnwwfHx8fDE3NzM0ODQ4MTF8MA&ixlib=rb-4.1.0&q=85' }}
+      style={styles.container}
+      resizeMode="cover"
+    >
+      {/* Header with logo and menu */}
       <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
-        <Text style={styles.headerTitle}>Wandering Yacht</Text>
+        <Image
+          source={require('../assets/images/wy-logo.png')}
+          style={styles.headerLogo}
+          resizeMode="contain"
+        />
         <TouchableOpacity style={styles.menuButton}>
-          <Ionicons name="menu" size={26} color="#5d8a8a" />
+          <Ionicons name="menu" size={26} color="#2d3a3a" />
         </TouchableOpacity>
       </View>
 
-      {/* Hero Section - Marina/Water Background like Experience Pass */}
-      <View style={styles.heroSection}>
-        <ImageBackground
-          source={{ uri: 'https://images.pexels.com/photos/1001682/pexels-photo-1001682.jpeg?auto=compress&cs=tinysrgb&w=1260' }}
-          style={styles.heroBackground}
-          resizeMode="cover"
+      {/* Hero Content */}
+      <View style={styles.heroContent}>
+        <Text style={styles.heroTitle}>
+          Unforgettable{'\n'}Montenegro{'\n'}Experiences
+        </Text>
+        <Text style={styles.heroSubtitle}>
+          Discover curated adventures—from sunrise yoga on luxury yachts to vintage car tours through Montenegro's most scenic routes.
+        </Text>
+        <TouchableOpacity
+          style={styles.exploreButton}
+          onPress={() => router.push('/auth/register')}
         >
-          <View style={styles.heroOverlay}>
-            <Text style={styles.heroTitle}>
-              Unforgettable{'\n'}Montenegro{'\n'}Experiences
-            </Text>
-            <Text style={styles.heroSubtitle}>
-              Discover curated adventures—from sunrise yoga on luxury yachts to vintage car tours through Montenegro's most scenic routes.
-            </Text>
-            <TouchableOpacity
-              style={styles.exploreButton}
-              onPress={() => router.replace('/(tabs)')}
-            >
-              <Text style={styles.exploreButtonText}>Explore Experiences</Text>
-              <Ionicons name="arrow-forward" size={18} color="#5d8a8a" />
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
+          <Text style={styles.exploreButtonText}>Explore Experiences</Text>
+          <Ionicons name="arrow-forward" size={20} color="#1a3a4a" />
+        </TouchableOpacity>
       </View>
 
-      {/* Bottom Sign In Bar - teal like Experience Pass */}
-      <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 16 }]}>
+      {/* Bottom Sign In */}
+      <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 20 }]}>
         <TouchableOpacity
           style={styles.signInLink}
           onPress={() => router.push('/auth/login')}
@@ -75,14 +75,13 @@ export default function WelcomeScreen() {
           <Text style={styles.signInBold}>Sign In</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   loadingContainer: {
     flex: 1,
@@ -100,49 +99,44 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 18,
     paddingBottom: 14,
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(255, 255, 255, 0.92)',
   },
-  headerTitle: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 22,
-    color: '#5d8a8a',
-    fontStyle: 'italic',
-    fontWeight: '400',
+  headerLogo: {
+    width: 36,
+    height: 36,
   },
   menuButton: {
     padding: 4,
   },
-  heroSection: {
+  heroContent: {
     flex: 1,
-  },
-  heroBackground: {
-    flex: 1,
-    width: '100%',
-  },
-  heroOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(93, 138, 138, 0.45)',
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 24,
+    backgroundColor: 'rgba(30, 60, 70, 0.35)',
   },
   heroTitle: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 40,
+    fontSize: 44,
     color: '#fff',
     textAlign: 'center',
-    fontStyle: 'italic',
     fontWeight: '300',
-    lineHeight: 50,
+    lineHeight: 54,
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 8,
   },
   heroSubtitle: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 15,
-    color: 'rgba(255, 255, 255, 0.95)',
+    fontSize: 16,
+    color: 'rgba(255, 255, 255, 0.92)',
     textAlign: 'center',
     marginTop: 20,
     lineHeight: 24,
-    paddingHorizontal: 8,
+    paddingHorizontal: 12,
+    textShadowColor: 'rgba(0, 0, 0, 0.2)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
   },
   exploreButton: {
     flexDirection: 'row',
@@ -150,36 +144,40 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#fff',
     paddingVertical: 16,
-    paddingHorizontal: 20,
-    borderRadius: 2,
-    marginTop: 28,
-    marginHorizontal: 16,
-    width: '100%',
+    paddingHorizontal: 28,
+    borderRadius: 8,
+    marginTop: 32,
+    width: width - 48,
     gap: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 6,
   },
   exploreButtonText: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 16,
-    color: '#5d8a8a',
-    fontWeight: '500',
+    fontSize: 17,
+    color: '#1a3a4a',
+    fontWeight: '600',
   },
   bottomBar: {
-    backgroundColor: '#5d8a8a',
     paddingTop: 16,
     alignItems: 'center',
+    backgroundColor: 'rgba(30, 60, 70, 0.6)',
   },
   signInLink: {
     flexDirection: 'row',
   },
   signInText: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 14,
+    fontSize: 15,
     color: 'rgba(255, 255, 255, 0.85)',
   },
   signInBold: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 14,
+    fontSize: 15,
     color: '#fff',
-    fontWeight: '600',
+    fontWeight: '700',
   },
 });

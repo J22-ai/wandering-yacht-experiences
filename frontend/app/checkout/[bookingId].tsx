@@ -120,7 +120,7 @@ export default function CheckoutScreen() {
   if (loading) {
     return (
       <View style={[styles.container, styles.loadingContainer]}>
-        <ActivityIndicator size="large" color="#2d5a5a" />
+        <ActivityIndicator size="large" color="#1a3a4a" />
         <Text style={styles.loadingText}>Loading checkout...</Text>
       </View>
     );
@@ -183,14 +183,14 @@ export default function CheckoutScreen() {
           <View style={styles.detailsContainer}>
             <View style={styles.detailRow}>
               <View style={styles.detailIcon}>
-                <Ionicons name="calendar-outline" size={18} color="#2d5a5a" />
+                <Ionicons name="calendar-outline" size={18} color="#1a3a4a" />
               </View>
               <Text style={styles.detailText}>{formatDate(booking.experience_date)}</Text>
             </View>
             
             <View style={styles.detailRow}>
               <View style={styles.detailIcon}>
-                <Ionicons name="location-outline" size={18} color="#2d5a5a" />
+                <Ionicons name="location-outline" size={18} color="#1a3a4a" />
               </View>
               <Text style={styles.detailText}>{booking.experience_location}</Text>
             </View>
@@ -228,7 +228,7 @@ export default function CheckoutScreen() {
 
         {/* Demo Notice */}
         <View style={styles.demoNotice}>
-          <Ionicons name="information-circle-outline" size={22} color="#2d5a5a" />
+          <Ionicons name="information-circle-outline" size={22} color="#1a3a4a" />
           <View style={styles.demoTextContainer}>
             <Text style={styles.demoTitle}>Demo Mode</Text>
             <Text style={styles.demoText}>
@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
   viewTicketButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#2d5a5a',
+    backgroundColor: '#1a3a4a',
     paddingHorizontal: 32,
     paddingVertical: 16,
     borderRadius: 28,
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
   },
   backToHomeText: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d5a5a',
+    color: '#1a3a4a',
     fontSize: 16,
     fontWeight: '600',
   },
@@ -465,7 +465,7 @@ const styles = StyleSheet.create({
   },
   totalAmount: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d5a5a',
+    color: '#1a3a4a',
     fontSize: 26,
     fontWeight: '700',
   },
@@ -494,7 +494,7 @@ const styles = StyleSheet.create({
   },
   demoTitle: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d5a5a',
+    color: '#1a3a4a',
     fontSize: 15,
     fontWeight: '600',
     marginBottom: 4,
@@ -540,7 +540,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    backgroundColor: '#2d5a5a',
+    backgroundColor: '#1a3a4a',
     paddingHorizontal: 28,
     paddingVertical: 16,
     borderRadius: 28,

@@ -8,6 +8,7 @@ import {
   Image,
   Dimensions,
   RefreshControl,
+  ImageBackground,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -44,19 +45,12 @@ interface Experience {
   }>;
 }
 
-const categoryIcons: { [key: string]: string } = {
-  experiences: 'sunny-outline',
-  boat_rental: 'boat-outline',
-  yacht_charter: 'wine-outline',
-  management: 'leaf-outline',
-};
-
-const categoryDescriptions: { [key: string]: string } = {
-  experiences: 'Yoga, wellness, and adventures',
-  boat_rental: 'Luxury sailing and water sports',
-  yacht_charter: 'Premium yacht experiences',
-  management: 'Professional yacht services',
-};
+const featureItems = [
+  { icon: 'boat-outline' as const, title: 'Yacht Experiences', desc: 'Luxury sailing and wellness on the water' },
+  { icon: 'sunny-outline' as const, title: 'Wellness Retreats', desc: 'Yoga, meditation, and rejuvenation' },
+  { icon: 'wine-outline' as const, title: 'Culinary Tours', desc: 'Wine tasting and gourmet adventures' },
+  { icon: 'trail-sign-outline' as const, title: 'Nature Escapes', desc: 'Explore breathtaking landscapes' },
+];
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -97,20 +91,10 @@ export default function HomeScreen() {
     return Math.min(...experience.ticket_types.map((t) => t.price));
   };
 
-  const getCategoryLabel = (category: string) => {
-    const labels: { [key: string]: string } = {
-      experiences: 'Wellness',
-      boat_rental: 'Adventure',
-      yacht_charter: 'Luxury',
-      management: 'Service',
-    };
-    return labels[category] || category;
-  };
-
   const formatDuration = (hours: number) => {
     if (hours === 0) return '';
     if (hours >= 24) return `${Math.round(hours / 24)} days`;
-    return `${hours} hours`;
+    return `${hours}h`;
   };
 
   return (
@@ -121,7 +105,7 @@ export default function HomeScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor="#2d5a5a"
+            tintColor="#1a3a4a"
           />
         }
       >
@@ -133,31 +117,26 @@ export default function HomeScreen() {
               style={styles.headerLogo}
               resizeMode="contain"
             />
-            <Text style={styles.headerTitle}>Wandering Yacht</Text>
           </View>
           <TouchableOpacity onPress={() => router.push('/(tabs)/profile')}>
-            <Ionicons name="menu" size={24} color="#2d5a5a" />
+            <Ionicons name="menu" size={24} color="#1a3a4a" />
           </TouchableOpacity>
         </View>
 
-        {/* Categories Grid */}
-        <View style={styles.categoriesSection}>
-          <View style={styles.categoriesGrid}>
-            {categories.map((category) => (
+        {/* Features Grid - matching Experience Pass */}
+        <View style={styles.featuresSection}>
+          <View style={styles.featuresGrid}>
+            {featureItems.map((item, index) => (
               <TouchableOpacity
-                key={category.id}
-                style={styles.categoryCard}
-                onPress={() => router.push(`/(tabs)/explore?category=${category.slug}`)}
+                key={index}
+                style={styles.featureCard}
+                onPress={() => router.push('/(tabs)/explore')}
               >
-                <Ionicons
-                  name={categoryIcons[category.slug] as any || 'boat-outline'}
-                  size={28}
-                  color="#2d5a5a"
-                />
-                <Text style={styles.categoryName}>{category.name}</Text>
-                <Text style={styles.categoryDescription}>
-                  {categoryDescriptions[category.slug] || category.description}
-                </Text>
+                <View style={styles.featureIconWrap}>
+                  <Ionicons name={item.icon} size={26} color="#1a3a4a" />
+                </View>
+                <Text style={styles.featureTitle}>{item.title}</Text>
+                <Text style={styles.featureDesc}>{item.desc}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -165,11 +144,17 @@ export default function HomeScreen() {
 
         {/* Featured Experiences */}
         <View style={styles.featuredSection}>
-          <Text style={styles.sectionLabel}>CURATED FOR YOU</Text>
+          <View style={styles.sectionLabelRow}>
+            <Text style={styles.sectionLabel}>CURATED FOR YOU</Text>
+          </View>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Featured Experiences</Text>
-            <TouchableOpacity onPress={() => router.push('/(tabs)/explore')}>
-              <Text style={styles.viewAll}>View All</Text>
+            <TouchableOpacity
+              onPress={() => router.push('/(tabs)/explore')}
+              style={styles.viewAllBtn}
+            >
+              <Text style={styles.viewAllText}>View All</Text>
+              <Ionicons name="arrow-forward" size={16} color="#1a3a4a" />
             </TouchableOpacity>
           </View>
 
@@ -178,24 +163,24 @@ export default function HomeScreen() {
               key={experience.id}
               style={styles.experienceCard}
               onPress={() => router.push(`/experience/${experience.id}`)}
+              activeOpacity={0.85}
             >
               <Image
                 source={{ uri: experience.image_url || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800' }}
                 style={styles.experienceImage}
               />
               <View style={styles.experienceContent}>
-                <View style={styles.categoryBadge}>
-                  <Text style={styles.categoryBadgeText}>
-                    {getCategoryLabel(experience.category).toUpperCase()}
-                  </Text>
-                </View>
                 <Text style={styles.experienceTitle} numberOfLines={2}>{experience.title}</Text>
                 <View style={styles.experienceMeta}>
-                  <Text style={styles.experienceLocation}>{experience.location}</Text>
+                  <View style={styles.metaItem}>
+                    <Ionicons name="location-outline" size={14} color="#7a8a8a" />
+                    <Text style={styles.metaText}>{experience.location}</Text>
+                  </View>
                   {experience.duration_hours > 0 && (
-                    <Text style={styles.experienceDuration}>
-                      {formatDuration(experience.duration_hours)}
-                    </Text>
+                    <View style={styles.metaItem}>
+                      <Ionicons name="time-outline" size={14} color="#7a8a8a" />
+                      <Text style={styles.metaText}>{formatDuration(experience.duration_hours)}</Text>
+                    </View>
                   )}
                 </View>
                 <Text style={styles.experienceDescription} numberOfLines={2}>
@@ -212,7 +197,7 @@ export default function HomeScreen() {
 
         {/* CTA Section */}
         <View style={styles.ctaSection}>
-          <Text style={styles.ctaTitle}>Ready for Your Next Adventure?</Text>
+          <Text style={styles.ctaTitle}>Ready for Your{'\n'}Next Adventure?</Text>
           <Text style={styles.ctaSubtitle}>
             Book your Montenegro experience today and create memories that last a lifetime.
           </Text>
@@ -233,74 +218,77 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f6f3',
+    backgroundColor: '#faf9f7',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingVertical: 14,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0ede8',
   },
   headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
   },
   headerLogo: {
-    width: 32,
-    height: 32,
+    width: 36,
+    height: 36,
   },
-  headerTitle: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 18,
-    color: '#2d5a5a',
-    fontWeight: '500',
-  },
-  categoriesSection: {
+  featuresSection: {
     paddingHorizontal: 16,
-    paddingTop: 10,
+    paddingTop: 20,
+    paddingBottom: 16,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0ede8',
   },
-  categoriesGrid: {
+  featuresGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 12,
   },
-  categoryCard: {
+  featureCard: {
     width: (width - 44) / 2,
-    backgroundColor: '#fff',
+    backgroundColor: '#faf9f7',
     borderRadius: 12,
-    padding: 20,
+    padding: 18,
     borderWidth: 1,
-    borderColor: '#e8e5e0',
+    borderColor: 'rgba(26, 58, 74, 0.08)',
   },
-  categoryName: {
+  featureIconWrap: {
+    marginBottom: 12,
+  },
+  featureTitle: {
     fontFamily: 'TraditionalArabic',
     fontSize: 16,
-    color: '#2d3a3a',
+    color: '#1a3a4a',
     fontWeight: '600',
-    marginTop: 12,
+    marginBottom: 4,
   },
-  categoryDescription: {
+  featureDesc: {
     fontFamily: 'TraditionalArabic',
     fontSize: 13,
     color: '#7a8a8a',
-    marginTop: 4,
     lineHeight: 18,
   },
   featuredSection: {
     paddingHorizontal: 16,
-    paddingTop: 40,
-    backgroundColor: '#f0ebe4',
-    marginTop: 30,
-    paddingBottom: 20,
+    paddingTop: 32,
+    paddingBottom: 16,
+  },
+  sectionLabelRow: {
+    marginBottom: 6,
   },
   sectionLabel: {
     fontFamily: 'TraditionalArabic',
     fontSize: 12,
     color: '#c17f59',
     letterSpacing: 2,
-    marginBottom: 8,
+    fontWeight: '600',
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -311,76 +299,67 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontFamily: 'TraditionalArabic',
     fontSize: 28,
-    color: '#2d3a3a',
+    color: '#1a2a30',
     fontWeight: '300',
   },
-  viewAll: {
+  viewAllBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  viewAllText: {
     fontFamily: 'TraditionalArabic',
     fontSize: 14,
-    color: '#2d5a5a',
+    color: '#1a3a4a',
     fontWeight: '500',
   },
   experienceCard: {
     backgroundColor: '#fff',
-    borderRadius: 16,
+    borderRadius: 14,
     overflow: 'hidden',
-    marginBottom: 20,
+    marginBottom: 18,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.06,
     shadowRadius: 10,
     elevation: 2,
   },
   experienceImage: {
     width: '100%',
     height: 200,
+    backgroundColor: '#e8e5e0',
   },
   experienceContent: {
-    padding: 20,
-  },
-  categoryBadge: {
-    backgroundColor: '#e8f4f4',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 4,
-    alignSelf: 'flex-start',
-    marginBottom: 12,
-  },
-  categoryBadgeText: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 11,
-    color: '#2d5a5a',
-    fontWeight: '600',
-    letterSpacing: 1,
+    padding: 18,
   },
   experienceTitle: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 20,
-    color: '#2d3a3a',
+    fontSize: 19,
+    color: '#1a2a30',
     fontWeight: '600',
     marginBottom: 8,
   },
   experienceMeta: {
     flexDirection: 'row',
-    gap: 12,
+    gap: 16,
     marginBottom: 10,
   },
-  experienceLocation: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 14,
-    color: '#7a8a8a',
+  metaItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
-  experienceDuration: {
+  metaText: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 14,
+    fontSize: 13,
     color: '#7a8a8a',
   },
   experienceDescription: {
     fontFamily: 'TraditionalArabic',
     fontSize: 14,
     color: '#5a6a6a',
-    lineHeight: 22,
-    marginBottom: 16,
+    lineHeight: 21,
+    marginBottom: 14,
   },
   experienceFooter: {
     flexDirection: 'row',
@@ -395,41 +374,42 @@ const styles = StyleSheet.create({
   experiencePrice: {
     fontFamily: 'TraditionalArabic',
     fontSize: 22,
-    color: '#2d3a3a',
+    color: '#1a2a30',
     fontWeight: '600',
   },
   ctaSection: {
-    backgroundColor: '#2d5a5a',
-    padding: 30,
+    backgroundColor: '#1a3a4a',
+    padding: 32,
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 12,
   },
   ctaTitle: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 24,
+    fontSize: 28,
     color: '#fff',
-    fontWeight: '500',
+    fontWeight: '300',
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 12,
+    lineHeight: 36,
   },
   ctaSubtitle: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 14,
+    fontSize: 15,
     color: 'rgba(255, 255, 255, 0.8)',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
     lineHeight: 22,
   },
   ctaButton: {
     backgroundColor: '#fff',
     paddingVertical: 14,
-    paddingHorizontal: 30,
-    borderRadius: 25,
+    paddingHorizontal: 36,
+    borderRadius: 8,
   },
   ctaButtonText: {
     fontFamily: 'TraditionalArabic',
     fontSize: 15,
-    color: '#2d5a5a',
+    color: '#1a3a4a',
     fontWeight: '600',
   },
 });

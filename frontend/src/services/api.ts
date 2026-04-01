@@ -42,10 +42,10 @@ class ApiService {
     });
   }
 
-  async register(email: string, password: string, full_name: string, phone?: string) {
+  async register(email: string, password: string, full_name: string, phone?: string, whatsapp_number?: string) {
     return this.request('/auth/register', {
       method: 'POST',
-      body: JSON.stringify({ email, password, full_name, phone }),
+      body: JSON.stringify({ email, password, full_name, phone, whatsapp_number }),
     });
   }
 

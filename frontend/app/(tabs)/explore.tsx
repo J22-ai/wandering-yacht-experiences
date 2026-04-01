@@ -109,20 +109,10 @@ export default function ExploreScreen() {
     return Math.min(...experience.ticket_types.map((t) => t.price));
   };
 
-  const getCategoryLabel = (category: string) => {
-    const labels: { [key: string]: string } = {
-      experiences: 'Wellness',
-      boat_rental: 'Adventure',
-      yacht_charter: 'Luxury',
-      management: 'Service',
-    };
-    return labels[category] || category;
-  };
-
   const formatDuration = (hours: number) => {
     if (hours === 0) return '';
     if (hours >= 24) return `${Math.round(hours / 24)} days`;
-    return `${hours} hours`;
+    return `${hours}h`;
   };
 
   return (
@@ -186,12 +176,12 @@ export default function ExploreScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor="#2d5a5a"
+            tintColor="#1a3a4a"
           />
         }
       >
         <Text style={styles.resultsCount}>
-          {filteredExperiences.length} experiences found
+          {filteredExperiences.length} experience{filteredExperiences.length !== 1 ? 's' : ''} found
         </Text>
 
         {filteredExperiences.map((experience) => (
@@ -199,24 +189,24 @@ export default function ExploreScreen() {
             key={experience.id}
             style={styles.experienceCard}
             onPress={() => router.push(`/experience/${experience.id}`)}
+            activeOpacity={0.85}
           >
             <Image
               source={{ uri: experience.image_url || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800' }}
               style={styles.experienceImage}
             />
             <View style={styles.experienceContent}>
-              <View style={styles.categoryBadge}>
-                <Text style={styles.categoryBadgeText}>
-                  {getCategoryLabel(experience.category).toUpperCase()}
-                </Text>
-              </View>
               <Text style={styles.experienceTitle} numberOfLines={2}>{experience.title}</Text>
               <View style={styles.experienceMeta}>
-                <Text style={styles.experienceLocation}>{experience.location}</Text>
+                <View style={styles.metaItem}>
+                  <Ionicons name="location-outline" size={14} color="#7a8a8a" />
+                  <Text style={styles.metaText}>{experience.location}</Text>
+                </View>
                 {experience.duration_hours > 0 && (
-                  <Text style={styles.experienceDuration}>
-                    {formatDuration(experience.duration_hours)}
-                  </Text>
+                  <View style={styles.metaItem}>
+                    <Ionicons name="time-outline" size={14} color="#7a8a8a" />
+                    <Text style={styles.metaText}>{formatDuration(experience.duration_hours)}</Text>
+                  </View>
                 )}
               </View>
               <Text style={styles.experienceDescription} numberOfLines={2}>
@@ -239,15 +229,18 @@ export default function ExploreScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f6f3',
+    backgroundColor: '#faf9f7',
   },
   header: {
     paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingVertical: 14,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0ede8',
   },
   headerTitle: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d3a3a',
+    color: '#1a2a30',
     fontSize: 28,
     fontWeight: '300',
   },
@@ -255,7 +248,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    marginHorizontal: 20,
+    marginHorizontal: 16,
+    marginTop: 14,
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 12,
@@ -266,26 +260,26 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontFamily: 'TraditionalArabic',
-    color: '#2d3a3a',
+    color: '#1a2a30',
     fontSize: 16,
   },
   categoriesContainer: {
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    gap: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    gap: 8,
   },
   categoryChip: {
     paddingHorizontal: 18,
     paddingVertical: 10,
     borderRadius: 25,
     backgroundColor: '#fff',
-    marginRight: 10,
+    marginRight: 8,
     borderWidth: 1,
     borderColor: '#e8e5e0',
   },
   categoryChipActive: {
-    backgroundColor: '#2d5a5a',
-    borderColor: '#2d5a5a',
+    backgroundColor: '#1a3a4a',
+    borderColor: '#1a3a4a',
   },
   categoryChipText: {
     fontFamily: 'TraditionalArabic',
@@ -298,75 +292,61 @@ const styles = StyleSheet.create({
   },
   resultsContainer: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
   },
   resultsCount: {
     fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
     fontSize: 14,
-    marginBottom: 16,
+    marginBottom: 14,
   },
   experienceCard: {
     backgroundColor: '#fff',
-    borderRadius: 16,
+    borderRadius: 14,
     overflow: 'hidden',
-    marginBottom: 20,
+    marginBottom: 18,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.06,
     shadowRadius: 10,
     elevation: 2,
   },
   experienceImage: {
     width: '100%',
     height: 200,
+    backgroundColor: '#e8e5e0',
   },
   experienceContent: {
-    padding: 20,
-  },
-  categoryBadge: {
-    backgroundColor: '#e8f4f4',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 4,
-    alignSelf: 'flex-start',
-    marginBottom: 12,
-  },
-  categoryBadgeText: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 11,
-    color: '#2d5a5a',
-    fontWeight: '600',
-    letterSpacing: 1,
+    padding: 18,
   },
   experienceTitle: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 20,
-    color: '#2d3a3a',
+    fontSize: 19,
+    color: '#1a2a30',
     fontWeight: '600',
     marginBottom: 8,
   },
   experienceMeta: {
     flexDirection: 'row',
-    gap: 12,
+    gap: 16,
     marginBottom: 10,
   },
-  experienceLocation: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 14,
-    color: '#7a8a8a',
+  metaItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
-  experienceDuration: {
+  metaText: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 14,
+    fontSize: 13,
     color: '#7a8a8a',
   },
   experienceDescription: {
     fontFamily: 'TraditionalArabic',
     fontSize: 14,
     color: '#5a6a6a',
-    lineHeight: 22,
-    marginBottom: 16,
+    lineHeight: 21,
+    marginBottom: 14,
   },
   experienceFooter: {
     flexDirection: 'row',
@@ -381,7 +361,7 @@ const styles = StyleSheet.create({
   experiencePrice: {
     fontFamily: 'TraditionalArabic',
     fontSize: 22,
-    color: '#2d3a3a',
+    color: '#1a2a30',
     fontWeight: '600',
   },
 });

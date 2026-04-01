@@ -48,7 +48,7 @@ export default function RegisterScreen() {
 
     setLoading(true);
     try {
-      await register(email, password, fullName, phone || undefined);
+      await register(email, password, fullName, phone || undefined, whatsapp || undefined);
       router.replace('/(tabs)');
     } catch (error: any) {
       Alert.alert('Error', error.message || 'Registration failed');
@@ -67,7 +67,7 @@ export default function RegisterScreen() {
           style={styles.backButton}
           onPress={() => router.back()}
         >
-          <Ionicons name="close" size={24} color="#2d3a3a" />
+          <Ionicons name="close" size={24} color="#1a2a30" />
         </TouchableOpacity>
       </View>
 
@@ -198,7 +198,7 @@ export default function RegisterScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f6f3',
+    backgroundColor: '#faf9f7',
   },
   header: {
     paddingHorizontal: 20,
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d3a3a',
+    color: '#1a2a30',
     fontSize: 28,
     fontWeight: '300',
     marginTop: 8,
@@ -263,12 +263,12 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontFamily: 'TraditionalArabic',
-    color: '#2d3a3a',
+    color: '#1a2a30',
     fontSize: 16,
     paddingVertical: 14,
   },
   registerButton: {
-    backgroundColor: '#2d5a5a',
+    backgroundColor: '#1a3a4a',
     borderRadius: 25,
     paddingVertical: 16,
     alignItems: 'center',
@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
   },
   footerLink: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d5a5a',
+    color: '#1a3a4a',
     fontSize: 14,
     fontWeight: '600',
   },

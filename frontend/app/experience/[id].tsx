@@ -176,7 +176,7 @@ export default function ExperienceDetailScreen() {
   if (loading) {
     return (
       <View style={[styles.container, styles.loadingContainer]}>
-        <ActivityIndicator size="large" color="#2d5a5a" />
+        <ActivityIndicator size="large" color="#1a3a4a" />
       </View>
     );
   }
@@ -203,10 +203,10 @@ export default function ExperienceDetailScreen() {
               style={styles.backButton}
               onPress={() => router.back()}
             >
-              <Ionicons name="arrow-back" size={24} color="#2d3a3a" />
+              <Ionicons name="arrow-back" size={24} color="#1a2a30" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.shareButton}>
-              <Ionicons name="heart-outline" size={24} color="#2d3a3a" />
+              <Ionicons name="heart-outline" size={24} color="#1a2a30" />
             </TouchableOpacity>
           </View>
         </View>
@@ -231,19 +231,19 @@ export default function ExperienceDetailScreen() {
           {/* Quick Info Cards */}
           <View style={styles.quickInfo}>
             <View style={styles.infoCard}>
-              <Ionicons name="calendar-outline" size={22} color="#2d5a5a" />
+              <Ionicons name="calendar-outline" size={22} color="#1a3a4a" />
               <Text style={styles.infoLabel}>Date</Text>
               <Text style={styles.infoValue}>{formatDate(experience.date)}</Text>
             </View>
             {experience.duration_hours > 0 && (
               <View style={styles.infoCard}>
-                <Ionicons name="time-outline" size={22} color="#2d5a5a" />
+                <Ionicons name="time-outline" size={22} color="#1a3a4a" />
                 <Text style={styles.infoLabel}>Duration</Text>
                 <Text style={styles.infoValue}>{experience.duration_hours} hours</Text>
               </View>
             )}
             <View style={styles.infoCard}>
-              <Ionicons name="people-outline" size={22} color="#2d5a5a" />
+              <Ionicons name="people-outline" size={22} color="#1a3a4a" />
               <Text style={styles.infoLabel}>Availability</Text>
               <Text style={styles.infoValue}>{experience.available_spots} spots</Text>
             </View>
@@ -333,14 +333,14 @@ export default function ExperienceDetailScreen() {
                     onPress={() => updateTicketCount(ticket.id, -1)}
                     disabled={ticketCounts[ticket.id] === 0}
                   >
-                    <Ionicons name="remove" size={18} color={ticketCounts[ticket.id] === 0 ? '#c4c9c9' : '#2d5a5a'} />
+                    <Ionicons name="remove" size={18} color={ticketCounts[ticket.id] === 0 ? '#c4c9c9' : '#1a3a4a'} />
                   </TouchableOpacity>
                   <Text style={styles.counterValue}>{ticketCounts[ticket.id] || 0}</Text>
                   <TouchableOpacity
                     style={styles.counterButton}
                     onPress={() => updateTicketCount(ticket.id, 1)}
                   >
-                    <Ionicons name="add" size={18} color="#2d5a5a" />
+                    <Ionicons name="add" size={18} color="#1a3a4a" />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -386,7 +386,7 @@ export default function ExperienceDetailScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f6f3',
+    backgroundColor: '#faf9f7',
   },
   loadingContainer: {
     justifyContent: 'center',
@@ -394,7 +394,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d3a3a',
+    color: '#1a2a30',
     fontSize: 16,
   },
   heroContainer: {
@@ -443,7 +443,7 @@ const styles = StyleSheet.create({
   content: {
     padding: 20,
     marginTop: -30,
-    backgroundColor: '#f8f6f3',
+    backgroundColor: '#faf9f7',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
   },
@@ -457,14 +457,14 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d5a5a',
+    color: '#1a3a4a',
     fontSize: 11,
     fontWeight: '600',
     letterSpacing: 1,
   },
   title: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d3a3a',
+    color: '#1a2a30',
     fontSize: 28,
     fontWeight: '600',
     marginBottom: 8,
@@ -503,7 +503,7 @@ const styles = StyleSheet.create({
   },
   infoValue: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d3a3a',
+    color: '#1a2a30',
     fontSize: 13,
     fontWeight: '600',
     marginTop: 4,
@@ -514,7 +514,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d3a3a',
+    color: '#1a2a30',
     fontSize: 20,
     fontWeight: '600',
     marginBottom: 16,
@@ -537,13 +537,13 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: '#2d5a5a',
+    backgroundColor: '#1a3a4a',
     justifyContent: 'center',
     alignItems: 'center',
   },
   includedText: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d3a3a',
+    color: '#1a2a30',
     fontSize: 15,
   },
   amenitiesGrid: {
@@ -574,7 +574,7 @@ const styles = StyleSheet.create({
     borderColor: '#e8e5e0',
   },
   timeSlotSelected: {
-    borderColor: '#2d5a5a',
+    borderColor: '#1a3a4a',
     backgroundColor: '#e8f4f4',
   },
   timeSlotText: {
@@ -584,7 +584,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   timeSlotTextSelected: {
-    color: '#2d5a5a',
+    color: '#1a3a4a',
   },
   ticketCard: {
     flexDirection: 'row',
@@ -603,7 +603,7 @@ const styles = StyleSheet.create({
   },
   ticketName: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d3a3a',
+    color: '#1a2a30',
     fontSize: 17,
     fontWeight: '600',
   },
@@ -615,7 +615,7 @@ const styles = StyleSheet.create({
   },
   ticketPrice: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d5a5a',
+    color: '#1a3a4a',
     fontSize: 20,
     fontWeight: '700',
     marginTop: 8,
@@ -638,7 +638,7 @@ const styles = StyleSheet.create({
   },
   counterValue: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d3a3a',
+    color: '#1a2a30',
     fontSize: 18,
     fontWeight: '600',
     minWidth: 28,
@@ -671,14 +671,14 @@ const styles = StyleSheet.create({
   },
   priceValue: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d3a3a',
+    color: '#1a2a30',
     fontSize: 26,
     fontWeight: '700',
   },
   bookButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#2d5a5a',
+    backgroundColor: '#1a3a4a',
     paddingHorizontal: 32,
     paddingVertical: 16,
     borderRadius: 28,
