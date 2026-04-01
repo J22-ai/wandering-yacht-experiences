@@ -3,13 +3,11 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   TouchableOpacity,
   Alert,
   Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../../src/context/AuthContext';
 
@@ -32,133 +30,47 @@ export default function ProfileScreen() {
     ]);
   };
 
-  if (!user) {
-    return (
-      <View style={[styles.container, { paddingTop: insets.top }]}>
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Profile</Text>
-        </View>
-        <View style={styles.guestContainer}>
-          <Image
-            source={require('../../assets/images/wy-logo.png')}
-            style={styles.guestLogo}
-            resizeMode="contain"
-          />
-          <Text style={styles.guestTitle}>Welcome to Wandering Yacht</Text>
-          <Text style={styles.guestText}>
-            Sign in to manage your bookings and access exclusive features
-          </Text>
-          <TouchableOpacity
-            style={styles.signInButton}
-            onPress={() => router.push('/auth/login')}
-          >
-            <Text style={styles.signInButtonText}>Sign In</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.registerButton}
-            onPress={() => router.push('/auth/register')}
-          >
-            <Text style={styles.registerButtonText}>Create Account</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
-
-  const menuItems = [
-    {
-      icon: 'ticket-outline' as const,
-      title: 'My Bookings',
-      subtitle: 'View all your reservations',
-      onPress: () => router.push('/(tabs)/bookings'),
-    },
-    {
-      icon: 'heart-outline' as const,
-      title: 'Favorites',
-      subtitle: 'Saved experiences',
-      onPress: () => {},
-    },
-    {
-      icon: 'notifications-outline' as const,
-      title: 'Notifications',
-      subtitle: 'Manage notification settings',
-      onPress: () => {},
-    },
-    {
-      icon: 'card-outline' as const,
-      title: 'Payment Methods',
-      subtitle: 'Manage your cards',
-      onPress: () => {},
-    },
-    {
-      icon: 'help-circle-outline' as const,
-      title: 'Help & Support',
-      subtitle: 'FAQs and contact us',
-      onPress: () => {},
-    },
-    {
-      icon: 'document-text-outline' as const,
-      title: 'Terms & Privacy',
-      subtitle: 'Legal information',
-      onPress: () => {},
-    },
-  ];
-
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Profile</Text>
-        </View>
+    <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+      {/* Centered Logo */}
+      <View style={styles.logoContainer}>
+        <Image
+          source={require('../../assets/images/wy-logo.png')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+        <Text style={styles.brandName}>WANDERING YACHT</Text>
+      </View>
 
-        {/* User Info */}
-        <View style={styles.userCard}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>
-              {user.full_name
-                .split(' ')
-                .map((n) => n[0])
-                .join('')
-                .toUpperCase()}
-            </Text>
-          </View>
-          <View style={styles.userInfo}>
-            <Text style={styles.userName}>{user.full_name}</Text>
-            <Text style={styles.userEmail}>{user.email}</Text>
-          </View>
-          <TouchableOpacity style={styles.editButton}>
-            <Ionicons name="pencil" size={18} color="#2d5a5a" />
-          </TouchableOpacity>
-        </View>
-
-        {/* Menu Items */}
-        <View style={styles.menuSection}>
-          {menuItems.map((item, index) => (
+      {/* Bottom Actions */}
+      <View style={styles.bottomActions}>
+        {user ? (
+          <>
+            <Text style={styles.welcomeText}>Welcome, {user.full_name}</Text>
             <TouchableOpacity
-              key={index}
-              style={styles.menuItem}
-              onPress={item.onPress}
+              style={styles.signOutButton}
+              onPress={handleLogout}
             >
-              <View style={styles.menuIconContainer}>
-                <Ionicons name={item.icon} size={22} color="#2d5a5a" />
-              </View>
-              <View style={styles.menuContent}>
-                <Text style={styles.menuTitle}>{item.title}</Text>
-                <Text style={styles.menuSubtitle}>{item.subtitle}</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={20} color="#c4c9c9" />
+              <Text style={styles.signOutButtonText}>Sign Out</Text>
             </TouchableOpacity>
-          ))}
-        </View>
-
-        {/* Sign Out */}
-        <TouchableOpacity style={styles.signOutButton} onPress={handleLogout}>
-          <Ionicons name="log-out-outline" size={22} color="#e74c3c" />
-          <Text style={styles.signOutText}>Sign Out</Text>
-        </TouchableOpacity>
-
-        <View style={{ height: 100 }} />
-      </ScrollView>
+          </>
+        ) : (
+          <>
+            <TouchableOpacity
+              style={styles.signInButton}
+              onPress={() => router.push('/auth/login')}
+            >
+              <Text style={styles.signInButtonText}>Sign In</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.registerButton}
+              onPress={() => router.push('/auth/register')}
+            >
+              <Text style={styles.registerButtonText}>Create Account</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
     </View>
   );
 }
@@ -168,49 +80,41 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f8f6f3',
   },
-  header: {
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-  },
-  headerTitle: {
-    fontFamily: 'TraditionalArabic',
-    color: '#2d3a3a',
-    fontSize: 28,
-    fontWeight: '300',
-  },
-  guestContainer: {
+  logoContainer: {
     flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 60,
+  },
+  logo: {
+    width: 150,
+    height: 150,
+  },
+  brandName: {
+    fontFamily: 'TraditionalArabic',
+    color: '#2d5a5a',
+    fontSize: 18,
+    fontWeight: '400',
+    letterSpacing: 3,
+    marginTop: 20,
+  },
+  bottomActions: {
     paddingHorizontal: 40,
+    paddingBottom: 40,
+    alignItems: 'center',
   },
-  guestLogo: {
-    width: 100,
-    height: 100,
-    marginBottom: 20,
-  },
-  guestTitle: {
+  welcomeText: {
     fontFamily: 'TraditionalArabic',
     color: '#2d3a3a',
-    fontSize: 22,
-    fontWeight: '500',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  guestText: {
-    fontFamily: 'TraditionalArabic',
-    color: '#7a8a8a',
-    fontSize: 14,
-    textAlign: 'center',
-    lineHeight: 20,
+    fontSize: 16,
+    marginBottom: 16,
   },
   signInButton: {
     backgroundColor: '#2d5a5a',
     paddingHorizontal: 48,
     paddingVertical: 14,
     borderRadius: 25,
-    marginTop: 32,
     width: '100%',
+    marginBottom: 12,
   },
   signInButtonText: {
     fontFamily: 'TraditionalArabic',
@@ -225,7 +129,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 48,
     paddingVertical: 14,
     borderRadius: 25,
-    marginTop: 12,
     width: '100%',
   },
   registerButtonText: {
@@ -235,115 +138,19 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
   },
-  userCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    marginHorizontal: 20,
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 2,
-  },
-  avatar: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: '#2d5a5a',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatarText: {
-    fontFamily: 'TraditionalArabic',
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: '600',
-  },
-  userInfo: {
-    flex: 1,
-    marginLeft: 16,
-  },
-  userName: {
-    fontFamily: 'TraditionalArabic',
-    color: '#2d3a3a',
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  userEmail: {
-    fontFamily: 'TraditionalArabic',
-    color: '#7a8a8a',
-    fontSize: 14,
-    marginTop: 2,
-  },
-  editButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#f8f6f3',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  menuSection: {
-    backgroundColor: '#fff',
-    marginHorizontal: 20,
-    borderRadius: 16,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 2,
-  },
-  menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0ebe4',
-  },
-  menuIconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
-    backgroundColor: '#e8f4f4',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  menuContent: {
-    flex: 1,
-    marginLeft: 12,
-  },
-  menuTitle: {
-    fontFamily: 'TraditionalArabic',
-    color: '#2d3a3a',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  menuSubtitle: {
-    fontFamily: 'TraditionalArabic',
-    color: '#7a8a8a',
-    fontSize: 12,
-    marginTop: 2,
-  },
   signOutButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 20,
-    marginTop: 24,
-    padding: 16,
-    backgroundColor: '#fef2f2',
-    borderRadius: 12,
-    gap: 8,
+    borderWidth: 1,
+    borderColor: '#e74c3c',
+    paddingHorizontal: 48,
+    paddingVertical: 14,
+    borderRadius: 25,
+    width: '100%',
   },
-  signOutText: {
+  signOutButtonText: {
     fontFamily: 'TraditionalArabic',
     color: '#e74c3c',
     fontSize: 16,
     fontWeight: '600',
+    textAlign: 'center',
   },
 });
