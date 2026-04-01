@@ -310,7 +310,7 @@ async def get_categories():
     categories = [
         ServiceCategory(
             id="yacht_experiences",
-            name="YACHT EXPERIENCES",
+            name="WELLNESS ON DECK",
             slug="yacht_experiences",
             description="Luxury experiences on board",
             image_url="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=800",
@@ -326,7 +326,7 @@ async def get_categories():
         ),
         ServiceCategory(
             id="culinary_tours",
-            name="CULINARY TOURS",
+            name="CULINARY EXCURSIONS",
             slug="culinary_tours",
             description="Wine tasting and gourmet adventures",
             image_url="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800",
