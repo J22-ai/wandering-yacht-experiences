@@ -637,7 +637,7 @@ async def seed_data_internal():
             "title": "Sunset Yoga on Deck",
             "description": "Unwind with a peaceful yoga session as the sun sets over the sea. A magical experience combining wellness and natural beauty.",
             "category": "yacht_experiences",
-            "location": "Montenegro Coast",
+            "location": "Porto Montenegro, Tivat",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/m0idyysm_ae326692-33c3-4e04-a1d0-671f5393b919.jpeg",
             "capacity": 8,
