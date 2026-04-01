@@ -46,10 +46,10 @@ interface Experience {
 }
 
 const featureItems = [
-  { icon: 'boat-outline' as const, title: 'Wellness on Deck', desc: 'Luxury sailing and wellness on the water', slug: 'yacht_experiences' },
-  { icon: 'sunny-outline' as const, title: 'Water Adventures', desc: 'Thrilling water sports and activities', slug: 'water_adventures' },
-  { icon: 'wine-outline' as const, title: 'Culinary Excursions', desc: 'Wine tasting and gourmet adventures', slug: 'culinary_tours' },
-  { icon: 'trail-sign-outline' as const, title: 'Nature Escapes', desc: 'Explore breathtaking landscapes', slug: 'nature_escapes' },
+  { title: 'Wellness on Deck', desc: 'Luxury sailing and wellness on the water', slug: 'yacht_experiences' },
+  { title: 'Water Adventures', desc: 'Thrilling water sports and activities', slug: 'water_adventures' },
+  { title: 'Culinary Excursions', desc: 'Wine tasting and gourmet adventures', slug: 'culinary_tours' },
+  { title: 'Nature Escapes', desc: 'Explore breathtaking landscapes', slug: 'nature_escapes' },
 ];
 
 export default function HomeScreen() {
@@ -133,7 +133,11 @@ export default function HomeScreen() {
                 onPress={() => router.push({ pathname: '/(tabs)/explore', params: { category: item.slug } })}
               >
                 <View style={styles.featureIconWrap}>
-                  <Ionicons name={item.icon} size={26} color="#1a3a4a" />
+                  <Image
+                    source={require('../../assets/images/wy-splash.jpg')}
+                    style={styles.featureLogo}
+                    resizeMode="contain"
+                  />
                 </View>
                 <Text style={styles.featureTitle}>{item.title}</Text>
                 <Text style={styles.featureDesc}>{item.desc}</Text>
@@ -261,6 +265,10 @@ const styles = StyleSheet.create({
   },
   featureIconWrap: {
     marginBottom: 12,
+  },
+  featureLogo: {
+    width: 30,
+    height: 30,
   },
   featureTitle: {
     fontFamily: 'TraditionalArabic',
