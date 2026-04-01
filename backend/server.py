@@ -309,30 +309,6 @@ async def get_categories():
             description="Unforgettable moments on the water",
             image_url="https://images.unsplash.com/photo-1531419746980-63af10612bf3?w=800",
             icon="compass"
-        ),
-        ServiceCategory(
-            id="boat_rental",
-            name="Boat Rental",
-            slug="boat_rental",
-            description="Premium boats for every adventure",
-            image_url="https://images.unsplash.com/photo-1622789095468-2afd0589b011?w=800",
-            icon="sailboat"
-        ),
-        ServiceCategory(
-            id="yacht_charter",
-            name="Yacht Charter",
-            slug="yacht_charter",
-            description="Luxury charters for special occasions",
-            image_url="https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?w=800",
-            icon="ship"
-        ),
-        ServiceCategory(
-            id="management",
-            name="Management",
-            slug="management",
-            description="Professional yacht management services",
-            image_url="https://images.unsplash.com/photo-1523496922380-91d5afba98a3?w=800",
-            icon="briefcase"
         )
     ]
     return categories
