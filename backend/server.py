@@ -317,6 +317,14 @@ async def get_categories():
             icon="boat"
         ),
         ServiceCategory(
+            id="nature_escapes",
+            name="NATURE ESCAPES",
+            slug="nature_escapes",
+            description="Explore breathtaking landscapes",
+            image_url="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800",
+            icon="trail-sign"
+        ),
+        ServiceCategory(
             id="experiences",
             name="MONTENEGRO Experiences",
             slug="experiences",
@@ -797,7 +805,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Nature Hike",
             "description": "Discover Montenegro's breathtaking landscapes on a guided nature hike through mountains and forests.",
-            "category": "experiences",
+            "category": "nature_escapes",
             "location": "Lovćen National Park",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/djmjwkiz_IMG_2446.jpeg",
@@ -817,7 +825,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Glamping Experience",
             "description": "Luxury camping in nature with all modern amenities. Wake up to stunning views and enjoy the outdoors in style.",
-            "category": "experiences",
+            "category": "nature_escapes",
             "location": "Durmitor Mountains",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/vt4m38xp_Glamping%20Tent%20Night.jpg",
@@ -837,7 +845,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Mountain Retreat",
             "description": "Escape to the mountains for a complete retreat experience with yoga, meditation, and nature activities.",
-            "category": "experiences",
+            "category": "nature_escapes",
             "location": "Bjelasica Mountains",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/15v0svwn_PHOTO-2026-03-15-19-30-05.jpg",
@@ -896,7 +904,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Fiat Riva Team Tour Drive",
             "description": "Drive vintage Fiat 500s along the stunning Riva coastline. A unique way to explore the Adriatic.",
-            "category": "experiences",
+            "category": "nature_escapes",
             "location": "Coastal Montenegro",
             "date": "2025-08-01",
             "image_url": "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800",
@@ -915,7 +923,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Fiat Riva Montenegro Drive",
             "description": "Full day vintage Fiat adventure exploring Montenegro's most scenic coastal and mountain roads.",
-            "category": "experiences",
+            "category": "nature_escapes",
             "location": "Montenegro Grand Tour",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/nzoudtt7_73S-hlFB.jpg",
@@ -972,7 +980,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Skadar Lake Day Visit",
             "description": "Explore the largest lake in Southern Europe with boat tours, bird watching, and traditional lunch.",
-            "category": "experiences",
+            "category": "nature_escapes",
             "location": "Skadar Lake",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/kwh2dut1_IMG_2463.jpeg",
@@ -991,7 +999,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Skadar Lake Overnight Villa",
             "description": "Stay in a traditional lakeside villa with full board. Experience authentic Montenegrin hospitality.",
-            "category": "experiences",
+            "category": "nature_escapes",
             "location": "Skadar Lake",
             "date": "2025-08-01",
             "image_url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800",
@@ -1110,7 +1118,7 @@ async def health():
 
 @api_router.post("/admin/update-categories")
 async def update_experience_categories():
-    """Update category for specific experiences to yacht_experiences"""
+    """Update category for specific experiences"""
     yacht_titles = [
         "Sunrise Yoga on Deck",
         "Sunset Yoga on Deck",
@@ -1119,11 +1127,24 @@ async def update_experience_categories():
         "Secret Places to Visit",
         "Private Dining on a Yacht",
     ]
-    result = await db.experiences.update_many(
+    nature_titles = [
+        "Nature Hike",
+        "Glamping Experience",
+        "Mountain Retreat",
+        "Fiat Riva Team Tour Drive",
+        "Fiat Riva Montenegro Drive",
+        "Skadar Lake Day Visit",
+        "Skadar Lake Overnight Villa",
+    ]
+    r1 = await db.experiences.update_many(
         {"title": {"$in": yacht_titles}},
         {"$set": {"category": "yacht_experiences"}}
     )
-    return {"message": f"Updated {result.modified_count} experiences to yacht_experiences"}
+    r2 = await db.experiences.update_many(
+        {"title": {"$in": nature_titles}},
+        {"$set": {"category": "nature_escapes"}}
+    )
+    return {"message": f"Updated {r1.modified_count} to yacht_experiences, {r2.modified_count} to nature_escapes"}
 
 # Include the router in the main app
 app.include_router(api_router)
