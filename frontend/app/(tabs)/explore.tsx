@@ -122,11 +122,27 @@ export default function ExploreScreen() {
     return `${hours}h`;
   };
 
+  // Get the display name for the selected category
+  const getSelectedCategoryName = () => {
+    if (!selectedCategory) return 'All Experiences';
+    const cat = categories.find(c => c.slug === selectedCategory);
+    return cat ? cat.name : 'All Experiences';
+  };
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>All Experiences</Text>
+        {selectedCategory ? (
+          <View style={styles.headerRow}>
+            <TouchableOpacity onPress={() => setSelectedCategory(null)} style={styles.backButton}>
+              <Ionicons name="arrow-back" size={22} color="#1a3a4a" />
+            </TouchableOpacity>
+            <Text style={styles.headerTitle}>{getSelectedCategoryName()}</Text>
+          </View>
+        ) : (
+          <Text style={styles.headerTitle}>All Experiences</Text>
+        )}
       </View>
 
       {/* Search Bar */}
@@ -146,34 +162,36 @@ export default function ExploreScreen() {
         ) : null}
       </View>
 
-      {/* Category Filters */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.categoriesContainer}
-      >
-        {categories.map((category) => (
-          <TouchableOpacity
-            key={category.id}
-            style={[
-              styles.categoryChip,
-              (selectedCategory === category.slug || (!selectedCategory && category.slug === 'all')) && styles.categoryChipActive,
-            ]}
-            onPress={() =>
-              setSelectedCategory(category.slug === 'all' ? null : category.slug)
-            }
-          >
-            <Text
+      {/* Category Filters - only show when no category is pre-selected */}
+      {!selectedCategory && (
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.categoriesContainer}
+        >
+          {categories.map((category) => (
+            <TouchableOpacity
+              key={category.id}
               style={[
-                styles.categoryChipText,
-                (selectedCategory === category.slug || (!selectedCategory && category.slug === 'all')) && styles.categoryChipTextActive,
+                styles.categoryChip,
+                (!selectedCategory && category.slug === 'all') && styles.categoryChipActive,
               ]}
+              onPress={() =>
+                setSelectedCategory(category.slug === 'all' ? null : category.slug)
+              }
             >
-              {category.name}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+              <Text
+                style={[
+                  styles.categoryChipText,
+                  (!selectedCategory && category.slug === 'all') && styles.categoryChipTextActive,
+                ]}
+              >
+                {category.name}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      )}
 
       {/* Results */}
       <ScrollView
@@ -244,6 +262,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#f0ede8',
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  backButton: {
+    padding: 4,
   },
   headerTitle: {
     fontFamily: 'TraditionalArabic',
