@@ -54,7 +54,7 @@ export default function WelcomeScreen() {
           Unforgettable{'\n'}Montenegro{'\n'}Experiences
         </Text>
         <Text style={styles.heroSubtitle}>
-          Discover curated adventures—from sunrise yoga on luxury yachts to vintage car tours through Montenegro's most scenic routes.
+          Discover curated adventures—from Sunrise Yoga on luxury yachts to wild beauty Fiat Car Tours through Montenegro's most scenic routes.
         </Text>
         <TouchableOpacity
           style={styles.exploreButton}
