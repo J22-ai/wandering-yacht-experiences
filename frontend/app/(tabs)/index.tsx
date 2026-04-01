@@ -48,7 +48,7 @@ interface Experience {
 const featureItems = [
   { title: 'Wellness on Deck', desc: 'Luxury sailing and wellness on the water', slug: 'yacht_experiences', logo: require('../../assets/images/wy-wellness.jpg') },
   { title: 'Water Adventures', desc: 'Thrilling water sports and activities', slug: 'water_adventures', logo: require('../../assets/images/wy-splash.jpg') },
-  { title: 'Culinary Excursions', desc: 'Wine tasting and gourmet adventures', slug: 'culinary_tours', logo: require('../../assets/images/wy-splash.jpg') },
+  { title: 'Culinary Excursions', desc: 'Wine tasting and gourmet adventures', slug: 'culinary_tours', logo: require('../../assets/images/wy-culinary.jpg') },
   { title: 'Nature Escapes', desc: 'Explore breathtaking landscapes', slug: 'nature_escapes', logo: require('../../assets/images/wy-splash.jpg') },
 ];
 
