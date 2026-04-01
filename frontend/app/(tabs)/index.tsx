@@ -109,21 +109,16 @@ export default function HomeScreen() {
           />
         }
       >
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.headerLeft}>
-            <Image
-              source={require('../../assets/images/wy-logo.png')}
-              style={styles.headerLogo}
-              resizeMode="contain"
-            />
-          </View>
-          <TouchableOpacity onPress={() => router.push('/(tabs)/profile')}>
-            <Ionicons name="menu" size={24} color="#1a3a4a" />
-          </TouchableOpacity>
+        {/* Logo Section - Large & Centered */}
+        <View style={styles.logoSection}>
+          <Image
+            source={require('../../assets/images/wy-logo.png')}
+            style={styles.mainLogo}
+            resizeMode="contain"
+          />
         </View>
 
-        {/* Features Grid - matching Experience Pass */}
+        {/* Features Grid */}
         <View style={styles.featuresSection}>
           <View style={styles.featuresGrid}>
             {featureItems.map((item, index) => (
@@ -224,31 +219,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#faf9f7',
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  logoSection: {
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 14,
+    paddingTop: 32,
+    paddingBottom: 28,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#f0ede8',
   },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  headerLogo: {
-    width: 36,
-    height: 36,
+  mainLogo: {
+    width: 120,
+    height: 120,
   },
   featuresSection: {
     paddingHorizontal: 16,
-    paddingTop: 20,
+    paddingTop: 24,
     paddingBottom: 16,
     backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0ede8',
   },
   featuresGrid: {
     flexDirection: 'row',
