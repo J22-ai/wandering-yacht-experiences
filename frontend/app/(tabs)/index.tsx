@@ -214,7 +214,7 @@ export default function HomeScreen() {
         <View style={styles.ctaSection}>
           <Text style={styles.ctaTitle}>Ready for Your Next Adventure?</Text>
           <Text style={styles.ctaSubtitle}>
-            Book your Adriatic experience today and create memories that last a lifetime.
+            Book your Montenegro experience today and create memories that last a lifetime.
           </Text>
           <TouchableOpacity
             style={styles.ctaButton}

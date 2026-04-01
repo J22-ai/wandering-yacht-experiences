@@ -55,7 +55,7 @@ export default function WelcomeScreen() {
 
           {/* Hero Content */}
           <View style={styles.heroContent}>
-            <Text style={styles.heroTitle}>Unforgettable{"\n"}Adriatic{"\n"}Experiences</Text>
+            <Text style={styles.heroTitle}>Unforgettable{"\n"}Montenegro{"\n"}Experiences</Text>
             <Text style={styles.heroSubtitle}>
               Discover curated adventures—from sunrise yoga on luxury yachts to vintage car tours through Montenegro's most scenic routes.
             </Text>
