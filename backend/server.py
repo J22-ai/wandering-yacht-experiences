@@ -1037,7 +1037,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Speedboat Adventure",
             "description": "Rent our premium speedboat for an exhilarating day on the water. Perfect for island hopping.",
-            "category": "boat_rental",
+            "category": "water_adventures",
             "location": "Montenegro Marina",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/kl7bkeuo_PHOTO-2026-03-16-15-11-12.jpg",
@@ -1079,7 +1079,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Classic Heritage Sail\n\"The Sea that Taught Kings\"",
             "description": "Our vintage 82 Ft ship offers a curated cultural journey, with the life and legacy of Marko Martinovic, captain, diplomat and educator who taught the European Nobility the art of the sea.",
-            "category": "experiences",
+            "category": "water_adventures",
             "location": "Porto Montenegro",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/192b6z9z_PHOTO-2026-03-17-11-07-56.jpg",
@@ -1164,7 +1164,9 @@ async def update_experience_categories():
         "SUP Full Day",
         "SUP Full Week",
         "Kite Surfing Overnight",
+        "Speedboat Adventure",
     ]
+    # Classic Heritage Sail has a newline in the title
     r1 = await db.experiences.update_many(
         {"title": {"$in": yacht_titles}},
         {"$set": {"category": "yacht_experiences"}}
@@ -1181,7 +1183,68 @@ async def update_experience_categories():
         {"title": {"$in": water_titles}},
         {"$set": {"category": "water_adventures"}}
     )
-    return {"message": f"Updated {r1.modified_count} yacht, {r2.modified_count} nature, {r3.modified_count} culinary, {r4.modified_count} water"}
+    r5 = await db.experiences.update_many(
+        {"title": {"$regex": "Classic Heritage Sail"}},
+        {"$set": {"category": "water_adventures"}}
+    )
+    return {"message": f"Updated {r1.modified_count} yacht, {r2.modified_count} nature, {r3.modified_count} culinary, {r4.modified_count + r5.modified_count} water"}
+
+@api_router.post("/admin/add-missing-experiences")
+async def add_missing_experiences():
+    """Add Speedboat Adventure and Classic Heritage Sail if they don't exist"""
+    import uuid as uuid_mod
+    added = []
+    
+    existing_speedboat = await db.experiences.find_one({"title": "Speedboat Adventure"})
+    if not existing_speedboat:
+        await db.experiences.insert_one({
+            "id": str(uuid_mod.uuid4()),
+            "title": "Speedboat Adventure",
+            "description": "Rent our premium speedboat for an exhilarating day on the water. Perfect for island hopping.",
+            "category": "water_adventures",
+            "location": "Montenegro Marina",
+            "date": "2025-08-01",
+            "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/kl7bkeuo_PHOTO-2026-03-16-15-11-12.jpg",
+            "capacity": 8,
+            "available_spots": 8,
+            "duration_hours": 8,
+            "amenities": ["GPS Navigation", "Bluetooth Audio", "Cooler"],
+            "included": ["Fuel", "Safety equipment", "Brief training"],
+            "ticket_types": [
+                {"id": str(uuid_mod.uuid4()), "name": "Low Season", "description": "Low season rate", "price": 1700, "max_per_booking": 1},
+                {"id": str(uuid_mod.uuid4()), "name": "High Season", "description": "High season rate", "price": 1980, "max_per_booking": 1}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        })
+        added.append("Speedboat Adventure")
+    
+    existing_sail = await db.experiences.find_one({"title": {"$regex": "Classic Heritage Sail"}})
+    if not existing_sail:
+        await db.experiences.insert_one({
+            "id": str(uuid_mod.uuid4()),
+            "title": "Classic Heritage Sail\n\"The Sea that Taught Kings\"",
+            "description": "Our vintage 82 Ft ship offers a curated cultural journey, with the life and legacy of Marko Martinovic, captain, diplomat and educator who taught the European Nobility the art of the sea.",
+            "category": "water_adventures",
+            "location": "Porto Montenegro",
+            "date": "2025-08-01",
+            "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/192b6z9z_PHOTO-2026-03-17-11-07-56.jpg",
+            "capacity": 10,
+            "available_spots": 10,
+            "duration_hours": 4,
+            "amenities": ["Classic Sails", "Wooden Deck", "Professional Crew", "Authentic Experience"],
+            "included": ["Captain", "Crew", "Refreshments", "Safety equipment"],
+            "ticket_types": [
+                {"id": str(uuid_mod.uuid4()), "name": "Per Person", "description": "Price per person", "price": 175, "max_per_booking": 20},
+                {"id": str(uuid_mod.uuid4()), "name": "Low Season (Full Charter)", "description": "4 hour low season charter", "price": 1690, "max_per_booking": 1},
+                {"id": str(uuid_mod.uuid4()), "name": "High Season (Full Charter)", "description": "4 hour high season charter", "price": 2690, "max_per_booking": 1}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        })
+        added.append("Classic Heritage Sail")
+    
+    return {"message": f"Added: {', '.join(added)}" if added else "Both already exist"}
 
 # Include the router in the main app
 app.include_router(api_router)
