@@ -13,6 +13,7 @@ import {
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Calendar } from 'react-native-calendars';
 import { api } from '../../src/services/api';
 import { useAuth } from '../../src/context/AuthContext';
 
@@ -57,6 +58,7 @@ export default function ExperienceDetailScreen() {
   const [loading, setLoading] = useState(true);
   const [ticketCounts, setTicketCounts] = useState<{ [key: string]: number }>({});
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string>('');
   const [booking, setBooking] = useState(false);
 
   useEffect(() => {
@@ -230,16 +232,13 @@ export default function ExperienceDetailScreen() {
 
           {/* Quick Info Cards */}
           <View style={styles.quickInfo}>
-            <View style={styles.infoCard}>
-              <Ionicons name="calendar-outline" size={22} color="#1a3a4a" />
-              <Text style={styles.infoLabel}>Date</Text>
-              <Text style={styles.infoValue}>{formatDate(experience.date)}</Text>
-            </View>
             {experience.duration_hours > 0 && (
               <View style={styles.infoCard}>
                 <Ionicons name="time-outline" size={22} color="#1a3a4a" />
                 <Text style={styles.infoLabel}>Duration</Text>
-                <Text style={styles.infoValue}>{experience.duration_hours} hours</Text>
+                <Text style={styles.infoValue}>
+                  {experience.duration_hours >= 1 ? `${experience.duration_hours} hour${experience.duration_hours > 1 ? 's' : ''}` : `${Math.round(experience.duration_hours * 60)} min`}
+                </Text>
               </View>
             )}
             <View style={styles.infoCard}>
@@ -247,6 +246,47 @@ export default function ExperienceDetailScreen() {
               <Text style={styles.infoLabel}>Availability</Text>
               <Text style={styles.infoValue}>{experience.available_spots} spots</Text>
             </View>
+          </View>
+
+          {/* Select Date - Calendar */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Select Date</Text>
+            <View style={styles.calendarContainer}>
+              <Calendar
+                minDate={new Date().toISOString().split('T')[0]}
+                onDayPress={(day: any) => setSelectedDate(day.dateString)}
+                markedDates={{
+                  [selectedDate]: {
+                    selected: true,
+                    selectedColor: '#1a3a4a',
+                    selectedTextColor: '#fff',
+                  },
+                }}
+                theme={{
+                  backgroundColor: '#fff',
+                  calendarBackground: '#fff',
+                  textSectionTitleColor: '#7a8a8a',
+                  selectedDayBackgroundColor: '#1a3a4a',
+                  selectedDayTextColor: '#fff',
+                  todayTextColor: '#1a3a4a',
+                  dayTextColor: '#1a2a30',
+                  textDisabledColor: '#d0d0d0',
+                  arrowColor: '#1a3a4a',
+                  monthTextColor: '#1a2a30',
+                  textMonthFontWeight: '600',
+                  textDayFontSize: 14,
+                  textMonthFontSize: 16,
+                  textDayHeaderFontSize: 13,
+                }}
+              />
+            </View>
+            {selectedDate ? (
+              <Text style={styles.selectedDateText}>
+                Selected: {new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+              </Text>
+            ) : (
+              <Text style={styles.selectDateHint}>Tap a date to select</Text>
+            )}
           </View>
 
           {/* Description */}
@@ -518,6 +558,28 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
     marginBottom: 16,
+  },
+  calendarContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#e8e5e0',
+  },
+  selectedDateText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a3a4a',
+    fontSize: 15,
+    fontWeight: '600',
+    marginTop: 12,
+    textAlign: 'center',
+  },
+  selectDateHint: {
+    fontFamily: 'TraditionalArabic',
+    color: '#9ca3a3',
+    fontSize: 14,
+    marginTop: 10,
+    textAlign: 'center',
   },
   description: {
     fontFamily: 'TraditionalArabic',

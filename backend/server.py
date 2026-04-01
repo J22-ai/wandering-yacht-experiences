@@ -1191,6 +1191,13 @@ async def update_experience_categories():
 
 @api_router.post("/admin/add-missing-experiences")
 async def add_missing_experiences():
+
+    # Also fix Sunrise Yoga available spots
+    await db.experiences.update_one(
+        {"title": "Sunrise Yoga on Deck"},
+        {"$set": {"available_spots": 8, "capacity": 8}}
+    )
+
     """Add Speedboat Adventure and Classic Heritage Sail if they don't exist"""
     import uuid as uuid_mod
     added = []
