@@ -325,6 +325,14 @@ async def get_categories():
             icon="trail-sign"
         ),
         ServiceCategory(
+            id="culinary_tours",
+            name="CULINARY TOURS",
+            slug="culinary_tours",
+            description="Wine tasting and gourmet adventures",
+            image_url="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800",
+            icon="wine"
+        ),
+        ServiceCategory(
             id="experiences",
             name="MONTENEGRO Experiences",
             slug="experiences",
@@ -866,7 +874,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Vintage Italian Picnic",
             "description": "A charming Italian-style picnic in a scenic vineyard setting with gourmet food and fine wines.",
-            "category": "experiences",
+            "category": "culinary_tours",
             "location": "Crmnica Wine Region",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/z1kg6p28_PHOTO-2026-03-15-19-40-45.jpg",
@@ -942,7 +950,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Wine Tasting with Art",
             "description": "Combine wine tasting with contemporary art in a stunning gallery setting. A feast for all senses.",
-            "category": "experiences",
+            "category": "culinary_tours",
             "location": "Podgorica Art Gallery",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/qcjuamnp_PHOTO-2026-03-16-15-05-01.jpg",
@@ -961,7 +969,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Winery Tour Drive",
             "description": "Drive through Montenegro's wine country visiting traditional wineries and tasting local varieties.",
-            "category": "experiences",
+            "category": "culinary_tours",
             "location": "Montenegro Wine Region",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/fbrpc92a_PHOTO-2026-03-16-14-47-29.jpg",
@@ -1136,6 +1144,11 @@ async def update_experience_categories():
         "Skadar Lake Day Visit",
         "Skadar Lake Overnight Villa",
     ]
+    culinary_titles = [
+        "Vintage Italian Picnic",
+        "Wine Tasting with Art",
+        "Winery Tour Drive",
+    ]
     r1 = await db.experiences.update_many(
         {"title": {"$in": yacht_titles}},
         {"$set": {"category": "yacht_experiences"}}
@@ -1144,7 +1157,11 @@ async def update_experience_categories():
         {"title": {"$in": nature_titles}},
         {"$set": {"category": "nature_escapes"}}
     )
-    return {"message": f"Updated {r1.modified_count} to yacht_experiences, {r2.modified_count} to nature_escapes"}
+    r3 = await db.experiences.update_many(
+        {"title": {"$in": culinary_titles}},
+        {"$set": {"category": "culinary_tours"}}
+    )
+    return {"message": f"Updated {r1.modified_count} yacht, {r2.modified_count} nature, {r3.modified_count} culinary"}
 
 # Include the router in the main app
 app.include_router(api_router)
