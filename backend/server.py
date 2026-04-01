@@ -333,6 +333,14 @@ async def get_categories():
             icon="wine"
         ),
         ServiceCategory(
+            id="water_adventures",
+            name="WATER ADVENTURES",
+            slug="water_adventures",
+            description="Thrilling water sports and activities",
+            image_url="https://images.unsplash.com/photo-1530053969600-caed2596d242?w=800",
+            icon="water"
+        ),
+        ServiceCategory(
             id="experiences",
             name="MONTENEGRO Experiences",
             slug="experiences",
@@ -695,7 +703,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Jet Ski on the River",
             "description": "Thrilling jet ski adventure along the scenic river routes. Experience the adrenaline rush with stunning mountain views.",
-            "category": "experiences",
+            "category": "water_adventures",
             "location": "Bojana River",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/bida74n1_IMG_2437.jpeg",
@@ -715,7 +723,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Kayaking Adventure",
             "description": "Explore hidden coves and crystal-clear waters by kayak. A peaceful way to discover the stunning coastline.",
-            "category": "experiences",
+            "category": "water_adventures",
             "location": "Montenegro Coast",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/4kaj0mgg_IMG_2440.jpeg",
@@ -735,7 +743,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "SUP - Stand Up Paddleboarding",
             "description": "Glide across calm waters on a paddleboard. Perfect for fitness enthusiasts and those seeking a unique water experience.",
-            "category": "experiences",
+            "category": "water_adventures",
             "location": "Montenegro Coast",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/e8yq3bve_IMG_2441.jpeg",
@@ -754,7 +762,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "SUP Full Day",
             "description": "Full day paddleboarding adventure with guided tours to the best spots along the coast.",
-            "category": "experiences",
+            "category": "water_adventures",
             "location": "Montenegro Coast",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/gfzn9wnx_IMG_2442.jpeg",
@@ -773,7 +781,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "SUP Full Week",
             "description": "Week-long SUP pass with unlimited access to boards and exclusive guided tours.",
-            "category": "experiences",
+            "category": "water_adventures",
             "location": "Montenegro Coast",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/yenjr0js_IMG_2443.jpeg",
@@ -792,7 +800,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Kite Surfing Overnight",
             "description": "Learn or perfect your kite surfing skills with overnight camping by the beach. An unforgettable adventure experience.",
-            "category": "experiences",
+            "category": "water_adventures",
             "location": "Ulcinj Velika Plaza",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/hwzkxeki_IMG_2444.jpeg",
@@ -1149,6 +1157,14 @@ async def update_experience_categories():
         "Wine Tasting with Art",
         "Winery Tour Drive",
     ]
+    water_titles = [
+        "Jet Ski on the River",
+        "Kayaking Adventure",
+        "SUP - Stand Up Paddleboarding",
+        "SUP Full Day",
+        "SUP Full Week",
+        "Kite Surfing Overnight",
+    ]
     r1 = await db.experiences.update_many(
         {"title": {"$in": yacht_titles}},
         {"$set": {"category": "yacht_experiences"}}
@@ -1161,7 +1177,11 @@ async def update_experience_categories():
         {"title": {"$in": culinary_titles}},
         {"$set": {"category": "culinary_tours"}}
     )
-    return {"message": f"Updated {r1.modified_count} yacht, {r2.modified_count} nature, {r3.modified_count} culinary"}
+    r4 = await db.experiences.update_many(
+        {"title": {"$in": water_titles}},
+        {"$set": {"category": "water_adventures"}}
+    )
+    return {"message": f"Updated {r1.modified_count} yacht, {r2.modified_count} nature, {r3.modified_count} culinary, {r4.modified_count} water"}
 
 # Include the router in the main app
 app.include_router(api_router)
