@@ -1,8 +1,9 @@
 # Test Credentials
 
 ## Test User Account
-- Email: test@wanderingyacht.com
+- Email: testwhatsapp@example.com
 - Password: test123456
+- WhatsApp: +987654321
 
 ## Notes
 - Register a new account via the registration screen
