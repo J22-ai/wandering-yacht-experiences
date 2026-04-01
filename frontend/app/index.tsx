@@ -33,46 +33,46 @@ export default function WelcomeScreen() {
   return (
     <View style={styles.container}>
       {/* White Header */}
-      <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
+      <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
         <Text style={styles.headerTitle}>Wandering Yacht</Text>
         <TouchableOpacity style={styles.menuButton}>
-          <Ionicons name="menu" size={28} color="#2d5a5a" />
+          <Ionicons name="menu" size={28} color="#4a7c7c" />
         </TouchableOpacity>
       </View>
 
-      {/* Hero Section with Background Image */}
+      {/* Hero Section - Marina Background */}
       <View style={styles.heroSection}>
         <ImageBackground
-          source={{ uri: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200' }}
+          source={{ uri: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200' }}
           style={styles.heroBackground}
           resizeMode="cover"
         >
           <View style={styles.heroOverlay}>
-            <View style={styles.heroContent}>
-              <Text style={styles.heroTitle}>Unforgettable{"\n"}Montenegro{"\n"}Experiences</Text>
-              <Text style={styles.heroSubtitle}>
-                Discover curated adventures—from sunrise yoga on luxury yachts to vintage car tours through Montenegro's most scenic routes.
-              </Text>
-              <TouchableOpacity
-                style={styles.heroButton}
-                onPress={() => router.replace('/(tabs)')}
-              >
-                <Text style={styles.heroButtonText}>Explore Experiences</Text>
-                <Ionicons name="arrow-forward" size={18} color="#2d5a5a" />
-              </TouchableOpacity>
-            </View>
+            <Text style={styles.heroTitle}>
+              Unforgettable{'\n'}Montenegro{'\n'}Experiences
+            </Text>
+            <Text style={styles.heroSubtitle}>
+              Discover curated adventures—from sunrise yoga on luxury yachts to vintage car tours through Montenegro's most scenic routes.
+            </Text>
+            <TouchableOpacity
+              style={styles.exploreButton}
+              onPress={() => router.replace('/(tabs)')}
+            >
+              <Text style={styles.exploreButtonText}>Explore Experiences</Text>
+              <Ionicons name="arrow-forward" size={18} color="#4a7c7c" />
+            </TouchableOpacity>
           </View>
         </ImageBackground>
       </View>
 
-      {/* Bottom Sign In on dark background */}
-      <View style={[styles.bottomSection, { paddingBottom: insets.bottom + 16 }]}>
+      {/* Bottom Sign In Bar */}
+      <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 12 }]}>
         <TouchableOpacity
           style={styles.signInLink}
           onPress={() => router.push('/auth/login')}
         >
           <Text style={styles.signInText}>Already have an account? </Text>
-          <Text style={styles.signInTextBold}>Sign In</Text>
+          <Text style={styles.signInBold}>Sign In</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -98,22 +98,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingBottom: 16,
+    paddingHorizontal: 16,
+    paddingBottom: 12,
     backgroundColor: '#fff',
   },
   headerTitle: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 22,
-    color: '#2d5a5a',
-    fontWeight: '400',
+    fontSize: 24,
+    color: '#4a7c7c',
     fontStyle: 'italic',
+    fontWeight: '400',
   },
   menuButton: {
-    width: 44,
-    height: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 8,
   },
   heroSection: {
     flex: 1,
@@ -124,52 +121,51 @@ const styles = StyleSheet.create({
   },
   heroOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(45, 90, 90, 0.5)',
+    backgroundColor: 'rgba(74, 124, 124, 0.55)',
     justifyContent: 'center',
-  },
-  heroContent: {
-    paddingHorizontal: 24,
     alignItems: 'center',
+    paddingHorizontal: 20,
   },
   heroTitle: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 38,
+    fontSize: 42,
     color: '#fff',
     textAlign: 'center',
-    fontWeight: '300',
-    lineHeight: 48,
     fontStyle: 'italic',
+    fontWeight: '300',
+    lineHeight: 52,
   },
   heroSubtitle: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 15,
+    fontSize: 16,
     color: 'rgba(255, 255, 255, 0.9)',
     textAlign: 'center',
-    marginTop: 20,
-    lineHeight: 24,
+    marginTop: 24,
+    lineHeight: 26,
     paddingHorizontal: 10,
   },
-  heroButton: {
+  exploreButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff',
     paddingVertical: 16,
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
     borderRadius: 4,
-    marginTop: 28,
-    gap: 10,
+    marginTop: 32,
+    marginHorizontal: 16,
     width: '100%',
+    gap: 12,
   },
-  heroButtonText: {
+  exploreButtonText: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 16,
-    color: '#2d5a5a',
+    fontSize: 17,
+    color: '#4a7c7c',
     fontWeight: '500',
   },
-  bottomSection: {
-    backgroundColor: '#2d5a5a',
-    paddingTop: 16,
+  bottomBar: {
+    backgroundColor: '#4a7c7c',
+    paddingTop: 14,
     alignItems: 'center',
   },
   signInLink: {
@@ -177,12 +173,12 @@ const styles = StyleSheet.create({
   },
   signInText: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 14,
+    fontSize: 15,
     color: 'rgba(255, 255, 255, 0.8)',
   },
-  signInTextBold: {
+  signInBold: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 14,
+    fontSize: 15,
     color: '#fff',
     fontWeight: '600',
   },
