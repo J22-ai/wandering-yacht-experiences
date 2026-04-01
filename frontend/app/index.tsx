@@ -43,7 +43,7 @@ export default function WelcomeScreen() {
       {/* Hero Section - Marina Background */}
       <View style={styles.heroSection}>
         <ImageBackground
-          source={{ uri: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200' }}
+          source={{ uri: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=1200' }}
           style={styles.heroBackground}
           resizeMode="cover"
         >
