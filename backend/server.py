@@ -615,7 +615,7 @@ async def seed_data_internal():
             "title": "Sunrise Yoga on Deck",
             "description": "Start your day with a rejuvenating yoga session on our yacht deck as the sun rises over the Adriatic. Perfect for all skill levels.",
             "category": "yacht_experiences",
-            "location": "Montenegro Coast",
+            "location": "Porto Montenegro, TIVAT",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/icfzdqff_IMG_2436.jpeg",
             "capacity": 8,
