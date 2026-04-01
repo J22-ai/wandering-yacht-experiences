@@ -43,7 +43,7 @@ export default function WelcomeScreen() {
       {/* Hero Section - Marina/Water Background like Experience Pass */}
       <View style={styles.heroSection}>
         <ImageBackground
-          source={{ uri: 'https://images.unsplash.com/photo-1514649923863-ceaf75b7ec00?w=1200' }}
+          source={{ uri: 'https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?w=1200' }}
           style={styles.heroBackground}
           resizeMode="cover"
         >
