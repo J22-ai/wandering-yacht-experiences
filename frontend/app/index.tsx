@@ -58,7 +58,7 @@ export default function WelcomeScreen() {
         </Text>
         <TouchableOpacity
           style={styles.exploreButton}
-          onPress={() => router.push('/auth/register')}
+          onPress={() => router.replace('/(tabs)')}
         >
           <Text style={styles.exploreButtonText}>Explore Experiences</Text>
           <Ionicons name="arrow-forward" size={20} color="#1a3a4a" />
