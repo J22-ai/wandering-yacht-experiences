@@ -1016,7 +1016,7 @@ async def seed_data_internal():
             "created_at": datetime.utcnow()
         },
         
-        # ==================== YACHT CHARTER CATEGORY ====================
+        # Catamaran Charter
         {
             "id": str(uuid.uuid4()),
             "title": "Catamaran Privilege 510 Yacht Charter",
