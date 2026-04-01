@@ -54,6 +54,13 @@ export default function ExploreScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const [refreshing, setRefreshing] = useState(false);
 
+  // Update selected category when navigating from Home with a category param
+  useEffect(() => {
+    if (params.category) {
+      setSelectedCategory(params.category as string);
+    }
+  }, [params.category]);
+
   useEffect(() => {
     if (token) {
       api.setToken(token);
