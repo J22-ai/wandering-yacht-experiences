@@ -811,7 +811,7 @@ async def seed_data_internal():
             "included": ["Kite equipment", "Lessons", "Tent", "Meals", "Instructor"],
             "ticket_types": [
                 {"id": str(uuid.uuid4()), "name": "Beginner Package", "description": "Full instruction + overnight", "price": 450, "max_per_booking": 2},
-                {"id": str(uuid.uuid4()), "name": "Advanced Package", "description": "Equipment + overnight", "price": 350, "max_per_booking": 2}
+                {"id": str(uuid.uuid4()), "name": "Advanced Package", "description": "Equipment + overnight", "price": 700, "max_per_booking": 2}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
