@@ -127,6 +127,18 @@ export default function RegisterScreen() {
           </View>
 
           <View style={styles.inputContainer}>
+            <Ionicons name="logo-whatsapp" size={20} color="#9ca3a3" />
+            <TextInput
+              style={styles.input}
+              placeholder="WhatsApp Number (optional)"
+              placeholderTextColor="#9ca3a3"
+              value={whatsapp}
+              onChangeText={setWhatsapp}
+              keyboardType="phone-pad"
+            />
+          </View>
+
+          <View style={styles.inputContainer}>
             <Ionicons name="lock-closed-outline" size={20} color="#9ca3a3" />
             <TextInput
               style={styles.input}
