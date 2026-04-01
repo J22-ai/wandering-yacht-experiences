@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Platform, ScrollView, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ImageBackground } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../src/context/AuthContext';
@@ -40,16 +40,9 @@ export default function WelcomeScreen() {
         <View style={styles.heroOverlay}>
           {/* Header */}
           <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
-            <View style={styles.logoContainer}>
-              <Image
-                source={require('../assets/images/wy-logo.png')}
-                style={styles.headerLogo}
-                resizeMode="contain"
-              />
-              <Text style={styles.headerTitle}>Wandering Yacht</Text>
-            </View>
+            <Text style={styles.headerTitle}>Wandering Yacht</Text>
             <TouchableOpacity style={styles.menuButton}>
-              <Ionicons name="menu" size={24} color="#fff" />
+              <Ionicons name="menu" size={28} color="#fff" />
             </TouchableOpacity>
           </View>
 
@@ -67,19 +60,19 @@ export default function WelcomeScreen() {
               <Ionicons name="arrow-forward" size={18} color="#2d5a5a" />
             </TouchableOpacity>
           </View>
+
+          {/* Bottom Sign In */}
+          <View style={[styles.bottomActions, { paddingBottom: insets.bottom + 20 }]}>
+            <TouchableOpacity
+              style={styles.signInLink}
+              onPress={() => router.push('/auth/login')}
+            >
+              <Text style={styles.signInText}>Already have an account? </Text>
+              <Text style={styles.signInTextBold}>Sign In</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ImageBackground>
-
-      {/* Bottom Actions */}
-      <View style={[styles.bottomActions, { paddingBottom: insets.bottom + 20 }]}>
-        <TouchableOpacity
-          style={styles.signInLink}
-          onPress={() => router.push('/auth/login')}
-        >
-          <Text style={styles.signInText}>Already have an account? </Text>
-          <Text style={styles.signInTextBold}>Sign In</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 }
@@ -87,7 +80,7 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f6f3',
+    backgroundColor: '#2d5a5a',
   },
   loadingContainer: {
     flex: 1,
@@ -105,7 +98,7 @@ const styles = StyleSheet.create({
   },
   heroOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(45, 90, 90, 0.4)',
+    backgroundColor: 'rgba(45, 90, 90, 0.45)',
   },
   header: {
     flexDirection: 'row',
@@ -114,20 +107,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 10,
   },
-  logoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  headerLogo: {
-    width: 32,
-    height: 32,
-  },
   headerTitle: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 18,
+    fontSize: 20,
     color: '#fff',
-    fontWeight: '500',
+    fontWeight: '400',
+    letterSpacing: 0.5,
   },
   menuButton: {
     width: 44,
@@ -139,35 +124,38 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 30,
+    paddingHorizontal: 24,
   },
   heroTitle: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 42,
+    fontSize: 40,
     color: '#fff',
     textAlign: 'center',
     fontWeight: '300',
-    lineHeight: 52,
-    letterSpacing: 1,
+    lineHeight: 50,
+    fontStyle: 'italic',
   },
   heroSubtitle: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 16,
+    fontSize: 15,
     color: 'rgba(255, 255, 255, 0.9)',
     textAlign: 'center',
-    marginTop: 20,
+    marginTop: 24,
     lineHeight: 24,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
   },
   heroButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#fff',
-    paddingVertical: 16,
-    paddingHorizontal: 32,
+    paddingVertical: 18,
+    paddingHorizontal: 36,
     borderRadius: 30,
-    marginTop: 30,
+    marginTop: 32,
     gap: 10,
+    width: '100%',
+    maxWidth: 320,
   },
   heroButtonText: {
     fontFamily: 'TraditionalArabic',
@@ -176,9 +164,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   bottomActions: {
-    backgroundColor: '#f8f6f3',
-    paddingTop: 20,
     alignItems: 'center',
+    paddingTop: 20,
   },
   signInLink: {
     flexDirection: 'row',
@@ -186,12 +173,12 @@ const styles = StyleSheet.create({
   signInText: {
     fontFamily: 'TraditionalArabic',
     fontSize: 14,
-    color: '#666',
+    color: 'rgba(255, 255, 255, 0.8)',
   },
   signInTextBold: {
     fontFamily: 'TraditionalArabic',
     fontSize: 14,
-    color: '#2d5a5a',
+    color: '#fff',
     fontWeight: '600',
   },
 });
