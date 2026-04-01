@@ -129,11 +129,11 @@ const styles = StyleSheet.create({
   },
   heroCountry: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 20,
+    fontSize: 32,
     color: '#fff',
     textAlign: 'center',
     fontWeight: '600',
-    letterSpacing: 6,
+    letterSpacing: 8,
     marginTop: 8,
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
     textShadowOffset: { width: 0, height: 2 },
