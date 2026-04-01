@@ -47,7 +47,7 @@ interface Experience {
 
 const featureItems = [
   { icon: 'boat-outline' as const, title: 'Yacht Experiences', desc: 'Luxury sailing and wellness on the water' },
-  { icon: 'sunny-outline' as const, title: 'Wellness Retreats', desc: 'Yoga, meditation, and rejuvenation' },
+  { icon: 'sunny-outline' as const, title: 'Water Adventures', desc: 'Yoga, meditation, and rejuvenation' },
   { icon: 'wine-outline' as const, title: 'Culinary Tours', desc: 'Wine tasting and gourmet adventures' },
   { icon: 'trail-sign-outline' as const, title: 'Nature Escapes', desc: 'Explore breathtaking landscapes' },
 ];
