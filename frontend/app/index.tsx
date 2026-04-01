@@ -51,7 +51,7 @@ export default function WelcomeScreen() {
       {/* Hero Content */}
       <View style={styles.heroContent}>
         <Text style={styles.heroTitle}>
-          Unforgettable{'\n'}Montenegro{'\n'}Experiences
+          OUR{'\n'}Unforgettable{'\n'}EXPERIENCES{'\n'}Montenegro
         </Text>
         <Text style={styles.heroSubtitle}>
           Discover curated adventures—from Sunrise Yoga on luxury yachts to wild beauty Fiat Car Tours through Montenegro's most scenic routes.
