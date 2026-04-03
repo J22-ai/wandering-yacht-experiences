@@ -109,11 +109,11 @@ export default function AboutScreen() {
           <Text style={styles.sectionLabel}>OUR LOCATIONS</Text>
           <View style={styles.locationsGrid}>
             {[
-              { name: 'USA', detail: 'Central Beach, Fort Lauderdale, Florida', mapUrl: 'https://maps.google.com/?q=Central+Beach,+Fort+Lauderdale,+Florida,+USA' },
-              { name: 'SPAIN', detail: 'Port Vell, Barcelona & Ibiza', mapUrl: 'https://maps.google.com/?q=Port+Vell,+Barcelona,+Spain' },
-              { name: 'MONTENEGRO', detail: 'Porto Montenegro, Tivat', mapUrl: 'https://maps.google.com/?q=Porto+Montenegro,+Tivat,+Montenegro' },
-              { name: 'UAE', detail: 'Abu Dhabi Marina & Port Rashid, Dubai', mapUrl: 'https://maps.google.com/?q=Abu+Dhabi+Marina,+UAE' },
-              { name: 'SINGAPORE', detail: 'Marina at Keppel Bay', mapUrl: 'https://maps.google.com/?q=Marina+at+Keppel+Bay,+Singapore' },
+              { name: 'USA', detail: 'Central Beach, Fort Lauderdale, Florida', mapUrl: 'https://maps.google.com/?q=26.1195,-80.1052&z=15' },
+              { name: 'SPAIN', detail: 'Port Vell, Barcelona & Ibiza', mapUrl: 'https://maps.google.com/?q=41.3753,2.1847&z=15' },
+              { name: 'MONTENEGRO', detail: 'Porto Montenegro, Tivat', mapUrl: 'https://maps.google.com/?q=42.4314,18.6896&z=15' },
+              { name: 'UAE', detail: 'Abu Dhabi Marina & Port Rashid, Dubai', mapUrl: 'https://maps.google.com/?q=25.2697,55.2821&z=15' },
+              { name: 'SINGAPORE', detail: 'Marina at Keppel Bay', mapUrl: 'https://maps.google.com/?q=1.2644,103.8138&z=15' },
             ].map((loc) => (
               <TouchableOpacity
                 key={loc.name}
