@@ -11,6 +11,7 @@ import {
   ImageBackground,
   Modal,
   TextInput,
+  Linking,
 } from 'react-native';
 import { useRouter, Href } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -223,6 +224,47 @@ export default function HomeScreen() {
           >
             <Text style={styles.ctaButtonText}>Start Exploring</Text>
           </TouchableOpacity>
+        </View>
+
+        {/* About Section */}
+        <View style={styles.aboutSection}>
+          <Text style={styles.aboutLabel}>ABOUT</Text>
+          <Text style={styles.aboutTitle}>Wandering Yacht</Text>
+          <View style={styles.aboutDivider} />
+          <Text style={styles.aboutText}>
+            Born from a love of the sea and the wild beauty of Montenegro, Wandering Yacht curates extraordinary experiences for those who seek more than the ordinary. From sunrise yoga on luxury decks to vintage Fiat drives through hidden mountain roads, we craft journeys that awaken the senses and create lasting memories.
+          </Text>
+          <Text style={styles.aboutText}>
+            Based in Porto Montenegro, Tivat, we are a boutique experience company dedicated to showcasing the very best of this breathtaking coastline — its culture, its flavours, its untouched nature, and its timeless spirit of adventure.
+          </Text>
+          <Text style={styles.aboutText}>
+            Whether you are drawn to the water, the mountains, or the vine-covered hills, every Wandering Yacht experience is designed with passion, authenticity, and an unwavering commitment to excellence.
+          </Text>
+        </View>
+
+        {/* Contact Section */}
+        <View style={styles.contactSection}>
+          <Text style={styles.contactLabel}>GET IN TOUCH</Text>
+          <Text style={styles.contactTitle}>Contact Us</Text>
+          <View style={styles.aboutDivider} />
+          <TouchableOpacity
+            style={styles.whatsappButton}
+            onPress={() => Linking.openURL('https://wa.me/38269333693')}
+          >
+            <Ionicons name="logo-whatsapp" size={24} color="#fff" />
+            <Text style={styles.whatsappButtonText}>WhatsApp Us</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.phoneRow}
+            onPress={() => Linking.openURL('tel:+38269333693')}
+          >
+            <Ionicons name="call-outline" size={18} color="#1a3a4a" />
+            <Text style={styles.phoneText}>+382 69 333 693</Text>
+          </TouchableOpacity>
+          <View style={styles.locationRow}>
+            <Ionicons name="location-outline" size={18} color="#1a3a4a" />
+            <Text style={styles.locationText}>Porto Montenegro, Tivat{'\n'}Montenegro</Text>
+          </View>
         </View>
 
         <View style={{ height: 100 }} />
@@ -504,6 +546,98 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#1a3a4a',
     fontWeight: '600',
+  },
+  aboutSection: {
+    paddingHorizontal: 24,
+    paddingVertical: 36,
+    backgroundColor: '#fff',
+  },
+  aboutLabel: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 12,
+    color: '#c17f59',
+    letterSpacing: 2,
+    fontWeight: '600',
+    marginBottom: 6,
+  },
+  aboutTitle: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 28,
+    color: '#1a2a30',
+    fontWeight: '300',
+    marginBottom: 16,
+  },
+  aboutDivider: {
+    width: 40,
+    height: 2,
+    backgroundColor: '#1a3a4a',
+    marginBottom: 20,
+  },
+  aboutText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 15,
+    color: '#5a6a6a',
+    lineHeight: 24,
+    marginBottom: 16,
+  },
+  contactSection: {
+    paddingHorizontal: 24,
+    paddingVertical: 36,
+    backgroundColor: '#faf9f7',
+  },
+  contactLabel: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 12,
+    color: '#c17f59',
+    letterSpacing: 2,
+    fontWeight: '600',
+    marginBottom: 6,
+  },
+  contactTitle: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 28,
+    color: '#1a2a30',
+    fontWeight: '300',
+    marginBottom: 16,
+  },
+  whatsappButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#25D366',
+    paddingVertical: 16,
+    borderRadius: 10,
+    gap: 10,
+    marginBottom: 20,
+  },
+  whatsappButtonText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 17,
+    color: '#fff',
+    fontWeight: '600',
+  },
+  phoneRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 16,
+  },
+  phoneText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 16,
+    color: '#1a3a4a',
+    fontWeight: '500',
+  },
+  locationRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+  },
+  locationText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 15,
+    color: '#5a6a6a',
+    lineHeight: 22,
   },
   searchModal: {
     flex: 1,
