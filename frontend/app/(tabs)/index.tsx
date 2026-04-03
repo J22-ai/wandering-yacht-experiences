@@ -10,7 +10,7 @@ import {
   RefreshControl,
   ImageBackground,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, Href } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { api } from '../../src/services/api';
@@ -149,7 +149,7 @@ export default function HomeScreen() {
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Featured Experiences</Text>
             <TouchableOpacity
-              onPress={() => router.push('/(tabs)/explore')}
+              onPress={() => router.navigate('/(tabs)/explore' as Href)}
               style={styles.viewAllBtn}
             >
               <Text style={styles.viewAllText}>View All</Text>
@@ -202,7 +202,7 @@ export default function HomeScreen() {
           </Text>
           <TouchableOpacity
             style={styles.ctaButton}
-            onPress={() => router.push('/(tabs)/explore')}
+            onPress={() => router.navigate('/(tabs)/explore' as Href)}
           >
             <Text style={styles.ctaButtonText}>Start Exploring</Text>
           </TouchableOpacity>
