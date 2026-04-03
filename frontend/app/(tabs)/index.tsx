@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
   },
   featureCard: {
     width: '48%',
-    backgroundColor: '#faf9f7',
+    backgroundColor: '#fff',
     borderRadius: 12,
     padding: 18,
     borderWidth: 1,
