@@ -243,6 +243,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#2d3a3a',
     fontSize: 28,
+    fontFamily: 'TraditionalArabic',
     fontWeight: '300',
   },
   content: {
@@ -259,6 +260,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
     fontSize: 16,
+    fontFamily: 'TraditionalArabic',
   },
   emptyContainer: {
     flex: 1,
@@ -270,6 +272,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#2d3a3a',
     fontSize: 20,
+    fontFamily: 'TraditionalArabic',
     fontWeight: '500',
     marginTop: 16,
   },
@@ -277,6 +280,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
     fontSize: 14,
+    fontFamily: 'TraditionalArabic',
     textAlign: 'center',
     marginTop: 8,
     paddingHorizontal: 40,
@@ -292,6 +296,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
+    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
   },
   exploreButton: {
@@ -332,6 +337,7 @@ const styles = StyleSheet.create({
   statusText: {
     fontFamily: 'TraditionalArabic',
     fontSize: 10,
+    fontFamily: 'TraditionalArabic',
     fontWeight: '700',
     letterSpacing: 1,
   },
@@ -339,6 +345,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#2d3a3a',
     fontSize: 18,
+    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
     marginBottom: 12,
   },
@@ -355,6 +362,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
     fontSize: 14,
+    fontFamily: 'TraditionalArabic',
   },
   ticketsSummary: {
     backgroundColor: '#faf9f7',
@@ -366,6 +374,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#5a6a6a',
     fontSize: 13,
+    fontFamily: 'TraditionalArabic',
   },
   bookingFooter: {
     flexDirection: 'row',
@@ -394,6 +403,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 14,
+    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
   },
   viewTicketBadge: {
@@ -405,6 +415,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#1a3a4a',
     fontSize: 14,
+    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
   },
 });

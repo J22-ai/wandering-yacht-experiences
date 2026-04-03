@@ -262,6 +262,7 @@ const styles = StyleSheet.create({
   featureTitle: {
     fontFamily: 'TraditionalArabic',
     fontSize: 16,
+    fontFamily: 'TraditionalArabic',
     color: '#1a3a4a',
     fontWeight: '600',
     marginBottom: 4,
@@ -270,6 +271,7 @@ const styles = StyleSheet.create({
   featureDesc: {
     fontFamily: 'TraditionalArabic',
     fontSize: 13,
+    fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
     lineHeight: 18,
     textAlign: 'center',
@@ -285,6 +287,7 @@ const styles = StyleSheet.create({
   sectionLabel: {
     fontFamily: 'TraditionalArabic',
     fontSize: 12,
+    fontFamily: 'TraditionalArabic',
     color: '#c17f59',
     letterSpacing: 2,
     fontWeight: '600',
@@ -298,6 +301,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontFamily: 'TraditionalArabic',
     fontSize: 28,
+    fontFamily: 'TraditionalArabic',
     color: '#1a2a30',
     fontWeight: '300',
   },
@@ -309,6 +313,7 @@ const styles = StyleSheet.create({
   viewAllText: {
     fontFamily: 'TraditionalArabic',
     fontSize: 14,
+    fontFamily: 'TraditionalArabic',
     color: '#1a3a4a',
     fontWeight: '500',
   },
@@ -334,6 +339,7 @@ const styles = StyleSheet.create({
   experienceTitle: {
     fontFamily: 'TraditionalArabic',
     fontSize: 19,
+    fontFamily: 'TraditionalArabic',
     color: '#1a2a30',
     fontWeight: '600',
     marginBottom: 8,
@@ -351,11 +357,13 @@ const styles = StyleSheet.create({
   metaText: {
     fontFamily: 'TraditionalArabic',
     fontSize: 13,
+    fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
   },
   experienceDescription: {
     fontFamily: 'TraditionalArabic',
     fontSize: 14,
+    fontFamily: 'TraditionalArabic',
     color: '#5a6a6a',
     lineHeight: 21,
     marginBottom: 14,
@@ -368,11 +376,13 @@ const styles = StyleSheet.create({
   priceLabel: {
     fontFamily: 'TraditionalArabic',
     fontSize: 13,
+    fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
   },
   experiencePrice: {
     fontFamily: 'TraditionalArabic',
     fontSize: 22,
+    fontFamily: 'TraditionalArabic',
     color: '#1a2a30',
     fontWeight: '600',
   },
@@ -385,6 +395,7 @@ const styles = StyleSheet.create({
   ctaTitle: {
     fontFamily: 'TraditionalArabic',
     fontSize: 28,
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontWeight: '300',
     textAlign: 'center',
@@ -394,6 +405,7 @@ const styles = StyleSheet.create({
   ctaSubtitle: {
     fontFamily: 'TraditionalArabic',
     fontSize: 15,
+    fontFamily: 'TraditionalArabic',
     color: 'rgba(255, 255, 255, 0.8)',
     textAlign: 'center',
     marginBottom: 24,

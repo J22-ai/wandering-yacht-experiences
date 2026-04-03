@@ -275,6 +275,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#1a2a30',
     fontSize: 28,
+    fontFamily: 'TraditionalArabic',
     fontWeight: '300',
   },
   searchContainer: {
@@ -295,6 +296,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#1a2a30',
     fontSize: 16,
+    fontFamily: 'TraditionalArabic',
   },
   categoriesContainer: {
     paddingHorizontal: 16,
@@ -318,6 +320,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#5a6a6a',
     fontSize: 14,
+    fontFamily: 'TraditionalArabic',
     fontWeight: '500',
   },
   categoryChipTextActive: {
@@ -355,6 +358,7 @@ const styles = StyleSheet.create({
   experienceTitle: {
     fontFamily: 'TraditionalArabic',
     fontSize: 19,
+    fontFamily: 'TraditionalArabic',
     color: '#1a2a30',
     fontWeight: '600',
     marginBottom: 8,
@@ -372,11 +376,13 @@ const styles = StyleSheet.create({
   metaText: {
     fontFamily: 'TraditionalArabic',
     fontSize: 13,
+    fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
   },
   experienceDescription: {
     fontFamily: 'TraditionalArabic',
     fontSize: 14,
+    fontFamily: 'TraditionalArabic',
     color: '#5a6a6a',
     lineHeight: 21,
     marginBottom: 14,
@@ -389,11 +395,13 @@ const styles = StyleSheet.create({
   priceLabel: {
     fontFamily: 'TraditionalArabic',
     fontSize: 13,
+    fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
   },
   experiencePrice: {
     fontFamily: 'TraditionalArabic',
     fontSize: 22,
+    fontFamily: 'TraditionalArabic',
     color: '#1a2a30',
     fontWeight: '600',
   },

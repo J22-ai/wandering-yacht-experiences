@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#1a2a30',
     fontSize: 28,
+    fontFamily: 'TraditionalArabic',
     fontWeight: '300',
     marginTop: 8,
   },
@@ -185,6 +186,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
     fontSize: 16,
+    fontFamily: 'TraditionalArabic',
     marginTop: 8,
   },
   form: {
@@ -206,6 +208,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#1a2a30',
     fontSize: 16,
+    fontFamily: 'TraditionalArabic',
     paddingVertical: 14,
   },
   forgotPassword: {
@@ -215,6 +218,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#1a3a4a',
     fontSize: 14,
+    fontFamily: 'TraditionalArabic',
   },
   loginButton: {
     backgroundColor: '#1a3a4a',
@@ -230,6 +234,7 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
+    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
   },
   footer: {
@@ -242,11 +247,13 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
     fontSize: 14,
+    fontFamily: 'TraditionalArabic',
   },
   footerLink: {
     fontFamily: 'TraditionalArabic',
     color: '#1a3a4a',
     fontSize: 14,
+    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
   },
 });

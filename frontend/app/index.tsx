@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
   heroTitle: {
     fontFamily: 'TraditionalArabic',
     fontSize: 44,
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     textAlign: 'center',
     fontWeight: '300',
@@ -131,6 +132,7 @@ const styles = StyleSheet.create({
   heroCountry: {
     fontFamily: 'TraditionalArabic',
     fontSize: 32,
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     textAlign: 'center',
     fontWeight: '600',
@@ -143,6 +145,7 @@ const styles = StyleSheet.create({
   heroSubtitle: {
     fontFamily: 'TraditionalArabic',
     fontSize: 16,
+    fontFamily: 'TraditionalArabic',
     color: 'rgba(255, 255, 255, 0.92)',
     textAlign: 'center',
     marginTop: 40,
@@ -172,6 +175,7 @@ const styles = StyleSheet.create({
   exploreButtonText: {
     fontFamily: 'TraditionalArabic',
     fontSize: 17,
+    fontFamily: 'TraditionalArabic',
     color: '#1a3a4a',
     fontWeight: '600',
   },
@@ -191,6 +195,7 @@ const styles = StyleSheet.create({
   signInBold: {
     fontFamily: 'TraditionalArabic',
     fontSize: 15,
+    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontWeight: '700',
   },
