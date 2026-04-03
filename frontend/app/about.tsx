@@ -61,7 +61,13 @@ export default function AboutScreen() {
           <Text style={styles.sectionTitle}>Wandering Yacht</Text>
           <View style={styles.divider} />
           <Text style={styles.bodyText}>
-            Born from the love of the sea, family Yacht Charters during summer holidays and intrigued by the way water connects us all to life; Wandering Yacht was born. Starting in a strategic location on the Adriatic Sea, between London and Dubai, the first location started in Porto Montenegro, Tivat, Montenegro. The worlds most luxurious port, which has everything to travel to, embark on a journey from and return to, after a sea voyage is completed. Our incredible team has curated immersive excursions for those who seek heartfelt adventures both on land and on the water. Starting with Sunrise Yoga on luxury decks to Wild Beauty afternoon Fiat drives through hidden mountain roads. We craft journeys that awaken the senses and create lasting memories, surprising those that believe they have 'seen it all'. Everything we design is sustainably connected to Luxury intertwined with Nature.
+            Born from the love of the sea, family Yacht Charters during summer holidays and intrigued by the way water connects us all to life; Wandering Yacht was born. Starting in a strategic location on the Adriatic Sea, between London and Dubai, the first location started in Porto Montenegro, Tivat, Montenegro. The worlds most luxurious port, which has everything to travel to, embark on a journey from and return to, after a sea voyage is completed.
+          </Text>
+          <Text style={styles.bodyText}>
+            Our incredible team has curated immersive excursions for those who seek heartfelt adventures both on land and on the water. Starting with Sunrise Yoga on luxury decks to Wild Beauty afternoon Fiat drives through hidden mountain roads.
+          </Text>
+          <Text style={styles.bodyText}>
+            We craft journeys that awaken the senses and create lasting memories, surprising those that believe they have 'seen it all'. Everything we design is sustainably connected to Luxury intertwined with Nature.
           </Text>
           <Text style={styles.bodyText}>
             We are mainly a YACHT MANAGEMENT, YACHT CHARTER and YACHT SALES SPECIALIST. For booking a Yacht Charter, Boat Rental for a weekly experience please visit our website or contact us directly.
