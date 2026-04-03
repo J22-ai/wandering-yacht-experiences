@@ -23,22 +23,16 @@ import { useAuth } from '../../src/context/AuthContext';
 
 const openLink = (url: string) => {
   if (Platform.OS === 'web') {
-    try {
-      const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
-      if (!newWindow || newWindow.closed) {
-        Alert.alert(
-          'Open Link',
-          'Your browser blocked the popup. Please visit:\n\n' + url,
-          [{ text: 'OK' }]
-        );
-      }
-    } catch {
-      Alert.alert(
-        'Open Link',
-        'Please visit:\n\n' + url,
-        [{ text: 'OK' }]
-      );
+    // Web preview iframe blocks external URLs — show contact info instead
+    let message = url;
+    if (url.includes('wa.me')) {
+      message = 'WhatsApp: +382 69 333 693';
+    } else if (url.includes('instagram')) {
+      message = 'Instagram: @wanderingyacht';
+    } else if (url.includes('tel:')) {
+      message = 'Phone: +382 69 333 693';
     }
+    Alert.alert('Contact Info', message + '\n\n(Links open natively on your phone via the app)', [{ text: 'OK' }]);
   } else {
     Linking.openURL(url);
   }

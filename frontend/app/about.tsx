@@ -16,22 +16,19 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const openLink = (url: string) => {
   if (Platform.OS === 'web') {
-    try {
-      const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
-      if (!newWindow || newWindow.closed) {
-        Alert.alert(
-          'Open Link',
-          'Your browser blocked the popup. Please visit:\n\n' + url,
-          [{ text: 'OK' }]
-        );
-      }
-    } catch {
-      Alert.alert(
-        'Open Link',
-        'Please visit:\n\n' + url,
-        [{ text: 'OK' }]
-      );
+    let message = url;
+    if (url.includes('wa.me')) {
+      message = 'WhatsApp: +382 69 333 693';
+    } else if (url.includes('instagram')) {
+      message = 'Instagram: @wanderingyacht';
+    } else if (url.includes('tel:')) {
+      message = 'Phone: +382 69 333 693';
+    } else if (url.includes('google.com/maps') || url.includes('goo.gl')) {
+      message = 'Map link:\n' + url;
+    } else if (url.includes('wanderingyacht.com')) {
+      message = 'Website: www.wanderingyacht.com';
     }
+    Alert.alert('Contact Info', message + '\n\n(Links open natively on your phone via the app)', [{ text: 'OK' }]);
   } else {
     Linking.openURL(url);
   }
