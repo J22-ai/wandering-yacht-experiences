@@ -374,12 +374,6 @@ const styles = StyleSheet.create({
   featureIconWrap: {
     marginBottom: 12,
     alignItems: 'center',
-    backgroundColor: '#e8e5e0',
-    borderRadius: 8,
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    overflow: 'hidden',
   },
   featureLogo: {
     width: 30,
