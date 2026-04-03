@@ -108,10 +108,29 @@ export default function AboutScreen() {
         <View style={styles.locationsSection}>
           <Text style={styles.sectionLabel}>OUR LOCATIONS</Text>
           <View style={styles.locationsGrid}>
-            {['USA', 'SPAIN', 'MONTENEGRO', 'UAE', 'SINGAPORE'].map((loc) => (
-              <View key={loc} style={styles.locationChip}>
-                <Text style={styles.locationChipText}>{loc}</Text>
-              </View>
+            {[
+              { name: 'USA', detail: 'Central Beach, Fort Lauderdale, Florida', mapUrl: 'https://maps.google.com/?q=Central+Beach,+Fort+Lauderdale,+Florida,+USA' },
+              { name: 'SPAIN', detail: 'Port Vell, Barcelona & Ibiza', mapUrl: 'https://maps.google.com/?q=Port+Vell,+Barcelona,+Spain' },
+              { name: 'MONTENEGRO', detail: 'Porto Montenegro, Tivat', mapUrl: 'https://maps.google.com/?q=Porto+Montenegro,+Tivat,+Montenegro' },
+              { name: 'UAE', detail: 'Abu Dhabi Marina & Port Rashid, Dubai', mapUrl: 'https://maps.google.com/?q=Abu+Dhabi+Marina,+UAE' },
+              { name: 'SINGAPORE', detail: 'Marina at Keppel Bay', mapUrl: 'https://maps.google.com/?q=Marina+at+Keppel+Bay,+Singapore' },
+            ].map((loc) => (
+              <TouchableOpacity
+                key={loc.name}
+                style={styles.locationCard}
+                onPress={() => Linking.openURL(loc.mapUrl)}
+                activeOpacity={0.7}
+              >
+                <View style={styles.locationCardHeader}>
+                  <Ionicons name="location" size={16} color="#fff" />
+                  <Text style={styles.locationChipText}>{loc.name}</Text>
+                </View>
+                <Text style={styles.locationDetail}>{loc.detail}</Text>
+                <View style={styles.locationMapLink}>
+                  <Text style={styles.locationMapText}>View on Map</Text>
+                  <Ionicons name="open-outline" size={12} color="rgba(255,255,255,0.7)" />
+                </View>
+              </TouchableOpacity>
             ))}
           </View>
         </View>
@@ -258,19 +277,46 @@ const styles = StyleSheet.create({
     gap: 10,
     marginTop: 12,
   },
-  locationChip: {
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    borderRadius: 8,
+  locationCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    borderColor: 'rgba(255, 255, 255, 0.15)',
+    width: '100%',
+    marginBottom: 4,
+  },
+  locationCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 4,
   },
   locationChipText: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 13,
+    fontSize: 15,
     color: '#fff',
     fontWeight: '600',
     letterSpacing: 1,
+  },
+  locationDetail: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    color: 'rgba(255, 255, 255, 0.75)',
+    marginLeft: 24,
+    marginBottom: 6,
+  },
+  locationMapLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    marginLeft: 24,
+  },
+  locationMapText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 12,
+    color: 'rgba(255, 255, 255, 0.7)',
+    textDecorationLine: 'underline',
   },
 });
