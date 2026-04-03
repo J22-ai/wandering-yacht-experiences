@@ -44,7 +44,8 @@ export default function AboutScreen() {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => router.back()}
-          hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
+          style={{ padding: 12, marginLeft: -12 }}
+          activeOpacity={0.6}
         >
           <Ionicons name="arrow-back" size={22} color="#1a3a4a" />
         </TouchableOpacity>
