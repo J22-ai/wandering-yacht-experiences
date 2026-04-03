@@ -8,6 +8,7 @@ import {
   Image,
   Linking,
   Platform,
+  Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,16 +19,18 @@ const openLink = (url: string) => {
     try {
       const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
       if (!newWindow || newWindow.closed) {
-        const anchor = document.createElement('a');
-        anchor.href = url;
-        anchor.target = '_blank';
-        anchor.rel = 'noopener noreferrer';
-        document.body.appendChild(anchor);
-        anchor.click();
-        document.body.removeChild(anchor);
+        Alert.alert(
+          'Open Link',
+          'Your browser blocked the popup. Please visit:\n\n' + url,
+          [{ text: 'OK' }]
+        );
       }
     } catch {
-      window.location.href = url;
+      Alert.alert(
+        'Open Link',
+        'Please visit:\n\n' + url,
+        [{ text: 'OK' }]
+      );
     }
   } else {
     Linking.openURL(url);
