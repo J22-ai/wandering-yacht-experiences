@@ -15,7 +15,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const openLink = (url: string) => {
   if (Platform.OS === 'web') {
-    window.open(url, '_blank');
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.target = '_blank';
+    anchor.rel = 'noopener noreferrer';
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
   } else {
     Linking.openURL(url);
   }
