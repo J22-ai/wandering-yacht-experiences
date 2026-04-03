@@ -43,6 +43,7 @@ export default function RootLayout() {
         <Stack.Screen name="auth/register" options={{ presentation: 'modal' }} />
         <Stack.Screen name="experience/[id]" />
         <Stack.Screen name="checkout/[bookingId]" />
+        <Stack.Screen name="about" />
         <Stack.Screen name="ticket/[id]" options={{ presentation: 'modal' }} />
       </Stack>
     </AuthProvider>

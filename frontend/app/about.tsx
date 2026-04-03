@@ -7,10 +7,19 @@ import {
   TouchableOpacity,
   Image,
   Linking,
+  Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+const openLink = (url: string) => {
+  if (Platform.OS === 'web') {
+    window.open(url, '_blank');
+  } else {
+    Linking.openURL(url);
+  }
+};
 
 export default function AboutScreen() {
   const router = useRouter();
@@ -63,7 +72,7 @@ export default function AboutScreen() {
         <View style={styles.linksSection}>
           <TouchableOpacity
             style={styles.linkRow}
-            onPress={() => Linking.openURL('https://www.wanderingyacht.com')}
+            onPress={() => openLink('https://www.wanderingyacht.com')}
           >
             <Ionicons name="globe-outline" size={20} color="#1a3a4a" />
             <Text style={styles.linkText}>www.wanderingyacht.com</Text>
@@ -71,7 +80,7 @@ export default function AboutScreen() {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.linkRow}
-            onPress={() => Linking.openURL('https://www.instagram.com/wanderingyacht')}
+            onPress={() => openLink('https://www.instagram.com/wanderingyacht')}
           >
             <Ionicons name="logo-instagram" size={20} color="#1a3a4a" />
             <Text style={styles.linkText}>@wanderingyacht</Text>
@@ -86,14 +95,14 @@ export default function AboutScreen() {
           <View style={styles.divider} />
           <TouchableOpacity
             style={styles.whatsappButton}
-            onPress={() => Linking.openURL('https://wa.me/38269333693')}
+            onPress={() => openLink('https://wa.me/38269333693')}
           >
             <Ionicons name="logo-whatsapp" size={24} color="#fff" />
             <Text style={styles.whatsappButtonText}>WhatsApp Us</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.contactRow}
-            onPress={() => Linking.openURL('tel:+38269333693')}
+            onPress={() => openLink('tel:+38269333693')}
           >
             <Ionicons name="call-outline" size={20} color="#1a3a4a" />
             <Text style={styles.contactRowText}>+382 69 333 693</Text>
@@ -118,7 +127,7 @@ export default function AboutScreen() {
               <TouchableOpacity
                 key={loc.name}
                 style={styles.locationCard}
-                onPress={() => Linking.openURL(loc.mapUrl)}
+                onPress={() => openLink(loc.mapUrl)}
                 activeOpacity={0.7}
               >
                 <View style={styles.locationCardHeader}>

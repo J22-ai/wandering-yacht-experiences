@@ -12,12 +12,21 @@ import {
   Modal,
   TextInput,
   Linking,
+  Platform,
 } from 'react-native';
 import { useRouter, Href } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { api } from '../../src/services/api';
 import { useAuth } from '../../src/context/AuthContext';
+
+const openLink = (url: string) => {
+  if (Platform.OS === 'web') {
+    window.open(url, '_blank');
+  } else {
+    Linking.openURL(url);
+  }
+};
 
 const { width } = Dimensions.get('window');
 
@@ -119,6 +128,7 @@ export default function HomeScreen() {
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <ScrollView
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -238,7 +248,7 @@ export default function HomeScreen() {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.bottomLinkButton}
-            onPress={() => Linking.openURL('https://wa.me/38269333693')}
+            onPress={() => openLink('https://wa.me/38269333693')}
           >
             <Ionicons name="logo-whatsapp" size={22} color="#25D366" />
             <Text style={styles.bottomLinkText}>Contact Us</Text>
@@ -357,6 +367,12 @@ const styles = StyleSheet.create({
   featureIconWrap: {
     marginBottom: 12,
     alignItems: 'center',
+    backgroundColor: '#e8e5e0',
+    borderRadius: 8,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    overflow: 'hidden',
   },
   featureLogo: {
     width: 30,
@@ -365,7 +381,6 @@ const styles = StyleSheet.create({
   featureTitle: {
     fontFamily: 'TraditionalArabic',
     fontSize: 16,
-    fontFamily: 'TraditionalArabic',
     color: '#1a3a4a',
     fontWeight: '600',
     marginBottom: 4,
@@ -374,7 +389,6 @@ const styles = StyleSheet.create({
   featureDesc: {
     fontFamily: 'TraditionalArabic',
     fontSize: 13,
-    fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
     lineHeight: 18,
     textAlign: 'center',
@@ -390,7 +404,6 @@ const styles = StyleSheet.create({
   sectionLabel: {
     fontFamily: 'TraditionalArabic',
     fontSize: 12,
-    fontFamily: 'TraditionalArabic',
     color: '#c17f59',
     letterSpacing: 2,
     fontWeight: '600',
@@ -404,7 +417,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontFamily: 'TraditionalArabic',
     fontSize: 28,
-    fontFamily: 'TraditionalArabic',
     color: '#1a2a30',
     fontWeight: '300',
   },
@@ -416,7 +428,6 @@ const styles = StyleSheet.create({
   viewAllText: {
     fontFamily: 'TraditionalArabic',
     fontSize: 14,
-    fontFamily: 'TraditionalArabic',
     color: '#1a3a4a',
     fontWeight: '500',
   },
@@ -442,7 +453,6 @@ const styles = StyleSheet.create({
   experienceTitle: {
     fontFamily: 'TraditionalArabic',
     fontSize: 19,
-    fontFamily: 'TraditionalArabic',
     color: '#1a2a30',
     fontWeight: '600',
     marginBottom: 8,
@@ -460,13 +470,11 @@ const styles = StyleSheet.create({
   metaText: {
     fontFamily: 'TraditionalArabic',
     fontSize: 13,
-    fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
   },
   experienceDescription: {
     fontFamily: 'TraditionalArabic',
     fontSize: 14,
-    fontFamily: 'TraditionalArabic',
     color: '#5a6a6a',
     lineHeight: 21,
     marginBottom: 14,
@@ -479,13 +487,11 @@ const styles = StyleSheet.create({
   priceLabel: {
     fontFamily: 'TraditionalArabic',
     fontSize: 13,
-    fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
   },
   experiencePrice: {
     fontFamily: 'TraditionalArabic',
     fontSize: 22,
-    fontFamily: 'TraditionalArabic',
     color: '#1a2a30',
     fontWeight: '600',
   },
@@ -498,7 +504,6 @@ const styles = StyleSheet.create({
   ctaTitle: {
     fontFamily: 'TraditionalArabic',
     fontSize: 28,
-    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontWeight: '300',
     textAlign: 'center',
@@ -508,7 +513,6 @@ const styles = StyleSheet.create({
   ctaSubtitle: {
     fontFamily: 'TraditionalArabic',
     fontSize: 15,
-    fontFamily: 'TraditionalArabic',
     color: 'rgba(255, 255, 255, 0.8)',
     textAlign: 'center',
     marginBottom: 24,
