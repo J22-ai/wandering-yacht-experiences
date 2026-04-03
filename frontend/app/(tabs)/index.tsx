@@ -64,6 +64,7 @@ export default function HomeScreen() {
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [allExperiences, setAllExperiences] = useState<Experience[]>([]);
+  const searchInputRef = React.useRef<TextInput>(null);
 
   useEffect(() => {
     if (token) {
@@ -228,7 +229,16 @@ export default function HomeScreen() {
       </ScrollView>
 
       {/* Search Modal */}
-      <Modal visible={showSearch} animationType="slide" presentationStyle="pageSheet">
+      <Modal
+        visible={showSearch}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onShow={() => {
+          setTimeout(() => {
+            searchInputRef.current?.focus();
+          }, 300);
+        }}
+      >
         <View style={[styles.searchModal, { paddingTop: insets.top + 10 }]}>
           <View style={styles.searchModalHeader}>
             <Text style={styles.searchModalTitle}>Find an Experience</Text>
@@ -239,12 +249,12 @@ export default function HomeScreen() {
           <View style={styles.searchInputContainer}>
             <Ionicons name="search" size={20} color="#9ca3a3" />
             <TextInput
+              ref={searchInputRef}
               style={styles.searchInput}
               placeholder="Type to search (e.g. yoga, kayak, wine...)"
               placeholderTextColor="#9ca3a3"
               value={searchQuery}
               onChangeText={setSearchQuery}
-              autoFocus
             />
             {searchQuery ? (
               <TouchableOpacity onPress={() => setSearchQuery('')}>
@@ -529,6 +539,8 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#1a2a30',
     fontSize: 16,
+    height: 44,
+    padding: 0,
   },
   searchResultsCount: {
     fontFamily: 'TraditionalArabic',
