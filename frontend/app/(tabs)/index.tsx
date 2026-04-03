@@ -249,9 +249,11 @@ const styles = StyleSheet.create({
     padding: 18,
     borderWidth: 1,
     borderColor: 'rgba(26, 58, 74, 0.08)',
+    alignItems: 'center',
   },
   featureIconWrap: {
     marginBottom: 12,
+    alignItems: 'center',
   },
   featureLogo: {
     width: 30,
@@ -263,12 +265,14 @@ const styles = StyleSheet.create({
     color: '#1a3a4a',
     fontWeight: '600',
     marginBottom: 4,
+    textAlign: 'center',
   },
   featureDesc: {
     fontFamily: 'TraditionalArabic',
     fontSize: 13,
     color: '#7a8a8a',
     lineHeight: 18,
+    textAlign: 'center',
   },
   featuredSection: {
     paddingHorizontal: 16,
