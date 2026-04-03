@@ -226,59 +226,24 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* About Section */}
-        <View style={styles.aboutSection}>
-          <Text style={styles.aboutLabel}>ABOUT</Text>
-          <Text style={styles.aboutTitle}>Wandering Yacht</Text>
-          <View style={styles.aboutDivider} />
-          <Text style={styles.aboutText}>
-            Born from a love of the sea and the wild beauty of Montenegro, Wandering Yacht curates extraordinary experiences for those who seek more than the ordinary. From sunrise yoga on luxury decks to vintage Fiat drives through hidden mountain roads, we craft journeys that awaken the senses and create lasting memories.
-          </Text>
-          <Text style={styles.aboutText}>
-            We are mainly a YACHT MANAGEMENT, YACHT CHARTER MANAGEMENT and YACHT SALES SPECIALIST. For booking a Yacht Charter, Boat Rental for a weekly experience please visit our website or contact us directly.
-          </Text>
-          <Text style={styles.aboutText}>
-            We are stationed in 5 locations of the world: USA, SPAIN, MONTENEGRO, UAE, SINGAPORE. Soon our other regional experiences will be found right here, so keep checking in on us.
-          </Text>
-          <Text style={styles.aboutWelcome}>
-            Welcome to the World of Wandering Yacht!
-          </Text>
-          <View style={styles.aboutLinks}>
-            <TouchableOpacity onPress={() => Linking.openURL('https://www.wanderingyacht.com')}>
-              <Text style={styles.aboutLink}>www.wanderingyacht.com</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => Linking.openURL('https://www.instagram.com/wanderingyacht')}>
-              <View style={styles.socialRow}>
-                <Ionicons name="logo-instagram" size={18} color="#1a3a4a" />
-                <Text style={styles.aboutLink}>@wanderingyacht</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* Contact Section */}
-        <View style={styles.contactSection}>
-          <Text style={styles.contactLabel}>GET IN TOUCH</Text>
-          <Text style={styles.contactTitle}>Contact Us</Text>
-          <View style={styles.aboutDivider} />
+        {/* About & Contact Buttons */}
+        <View style={styles.bottomLinksSection}>
           <TouchableOpacity
-            style={styles.whatsappButton}
+            style={styles.bottomLinkButton}
+            onPress={() => router.push('/about')}
+          >
+            <Ionicons name="information-circle-outline" size={22} color="#1a3a4a" />
+            <Text style={styles.bottomLinkText}>About Us</Text>
+            <Ionicons name="chevron-forward" size={18} color="#9ca3a3" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.bottomLinkButton}
             onPress={() => Linking.openURL('https://wa.me/38269333693')}
           >
-            <Ionicons name="logo-whatsapp" size={24} color="#fff" />
-            <Text style={styles.whatsappButtonText}>WhatsApp Us</Text>
+            <Ionicons name="logo-whatsapp" size={22} color="#25D366" />
+            <Text style={styles.bottomLinkText}>Contact Us</Text>
+            <Ionicons name="chevron-forward" size={18} color="#9ca3a3" />
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.phoneRow}
-            onPress={() => Linking.openURL('tel:+38269333693')}
-          >
-            <Ionicons name="call-outline" size={18} color="#1a3a4a" />
-            <Text style={styles.phoneText}>+382 69 333 693</Text>
-          </TouchableOpacity>
-          <View style={styles.locationRow}>
-            <Ionicons name="location-outline" size={18} color="#1a3a4a" />
-            <Text style={styles.locationText}>Porto Montenegro, Tivat{'\n'}Montenegro</Text>
-          </View>
         </View>
 
         <View style={{ height: 100 }} />
@@ -561,119 +526,28 @@ const styles = StyleSheet.create({
     color: '#1a3a4a',
     fontWeight: '600',
   },
-  aboutSection: {
-    paddingHorizontal: 24,
-    paddingVertical: 36,
+  bottomLinksSection: {
+    paddingHorizontal: 16,
+    paddingVertical: 20,
+    gap: 10,
+  },
+  bottomLinkButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#fff',
+    paddingVertical: 18,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#f0ede8',
+    gap: 14,
   },
-  aboutLabel: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 12,
-    color: '#c17f59',
-    letterSpacing: 2,
-    fontWeight: '600',
-    marginBottom: 6,
-  },
-  aboutTitle: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 28,
-    color: '#1a2a30',
-    fontWeight: '300',
-    marginBottom: 16,
-  },
-  aboutDivider: {
-    width: 40,
-    height: 2,
-    backgroundColor: '#1a3a4a',
-    marginBottom: 20,
-  },
-  aboutText: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 15,
-    color: '#5a6a6a',
-    lineHeight: 24,
-    marginBottom: 16,
-  },
-  aboutWelcome: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 18,
-    color: '#1a2a30',
-    fontWeight: '600',
-    marginTop: 4,
-    marginBottom: 20,
-  },
-  aboutLinks: {
-    gap: 12,
-  },
-  aboutLink: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 15,
-    color: '#1a3a4a',
-    fontWeight: '500',
-  },
-  socialRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  contactSection: {
-    paddingHorizontal: 24,
-    paddingVertical: 36,
-    backgroundColor: '#faf9f7',
-  },
-  contactLabel: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 12,
-    color: '#c17f59',
-    letterSpacing: 2,
-    fontWeight: '600',
-    marginBottom: 6,
-  },
-  contactTitle: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 28,
-    color: '#1a2a30',
-    fontWeight: '300',
-    marginBottom: 16,
-  },
-  whatsappButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#25D366',
-    paddingVertical: 16,
-    borderRadius: 10,
-    gap: 10,
-    marginBottom: 20,
-  },
-  whatsappButtonText: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 17,
-    color: '#fff',
-    fontWeight: '600',
-  },
-  phoneRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    marginBottom: 16,
-  },
-  phoneText: {
+  bottomLinkText: {
     fontFamily: 'TraditionalArabic',
     fontSize: 16,
-    color: '#1a3a4a',
+    color: '#1a2a30',
     fontWeight: '500',
-  },
-  locationRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 10,
-  },
-  locationText: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 15,
-    color: '#5a6a6a',
-    lineHeight: 22,
+    flex: 1,
   },
   searchModal: {
     flex: 1,
