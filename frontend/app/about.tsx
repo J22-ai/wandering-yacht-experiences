@@ -46,7 +46,7 @@ export default function AboutScreen() {
           <Text style={styles.sectionTitle}>Wandering Yacht</Text>
           <View style={styles.divider} />
           <Text style={styles.bodyText}>
-            Born from a love of the sea and the wild beauty of Montenegro, Wandering Yacht curates extraordinary experiences for those who seek more than the ordinary. From Sunrise Yoga on luxury decks to wild beauty afternoon Fiat Riva drives through hidden mountain roads, we craft journeys that awaken the senses and create lasting memories, even surprising those that have 'seen it all' in these experiences. Always connecting with both Luxury and Nature.
+            Born from the love of the sea, experiencing the Yacht Chartering during summer holidays and intrigued by the way water connects us all to life; Wandering Yacht was born. Starting in a strategic location between London and Dubai, the first location started in Porto Montenegro, Tivat, Montenegro. The worlds most luxurious port has everything to travel to, embark on a journey from and return to, after a sea voyage is completed. We curate immersive excursions for those who seek heartfelt adventures both on land and on the water. Starting with Sunrise Yoga on luxury decks to wild beauty afternoon Fiat Riva drives through hidden mountain roads, we craft journeys that awaken the senses and create lasting memories, even surprising those that have 'seen it all' in these experiences. Always connecting with both Luxury and Nature.
           </Text>
           <Text style={styles.bodyText}>
             We are mainly a YACHT MANAGEMENT, YACHT CHARTER and YACHT SALES SPECIALIST. For booking a Yacht Charter, Boat Rental for a weekly experience please visit our website or contact us directly.
