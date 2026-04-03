@@ -28,7 +28,7 @@ const openLink = (url: string) => {
   }
 };
 
-const { width } = Dimensions.get('window');
+const { width: screenWidth } = Dimensions.get('window');
 
 interface Category {
   id: string;
@@ -354,9 +354,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 12,
+    justifyContent: 'space-between',
   },
   featureCard: {
-    width: (width - 44) / 2,
+    width: '48%',
     backgroundColor: '#faf9f7',
     borderRadius: 12,
     padding: 18,
