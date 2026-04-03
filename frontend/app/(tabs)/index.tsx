@@ -9,6 +9,8 @@ import {
   Dimensions,
   RefreshControl,
   ImageBackground,
+  Modal,
+  TextInput,
 } from 'react-native';
 import { useRouter, Href } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -59,6 +61,9 @@ export default function HomeScreen() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [featuredExperiences, setFeaturedExperiences] = useState<Experience[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [allExperiences, setAllExperiences] = useState<Experience[]>([]);
 
   useEffect(() => {
     if (token) {
@@ -75,6 +80,7 @@ export default function HomeScreen() {
       ]);
       setCategories(categoriesData);
       setFeaturedExperiences(experiencesData.slice(0, 6));
+      setAllExperiences(experiencesData);
     } catch (error) {
       console.error('Error loading data:', error);
     }
@@ -96,6 +102,16 @@ export default function HomeScreen() {
     if (hours >= 24) return `${Math.round(hours / 24)} days`;
     return `${hours}h`;
   };
+
+  const filteredSearchResults = allExperiences.filter((exp) => {
+    if (!searchQuery) return true;
+    const q = searchQuery.toLowerCase();
+    return (
+      exp.title.toLowerCase().includes(q) ||
+      exp.location.toLowerCase().includes(q) ||
+      exp.description.toLowerCase().includes(q)
+    );
+  });
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
@@ -202,7 +218,7 @@ export default function HomeScreen() {
           </Text>
           <TouchableOpacity
             style={styles.ctaButton}
-            onPress={() => router.navigate('/(tabs)/explore' as Href)}
+            onPress={() => { setSearchQuery(''); setShowSearch(true); }}
           >
             <Text style={styles.ctaButtonText}>Start Exploring</Text>
           </TouchableOpacity>
@@ -210,6 +226,62 @@ export default function HomeScreen() {
 
         <View style={{ height: 100 }} />
       </ScrollView>
+
+      {/* Search Modal */}
+      <Modal visible={showSearch} animationType="slide" presentationStyle="pageSheet">
+        <View style={[styles.searchModal, { paddingTop: insets.top + 10 }]}>
+          <View style={styles.searchModalHeader}>
+            <Text style={styles.searchModalTitle}>Find an Experience</Text>
+            <TouchableOpacity onPress={() => setShowSearch(false)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+              <Ionicons name="close" size={26} color="#1a2a30" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.searchInputContainer}>
+            <Ionicons name="search" size={20} color="#9ca3a3" />
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Type to search (e.g. yoga, kayak, wine...)"
+              placeholderTextColor="#9ca3a3"
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              autoFocus
+            />
+            {searchQuery ? (
+              <TouchableOpacity onPress={() => setSearchQuery('')}>
+                <Ionicons name="close-circle" size={20} color="#9ca3a3" />
+              </TouchableOpacity>
+            ) : null}
+          </View>
+          <Text style={styles.searchResultsCount}>
+            {filteredSearchResults.length} experience{filteredSearchResults.length !== 1 ? 's' : ''}
+          </Text>
+          <ScrollView style={styles.searchResultsList} showsVerticalScrollIndicator={false}>
+            {filteredSearchResults.map((exp) => (
+              <TouchableOpacity
+                key={exp.id}
+                style={styles.searchResultItem}
+                onPress={() => {
+                  setShowSearch(false);
+                  router.push(`/experience/${exp.id}`);
+                }}
+                activeOpacity={0.7}
+              >
+                <Image source={{ uri: exp.image_url }} style={styles.searchResultImage} />
+                <View style={styles.searchResultInfo}>
+                  <Text style={styles.searchResultTitle} numberOfLines={1}>{exp.title}</Text>
+                  <View style={styles.searchResultMeta}>
+                    <Ionicons name="location-outline" size={13} color="#7a8a8a" />
+                    <Text style={styles.searchResultLocation} numberOfLines={1}>{exp.location}</Text>
+                  </View>
+                  <Text style={styles.searchResultPrice}>from €{getLowestPrice(exp)}</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={18} color="#9ca3a3" />
+              </TouchableOpacity>
+            ))}
+            <View style={{ height: 40 }} />
+          </ScrollView>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -420,6 +492,95 @@ const styles = StyleSheet.create({
   ctaButtonText: {
     fontFamily: 'TraditionalArabic',
     fontSize: 15,
+    color: '#1a3a4a',
+    fontWeight: '600',
+  },
+  searchModal: {
+    flex: 1,
+    backgroundColor: '#faf9f7',
+    paddingHorizontal: 16,
+  },
+  searchModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 18,
+  },
+  searchModalTitle: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 24,
+    color: '#1a2a30',
+    fontWeight: '300',
+  },
+  searchInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#e8e5e0',
+    gap: 10,
+    marginBottom: 12,
+  },
+  searchInput: {
+    flex: 1,
+    fontFamily: 'TraditionalArabic',
+    color: '#1a2a30',
+    fontSize: 16,
+  },
+  searchResultsCount: {
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
+    fontSize: 14,
+    marginBottom: 12,
+  },
+  searchResultsList: {
+    flex: 1,
+  },
+  searchResultItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#f0ede8',
+  },
+  searchResultImage: {
+    width: 56,
+    height: 56,
+    borderRadius: 10,
+    backgroundColor: '#e8e5e0',
+  },
+  searchResultInfo: {
+    flex: 1,
+    marginLeft: 14,
+    marginRight: 8,
+  },
+  searchResultTitle: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 16,
+    color: '#1a2a30',
+    fontWeight: '600',
+    marginBottom: 3,
+  },
+  searchResultMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginBottom: 3,
+  },
+  searchResultLocation: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    color: '#7a8a8a',
+  },
+  searchResultPrice: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 14,
     color: '#1a3a4a',
     fontWeight: '600',
   },
