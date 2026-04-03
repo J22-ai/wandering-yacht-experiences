@@ -22,13 +22,21 @@ import { useAuth } from '../../src/context/AuthContext';
 
 const openLink = (url: string) => {
   if (Platform.OS === 'web') {
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.target = '_blank';
-    anchor.rel = 'noopener noreferrer';
-    document.body.appendChild(anchor);
-    anchor.click();
-    document.body.removeChild(anchor);
+    try {
+      const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+      if (!newWindow || newWindow.closed) {
+        // Popup blocked — try anchor fallback
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.target = '_blank';
+        anchor.rel = 'noopener noreferrer';
+        document.body.appendChild(anchor);
+        anchor.click();
+        document.body.removeChild(anchor);
+      }
+    } catch {
+      window.location.href = url;
+    }
   } else {
     Linking.openURL(url);
   }
