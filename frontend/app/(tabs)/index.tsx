@@ -235,11 +235,25 @@ export default function HomeScreen() {
             Born from a love of the sea and the wild beauty of Montenegro, Wandering Yacht curates extraordinary experiences for those who seek more than the ordinary. From sunrise yoga on luxury decks to vintage Fiat drives through hidden mountain roads, we craft journeys that awaken the senses and create lasting memories.
           </Text>
           <Text style={styles.aboutText}>
-            Based in Porto Montenegro, Tivat, we are a boutique experience company dedicated to showcasing the very best of this breathtaking coastline — its culture, its flavours, its untouched nature, and its timeless spirit of adventure.
+            We are mainly a YACHT MANAGEMENT, YACHT CHARTER MANAGEMENT and YACHT SALES SPECIALIST. For booking a Yacht Charter, Boat Rental for a weekly experience please visit our website or contact us directly.
           </Text>
           <Text style={styles.aboutText}>
-            Whether you are drawn to the water, the mountains, or the vine-covered hills, every Wandering Yacht experience is designed with passion, authenticity, and an unwavering commitment to excellence.
+            We are stationed in 5 locations of the world: USA, SPAIN, MONTENEGRO, UAE, SINGAPORE. Soon our other regional experiences will be found right here, so keep checking in on us.
           </Text>
+          <Text style={styles.aboutWelcome}>
+            Welcome to the World of Wandering Yacht!
+          </Text>
+          <View style={styles.aboutLinks}>
+            <TouchableOpacity onPress={() => Linking.openURL('https://www.wanderingyacht.com')}>
+              <Text style={styles.aboutLink}>www.wanderingyacht.com</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => Linking.openURL('https://www.instagram.com/wanderingyacht')}>
+              <View style={styles.socialRow}>
+                <Ionicons name="logo-instagram" size={18} color="#1a3a4a" />
+                <Text style={styles.aboutLink}>@wanderingyacht</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* Contact Section */}
@@ -579,6 +593,28 @@ const styles = StyleSheet.create({
     color: '#5a6a6a',
     lineHeight: 24,
     marginBottom: 16,
+  },
+  aboutWelcome: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 18,
+    color: '#1a2a30',
+    fontWeight: '600',
+    marginTop: 4,
+    marginBottom: 20,
+  },
+  aboutLinks: {
+    gap: 12,
+  },
+  aboutLink: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 15,
+    color: '#1a3a4a',
+    fontWeight: '500',
+  },
+  socialRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   contactSection: {
     paddingHorizontal: 24,
