@@ -36,16 +36,13 @@ export default function WelcomeScreen() {
       style={styles.container}
       resizeMode="cover"
     >
-      {/* Header with logo and menu */}
+      {/* Header with centered logo */}
       <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
         <Image
           source={require('../assets/images/wy-logo.png')}
           style={styles.headerLogo}
           resizeMode="contain"
         />
-        <TouchableOpacity style={styles.menuButton}>
-          <Ionicons name="menu" size={26} color="#2d3a3a" />
-        </TouchableOpacity>
       </View>
 
       {/* Hero Content */}
@@ -95,16 +92,14 @@ const styles = StyleSheet.create({
     height: 120,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 18,
     paddingBottom: 14,
     backgroundColor: 'rgba(255, 255, 255, 0.92)',
   },
   headerLogo: {
-    width: 36,
-    height: 36,
+    width: 50,
+    height: 50,
   },
   menuButton: {
     padding: 4,
