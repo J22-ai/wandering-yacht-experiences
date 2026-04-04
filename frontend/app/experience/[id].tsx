@@ -9,6 +9,8 @@ import {
   Dimensions,
   Alert,
   ActivityIndicator,
+  Linking,
+  Platform,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,6 +20,30 @@ import { api } from '../../src/services/api';
 import { useAuth } from '../../src/context/AuthContext';
 
 const { width } = Dimensions.get('window');
+
+const openMapLink = (location: string) => {
+  const mapUrl = `https://maps.google.com/?q=${encodeURIComponent(location)}`;
+  if (Platform.OS === 'web') {
+    try {
+      (window.top || window.parent || window).open(mapUrl, '_blank');
+    } catch {
+      window.open(mapUrl, '_blank');
+    }
+  } else {
+    // Try native maps app first, fall back to browser
+    const scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
+    const nativeUrl = Platform.OS === 'ios'
+      ? `maps:?q=${encodeURIComponent(location)}`
+      : `geo:0,0?q=${encodeURIComponent(location)}`;
+    Linking.canOpenURL(nativeUrl).then((supported) => {
+      if (supported) {
+        Linking.openURL(nativeUrl);
+      } else {
+        Linking.openURL(mapUrl);
+      }
+    });
+  }
+};
 
 interface TicketType {
   id: string;
@@ -226,11 +252,16 @@ export default function ExperienceDetailScreen() {
           {/* Title */}
           <Text style={styles.title}>{experience.title}</Text>
           
-          {/* Location */}
-          <View style={styles.locationRow}>
-            <Ionicons name="location-outline" size={18} color="#7a8a8a" />
-            <Text style={styles.location}>{experience.location}</Text>
-          </View>
+          {/* Location - Clickable to open maps */}
+          <TouchableOpacity
+            style={styles.locationRow}
+            onPress={() => openMapLink(experience.location)}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="location-outline" size={18} color="#c17f59" />
+            <Text style={[styles.location, { textDecorationLine: 'underline' }]}>{experience.location}</Text>
+            <Ionicons name="open-outline" size={14} color="#c17f59" />
+          </TouchableOpacity>
 
           {/* Quick Info Cards */}
           <View style={styles.quickInfo}>
