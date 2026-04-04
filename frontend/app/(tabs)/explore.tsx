@@ -6,7 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  Dimensions,
   TextInput,
   RefreshControl,
 } from 'react-native';
@@ -15,8 +14,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { api } from '../../src/services/api';
 import { useAuth } from '../../src/context/AuthContext';
-
-const { width } = Dimensions.get('window');
 
 interface Category {
   id: string;
@@ -49,12 +46,10 @@ export default function ExploreScreen() {
   const { token } = useAuth();
   const [categories, setCategories] = useState<Category[]>([]);
   const [experiences, setExperiences] = useState<Experience[]>([]);
-  const [filteredExperiences, setFilteredExperiences] = useState<Experience[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(params.category as string || null);
   const [searchQuery, setSearchQuery] = useState('');
   const [refreshing, setRefreshing] = useState(false);
 
-  // Update selected category when navigating from Home with a category param
   useEffect(() => {
     if (params.category) {
       setSelectedCategory(params.category as string);
@@ -68,41 +63,17 @@ export default function ExploreScreen() {
     loadData();
   }, [token]);
 
-  useEffect(() => {
-    filterExperiences();
-  }, [experiences, selectedCategory, searchQuery]);
-
   const loadData = async () => {
     try {
       const [categoriesData, experiencesData] = await Promise.all([
         api.getCategories(),
         api.getExperiences(),
       ]);
-      setCategories([{ id: 'all', name: 'All', slug: 'all' }, ...categoriesData]);
+      setCategories(categoriesData.filter((c: Category) => c.slug !== 'all'));
       setExperiences(experiencesData);
     } catch (error) {
       console.error('Error loading data:', error);
     }
-  };
-
-  const filterExperiences = () => {
-    let filtered = experiences;
-
-    if (selectedCategory && selectedCategory !== 'all') {
-      filtered = filtered.filter((exp) => exp.category === selectedCategory);
-    }
-
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(
-        (exp) =>
-          exp.title.toLowerCase().includes(query) ||
-          exp.location.toLowerCase().includes(query) ||
-          exp.description.toLowerCase().includes(query)
-      );
-    }
-
-    setFilteredExperiences(filtered);
   };
 
   const onRefresh = async () => {
@@ -122,12 +93,83 @@ export default function ExploreScreen() {
     return `${hours}h`;
   };
 
-  // Get the display name for the selected category
-  const getSelectedCategoryName = () => {
-    if (!selectedCategory) return 'All Experiences';
-    const cat = categories.find(c => c.slug === selectedCategory);
-    return cat ? cat.name : 'All Experiences';
+  // Filter experiences based on search and category
+  const getFilteredExperiences = () => {
+    let filtered = experiences;
+    if (selectedCategory) {
+      filtered = filtered.filter(exp => exp.category === selectedCategory);
+    }
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        (exp) =>
+          exp.title.toLowerCase().includes(query) ||
+          exp.location.toLowerCase().includes(query) ||
+          exp.description.toLowerCase().includes(query)
+      );
+    }
+    return filtered;
   };
+
+  // Group experiences by category
+  const getGroupedExperiences = () => {
+    const filtered = getFilteredExperiences();
+    const grouped: { [key: string]: Experience[] } = {};
+    filtered.forEach((exp) => {
+      if (!grouped[exp.category]) {
+        grouped[exp.category] = [];
+      }
+      grouped[exp.category].push(exp);
+    });
+    return grouped;
+  };
+
+  const getCategoryName = (slug: string) => {
+    const cat = categories.find(c => c.slug === slug);
+    return cat ? cat.name : slug.replace(/-/g, ' ').toUpperCase();
+  };
+
+  const filteredExperiences = getFilteredExperiences();
+  const groupedExperiences = getGroupedExperiences();
+
+  const renderExperienceCard = (experience: Experience) => (
+    <TouchableOpacity
+      key={experience.id}
+      style={styles.experienceCard}
+      onPress={() => router.push(`/experience/${experience.id}`)}
+      activeOpacity={0.85}
+    >
+      <Image
+        source={{ uri: experience.image_url || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800' }}
+        style={styles.experienceImage}
+      />
+      <View style={styles.experienceContent}>
+        <Text style={styles.experienceTitle} numberOfLines={2}>{experience.title}</Text>
+        <View style={styles.experienceMeta}>
+          <View style={styles.metaItem}>
+            <Ionicons name="location-outline" size={14} color="#7a8a8a" />
+            <Text style={styles.metaText}>{experience.location}</Text>
+          </View>
+          {experience.duration_hours > 0 && (
+            <View style={styles.metaItem}>
+              <Ionicons name="time-outline" size={14} color="#7a8a8a" />
+              <Text style={styles.metaText}>{formatDuration(experience.duration_hours)}</Text>
+            </View>
+          )}
+        </View>
+        <View style={styles.experienceFooter}>
+          <View>
+            <Text style={styles.priceLabel}>from</Text>
+            <Text style={styles.experiencePrice}>€{getLowestPrice(experience)}</Text>
+          </View>
+          <View style={styles.viewBtn}>
+            <Text style={styles.viewBtnText}>View</Text>
+            <Ionicons name="arrow-forward" size={14} color="#fff" />
+          </View>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
@@ -135,19 +177,23 @@ export default function ExploreScreen() {
       <View style={styles.header}>
         {selectedCategory ? (
           <View style={styles.headerRow}>
-            <TouchableOpacity onPress={() => setSelectedCategory(null)} style={styles.backButton}>
+            <TouchableOpacity
+              onPress={() => setSelectedCategory(null)}
+              style={styles.backButton}
+              activeOpacity={0.6}
+            >
               <Ionicons name="arrow-back" size={22} color="#1a3a4a" />
             </TouchableOpacity>
-            <Text style={styles.headerTitle}>{getSelectedCategoryName()}</Text>
+            <Text style={styles.headerTitle}>{getCategoryName(selectedCategory)}</Text>
           </View>
         ) : (
-          <Text style={styles.headerTitle}>All Experiences</Text>
+          <Text style={styles.headerTitle}>Experiences</Text>
         )}
       </View>
 
       {/* Search Bar */}
       <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color="#9ca3a3" />
+        <Ionicons name="search" size={18} color="#9ca3a3" />
         <TextInput
           style={styles.searchInput}
           placeholder="Search experiences..."
@@ -157,37 +203,31 @@ export default function ExploreScreen() {
         />
         {searchQuery ? (
           <TouchableOpacity onPress={() => setSearchQuery('')}>
-            <Ionicons name="close-circle" size={20} color="#9ca3a3" />
+            <Ionicons name="close-circle" size={18} color="#9ca3a3" />
           </TouchableOpacity>
         ) : null}
       </View>
 
-      {/* Category Filters - only show when no category is pre-selected */}
+      {/* Category Pills - only when no category pre-selected */}
       {!selectedCategory && (
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoriesContainer}
+          contentContainerStyle={styles.pillsRow}
         >
+          <TouchableOpacity
+            style={[styles.pill, styles.pillActive]}
+            onPress={() => setSelectedCategory(null)}
+          >
+            <Text style={[styles.pillText, styles.pillTextActive]}>All</Text>
+          </TouchableOpacity>
           {categories.map((category) => (
             <TouchableOpacity
               key={category.id}
-              style={[
-                styles.categoryChip,
-                (!selectedCategory && category.slug === 'all') && styles.categoryChipActive,
-              ]}
-              onPress={() =>
-                setSelectedCategory(category.slug === 'all' ? null : category.slug)
-              }
+              style={styles.pill}
+              onPress={() => setSelectedCategory(category.slug)}
             >
-              <Text
-                style={[
-                  styles.categoryChipText,
-                  (!selectedCategory && category.slug === 'all') && styles.categoryChipTextActive,
-                ]}
-              >
-                {category.name}
-              </Text>
+              <Text style={styles.pillText}>{category.name}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -197,56 +237,31 @@ export default function ExploreScreen() {
       <ScrollView
         style={styles.resultsContainer}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
         refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor="#1a3a4a"
-          />
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#1a3a4a" />
         }
       >
         <Text style={styles.resultsCount}>
-          {filteredExperiences.length} experience{filteredExperiences.length !== 1 ? 's' : ''} found
+          {filteredExperiences.length} experience{filteredExperiences.length !== 1 ? 's' : ''}
         </Text>
 
-        {filteredExperiences.map((experience) => (
-          <TouchableOpacity
-            key={experience.id}
-            style={styles.experienceCard}
-            onPress={() => router.push(`/experience/${experience.id}`)}
-            activeOpacity={0.85}
-          >
-            <Image
-              source={{ uri: experience.image_url || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800' }}
-              style={styles.experienceImage}
-            />
-            <View style={styles.experienceContent}>
-              <Text style={styles.experienceTitle} numberOfLines={2}>{experience.title}</Text>
-              <View style={styles.experienceMeta}>
-                <View style={styles.metaItem}>
-                  <Ionicons name="location-outline" size={14} color="#7a8a8a" />
-                  <Text style={styles.metaText}>{experience.location}</Text>
-                </View>
-                {experience.duration_hours > 0 && (
-                  <View style={styles.metaItem}>
-                    <Ionicons name="time-outline" size={14} color="#7a8a8a" />
-                    <Text style={styles.metaText}>{formatDuration(experience.duration_hours)}</Text>
-                  </View>
-                )}
+        {selectedCategory ? (
+          /* Single category view */
+          filteredExperiences.map(renderExperienceCard)
+        ) : (
+          /* Grouped by category */
+          Object.keys(groupedExperiences).map((categorySlug) => (
+            <View key={categorySlug} style={styles.categorySection}>
+              <View style={styles.sectionHeaderRow}>
+                <View style={styles.sectionLine} />
+                <Text style={styles.sectionHeaderText}>{getCategoryName(categorySlug)}</Text>
+                <View style={styles.sectionLine} />
               </View>
-              <Text style={styles.experienceDescription} numberOfLines={2}>
-                {experience.description}
-              </Text>
-              <View style={styles.experienceFooter}>
-                <Text style={styles.priceLabel}>from</Text>
-                <Text style={styles.experiencePrice}>€{getLowestPrice(experience)}</Text>
-              </View>
+              {groupedExperiences[categorySlug].map(renderExperienceCard)}
             </View>
-          </TouchableOpacity>
-        ))}
-
-        <View style={{ height: 100 }} />
+          ))
+        )}
       </ScrollView>
     </View>
   );
@@ -259,7 +274,7 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    paddingVertical: 14,
+    paddingVertical: 16,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#f0ede8',
@@ -270,12 +285,15 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   backButton: {
-    padding: 4,
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   headerTitle: {
     fontFamily: 'TraditionalArabic',
     color: '#1a2a30',
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: '300',
   },
   searchContainer: {
@@ -284,9 +302,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     marginHorizontal: 16,
     marginTop: 14,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: '#e8e5e0',
     gap: 10,
@@ -295,33 +313,34 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: 'TraditionalArabic',
     color: '#1a2a30',
-    fontSize: 16,
+    fontSize: 15,
   },
-  categoriesContainer: {
+  pillsRow: {
     paddingHorizontal: 16,
-    paddingVertical: 14,
+    paddingTop: 10,
+    paddingBottom: 6,
     gap: 8,
+    alignItems: 'center',
   },
-  categoryChip: {
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    borderRadius: 25,
+  pill: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
     backgroundColor: '#fff',
-    marginRight: 8,
     borderWidth: 1,
-    borderColor: '#e8e5e0',
+    borderColor: '#ddd8d0',
   },
-  categoryChipActive: {
+  pillActive: {
     backgroundColor: '#1a3a4a',
     borderColor: '#1a3a4a',
   },
-  categoryChipText: {
+  pillText: {
     fontFamily: 'TraditionalArabic',
     color: '#5a6a6a',
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '500',
   },
-  categoryChipTextActive: {
+  pillTextActive: {
     color: '#fff',
   },
   resultsContainer: {
@@ -330,15 +349,38 @@ const styles = StyleSheet.create({
   },
   resultsCount: {
     fontFamily: 'TraditionalArabic',
-    color: '#7a8a8a',
-    fontSize: 14,
-    marginBottom: 14,
+    color: '#9ca3a3',
+    fontSize: 13,
+    marginBottom: 10,
+    marginTop: 4,
+  },
+  categorySection: {
+    marginBottom: 10,
+  },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 18,
+    marginTop: 8,
+    gap: 12,
+  },
+  sectionLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#d5d0c8',
+  },
+  sectionHeaderText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    color: '#c17f59',
+    fontWeight: '600',
+    letterSpacing: 1.5,
   },
   experienceCard: {
     backgroundColor: '#fff',
     borderRadius: 14,
     overflow: 'hidden',
-    marginBottom: 18,
+    marginBottom: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
@@ -347,24 +389,23 @@ const styles = StyleSheet.create({
   },
   experienceImage: {
     width: '100%',
-    height: 200,
+    height: 180,
     backgroundColor: '#e8e5e0',
   },
   experienceContent: {
-    padding: 18,
+    padding: 16,
   },
   experienceTitle: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 19,
-    fontFamily: 'TraditionalArabic',
+    fontSize: 18,
     color: '#1a2a30',
     fontWeight: '600',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   experienceMeta: {
     flexDirection: 'row',
-    gap: 16,
-    marginBottom: 10,
+    gap: 14,
+    marginBottom: 12,
   },
   metaItem: {
     flexDirection: 'row',
@@ -376,27 +417,38 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#7a8a8a',
   },
-  experienceDescription: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 14,
-    color: '#5a6a6a',
-    lineHeight: 21,
-    marginBottom: 14,
-  },
   experienceFooter: {
     flexDirection: 'row',
-    alignItems: 'baseline',
-    gap: 6,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    borderTopColor: '#f0ede8',
+    paddingTop: 12,
   },
   priceLabel: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 13,
-    color: '#7a8a8a',
+    fontSize: 12,
+    color: '#9ca3a3',
   },
   experiencePrice: {
     fontFamily: 'TraditionalArabic',
     fontSize: 22,
     color: '#1a2a30',
     fontWeight: '600',
+  },
+  viewBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1a3a4a',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+    gap: 6,
+  },
+  viewBtnText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 14,
+    color: '#fff',
+    fontWeight: '500',
   },
 });
