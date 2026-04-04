@@ -44,13 +44,13 @@ export default function AboutScreen() {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => router.back()}
-          style={{ padding: 12, marginLeft: -12 }}
+          style={{ width: 44, height: 44, alignItems: 'center', justifyContent: 'center' }}
           activeOpacity={0.6}
         >
           <Ionicons name="arrow-back" size={22} color="#1a3a4a" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>About Us</Text>
-        <View style={{ width: 22 }} />
+        <View style={{ width: 44 }} />
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
