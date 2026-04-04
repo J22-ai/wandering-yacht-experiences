@@ -22,7 +22,11 @@ import { useAuth } from '../../src/context/AuthContext';
 
 const openLink = (url: string) => {
   if (Platform.OS === 'web') {
-    window.open(url, '_blank');
+    try {
+      (window.top || window.parent || window).open(url, '_blank');
+    } catch {
+      window.open(url, '_blank');
+    }
   } else {
     Linking.openURL(url);
   }

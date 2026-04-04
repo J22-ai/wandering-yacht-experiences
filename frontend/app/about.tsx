@@ -25,29 +25,11 @@ export default function AboutScreen() {
 
   const openLink = (url: string) => {
     if (Platform.OS === 'web') {
-      // Try opening in new tab
-      const win = window.open(url, '_blank');
-      if (!win) {
-        // Popup blocked — show in-app modal with info
-        let title = 'Link';
-        let message = url;
-        if (url.includes('wa.me')) {
-          title = 'WhatsApp';
-          message = '+382 69 333 693\n\nOpen WhatsApp and message this number directly.';
-        } else if (url.includes('instagram')) {
-          title = 'Instagram';
-          message = '@wanderingyacht\n\nFollow us on Instagram!';
-        } else if (url.includes('tel:')) {
-          title = 'Phone';
-          message = '+382 69 333 693';
-        } else if (url.includes('google.com/maps')) {
-          title = 'Map Location';
-          message = 'Copy this link to your browser:\n\n' + url;
-        } else if (url.includes('wanderingyacht.com')) {
-          title = 'Website';
-          message = 'www.wanderingyacht.com\n\nVisit this URL in your browser.';
-        }
-        setLinkModal({ visible: true, title, message });
+      // Try opening from top-level window to escape iframe
+      try {
+        (window.top || window.parent || window).open(url, '_blank');
+      } catch {
+        window.open(url, '_blank');
       }
     } else {
       Linking.openURL(url);
@@ -116,7 +98,7 @@ export default function AboutScreen() {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.linkRow}
-            onPress={() => openLink('https://www.google.com/search?q=wanderingyacht+instagram')}
+            onPress={() => openLink('https://www.instagram.com/wanderingyacht')}
           >
             <Ionicons name="logo-instagram" size={20} color="#1a3a4a" />
             <Text style={styles.linkText}>@wanderingyacht</Text>
