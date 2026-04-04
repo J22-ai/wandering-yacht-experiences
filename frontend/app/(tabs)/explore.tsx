@@ -187,7 +187,7 @@ export default function ExploreScreen() {
             <Text style={styles.headerTitle}>{getCategoryName(selectedCategory)}</Text>
           </View>
         ) : (
-          <Text style={styles.headerTitle}>Montenegro Events</Text>
+          <Text style={styles.headerTitle}>Wander with Love</Text>
         )}
       </View>
 
