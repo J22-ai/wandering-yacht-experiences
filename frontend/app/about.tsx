@@ -116,7 +116,7 @@ export default function AboutScreen() {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.linkRow}
-            onPress={() => openLink('https://www.instagram.com/wanderingyacht')}
+            onPress={() => openLink('https://www.google.com/search?q=wanderingyacht+instagram')}
           >
             <Ionicons name="logo-instagram" size={20} color="#1a3a4a" />
             <Text style={styles.linkText}>@wanderingyacht</Text>
