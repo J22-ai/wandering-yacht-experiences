@@ -98,7 +98,24 @@ export default function AboutScreen() {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.linkRow}
-            onPress={() => openLink('https://www.instagram.com/wanderingyacht')}
+            onPress={() => {
+              if (Platform.OS === 'web') {
+                try {
+                  (window.top || window.parent || window).open('https://www.instagram.com/wanderingyacht/', '_blank');
+                } catch {
+                  window.open('https://www.instagram.com/wanderingyacht/', '_blank');
+                }
+              } else {
+                // Try Instagram app deep link first, fall back to web
+                Linking.canOpenURL('instagram://user?username=wanderingyacht').then((supported) => {
+                  if (supported) {
+                    Linking.openURL('instagram://user?username=wanderingyacht');
+                  } else {
+                    Linking.openURL('https://www.instagram.com/wanderingyacht/');
+                  }
+                });
+              }
+            }}
           >
             <Ionicons name="logo-instagram" size={20} color="#1a3a4a" />
             <Text style={styles.linkText}>@wanderingyacht</Text>
