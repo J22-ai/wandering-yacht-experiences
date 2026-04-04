@@ -342,7 +342,7 @@ async def get_categories():
         ),
         ServiceCategory(
             id="experiences",
-            name="MONTENEGRO Experiences",
+            name="WEDDING AND EVENT PLANNING",
             slug="experiences",
             description="Unforgettable moments on the water",
             image_url="https://images.unsplash.com/photo-1531419746980-63af10612bf3?w=800",
