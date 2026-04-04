@@ -187,7 +187,7 @@ export default function ExploreScreen() {
             <Text style={styles.headerTitle}>{getCategoryName(selectedCategory)}</Text>
           </View>
         ) : (
-          <Text style={styles.headerTitle}>Experiences</Text>
+          <Text style={styles.headerTitle}>Montenegro Events</Text>
         )}
       </View>
 
@@ -235,7 +235,7 @@ export default function ExploreScreen() {
         }
       >
         <Text style={styles.resultsCount}>
-          {filteredExperiences.length} experience{filteredExperiences.length !== 1 ? 's' : ''}
+          {filteredExperiences.length} event{filteredExperiences.length !== 1 ? 's' : ''}
         </Text>
 
         {selectedCategory ? (

@@ -179,7 +179,7 @@ export default function HomeScreen() {
             <Text style={styles.sectionLabel}>CURATED FOR YOU</Text>
           </View>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Featured Experiences</Text>
+            <Text style={styles.sectionTitle}>Featured Events</Text>
             <TouchableOpacity
               onPress={() => router.navigate('/(tabs)/explore' as Href)}
               style={styles.viewAllBtn}
@@ -230,7 +230,7 @@ export default function HomeScreen() {
             onPress={() => router.navigate('/(tabs)/explore' as Href)}
             activeOpacity={0.8}
           >
-            <Text style={styles.viewAllFullText}>View All Experiences</Text>
+            <Text style={styles.viewAllFullText}>View All Events</Text>
             <Ionicons name="arrow-forward" size={18} color="#fff" />
           </TouchableOpacity>
         </View>
