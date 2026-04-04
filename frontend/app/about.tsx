@@ -142,10 +142,13 @@ export default function AboutScreen() {
             <Ionicons name="call-outline" size={20} color="#1a3a4a" />
             <Text style={styles.contactRowText}>+382 69 333 693</Text>
           </TouchableOpacity>
-          <View style={styles.contactRow}>
+          <TouchableOpacity
+            style={styles.contactRow}
+            onPress={() => openLink('https://www.google.com/maps/search/?api=1&query=Porto+Montenegro+Tivat')}
+          >
             <Ionicons name="location-outline" size={20} color="#1a3a4a" />
-            <Text style={styles.contactRowText}>Porto Montenegro, Tivat{'\n'}Montenegro</Text>
-          </View>
+            <Text style={[styles.contactRowText, { textDecorationLine: 'underline' }]}>Porto Montenegro, Tivat{'\n'}Montenegro</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Locations */}
@@ -153,11 +156,11 @@ export default function AboutScreen() {
           <Text style={styles.sectionLabel}>OUR LOCATIONS</Text>
           <View style={styles.locationsGrid}>
             {[
-              { name: 'USA', detail: 'Central Beach, Fort Lauderdale, Florida', mapUrl: 'https://maps.google.com/?q=26.1195,-80.1052&z=15' },
-              { name: 'SPAIN', detail: 'Port Vell, Barcelona & Ibiza', mapUrl: 'https://maps.google.com/?q=41.3753,2.1847&z=15' },
-              { name: 'MONTENEGRO', detail: 'Porto Montenegro, Tivat', mapUrl: 'https://maps.google.com/?q=42.4314,18.6896&z=15' },
-              { name: 'UAE', detail: 'Abu Dhabi Marina & Port Rashid, Dubai', mapUrl: 'https://maps.google.com/?q=25.2697,55.2821&z=15' },
-              { name: 'SINGAPORE', detail: 'Marina at Keppel Bay', mapUrl: 'https://maps.google.com/?q=1.2644,103.8138&z=15' },
+              { name: 'USA', detail: 'Central Beach, Fort Lauderdale, Florida', mapUrl: 'https://www.google.com/maps/search/?api=1&query=Central+Beach+Fort+Lauderdale+Florida' },
+              { name: 'SPAIN', detail: 'Port Vell, Barcelona & Ibiza', mapUrl: 'https://www.google.com/maps/search/?api=1&query=Port+Vell+Barcelona+Spain' },
+              { name: 'MONTENEGRO', detail: 'Porto Montenegro, Tivat', mapUrl: 'https://www.google.com/maps/search/?api=1&query=Porto+Montenegro+Tivat' },
+              { name: 'UAE', detail: 'Abu Dhabi Marina & Port Rashid, Dubai', mapUrl: 'https://www.google.com/maps/search/?api=1&query=Port+Rashid+Dubai' },
+              { name: 'SINGAPORE', detail: 'Marina at Keppel Bay', mapUrl: 'https://www.google.com/maps/search/?api=1&query=Marina+at+Keppel+Bay+Singapore' },
             ].map((loc) => (
               <TouchableOpacity
                 key={loc.name}

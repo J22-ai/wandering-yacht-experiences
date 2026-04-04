@@ -22,7 +22,7 @@ import { useAuth } from '../../src/context/AuthContext';
 const { width } = Dimensions.get('window');
 
 const openMapLink = (location: string) => {
-  const mapUrl = `https://maps.google.com/?q=${encodeURIComponent(location)}`;
+  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
   if (Platform.OS === 'web') {
     try {
       (window.top || window.parent || window).open(mapUrl, '_blank');
@@ -31,7 +31,6 @@ const openMapLink = (location: string) => {
     }
   } else {
     // Try native maps app first, fall back to browser
-    const scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
     const nativeUrl = Platform.OS === 'ios'
       ? `maps:?q=${encodeURIComponent(location)}`
       : `geo:0,0?q=${encodeURIComponent(location)}`;
