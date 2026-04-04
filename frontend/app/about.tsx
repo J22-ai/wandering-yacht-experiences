@@ -25,16 +25,7 @@ export default function AboutScreen() {
 
   const openLink = (url: string) => {
     if (Platform.OS === 'web') {
-      // Instagram blocks iframe referrers — always show modal for it
-      if (url.includes('instagram')) {
-        setLinkModal({
-          visible: true,
-          title: 'Instagram',
-          message: '@wanderingyacht\n\nFollow us on Instagram!',
-        });
-        return;
-      }
-      // Try opening in new tab first
+      // Try opening in new tab
       const win = window.open(url, '_blank');
       if (!win) {
         // Popup blocked — show in-app modal with info
@@ -43,6 +34,9 @@ export default function AboutScreen() {
         if (url.includes('wa.me')) {
           title = 'WhatsApp';
           message = '+382 69 333 693\n\nOpen WhatsApp and message this number directly.';
+        } else if (url.includes('instagram')) {
+          title = 'Instagram';
+          message = '@wanderingyacht\n\nFollow us on Instagram!';
         } else if (url.includes('tel:')) {
           title = 'Phone';
           message = '+382 69 333 693';
