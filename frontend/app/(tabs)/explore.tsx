@@ -235,7 +235,7 @@ export default function ExploreScreen() {
         }
       >
         <Text style={styles.resultsCount}>
-          {filteredExperiences.length} event{filteredExperiences.length !== 1 ? 's' : ''}
+          {filteredExperiences.length} experience{filteredExperiences.length !== 1 ? 's' : ''}
         </Text>
 
         {selectedCategory ? (
