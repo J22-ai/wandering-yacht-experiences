@@ -230,6 +230,15 @@ export default function HomeScreen() {
               </View>
             </TouchableOpacity>
           ))}
+
+          <TouchableOpacity
+            style={styles.viewAllFullBtn}
+            onPress={() => router.navigate('/(tabs)/explore' as Href)}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.viewAllFullText}>View All Experiences</Text>
+            <Ionicons name="arrow-forward" size={18} color="#fff" />
+          </TouchableOpacity>
         </View>
 
         {/* CTA Section */}
@@ -539,6 +548,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 20,
     gap: 10,
+  },
+  viewAllFullBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1a3a4a',
+    paddingVertical: 16,
+    borderRadius: 12,
+    marginTop: 16,
+    gap: 8,
+  },
+  viewAllFullText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: '600',
   },
   bottomLinkButton: {
     flexDirection: 'row',
