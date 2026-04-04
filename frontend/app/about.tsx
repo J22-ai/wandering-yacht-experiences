@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,35 +8,51 @@ import {
   Image,
   Linking,
   Platform,
-  Alert,
+  Modal,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const openLink = (url: string) => {
-  if (Platform.OS === 'web') {
-    let message = url;
-    if (url.includes('wa.me')) {
-      message = 'WhatsApp: +382 69 333 693';
-    } else if (url.includes('instagram')) {
-      message = 'Instagram: @wanderingyacht';
-    } else if (url.includes('tel:')) {
-      message = 'Phone: +382 69 333 693';
-    } else if (url.includes('google.com/maps') || url.includes('goo.gl')) {
-      message = 'Map link:\n' + url;
-    } else if (url.includes('wanderingyacht.com')) {
-      message = 'Website: www.wanderingyacht.com';
-    }
-    Alert.alert('Contact Info', message + '\n\n(Links open natively on your phone via the app)', [{ text: 'OK' }]);
-  } else {
-    Linking.openURL(url);
-  }
-};
-
 export default function AboutScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const [linkModal, setLinkModal] = useState<{ visible: boolean; title: string; message: string }>({
+    visible: false,
+    title: '',
+    message: '',
+  });
+
+  const openLink = (url: string) => {
+    if (Platform.OS === 'web') {
+      // Try opening in new tab first
+      const win = window.open(url, '_blank');
+      if (!win) {
+        // Popup blocked — show in-app modal with info
+        let title = 'Link';
+        let message = url;
+        if (url.includes('wa.me')) {
+          title = 'WhatsApp';
+          message = '+382 69 333 693\n\nOpen WhatsApp and message this number directly.';
+        } else if (url.includes('instagram')) {
+          title = 'Instagram';
+          message = '@wanderingyacht\n\nSearch this handle on Instagram.';
+        } else if (url.includes('tel:')) {
+          title = 'Phone';
+          message = '+382 69 333 693';
+        } else if (url.includes('google.com/maps')) {
+          title = 'Map Location';
+          message = 'Copy this link to your browser:\n\n' + url;
+        } else if (url.includes('wanderingyacht.com')) {
+          title = 'Website';
+          message = 'www.wanderingyacht.com\n\nVisit this URL in your browser.';
+        }
+        setLinkModal({ visible: true, title, message });
+      }
+    } else {
+      Linking.openURL(url);
+    }
+  };
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
@@ -166,6 +182,32 @@ export default function AboutScreen() {
 
         <View style={{ height: 60 }} />
       </ScrollView>
+
+      {/* Link Info Modal for web preview */}
+      <Modal
+        visible={linkModal.visible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setLinkModal({ ...linkModal, visible: false })}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={() => setLinkModal({ ...linkModal, visible: false })}
+        >
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>{linkModal.title}</Text>
+            <Text style={styles.modalMessage}>{linkModal.message}</Text>
+            <Text style={styles.modalNote}>Links open natively on your phone via the app</Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => setLinkModal({ ...linkModal, visible: false })}
+            >
+              <Text style={styles.modalButtonText}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
@@ -347,5 +389,55 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: 'rgba(255, 255, 255, 0.7)',
     textDecorationLine: 'underline',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 30,
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 28,
+    width: '100%',
+    maxWidth: 340,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#1a3a4a',
+    marginBottom: 12,
+  },
+  modalMessage: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 16,
+    color: '#3a4a4a',
+    textAlign: 'center',
+    lineHeight: 24,
+    marginBottom: 8,
+  },
+  modalNote: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    color: '#9ca3a3',
+    textAlign: 'center',
+    marginBottom: 20,
+    fontStyle: 'italic',
+  },
+  modalButton: {
+    backgroundColor: '#1a3a4a',
+    paddingVertical: 12,
+    paddingHorizontal: 40,
+    borderRadius: 10,
+  },
+  modalButtonText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: '600',
   },
 });

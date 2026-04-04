@@ -13,7 +13,6 @@ import {
   TextInput,
   Linking,
   Platform,
-  Alert,
 } from 'react-native';
 import { useRouter, Href } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -23,16 +22,7 @@ import { useAuth } from '../../src/context/AuthContext';
 
 const openLink = (url: string) => {
   if (Platform.OS === 'web') {
-    // Web preview iframe blocks external URLs — show contact info instead
-    let message = url;
-    if (url.includes('wa.me')) {
-      message = 'WhatsApp: +382 69 333 693';
-    } else if (url.includes('instagram')) {
-      message = 'Instagram: @wanderingyacht';
-    } else if (url.includes('tel:')) {
-      message = 'Phone: +382 69 333 693';
-    }
-    Alert.alert('Contact Info', message + '\n\n(Links open natively on your phone via the app)', [{ text: 'OK' }]);
+    window.open(url, '_blank');
   } else {
     Linking.openURL(url);
   }
