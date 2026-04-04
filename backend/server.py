@@ -1117,6 +1117,48 @@ async def seed_data_internal():
             "is_active": True,
             "created_at": datetime.utcnow()
         },
+
+        # WEDDING AND EVENT PLANNING
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Yacht Wedding Celebration",
+            "description": "Say 'I Do' on the Adriatic Sea. Wandering Yacht transforms a luxury yacht into your dream wedding venue, surrounded by Montenegro's dramatic mountains and crystal waters. Our dedicated team handles every detail so you can focus on the magic of your special day.\n\nYour Wedding Day Includes:\n• Private luxury yacht exclusively for your ceremony & reception\n• Onboard wedding coordinator & event styling\n• Floral arrangements & elegant table décor\n• Gourmet catering with a curated multi-course menu\n• Premium open bar with champagne toast\n• Live music or curated DJ set\n• Professional lighting & sound system\n• Captain & full yacht crew\n• Scenic cruising through the Bay of Kotor\n• Sunset ceremony positioning\n• Wedding cake by a local artisan patissier\n• Red carpet boarding & welcome champagne\n• Accommodation coordination for guests",
+            "category": "experiences",
+            "location": "Bay of Kotor, Montenegro",
+            "date": "2025-06-01",
+            "image_url": "https://customer-assets.emergentagent.com/job_ac874aeb-cfb2-4c82-a97b-ff79f3b1c447/artifacts/zev6mkpk_IMG_2953.jpeg",
+            "capacity": 50,
+            "available_spots": 50,
+            "duration_hours": 8,
+            "amenities": ["Wedding Coordinator", "Luxury Yacht", "Gourmet Catering", "Live Music", "Floral Design", "Photography Ready"],
+            "included": ["Private yacht charter", "Wedding coordinator", "Catering & open bar", "Floral décor", "Sound & lighting", "Captain & crew", "Champagne toast", "Wedding cake"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Intimate (up to 20 guests)", "description": "Perfect for an intimate yacht wedding celebration", "price": 8500, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Grand (up to 50 guests)", "description": "Full wedding celebration on our largest yacht", "price": 15000, "max_per_booking": 1}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Couple's Photo Experience on the Water",
+            "description": "Capture timeless moments aboard a classic wooden boat against Montenegro's breathtaking coastline. Whether before or after your wedding, this intimate photo session creates stunning images you'll treasure forever.\n\nYour Photo Experience Includes:\n• Private classic wooden boat for 2 hours\n• Professional wedding & portrait photographer\n• Scenic route through the Bay of Kotor\n• Golden hour & sunset positioning\n• Champagne & canapés onboard\n• Captain in classic maritime attire\n• Multiple scenic stops for photos\n• Mountain, sea & old town backdrops\n• 50+ professionally edited digital images\n• Online gallery delivered within 7 days\n• Option to add drone aerial photography\n• Hair & makeup touch-up kit onboard\n• Personalised photo album (add-on available)",
+            "category": "experiences",
+            "location": "Porto Montenegro, Tivat",
+            "date": "2025-06-01",
+            "image_url": "https://customer-assets.emergentagent.com/job_ac874aeb-cfb2-4c82-a97b-ff79f3b1c447/artifacts/zev6mkpk_IMG_2953.jpeg",
+            "capacity": 4,
+            "available_spots": 4,
+            "duration_hours": 2,
+            "amenities": ["Professional Photographer", "Classic Wooden Boat", "Champagne", "Scenic Route", "Digital Gallery"],
+            "included": ["Private boat charter", "Professional photographer", "Champagne & canapés", "50+ edited photos", "Online gallery", "Captain"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Couple's Session", "description": "2-hour photo experience for the couple", "price": 1200, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "With Drone Photography", "description": "Includes aerial drone shots", "price": 1600, "max_per_booking": 1}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
     ]
     
     await db.experiences.insert_many(experiences)
