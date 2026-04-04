@@ -1126,7 +1126,7 @@ async def seed_data_internal():
             "category": "experiences",
             "location": "Bay of Kotor, Montenegro",
             "date": "2025-06-01",
-            "image_url": "https://customer-assets.emergentagent.com/job_ac874aeb-cfb2-4c82-a97b-ff79f3b1c447/artifacts/zev6mkpk_IMG_2953.jpeg",
+            "image_url": "https://customer-assets.emergentagent.com/job_ac874aeb-cfb2-4c82-a97b-ff79f3b1c447/artifacts/izj5hjhu_IMG_2955.jpeg",
             "capacity": 50,
             "available_spots": 50,
             "duration_hours": 8,
