@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -6,15 +6,39 @@ import {
   TouchableOpacity,
   Alert,
   Image,
+  ScrollView,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../../src/context/AuthContext';
+import { useFavorites } from '../../src/context/FavoritesContext';
+import { api } from '../../src/services/api';
 
 export default function ProfileScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { user, logout } = useAuth();
+  const { user, token, logout } = useAuth();
+  const { favorites, toggleFavorite, shareToNotes } = useFavorites();
+  const [allExperiences, setAllExperiences] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (token) {
+      api.setToken(token);
+    }
+    loadExperiences();
+  }, [token]);
+
+  const loadExperiences = async () => {
+    try {
+      const data = await api.getExperiences();
+      setAllExperiences(data);
+    } catch (e) {
+      console.error('Failed to load experiences', e);
+    }
+  };
+
+  const favoriteExperiences = allExperiences.filter((exp) => favorites.includes(exp.id));
 
   const handleLogout = () => {
     Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
@@ -32,15 +56,61 @@ export default function ProfileScreen() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-      {/* Centered Logo */}
-      <View style={styles.logoContainer}>
-        <Image
-          source={require('../../assets/images/wy-logo.png')}
-          style={styles.logo}
-          resizeMode="contain"
-        />
-        <Text style={styles.brandName}>WANDERING YACHT</Text>
-      </View>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+        {/* Centered Logo */}
+        <View style={styles.logoContainer}>
+          <Image
+            source={require('../../assets/images/wy-logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+          <Text style={styles.brandName}>WANDERING YACHT</Text>
+        </View>
+
+        {/* Favorites Section */}
+        {favorites.length > 0 && (
+          <View style={styles.favoritesSection}>
+            <View style={styles.favoritesHeaderRow}>
+              <View style={styles.favoritesLine} />
+              <Text style={styles.favoritesTitle}>YOUR FAVORITES</Text>
+              <View style={styles.favoritesLine} />
+            </View>
+
+            {favoriteExperiences.map((exp) => (
+              <TouchableOpacity
+                key={exp.id}
+                style={styles.favoriteCard}
+                onPress={() => router.push(`/experience/${exp.id}`)}
+                activeOpacity={0.8}
+              >
+                <Image source={{ uri: exp.image_url }} style={styles.favoriteImage} />
+                <View style={styles.favoriteInfo}>
+                  <Text style={styles.favoriteName} numberOfLines={1}>{exp.title}</Text>
+                  <Text style={styles.favoriteLocation} numberOfLines={1}>
+                    <Ionicons name="location-outline" size={12} color="#7a8a8a" /> {exp.location}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => toggleFavorite(exp.id)}
+                  style={styles.favoriteHeart}
+                >
+                  <Ionicons name="heart" size={20} color="#e74c3c" />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            ))}
+
+            {/* Save to Notes Button */}
+            <TouchableOpacity
+              style={styles.shareNotesBtn}
+              onPress={() => shareToNotes(allExperiences)}
+              activeOpacity={0.8}
+            >
+              <Ionicons name="share-outline" size={18} color="#fff" />
+              <Text style={styles.shareNotesBtnText}>Save Favorites to Notes</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </ScrollView>
 
       {/* Bottom Actions */}
       <View style={styles.bottomActions}>
@@ -93,10 +163,82 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#1a3a4a',
     fontSize: 18,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '400',
     letterSpacing: 3,
     marginTop: 20,
+  },
+  favoritesSection: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+  },
+  favoritesHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    gap: 12,
+  },
+  favoritesLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#d5d0c8',
+  },
+  favoritesTitle: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    color: '#c17f59',
+    fontWeight: '600',
+    letterSpacing: 1.5,
+  },
+  favoriteCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    marginBottom: 8,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ede9e3',
+  },
+  favoriteImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 8,
+    backgroundColor: '#e8e5e0',
+  },
+  favoriteInfo: {
+    flex: 1,
+    marginLeft: 12,
+  },
+  favoriteName: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 15,
+    color: '#1a2a30',
+    fontWeight: '600',
+  },
+  favoriteLocation: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 12,
+    color: '#7a8a8a',
+    marginTop: 2,
+  },
+  favoriteHeart: {
+    padding: 8,
+  },
+  shareNotesBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1a3a4a',
+    paddingVertical: 14,
+    borderRadius: 10,
+    marginTop: 12,
+    gap: 8,
+  },
+  shareNotesBtnText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 15,
+    color: '#fff',
+    fontWeight: '600',
   },
   bottomActions: {
     paddingHorizontal: 40,
@@ -121,7 +263,6 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
     textAlign: 'center',
   },
@@ -137,7 +278,6 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#1a3a4a',
     fontSize: 16,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
     textAlign: 'center',
   },
@@ -153,7 +293,6 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#e74c3c',
     fontSize: 16,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
     textAlign: 'center',
   },

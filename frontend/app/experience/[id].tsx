@@ -18,6 +18,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Calendar } from 'react-native-calendars';
 import { api } from '../../src/services/api';
 import { useAuth } from '../../src/context/AuthContext';
+import { useFavorites } from '../../src/context/FavoritesContext';
 
 const { width } = Dimensions.get('window');
 
@@ -79,6 +80,7 @@ export default function ExperienceDetailScreen() {
   const { id } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const { user, token } = useAuth();
+  const { toggleFavorite, isFavorite } = useFavorites();
   const [experience, setExperience] = useState<Experience | null>(null);
   const [loading, setLoading] = useState(true);
   const [ticketCounts, setTicketCounts] = useState<{ [key: string]: number }>({});
@@ -234,8 +236,12 @@ export default function ExperienceDetailScreen() {
             >
               <Ionicons name="arrow-back" size={24} color="#1a2a30" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.shareButton}>
-              <Ionicons name="heart-outline" size={24} color="#1a2a30" />
+            <TouchableOpacity style={styles.shareButton} onPress={() => experience && toggleFavorite(experience.id)}>
+              <Ionicons
+                name={experience && isFavorite(experience.id) ? 'heart' : 'heart-outline'}
+                size={24}
+                color={experience && isFavorite(experience.id) ? '#e74c3c' : '#1a2a30'}
+              />
             </TouchableOpacity>
           </View>
         </View>

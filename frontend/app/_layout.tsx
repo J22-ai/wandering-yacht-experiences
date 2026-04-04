@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { AuthProvider } from '../src/context/AuthContext';
+import { FavoritesProvider } from '../src/context/FavoritesContext';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { View, ActivityIndicator, StyleSheet, Text } from 'react-native';
@@ -29,6 +30,7 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
+      <FavoritesProvider>
       <StatusBar style="dark" />
       <Stack
         screenOptions={{
@@ -46,6 +48,7 @@ export default function RootLayout() {
         <Stack.Screen name="about" />
         <Stack.Screen name="ticket/[id]" options={{ presentation: 'modal' }} />
       </Stack>
+      </FavoritesProvider>
     </AuthProvider>
   );
 }
