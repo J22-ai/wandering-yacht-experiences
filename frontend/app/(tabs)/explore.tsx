@@ -208,29 +208,21 @@ export default function ExploreScreen() {
         ) : null}
       </View>
 
-      {/* Category Pills - only when no category pre-selected */}
+      {/* Category List - only when no category pre-selected */}
       {!selectedCategory && (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.pillsRow}
-        >
-          <TouchableOpacity
-            style={[styles.pill, styles.pillActive]}
-            onPress={() => setSelectedCategory(null)}
-          >
-            <Text style={[styles.pillText, styles.pillTextActive]}>All</Text>
-          </TouchableOpacity>
+        <View style={styles.categoryList}>
           {categories.map((category) => (
             <TouchableOpacity
               key={category.id}
-              style={styles.pill}
+              style={styles.categoryRow}
               onPress={() => setSelectedCategory(category.slug)}
+              activeOpacity={0.7}
             >
-              <Text style={styles.pillText}>{category.name}</Text>
+              <Text style={styles.categoryRowText}>{category.name}</Text>
+              <Ionicons name="chevron-forward" size={18} color="#c17f59" />
             </TouchableOpacity>
           ))}
-        </ScrollView>
+        </View>
       )}
 
       {/* Results */}
@@ -315,33 +307,29 @@ const styles = StyleSheet.create({
     color: '#1a2a30',
     fontSize: 15,
   },
-  pillsRow: {
+  categoryList: {
     paddingHorizontal: 16,
     paddingTop: 10,
-    paddingBottom: 6,
-    gap: 8,
+    paddingBottom: 4,
+  },
+  categoryRow: {
+    flexDirection: 'row',
     alignItems: 'center',
-  },
-  pill: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
+    justifyContent: 'space-between',
     backgroundColor: '#fff',
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+    borderRadius: 10,
+    marginBottom: 8,
     borderWidth: 1,
-    borderColor: '#ddd8d0',
+    borderColor: '#ede9e3',
   },
-  pillActive: {
-    backgroundColor: '#1a3a4a',
-    borderColor: '#1a3a4a',
-  },
-  pillText: {
+  categoryRowText: {
     fontFamily: 'TraditionalArabic',
-    color: '#5a6a6a',
-    fontSize: 13,
+    fontSize: 15,
+    color: '#1a3a4a',
     fontWeight: '500',
-  },
-  pillTextActive: {
-    color: '#fff',
+    letterSpacing: 0.5,
   },
   resultsContainer: {
     flex: 1,
