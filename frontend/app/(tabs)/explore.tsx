@@ -32,6 +32,7 @@ interface Experience {
   capacity: number;
   available_spots: number;
   duration_hours: number;
+  tags: string[];
   ticket_types: Array<{
     id: string;
     name: string;
@@ -105,7 +106,8 @@ export default function ExploreScreen() {
         (exp) =>
           exp.title.toLowerCase().includes(query) ||
           exp.location.toLowerCase().includes(query) ||
-          exp.description.toLowerCase().includes(query)
+          exp.description.toLowerCase().includes(query) ||
+          (exp.tags && exp.tags.some((tag: string) => tag.toLowerCase().includes(query)))
       );
     }
     return filtered;

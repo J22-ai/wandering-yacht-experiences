@@ -127,6 +127,7 @@ class Experience(BaseModel):
     duration_hours: Optional[float] = None
     amenities: List[str] = []
     included: List[str] = []
+    tags: List[str] = []
     created_at: datetime = Field(default_factory=datetime.utcnow)
     is_active: bool = True
 

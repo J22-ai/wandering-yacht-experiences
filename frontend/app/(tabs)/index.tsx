@@ -124,7 +124,8 @@ export default function HomeScreen() {
     return (
       exp.title.toLowerCase().includes(q) ||
       exp.location.toLowerCase().includes(q) ||
-      exp.description.toLowerCase().includes(q)
+      exp.description.toLowerCase().includes(q) ||
+      (exp.tags && exp.tags.some((tag: string) => tag.toLowerCase().includes(q)))
     );
   });
 
