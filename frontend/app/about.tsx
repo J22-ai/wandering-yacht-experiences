@@ -144,6 +144,13 @@ export default function AboutScreen() {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.contactRow}
+            onPress={() => openLink('mailto:info@wanderingyacht.com')}
+          >
+            <Ionicons name="mail-outline" size={20} color="#1a3a4a" />
+            <Text style={styles.contactRowText}>info@wanderingyacht.com</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.contactRow}
             onPress={() => openLink('https://www.google.com/maps/search/?api=1&query=Porto+Montenegro+Tivat')}
           >
             <Ionicons name="location-outline" size={20} color="#1a3a4a" />
