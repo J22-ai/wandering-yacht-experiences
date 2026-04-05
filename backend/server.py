@@ -1160,6 +1160,52 @@ async def seed_data_internal():
             "is_active": True,
             "created_at": datetime.utcnow()
         },
+        # TRANSFER SERVICE
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Mercedes Minivan Transfer Service",
+            "description": "Travel Montenegro in comfort and style with our premium Mercedes Minivan transfer service. Whether you need an airport pick-up, a drop-off to your hotel, a later collection, or a full-day scenic drive through Montenegro's stunning coastline and mountains — we've got you covered.\n\nPerfect for families, groups, or anyone who wants a seamless, stress-free journey.\n\nService Includes:\n• Luxury Mercedes Minivan (up to 7 guests)\n• Professional English-speaking driver\n• Airport meet & greet with name board\n• Complimentary bottled water & Wi-Fi\n• Child seats available on request\n• Flexible scheduling — pick up, drop off, collect later\n• Full-day hire available for scenic touring\n• Air conditioning & premium leather interior\n• Luggage assistance\n• 24/7 booking availability",
+            "category": "experiences",
+            "location": "Montenegro (Anywhere)",
+            "date": "2025-06-01",
+            "image_url": "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=800&q=80",
+            "capacity": 7,
+            "available_spots": 7,
+            "duration_hours": 4,
+            "amenities": ["Mercedes Minivan", "Professional Driver", "Wi-Fi", "Air Conditioning", "Bottled Water", "Child Seats"],
+            "included": ["Luxury Mercedes Minivan", "Professional driver", "Bottled water & Wi-Fi", "Luggage assistance", "Meet & greet"],
+            "tags": ["transfer", "transport", "family-friendly", "airport", "luxury", "private", "group"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "One-Way Transfer", "description": "Single pick-up or drop-off anywhere in Montenegro", "price": 120, "max_per_booking": 7},
+                {"id": str(uuid.uuid4()), "name": "Return Transfer", "description": "Pick-up and drop-off with waiting time", "price": 200, "max_per_booking": 7},
+                {"id": str(uuid.uuid4()), "name": "Full Day Hire (8 hours)", "description": "Explore Montenegro at your pace with a private driver", "price": 450, "max_per_booking": 7}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        # WEDDING DREAM
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Wedding Dream",
+            "description": "Create the most stunning 'Mamma Mia' style experience and ceremony — because we have the place.\n\nImagine privatising 4 beautiful beaches (2 of white pebbles), a candlelit walkway from the shore where your guests arrive by boat, walking together up to the ceremony. Later, dine al fresco under the stars at an exclusive reception with breathtaking sea views.\n\nYour Dream Wedding Includes:\n• 4 privatised beaches with candlelit walkways\n• Guest arrival by boat to the ceremony beach\n• Outdoor ceremony with panoramic sea & mountain views\n• Reception dining under the stars\n• Entire boutique hotel exclusively yours — 20 rooms\n• Private restaurant & traditional stone tavern\n• 12 charming stone villas\n• 6 luxury apartments\n• The Wedding / Presidential Suite\n• Honeymoon departure by speedboat or private yacht\n• Option to cruise to a secluded honeymoon location on or near the water\n• Full wedding coordination & event styling\n• Floral design & décor\n• Gourmet catering with local & international cuisine\n• Premium open bar\n• Live music & entertainment\n• Professional lighting, sound & visual effects\n• Photography & videography coordination\n• Guest transport by boat\n• Dedicated on-site event manager\n\nThis is not just a wedding — it's a once-in-a-lifetime experience on the Montenegrin coast, where mountains meet the Adriatic and dreams come true.",
+            "category": "experiences",
+            "location": "Montenegro Coast",
+            "date": "2025-06-01",
+            "image_url": "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80",
+            "capacity": 150,
+            "available_spots": 150,
+            "duration_hours": 72,
+            "amenities": ["Private Beaches", "Boutique Hotel", "Stone Villas", "Restaurant & Tavern", "Presidential Suite", "Speedboat", "Candlelit Walkways", "Live Music"],
+            "included": ["4 privatised beaches", "Entire boutique hotel (20 rooms)", "12 stone villas & 6 apartments", "Wedding/Presidential Suite", "Restaurant & tavern", "Wedding coordinator", "Floral design & décor", "Catering & open bar", "Guest boat transport", "Honeymoon speedboat departure"],
+            "tags": ["wedding", "romantic", "luxury", "exclusive", "honeymoon", "beachfront", "ceremony", "celebration"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Intimate Wedding (up to 50 guests)", "description": "Exclusive venue with all amenities for an intimate celebration", "price": 25000, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Grand Wedding (up to 100 guests)", "description": "Full venue takeover with complete wedding production", "price": 45000, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Ultimate Dream (up to 150 guests)", "description": "The complete Mamma Mia experience — every detail perfected", "price": 75000, "max_per_booking": 1}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
     ]
     
     await db.experiences.insert_many(experiences)
@@ -1294,6 +1340,66 @@ async def add_missing_experiences():
         })
         added.append("Classic Heritage Sail")
     
+    return {"message": f"Added: {', '.join(added)}" if added else "Both already exist"}
+
+@api_router.post("/admin/add-new-experiences")
+async def add_new_experiences():
+    """Add Mercedes Transfer and Wedding Dream experiences"""
+    import uuid as uuid_mod
+    added = []
+
+    existing_transfer = await db.experiences.find_one({"title": "Mercedes Minivan Transfer Service"})
+    if not existing_transfer:
+        await db.experiences.insert_one({
+            "id": str(uuid_mod.uuid4()),
+            "title": "Mercedes Minivan Transfer Service",
+            "description": "Travel Montenegro in comfort and style with our premium Mercedes Minivan transfer service. Whether you need an airport pick-up, a drop-off to your hotel, a later collection, or a full-day scenic drive through Montenegro's stunning coastline and mountains — we've got you covered.\n\nPerfect for families, groups, or anyone who wants a seamless, stress-free journey.\n\nService Includes:\n• Luxury Mercedes Minivan (up to 7 guests)\n• Professional English-speaking driver\n• Airport meet & greet with name board\n• Complimentary bottled water & Wi-Fi\n• Child seats available on request\n• Flexible scheduling — pick up, drop off, collect later\n• Full-day hire available for scenic touring\n• Air conditioning & premium leather interior\n• Luggage assistance\n• 24/7 booking availability",
+            "category": "experiences",
+            "location": "Montenegro (Anywhere)",
+            "date": "2025-06-01",
+            "image_url": "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=800&q=80",
+            "capacity": 7,
+            "available_spots": 7,
+            "duration_hours": 4,
+            "amenities": ["Mercedes Minivan", "Professional Driver", "Wi-Fi", "Air Conditioning", "Bottled Water", "Child Seats"],
+            "included": ["Luxury Mercedes Minivan", "Professional driver", "Bottled water & Wi-Fi", "Luggage assistance", "Meet & greet"],
+            "tags": ["transfer", "transport", "family-friendly", "airport", "luxury", "private", "group"],
+            "ticket_types": [
+                {"id": str(uuid_mod.uuid4()), "name": "One-Way Transfer", "description": "Single pick-up or drop-off anywhere in Montenegro", "price": 120, "max_per_booking": 7},
+                {"id": str(uuid_mod.uuid4()), "name": "Return Transfer", "description": "Pick-up and drop-off with waiting time", "price": 200, "max_per_booking": 7},
+                {"id": str(uuid_mod.uuid4()), "name": "Full Day Hire (8 hours)", "description": "Explore Montenegro at your pace with a private driver", "price": 450, "max_per_booking": 7}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        })
+        added.append("Mercedes Minivan Transfer Service")
+
+    existing_wedding = await db.experiences.find_one({"title": "Wedding Dream"})
+    if not existing_wedding:
+        await db.experiences.insert_one({
+            "id": str(uuid_mod.uuid4()),
+            "title": "Wedding Dream",
+            "description": "Create the most stunning 'Mamma Mia' style experience and ceremony — because we have the place.\n\nImagine privatising 4 beautiful beaches (2 of white pebbles), a candlelit walkway from the shore where your guests arrive by boat, walking together up to the ceremony. Later, dine al fresco under the stars at an exclusive reception with breathtaking sea views.\n\nYour Dream Wedding Includes:\n• 4 privatised beaches with candlelit walkways\n• Guest arrival by boat to the ceremony beach\n• Outdoor ceremony with panoramic sea & mountain views\n• Reception dining under the stars\n• Entire boutique hotel exclusively yours — 20 rooms\n• Private restaurant & traditional stone tavern\n• 12 charming stone villas\n• 6 luxury apartments\n• The Wedding / Presidential Suite\n• Honeymoon departure by speedboat or private yacht\n• Option to cruise to a secluded honeymoon location on or near the water\n• Full wedding coordination & event styling\n• Floral design & décor\n• Gourmet catering with local & international cuisine\n• Premium open bar\n• Live music & entertainment\n• Professional lighting, sound & visual effects\n• Photography & videography coordination\n• Guest transport by boat\n• Dedicated on-site event manager\n\nThis is not just a wedding — it is a once-in-a-lifetime experience on the Montenegrin coast, where mountains meet the Adriatic and dreams come true.",
+            "category": "experiences",
+            "location": "Montenegro Coast",
+            "date": "2025-06-01",
+            "image_url": "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80",
+            "capacity": 150,
+            "available_spots": 150,
+            "duration_hours": 72,
+            "amenities": ["Private Beaches", "Boutique Hotel", "Stone Villas", "Restaurant & Tavern", "Presidential Suite", "Speedboat", "Candlelit Walkways", "Live Music"],
+            "included": ["4 privatised beaches", "Entire boutique hotel (20 rooms)", "12 stone villas & 6 apartments", "Wedding/Presidential Suite", "Restaurant & tavern", "Wedding coordinator", "Floral design & decor", "Catering & open bar", "Guest boat transport", "Honeymoon speedboat departure"],
+            "tags": ["wedding", "romantic", "luxury", "exclusive", "honeymoon", "beachfront", "ceremony", "celebration"],
+            "ticket_types": [
+                {"id": str(uuid_mod.uuid4()), "name": "Intimate Wedding (up to 50 guests)", "description": "Exclusive venue with all amenities for an intimate celebration", "price": 25000, "max_per_booking": 1},
+                {"id": str(uuid_mod.uuid4()), "name": "Grand Wedding (up to 100 guests)", "description": "Full venue takeover with complete wedding production", "price": 45000, "max_per_booking": 1},
+                {"id": str(uuid_mod.uuid4()), "name": "Ultimate Dream (up to 150 guests)", "description": "The complete Mamma Mia experience — every detail perfected", "price": 75000, "max_per_booking": 1}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        })
+        added.append("Wedding Dream")
+
     return {"message": f"Added: {', '.join(added)}" if added else "Both already exist"}
 
 # Include the router in the main app
