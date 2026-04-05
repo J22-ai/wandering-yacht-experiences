@@ -1060,7 +1060,7 @@ async def seed_data_internal():
             "id": str(uuid.uuid4()),
             "title": "Catamaran Privilege 510 Yacht Charter",
             "description": "Experience our 2025 new 52Ft Catamaran. Dedicated Owners Cabin. 4 Double Cabins, 4 Heads. A/C - Heating. WiFi onboard. Available for Half day, Full Day, Weekly Charters.",
-            "category": "experiences",
+            "category": "water_adventures",
             "location": "Porto Montenegro",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/zu34x02w_PHOTO-2026-03-17-10-58-52.jpg",
