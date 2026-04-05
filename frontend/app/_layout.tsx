@@ -25,7 +25,8 @@ export default function RootLayout() {
   if (!fontsLoaded && !fontError) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#1a3a4a" />
+        <Text style={styles.splashBrandName}>WANDERING YACHT</Text>
+        <ActivityIndicator size="large" color="#1a3a4a" style={{ marginTop: 20 }} />
       </View>
     );
   }
@@ -63,5 +64,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#faf9f7',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  splashBrandName: {
+    fontSize: 28,
+    color: '#000000',
+    fontWeight: '700',
+    letterSpacing: 6,
   },
 });

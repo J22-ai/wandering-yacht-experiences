@@ -140,8 +140,8 @@ const styles = StyleSheet.create({
   loadingBrandName: {
     fontFamily: 'TraditionalArabic',
     fontSize: 28,
-    color: '#1a3a4a',
-    fontWeight: '600',
+    color: '#000000',
+    fontWeight: '700',
     letterSpacing: 6,
     marginTop: 16,
   },
@@ -158,8 +158,8 @@ const styles = StyleSheet.create({
   brandName: {
     fontFamily: 'TraditionalArabic',
     fontSize: 26,
-    color: '#1a3a4a',
-    fontWeight: '600',
+    color: '#000000',
+    fontWeight: '700',
     letterSpacing: 6,
     marginTop: 6,
   },
