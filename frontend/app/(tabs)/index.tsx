@@ -353,8 +353,8 @@ const styles = StyleSheet.create({
     borderBottomColor: '#f0ede8',
   },
   mainLogo: {
-    width: 220,
-    height: 310,
+    width: 120,
+    height: 120,
   },
   homeBrandName: {
     fontFamily: 'TraditionalArabic',
