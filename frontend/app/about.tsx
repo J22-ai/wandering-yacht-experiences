@@ -129,6 +129,14 @@ export default function AboutScreen() {
             <Text style={styles.linkText}>@WanderingYacht</Text>
             <Ionicons name="open-outline" size={16} color="#9ca3a3" />
           </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.linkRow}
+            onPress={() => openLink('https://www.wanderingyachtshop.com/')}
+          >
+            <Ionicons name="bag-outline" size={20} color="#1a3a4a" />
+            <Text style={styles.linkText}>Wandering Yacht Shop</Text>
+            <Ionicons name="open-outline" size={16} color="#9ca3a3" />
+          </TouchableOpacity>
         </View>
 
         {/* Contact Section */}
