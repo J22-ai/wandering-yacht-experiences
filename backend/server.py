@@ -924,7 +924,7 @@ async def seed_data_internal():
             "category": "nature_escapes",
             "location": "Coastal Montenegro",
             "date": "2025-08-01",
-            "image_url": "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800",
+            "image_url": "https://customer-assets.emergentagent.com/job_ac874aeb-cfb2-4c82-a97b-ff79f3b1c447/artifacts/9dr6o0dv_C10518AE-9792-4EB3-8B29-1764E1E9A89A.png",
             "capacity": 10,
             "available_spots": 10,
             "duration_hours": 4,
