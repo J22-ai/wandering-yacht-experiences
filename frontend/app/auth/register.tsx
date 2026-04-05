@@ -81,7 +81,7 @@ export default function RegisterScreen() {
       >
         <View style={styles.logoContainer}>
           <Image
-            source={require('../../assets/images/wy-logo.png')}
+            source={require('../../assets/images/wy-logo-solid.png')}
             style={styles.logo}
             resizeMode="contain"
           />

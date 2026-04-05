@@ -57,7 +57,7 @@ export default function AboutScreen() {
         {/* Logo */}
         <View style={styles.logoSection}>
           <Image
-            source={require('../assets/images/wy-logo.png')}
+            source={require('../assets/images/wy-logo-solid.png')}
             style={styles.logo}
             resizeMode="contain"
           />

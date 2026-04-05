@@ -26,7 +26,7 @@ export default function WelcomeScreen() {
     return (
       <View style={styles.loadingContainer}>
         <Image
-          source={require('../assets/images/wy-logo.png')}
+          source={require('../assets/images/wy-logo-solid.png')}
           style={styles.loadingLogo}
           resizeMode="contain"
         />
@@ -44,7 +44,7 @@ export default function WelcomeScreen() {
       {/* Header with centered logo, brand name, and language globe */}
       <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
         <Image
-          source={require('../assets/images/wy-logo.png')}
+          source={require('../assets/images/wy-logo-solid.png')}
           style={styles.headerLogo}
           resizeMode="contain"
         />

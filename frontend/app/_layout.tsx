@@ -11,17 +11,18 @@ import { View, ActivityIndicator, StyleSheet, Text } from 'react-native';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     'TraditionalArabic': require('../assets/fonts/TraditionalArabic-Regular.ttf'),
+    'TraditionalArabic-Bold': require('../assets/fonts/TraditionalArabic-Bold.ttf'),
   });
 
   useEffect(() => {
-    if (fontsLoaded) {
+    if (fontsLoaded || fontError) {
       SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
+  }, [fontsLoaded, fontError]);
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded && !fontError) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#1a3a4a" />

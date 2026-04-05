@@ -143,7 +143,7 @@ export default function TicketScreen() {
           <View style={styles.ticketTop}>
             <View style={styles.brandRow}>
               <Image
-                source={require('../../assets/images/wy-logo.png')}
+                source={require('../../assets/images/wy-logo-solid.png')}
                 style={styles.brandLogo}
                 resizeMode="contain"
               />
