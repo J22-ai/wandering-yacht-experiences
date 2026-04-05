@@ -35,7 +35,7 @@ export default function WelcomeScreen() {
 
   return (
     <ImageBackground
-      source={{ uri: 'https://images.unsplash.com/photo-1763467941364-3d0d6ba474a1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjB5YWNodCUyMHlvZ2ElMjBkZWNrJTIwbWVkaXRlcnJhbmVhbnxlbnwwfHx8fDE3NzM0ODQ4MTF8MA&ixlib=rb-4.1.0&q=85' }}
+      source={{ uri: 'https://images.unsplash.com/photo-1604729220139-314542b85436?w=900&q=80' }}
       style={styles.container}
       resizeMode="cover"
     >
@@ -130,11 +130,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 24,
     paddingTop: 80,
+    backgroundColor: 'rgba(0, 40, 60, 0.35)',
   },
   heroTitle: {
     fontFamily: 'TraditionalArabic',
     fontSize: 44,
-    fontFamily: 'TraditionalArabic',
     color: '#fff',
     textAlign: 'center',
     fontWeight: '300',
@@ -146,7 +146,6 @@ const styles = StyleSheet.create({
   heroCountry: {
     fontFamily: 'TraditionalArabic',
     fontSize: 32,
-    fontFamily: 'TraditionalArabic',
     color: '#fff',
     textAlign: 'center',
     fontWeight: '600',
@@ -159,7 +158,6 @@ const styles = StyleSheet.create({
   heroSubtitle: {
     fontFamily: 'TraditionalArabic',
     fontSize: 16,
-    fontFamily: 'TraditionalArabic',
     color: 'rgba(255, 255, 255, 0.92)',
     textAlign: 'center',
     marginTop: 40,
@@ -173,12 +171,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
     paddingVertical: 16,
-    paddingHorizontal: 28,
-    borderRadius: 8,
-    marginTop: 24,
-    width: width - 48,
+    paddingHorizontal: 36,
+    borderRadius: 30,
+    marginTop: 32,
     gap: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -189,7 +186,6 @@ const styles = StyleSheet.create({
   exploreButtonText: {
     fontFamily: 'TraditionalArabic',
     fontSize: 17,
-    fontFamily: 'TraditionalArabic',
     color: '#1a3a4a',
     fontWeight: '600',
   },
@@ -208,7 +204,6 @@ const styles = StyleSheet.create({
   signInBold: {
     fontFamily: 'TraditionalArabic',
     fontSize: 15,
-    fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontWeight: '700',
   },
