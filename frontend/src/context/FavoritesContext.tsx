@@ -22,7 +22,10 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   const [favorites, setFavorites] = useState<string[]>([]);
 
   useEffect(() => {
-    loadFavorites();
+    const timer = setTimeout(() => {
+      loadFavorites();
+    }, 200);
+    return () => clearTimeout(timer);
   }, []);
 
   const loadFavorites = async () => {

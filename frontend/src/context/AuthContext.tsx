@@ -28,7 +28,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    loadStoredAuth();
+    const timer = setTimeout(() => {
+      loadStoredAuth();
+    }, 100);
+    return () => clearTimeout(timer);
   }, []);
 
   const loadStoredAuth = async () => {

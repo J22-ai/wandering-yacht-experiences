@@ -20,7 +20,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLang] = useState<Language>('en');
 
   useEffect(() => {
-    loadLanguage();
+    const timer = setTimeout(() => {
+      loadLanguage();
+    }, 300);
+    return () => clearTimeout(timer);
   }, []);
 
   const loadLanguage = async () => {
