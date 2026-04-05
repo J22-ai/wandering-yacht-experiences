@@ -264,7 +264,7 @@ export default function ExperienceDetailScreen() {
             activeOpacity={0.7}
           >
             <Ionicons name="location-outline" size={18} color="#c17f59" />
-            <Text style={[styles.location, { textDecorationLine: 'underline' }]}>{experience.location}</Text>
+            <Text style={styles.location}>{experience.location}</Text>
             <Ionicons name="open-outline" size={14} color="#c17f59" />
           </TouchableOpacity>
 
