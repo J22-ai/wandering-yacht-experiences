@@ -68,6 +68,7 @@ const featureItems = [
   { title: 'CULINARY EXCURSIONS', desc: 'Wine tasting and gourmet adventures', slug: 'culinary_tours', logo: require('../../assets/images/wy-culinary.jpg') },
   { title: 'NATURE ESCAPES', desc: 'Explore breathtaking landscapes', slug: 'nature_escapes', logo: require('../../assets/images/wy-nature.jpg') },
   { title: 'CONCIERGE SERVICES', desc: 'Personal assistant for your holiday', slug: 'concierge_services', logo: require('../../assets/images/wy-logo-solid.png') },
+  { title: 'WEDDINGS & EVENTS', desc: 'Your dream celebration on the water', slug: 'weddings_events', logo: require('../../assets/images/wy-wedding.png') },
 ];
 
 export default function HomeScreen() {
