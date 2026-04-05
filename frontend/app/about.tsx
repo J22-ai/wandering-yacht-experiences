@@ -123,7 +123,23 @@ export default function AboutScreen() {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.linkRow}
-            onPress={() => openLink('https://www.youtube.com/@WanderingYacht')}
+            onPress={() => {
+              if (Platform.OS === 'web') {
+                try {
+                  (window.top || window.parent || window).open('https://www.youtube.com/@WanderingYacht', '_blank');
+                } catch {
+                  window.open('https://www.youtube.com/@WanderingYacht', '_blank');
+                }
+              } else {
+                Linking.canOpenURL('vnd.youtube://www.youtube.com/@WanderingYacht').then((supported) => {
+                  if (supported) {
+                    Linking.openURL('vnd.youtube://www.youtube.com/@WanderingYacht');
+                  } else {
+                    Linking.openURL('https://www.youtube.com/@WanderingYacht');
+                  }
+                });
+              }
+            }}
           >
             <Ionicons name="logo-youtube" size={20} color="#1a3a4a" />
             <Text style={styles.linkText}>@WanderingYacht</Text>
