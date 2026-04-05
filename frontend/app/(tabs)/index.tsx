@@ -276,13 +276,9 @@ export default function HomeScreen() {
       {/* Search Modal */}
       <Modal
         visible={showSearch}
-        animationType="slide"
-        presentationStyle="pageSheet"
-        onShow={() => {
-          setTimeout(() => {
-            searchInputRef.current?.focus();
-          }, 300);
-        }}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setShowSearch(false)}
       >
         <View style={[styles.searchModal, { paddingTop: insets.top + 10 }]}>
           <View style={styles.searchModalHeader}>
