@@ -67,6 +67,7 @@ const featureItems = [
   { title: 'WELLNESS ON DECK', desc: 'Luxury sailing and wellness on the water', slug: 'yacht_experiences', logo: require('../../assets/images/wy-wellness.jpg') },
   { title: 'CULINARY EXCURSIONS', desc: 'Wine tasting and gourmet adventures', slug: 'culinary_tours', logo: require('../../assets/images/wy-culinary.jpg') },
   { title: 'NATURE ESCAPES', desc: 'Explore breathtaking landscapes', slug: 'nature_escapes', logo: require('../../assets/images/wy-nature.jpg') },
+  { title: 'CONCIERGE SERVICES', desc: 'Personal assistant for your holiday', slug: 'concierge_services', logo: require('../../assets/images/wy-logo-solid.png') },
 ];
 
 export default function HomeScreen() {

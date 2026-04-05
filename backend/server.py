@@ -1206,6 +1206,29 @@ async def seed_data_internal():
             "is_active": True,
             "created_at": datetime.utcnow()
         },
+        # Concierge Services
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Concierge Services",
+            "description": "Offering daily, weekly, monthly services. Personal Assistant to organise your agenda and travel itinerary. Booking everything; accommodations, dining, excursions, transfers, travel. Creating itineraries just for you. Let us take the stress out of your holiday time while you focus on relaxing.",
+            "category": "concierge_services",
+            "location": "Montenegro",
+            "date": "2025-01-01",
+            "image_url": "https://images.unsplash.com/photo-1775257796023-64e5bb47d046?w=800",
+            "capacity": 100,
+            "available_spots": 100,
+            "duration_hours": 0,
+            "amenities": ["Personal Assistant", "Travel Planning", "Booking Management", "Custom Itineraries"],
+            "included": ["Dedicated concierge", "Itinerary planning", "All bookings handled"],
+            "tags": ["concierge", "personal assistant", "travel planning", "luxury", "VIP"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Daily", "description": "Full day concierge service", "price": 200, "max_per_booking": 30},
+                {"id": str(uuid.uuid4()), "name": "Weekly", "description": "7 days concierge service", "price": 1000, "max_per_booking": 4},
+                {"id": str(uuid.uuid4()), "name": "Monthly", "description": "30 days concierge service", "price": 5000, "max_per_booking": 1}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
     ]
     
     await db.experiences.insert_many(experiences)
