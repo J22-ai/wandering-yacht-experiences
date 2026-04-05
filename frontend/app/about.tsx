@@ -121,6 +121,14 @@ export default function AboutScreen() {
             <Text style={styles.linkText}>@wanderingyacht</Text>
             <Ionicons name="open-outline" size={16} color="#9ca3a3" />
           </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.linkRow}
+            onPress={() => openLink('https://www.youtube.com/@WanderingYacht')}
+          >
+            <Ionicons name="logo-youtube" size={20} color="#1a3a4a" />
+            <Text style={styles.linkText}>@WanderingYacht</Text>
+            <Ionicons name="open-outline" size={16} color="#9ca3a3" />
+          </TouchableOpacity>
         </View>
 
         {/* Contact Section */}
