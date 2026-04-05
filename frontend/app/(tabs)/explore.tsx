@@ -214,8 +214,8 @@ export default function ExploreScreen() {
         ) : null}
       </View>
 
-      {/* Category List - only when no category pre-selected */}
-      {!selectedCategory && (
+      {/* Category List - only when no category pre-selected AND no search query */}
+      {!selectedCategory && !searchQuery.trim() && (
         <View style={styles.categoryList}>
           {categories.map((category) => (
             <TouchableOpacity
@@ -244,8 +244,8 @@ export default function ExploreScreen() {
           {filteredExperiences.length} experience{filteredExperiences.length !== 1 ? 's' : ''}
         </Text>
 
-        {selectedCategory ? (
-          /* Single category view */
+        {selectedCategory || searchQuery.trim() ? (
+          /* Single category or search results view */
           filteredExperiences.map(renderExperienceCard)
         ) : (
           /* Grouped by category */
