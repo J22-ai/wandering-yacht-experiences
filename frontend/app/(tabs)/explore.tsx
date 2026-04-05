@@ -195,12 +195,10 @@ export default function ExploreScreen() {
       </View>
 
       {/* Search Bar */}
-      <TouchableOpacity
-        style={styles.searchContainer}
-        activeOpacity={1}
-        onPress={() => searchInputRef.current?.focus()}
-      >
-        <Ionicons name="search" size={18} color="#9ca3a3" />
+      <View style={styles.searchContainer}>
+        <TouchableOpacity onPress={() => searchInputRef.current?.focus()}>
+          <Ionicons name="search" size={18} color="#9ca3a3" />
+        </TouchableOpacity>
         <TextInput
           ref={searchInputRef}
           style={styles.searchInput}
@@ -214,7 +212,7 @@ export default function ExploreScreen() {
             <Ionicons name="close-circle" size={18} color="#9ca3a3" />
           </TouchableOpacity>
         ) : null}
-      </TouchableOpacity>
+      </View>
 
       {/* Category List - only when no category pre-selected */}
       {!selectedCategory && (
