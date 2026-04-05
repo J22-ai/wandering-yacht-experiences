@@ -405,9 +405,10 @@ const styles = StyleSheet.create({
   },
   featureTitle: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 16,
+    fontSize: 14,
     color: '#1a3a4a',
     fontWeight: '600',
+    lineHeight: 18,
     marginBottom: 4,
     textAlign: 'center',
   },
