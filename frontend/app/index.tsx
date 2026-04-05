@@ -16,25 +16,27 @@ export default function WelcomeScreen() {
   const { user, isLoading } = useAuth();
   const { language, setLanguage, t } = useLanguage();
   const [showLangPicker, setShowLangPicker] = useState(false);
-  const [appReady, setAppReady] = useState(false);
 
   useEffect(() => {
     if (!isLoading) {
-      // Auth finished loading, now we can show the app
       if (user) {
         router.replace('/(tabs)');
       }
-      // Small delay to ensure fonts are rendered
-      setTimeout(() => {
-        setAppReady(true);
-        SplashScreen.hideAsync();
-      }, 100);
+      SplashScreen.hideAsync().catch(() => {});
     }
   }, [user, isLoading]);
 
-  if (isLoading || !appReady) {
-    // Keep showing nothing - native splash screen stays visible
-    return <View style={styles.loadingContainer} />;
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Image
+          source={require('../assets/images/wy-logo-solid.png')}
+          style={styles.loadingLogo}
+          resizeMode="contain"
+        />
+        <Text style={styles.loadingBrandName}>WANDERING YACHT</Text>
+      </View>
+    );
   }
 
   return (

@@ -17,9 +17,7 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    // Don't hide splash here - let index.tsx hide it after auth loads
-    // This ensures fonts are loaded before any screen with text appears
-    if (fontError) {
+    if (fontsLoaded || fontError) {
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded, fontError]);
