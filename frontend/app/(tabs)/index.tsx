@@ -151,6 +151,7 @@ export default function HomeScreen() {
             style={styles.mainLogo}
             resizeMode="contain"
           />
+          <Text style={styles.homeBrandName}>WANDERING YACHT</Text>
         </View>
 
         {/* Features Grid */}
@@ -355,6 +356,14 @@ const styles = StyleSheet.create({
   mainLogo: {
     width: 120,
     height: 120,
+  },
+  homeBrandName: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 26,
+    color: '#000000',
+    fontWeight: '700',
+    letterSpacing: 6,
+    marginTop: 8,
   },
   featuresSection: {
     paddingHorizontal: 16,
