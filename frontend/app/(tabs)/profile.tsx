@@ -130,6 +130,36 @@ export default function ProfileScreen() {
             <Ionicons name="chevron-forward" size={18} color="#9ca3a3" />
           </TouchableOpacity>
         </View>
+
+        {/* Auth Actions */}
+        <View style={styles.bottomActions}>
+          {user ? (
+            <>
+              <Text style={styles.welcomeText}>{t('profile_welcome')}, {user.full_name}</Text>
+              <TouchableOpacity
+                style={styles.signOutButton}
+                onPress={handleLogout}
+              >
+                <Text style={styles.signOutButtonText}>{t('profile_sign_out')}</Text>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <>
+              <TouchableOpacity
+                style={styles.signInButton}
+                onPress={() => router.push('/auth/login')}
+              >
+                <Text style={styles.signInButtonText}>{t('sign_in')}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.registerButton}
+                onPress={() => router.push('/auth/register')}
+              >
+                <Text style={styles.registerButtonText}>{t('create_account')}</Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
       </ScrollView>
 
       {/* Language Picker Modal */}
@@ -162,36 +192,6 @@ export default function ProfileScreen() {
           </View>
         </TouchableOpacity>
       </Modal>
-
-      {/* Bottom Actions */}
-      <View style={styles.bottomActions}>
-        {user ? (
-          <>
-            <Text style={styles.welcomeText}>{t('profile_welcome')}, {user.full_name}</Text>
-            <TouchableOpacity
-              style={styles.signOutButton}
-              onPress={handleLogout}
-            >
-              <Text style={styles.signOutButtonText}>{t('profile_sign_out')}</Text>
-            </TouchableOpacity>
-          </>
-        ) : (
-          <>
-            <TouchableOpacity
-              style={styles.signInButton}
-              onPress={() => router.push('/auth/login')}
-            >
-              <Text style={styles.signInButtonText}>{t('sign_in')}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.registerButton}
-              onPress={() => router.push('/auth/register')}
-            >
-              <Text style={styles.registerButtonText}>{t('create_account')}</Text>
-            </TouchableOpacity>
-          </>
-        )}
-      </View>
     </View>
   );
 }
@@ -202,9 +202,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#faf9f7',
   },
   logoContainer: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingTop: 30,
+    paddingBottom: 20,
   },
   logo: {
     width: 150,
