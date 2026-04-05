@@ -151,7 +151,6 @@ export default function HomeScreen() {
             style={styles.mainLogo}
             resizeMode="contain"
           />
-          <Text style={styles.homeBrandName}>WANDERING YACHT</Text>
         </View>
 
         {/* Features Grid */}
