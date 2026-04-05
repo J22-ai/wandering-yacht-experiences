@@ -157,6 +157,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 6,
     marginTop: 6,
+    textAlign: 'center',
+    width: '100%',
   },
   langGlobe: {
     position: 'absolute',
