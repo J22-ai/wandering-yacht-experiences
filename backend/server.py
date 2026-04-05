@@ -1214,7 +1214,7 @@ async def seed_data_internal():
             "category": "concierge_services",
             "location": "Montenegro",
             "date": "2025-01-01",
-            "image_url": "https://images.unsplash.com/photo-1775257796023-64e5bb47d046?w=800",
+            "image_url": "https://customer-assets.emergentagent.com/job_ac874aeb-cfb2-4c82-a97b-ff79f3b1c447/artifacts/kxu0ah94_KEY.jpeg",
             "capacity": 100,
             "available_spots": 100,
             "duration_hours": 0,
