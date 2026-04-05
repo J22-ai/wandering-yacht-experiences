@@ -28,6 +28,7 @@ export default function WelcomeScreen() {
           style={styles.loadingLogo}
           resizeMode="contain"
         />
+        <Text style={styles.loadingBrandName}>WANDERING YACHT</Text>
       </View>
     );
   }
@@ -38,13 +39,14 @@ export default function WelcomeScreen() {
       style={styles.container}
       resizeMode="cover"
     >
-      {/* Header with centered logo */}
+      {/* Header with centered logo and brand name */}
       <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
         <Image
           source={require('../assets/images/wy-logo.png')}
           style={styles.headerLogo}
           resizeMode="contain"
         />
+        <Text style={styles.brandName}>WANDERING YACHT</Text>
       </View>
 
       {/* Hero Content */}
@@ -93,15 +95,31 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
   },
+  loadingBrandName: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 28,
+    color: '#1a3a4a',
+    fontWeight: '600',
+    letterSpacing: 6,
+    marginTop: 16,
+  },
   header: {
     alignItems: 'center',
     paddingHorizontal: 18,
     paddingBottom: 14,
-    backgroundColor: 'rgba(255, 255, 255, 0.92)',
+    backgroundColor: '#fff',
   },
   headerLogo: {
-    width: 50,
-    height: 50,
+    width: 70,
+    height: 70,
+  },
+  brandName: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 26,
+    color: '#1a3a4a',
+    fontWeight: '600',
+    letterSpacing: 6,
+    marginTop: 6,
   },
   menuButton: {
     padding: 4,
@@ -112,7 +130,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 24,
     paddingTop: 80,
-    backgroundColor: 'rgba(30, 60, 70, 0.35)',
   },
   heroTitle: {
     fontFamily: 'TraditionalArabic',
@@ -179,7 +196,6 @@ const styles = StyleSheet.create({
   bottomBar: {
     paddingTop: 16,
     alignItems: 'center',
-    backgroundColor: 'rgba(30, 60, 70, 0.6)',
   },
   signInLink: {
     flexDirection: 'row',
