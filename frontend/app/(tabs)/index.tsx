@@ -96,8 +96,9 @@ export default function HomeScreen() {
         api.getExperiences(),
       ]);
       setCategories(categoriesData);
-      setFeaturedExperiences(experiencesData.slice(0, 6));
-      setAllExperiences(experiencesData);
+      const sorted = [...experiencesData].sort((a: Experience, b: Experience) => getLowestPrice(a) - getLowestPrice(b));
+      setFeaturedExperiences(sorted.slice(0, 6));
+      setAllExperiences(sorted);
     } catch (error) {
       console.error('Error loading data:', error);
     }

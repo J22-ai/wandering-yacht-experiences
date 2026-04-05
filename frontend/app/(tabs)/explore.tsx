@@ -113,6 +113,8 @@ export default function ExploreScreen() {
           (exp.tags && exp.tags.some((tag: string) => tag.toLowerCase().includes(query)))
       );
     }
+    // Sort by lowest price (cheapest first)
+    filtered.sort((a, b) => getLowestPrice(a) - getLowestPrice(b));
     return filtered;
   };
 
@@ -125,6 +127,10 @@ export default function ExploreScreen() {
         grouped[exp.category] = [];
       }
       grouped[exp.category].push(exp);
+    });
+    // Sort each category group by price (cheapest first)
+    Object.keys(grouped).forEach((key) => {
+      grouped[key].sort((a, b) => getLowestPrice(a) - getLowestPrice(b));
     });
     return grouped;
   };
