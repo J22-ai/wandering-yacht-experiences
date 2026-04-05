@@ -16,11 +16,13 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../../src/context/AuthContext';
+import { useLanguage } from '../../src/context/LanguageContext';
 
 export default function LoginScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { login } = useAuth();
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -69,8 +71,8 @@ export default function LoginScreen() {
             style={styles.logo}
             resizeMode="contain"
           />
-          <Text style={styles.title}>Welcome Back</Text>
-          <Text style={styles.subtitle}>Sign in to your account</Text>
+          <Text style={styles.title}>{t('auth_welcome_back')}</Text>
+          <Text style={styles.subtitle}>{t('auth_sign_in_subtitle')}</Text>
         </View>
 
         <View style={styles.form}>
@@ -78,7 +80,7 @@ export default function LoginScreen() {
             <Ionicons name="mail-outline" size={20} color="#9ca3a3" />
             <TextInput
               style={styles.input}
-              placeholder="Email"
+              placeholder={t('email')}
               placeholderTextColor="#9ca3a3"
               value={email}
               onChangeText={setEmail}
@@ -92,7 +94,7 @@ export default function LoginScreen() {
             <Ionicons name="lock-closed-outline" size={20} color="#9ca3a3" />
             <TextInput
               style={styles.input}
-              placeholder="Password"
+              placeholder={t('password')}
               placeholderTextColor="#9ca3a3"
               value={password}
               onChangeText={setPassword}
@@ -109,7 +111,7 @@ export default function LoginScreen() {
           </View>
 
           <TouchableOpacity style={styles.forgotPassword}>
-            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+            <Text style={styles.forgotPasswordText}>{t('auth_forgot_password')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -120,15 +122,15 @@ export default function LoginScreen() {
             {loading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text style={styles.loginButtonText}>Sign In</Text>
+              <Text style={styles.loginButtonText}>{t('sign_in')}</Text>
             )}
           </TouchableOpacity>
         </View>
 
         <View style={styles.footer}>
-          <Text style={styles.footerText}>Don't have an account?</Text>
+          <Text style={styles.footerText}>{t('no_account')}</Text>
           <TouchableOpacity onPress={() => router.replace('/auth/register')}>
-            <Text style={styles.footerLink}>Create Account</Text>
+            <Text style={styles.footerLink}>{t('create_account')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

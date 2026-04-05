@@ -16,11 +16,13 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../../src/context/AuthContext';
+import { useLanguage } from '../../src/context/LanguageContext';
 
 export default function RegisterScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { register } = useAuth();
+  const { t } = useLanguage();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -83,8 +85,8 @@ export default function RegisterScreen() {
             style={styles.logo}
             resizeMode="contain"
           />
-          <Text style={styles.title}>Create Account</Text>
-          <Text style={styles.subtitle}>Join the Wandering Yacht family</Text>
+          <Text style={styles.title}>{t('create_account')}</Text>
+          <Text style={styles.subtitle}>{t('auth_join_subtitle')}</Text>
         </View>
 
         <View style={styles.form}>
@@ -92,7 +94,7 @@ export default function RegisterScreen() {
             <Ionicons name="person-outline" size={20} color="#9ca3a3" />
             <TextInput
               style={styles.input}
-              placeholder="Full Name *"
+              placeholder={`${t('full_name')} *`}
               placeholderTextColor="#9ca3a3"
               value={fullName}
               onChangeText={setFullName}
@@ -104,7 +106,7 @@ export default function RegisterScreen() {
             <Ionicons name="mail-outline" size={20} color="#9ca3a3" />
             <TextInput
               style={styles.input}
-              placeholder="Email *"
+              placeholder={`${t('email')} *`}
               placeholderTextColor="#9ca3a3"
               value={email}
               onChangeText={setEmail}
@@ -118,7 +120,7 @@ export default function RegisterScreen() {
             <Ionicons name="call-outline" size={20} color="#9ca3a3" />
             <TextInput
               style={styles.input}
-              placeholder="Phone (optional)"
+              placeholder={t('auth_phone')}
               placeholderTextColor="#9ca3a3"
               value={phone}
               onChangeText={setPhone}
@@ -130,7 +132,7 @@ export default function RegisterScreen() {
             <Ionicons name="logo-whatsapp" size={20} color="#9ca3a3" />
             <TextInput
               style={styles.input}
-              placeholder="WhatsApp Number (optional)"
+              placeholder={t('whatsapp_number')}
               placeholderTextColor="#9ca3a3"
               value={whatsapp}
               onChangeText={setWhatsapp}
@@ -142,7 +144,7 @@ export default function RegisterScreen() {
             <Ionicons name="lock-closed-outline" size={20} color="#9ca3a3" />
             <TextInput
               style={styles.input}
-              placeholder="Password *"
+              placeholder={`${t('password')} *`}
               placeholderTextColor="#9ca3a3"
               value={password}
               onChangeText={setPassword}
@@ -162,7 +164,7 @@ export default function RegisterScreen() {
             <Ionicons name="lock-closed-outline" size={20} color="#9ca3a3" />
             <TextInput
               style={styles.input}
-              placeholder="Confirm Password *"
+              placeholder={t('auth_confirm_password')}
               placeholderTextColor="#9ca3a3"
               value={confirmPassword}
               onChangeText={setConfirmPassword}
@@ -179,15 +181,15 @@ export default function RegisterScreen() {
             {loading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text style={styles.registerButtonText}>Create Account</Text>
+              <Text style={styles.registerButtonText}>{t('create_account')}</Text>
             )}
           </TouchableOpacity>
         </View>
 
         <View style={styles.footer}>
-          <Text style={styles.footerText}>Already have an account?</Text>
+          <Text style={styles.footerText}>{t('have_account')}</Text>
           <TouchableOpacity onPress={() => router.replace('/auth/login')}>
-            <Text style={styles.footerLink}>Sign In</Text>
+            <Text style={styles.footerLink}>{t('sign_in')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

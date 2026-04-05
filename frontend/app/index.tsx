@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ImageBackg
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../src/context/AuthContext';
+import { useLanguage } from '../src/context/LanguageContext';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { width, height } = Dimensions.get('window');
@@ -11,6 +12,7 @@ export default function WelcomeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { user, isLoading } = useAuth();
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (!isLoading && user) {
@@ -48,17 +50,17 @@ export default function WelcomeScreen() {
       {/* Hero Content */}
       <View style={styles.heroContent}>
         <Text style={styles.heroTitle}>
-          Our{'\n'}Immersive{'\n'}Experiences
+          {t('welcome_title')}
         </Text>
         <Text style={styles.heroCountry}>MONTENEGRO</Text>
         <Text style={styles.heroSubtitle}>
-          Discover curated adventures—from Sunrise Yoga on luxury yachts to wild beauty Fiat Car Tours through Montenegro's most scenic routes.
+          {t('welcome_subtitle')}
         </Text>
         <TouchableOpacity
           style={styles.exploreButton}
           onPress={() => router.replace('/(tabs)')}
         >
-          <Text style={styles.exploreButtonText}>Explore Experiences</Text>
+          <Text style={styles.exploreButtonText}>{t('welcome_cta')}</Text>
           <Ionicons name="arrow-forward" size={20} color="#1a3a4a" />
         </TouchableOpacity>
       </View>
@@ -69,8 +71,8 @@ export default function WelcomeScreen() {
           style={styles.signInLink}
           onPress={() => router.push('/auth/login')}
         >
-          <Text style={styles.signInText}>Already have an account? </Text>
-          <Text style={styles.signInBold}>Sign In</Text>
+          <Text style={styles.signInText}>{t('have_account')} </Text>
+          <Text style={styles.signInBold}>{t('sign_in')}</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>

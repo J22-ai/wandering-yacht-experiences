@@ -13,10 +13,12 @@ import {
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useLanguage } from '../src/context/LanguageContext';
 
 export default function AboutScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const { t } = useLanguage();
   const [linkModal, setLinkModal] = useState<{ visible: boolean; title: string; message: string }>({
     visible: false,
     title: '',
@@ -47,7 +49,7 @@ export default function AboutScreen() {
         >
           <Ionicons name="arrow-back" size={22} color="#1a3a4a" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>About Us</Text>
+        <Text style={styles.headerTitle}>{t('about_title')}</Text>
         <View style={{ width: 44 }} />
       </View>
 
@@ -63,7 +65,7 @@ export default function AboutScreen() {
 
         {/* About Content */}
         <View style={styles.aboutSection}>
-          <Text style={styles.sectionLabel}>ABOUT US</Text>
+          <Text style={styles.sectionLabel}>{t('about_title').toUpperCase()}</Text>
           <Text style={styles.sectionTitle}>Wandering Yacht</Text>
           <View style={styles.divider} />
           <Text style={styles.bodyText}>
@@ -157,15 +159,15 @@ export default function AboutScreen() {
 
         {/* Contact Section */}
         <View style={styles.contactSection}>
-          <Text style={styles.sectionLabel}>GET IN TOUCH</Text>
-          <Text style={styles.sectionTitle}>Contact Us</Text>
+          <Text style={styles.sectionLabel}>{t('about_get_in_touch')}</Text>
+          <Text style={styles.sectionTitle}>{t('about_contact')}</Text>
           <View style={styles.divider} />
           <TouchableOpacity
             style={styles.whatsappButton}
             onPress={() => openLink('https://wa.me/38269333693')}
           >
             <Ionicons name="logo-whatsapp" size={24} color="#fff" />
-            <Text style={styles.whatsappButtonText}>WhatsApp Us</Text>
+            <Text style={styles.whatsappButtonText}>{t('about_whatsapp_us')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.contactRow}
@@ -192,7 +194,7 @@ export default function AboutScreen() {
 
         {/* Locations */}
         <View style={styles.locationsSection}>
-          <Text style={styles.sectionLabel}>OUR LOCATIONS</Text>
+          <Text style={styles.sectionLabel}>{t('about_locations')}</Text>
           <View style={styles.locationsGrid}>
             {[
               { name: 'USA', detail: 'Central Beach, Fort Lauderdale, Florida', mapUrl: 'https://www.google.com/maps/search/?api=1&query=Central+Beach+Fort+Lauderdale+Florida' },
@@ -213,7 +215,7 @@ export default function AboutScreen() {
                 </View>
                 <Text style={styles.locationDetail}>{loc.detail}</Text>
                 <View style={styles.locationMapLink}>
-                  <Text style={styles.locationMapText}>View on Map</Text>
+                  <Text style={styles.locationMapText}>{t('about_view_map')}</Text>
                   <Ionicons name="open-outline" size={12} color="rgba(255,255,255,0.7)" />
                 </View>
               </TouchableOpacity>

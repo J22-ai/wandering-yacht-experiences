@@ -14,6 +14,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { api } from '../../src/services/api';
 import { useAuth } from '../../src/context/AuthContext';
+import { useLanguage } from '../../src/context/LanguageContext';
 
 interface Category {
   id: string;
@@ -45,6 +46,7 @@ export default function ExploreScreen() {
   const params = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const { token } = useAuth();
+  const { t } = useLanguage();
   const [categories, setCategories] = useState<Category[]>([]);
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(params.category as string || null);
@@ -162,11 +164,11 @@ export default function ExploreScreen() {
         </View>
         <View style={styles.experienceFooter}>
           <View>
-            <Text style={styles.priceLabel}>from</Text>
+            <Text style={styles.priceLabel}>{t('detail_from')}</Text>
             <Text style={styles.experiencePrice}>€{getLowestPrice(experience)}</Text>
           </View>
           <View style={styles.viewBtn}>
-            <Text style={styles.viewBtnText}>View</Text>
+            <Text style={styles.viewBtnText}>{t('view')}</Text>
             <Ionicons name="arrow-forward" size={14} color="#fff" />
           </View>
         </View>
@@ -190,7 +192,7 @@ export default function ExploreScreen() {
             <Text style={styles.headerTitle}>{getCategoryName(selectedCategory)}</Text>
           </View>
         ) : (
-          <Text style={styles.headerTitle}>WANDER WITH LOVE</Text>
+          <Text style={styles.headerTitle}>{t('explore_title')}</Text>
         )}
       </View>
 
@@ -202,7 +204,7 @@ export default function ExploreScreen() {
         <TextInput
           ref={searchInputRef}
           style={styles.searchInput}
-          placeholder="Search experiences..."
+          placeholder={t('explore_search')}
           placeholderTextColor="#9ca3a3"
           value={searchQuery}
           onChangeText={setSearchQuery}

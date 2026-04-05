@@ -13,6 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { api } from '../../src/services/api';
 import { useAuth } from '../../src/context/AuthContext';
+import { useLanguage } from '../../src/context/LanguageContext';
 
 interface Booking {
   id: string;
@@ -36,6 +37,7 @@ export default function BookingsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { user, token } = useAuth();
+  const { t } = useLanguage();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -94,7 +96,7 @@ export default function BookingsScreen() {
     return (
       <View style={[styles.container, { paddingTop: insets.top }]}>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>My Bookings</Text>
+          <Text style={styles.headerTitle}>{t('tab_bookings')}</Text>
         </View>
         <View style={styles.emptyContainer}>
           <Ionicons name="ticket-outline" size={64} color="#c4c9c9" />
@@ -106,7 +108,7 @@ export default function BookingsScreen() {
             style={styles.signInButton}
             onPress={() => router.push('/auth/login')}
           >
-            <Text style={styles.signInButtonText}>Sign In</Text>
+            <Text style={styles.signInButtonText}>{t('sign_in')}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -137,7 +139,7 @@ export default function BookingsScreen() {
         ) : bookings.length === 0 ? (
           <View style={styles.emptyContainer}>
             <Ionicons name="ticket-outline" size={64} color="#c4c9c9" />
-            <Text style={styles.emptyTitle}>No bookings yet</Text>
+            <Text style={styles.emptyTitle}>{t('bookings_sign_in_required')}</Text>
             <Text style={styles.emptyText}>
               Explore our experiences and make your first booking
             </Text>
@@ -145,7 +147,7 @@ export default function BookingsScreen() {
               style={styles.exploreButton}
               onPress={() => router.push('/(tabs)/explore')}
             >
-              <Text style={styles.exploreButtonText}>Explore Now</Text>
+              <Text style={styles.exploreButtonText}>{t('bookings_explore_now')}</Text>
             </TouchableOpacity>
           </View>
         ) : (

@@ -19,6 +19,7 @@ import { Calendar } from 'react-native-calendars';
 import { api } from '../../src/services/api';
 import { useAuth } from '../../src/context/AuthContext';
 import { useFavorites } from '../../src/context/FavoritesContext';
+import { useLanguage } from '../../src/context/LanguageContext';
 
 const { width } = Dimensions.get('window');
 
@@ -81,6 +82,7 @@ export default function ExperienceDetailScreen() {
   const insets = useSafeAreaInsets();
   const { user, token } = useAuth();
   const { toggleFavorite, isFavorite } = useFavorites();
+  const { t } = useLanguage();
   const [experience, setExperience] = useState<Experience | null>(null);
   const [loading, setLoading] = useState(true);
   const [ticketCounts, setTicketCounts] = useState<{ [key: string]: number }>({});
@@ -141,18 +143,18 @@ export default function ExperienceDetailScreen() {
   const handleBookNow = async () => {
     if (!user) {
       Alert.alert(
-        'Sign In Required',
-        'Please sign in to book this experience',
+        t('detail_sign_in_required'),
+        t('auth_sign_in_subtitle'),
         [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Sign In', onPress: () => router.push('/auth/login') },
+          { text: t('cancel'), style: 'cancel' },
+          { text: t('sign_in'), onPress: () => router.push('/auth/login') },
         ]
       );
       return;
     }
 
     if (getTotalTickets() === 0) {
-      Alert.alert('Error', 'Please select at least one ticket');
+      Alert.alert(t('error'), t('detail_select_tickets'));
       return;
     }
 
@@ -273,7 +275,7 @@ export default function ExperienceDetailScreen() {
             {experience.duration_hours > 0 && (
               <View style={styles.infoCard}>
                 <Ionicons name="time-outline" size={22} color="#1a3a4a" />
-                <Text style={styles.infoLabel}>Duration</Text>
+                <Text style={styles.infoLabel}>{t('detail_duration')}</Text>
                 <Text style={styles.infoValue}>
                   {experience.duration_hours >= 1 ? `${experience.duration_hours} hour${experience.duration_hours > 1 ? 's' : ''}` : `${Math.round(experience.duration_hours * 60)} min`}
                 </Text>
@@ -281,14 +283,14 @@ export default function ExperienceDetailScreen() {
             )}
             <View style={styles.infoCard}>
               <Ionicons name="people-outline" size={22} color="#1a3a4a" />
-              <Text style={styles.infoLabel}>Availability</Text>
-              <Text style={styles.infoValue}>{experience.available_spots} spots</Text>
+              <Text style={styles.infoLabel}>{t('detail_available_spots')}</Text>
+              <Text style={styles.infoValue}>{experience.available_spots} {t('detail_spots')}</Text>
             </View>
           </View>
 
           {/* Select Date - Calendar */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Select Date</Text>
+            <Text style={styles.sectionTitle}>{t('detail_select_date')}</Text>
             <View style={styles.calendarContainer}>
               <Calendar
                 minDate={new Date().toISOString().split('T')[0]}
@@ -326,20 +328,20 @@ export default function ExperienceDetailScreen() {
                 Selected: {new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
               </Text>
             ) : (
-              <Text style={styles.selectDateHint}>Tap a date to select</Text>
+              <Text style={styles.selectDateHint}>{t('detail_tap_date')}</Text>
             )}
           </View>
 
           {/* Description */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>About This Experience</Text>
+            <Text style={styles.sectionTitle}>{t('detail_about')}</Text>
             <Text style={styles.description}>{experience.description}</Text>
           </View>
 
           {/* What's Included */}
           {experience.included && experience.included.length > 0 && (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>What's Included</Text>
+              <Text style={styles.sectionTitle}>{t('detail_whats_included')}</Text>
               <View style={styles.includedList}>
                 {experience.included.map((item, idx) => (
                   <View key={idx} style={styles.includedItem}>
@@ -356,7 +358,7 @@ export default function ExperienceDetailScreen() {
           {/* Amenities */}
           {experience.amenities && experience.amenities.length > 0 && (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Amenities</Text>
+              <Text style={styles.sectionTitle}>{t('detail_amenities')}</Text>
               <View style={styles.amenitiesGrid}>
                 {experience.amenities.map((amenity, idx) => (
                   <View key={idx} style={styles.amenityChip}>
@@ -370,7 +372,7 @@ export default function ExperienceDetailScreen() {
           {/* Time Slots */}
           {experience.time_slots && experience.time_slots.length > 0 && (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Select Time</Text>
+              <Text style={styles.sectionTitle}>{t('detail_select_time')}</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {experience.time_slots.map((slot) => (
                   <TouchableOpacity
@@ -397,7 +399,7 @@ export default function ExperienceDetailScreen() {
 
           {/* Ticket Selection */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Select Tickets</Text>
+            <Text style={styles.sectionTitle}>{t('detail_select_tickets')}</Text>
             {experience.ticket_types.map((ticket) => (
               <View key={ticket.id} style={styles.ticketCard}>
                 <View style={styles.ticketInfo}>
@@ -435,7 +437,7 @@ export default function ExperienceDetailScreen() {
       {/* Bottom Bar */}
       <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 16 }]}>
         <View style={styles.priceContainer}>
-          <Text style={styles.priceLabel}>Total</Text>
+          <Text style={styles.priceLabel}>{t('detail_total')}</Text>
           <Text style={styles.priceValue}>€{getTotalPrice().toFixed(2)}</Text>
         </View>
         <TouchableOpacity
@@ -451,7 +453,7 @@ export default function ExperienceDetailScreen() {
           ) : (
             <>
               <Text style={styles.bookButtonText}>
-                {getTotalTickets() === 0 ? 'Select Tickets' : `Book Now`}
+                {getTotalTickets() === 0 ? t('detail_select_tickets') : t('detail_book_now')}
               </Text>
               {getTotalTickets() > 0 && (
                 <Ionicons name="arrow-forward" size={18} color="#fff" />

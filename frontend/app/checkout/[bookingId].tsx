@@ -14,6 +14,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { api } from '../../src/services/api';
 import { useAuth } from '../../src/context/AuthContext';
+import { useLanguage } from '../../src/context/LanguageContext';
 
 interface Booking {
   id: string;
@@ -37,6 +38,7 @@ export default function CheckoutScreen() {
   const { bookingId } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const { token } = useAuth();
+  const { t } = useLanguage();
   
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(true);
@@ -170,7 +172,7 @@ export default function CheckoutScreen() {
         >
           <Ionicons name="arrow-back" size={24} color="#2d3a3a" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Checkout</Text>
+        <Text style={styles.headerTitle}>{t('checkout_title')}</Text>
         <View style={{ width: 44 }} />
       </View>
 
@@ -260,7 +262,7 @@ export default function CheckoutScreen() {
             <>
               <Ionicons name="lock-closed" size={18} color="#fff" />
               <Text style={styles.payButtonText}>
-                {paymentReady ? 'Complete Payment' : 'Loading...'}
+                {paymentReady ? t('checkout_complete_payment') : t('loading')}
               </Text>
             </>
           )}

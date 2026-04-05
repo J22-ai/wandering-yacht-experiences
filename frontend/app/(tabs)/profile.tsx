@@ -7,6 +7,7 @@ import {
   Alert,
   Image,
   ScrollView,
+  Modal,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -45,10 +46,10 @@ export default function ProfileScreen() {
   const favoriteExperiences = allExperiences.filter((exp) => favorites.includes(exp.id));
 
   const handleLogout = () => {
-    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
-      { text: 'Cancel', style: 'cancel' },
+    Alert.alert(t('profile_sign_out'), '', [
+      { text: t('cancel'), style: 'cancel' },
       {
-        text: 'Sign Out',
+        text: t('profile_sign_out'),
         style: 'destructive',
         onPress: async () => {
           await logout();
@@ -76,7 +77,7 @@ export default function ProfileScreen() {
           <View style={styles.favoritesSection}>
             <View style={styles.favoritesHeaderRow}>
               <View style={styles.favoritesLine} />
-              <Text style={styles.favoritesTitle}>YOUR FAVORITES</Text>
+              <Text style={styles.favoritesTitle}>{t('profile_favorites')}</Text>
               <View style={styles.favoritesLine} />
             </View>
 
@@ -110,7 +111,7 @@ export default function ProfileScreen() {
               activeOpacity={0.8}
             >
               <Ionicons name="share-outline" size={18} color="#fff" />
-              <Text style={styles.shareNotesBtnText}>Save Favorites to Notes</Text>
+              <Text style={styles.shareNotesBtnText}>{t('profile_save_notes')}</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -166,12 +167,12 @@ export default function ProfileScreen() {
       <View style={styles.bottomActions}>
         {user ? (
           <>
-            <Text style={styles.welcomeText}>Welcome, {user.full_name}</Text>
+            <Text style={styles.welcomeText}>{t('profile_welcome')}, {user.full_name}</Text>
             <TouchableOpacity
               style={styles.signOutButton}
               onPress={handleLogout}
             >
-              <Text style={styles.signOutButtonText}>Sign Out</Text>
+              <Text style={styles.signOutButtonText}>{t('profile_sign_out')}</Text>
             </TouchableOpacity>
           </>
         ) : (
@@ -180,13 +181,13 @@ export default function ProfileScreen() {
               style={styles.signInButton}
               onPress={() => router.push('/auth/login')}
             >
-              <Text style={styles.signInButtonText}>Sign In</Text>
+              <Text style={styles.signInButtonText}>{t('sign_in')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.registerButton}
               onPress={() => router.push('/auth/register')}
             >
-              <Text style={styles.registerButtonText}>Create Account</Text>
+              <Text style={styles.registerButtonText}>{t('create_account')}</Text>
             </TouchableOpacity>
           </>
         )}
@@ -345,5 +346,78 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     textAlign: 'center',
+  },
+  languageSection: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+  },
+  languageRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ede9e3',
+    gap: 12,
+  },
+  languageLabel: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 15,
+    color: '#1a3a4a',
+    fontWeight: '500',
+    flex: 1,
+  },
+  languageCurrent: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 14,
+    color: '#7a8a8a',
+  },
+  langModalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 30,
+  },
+  langModalContent: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 24,
+    width: '100%',
+    maxWidth: 340,
+  },
+  langModalTitle: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 20,
+    color: '#1a2a30',
+    fontWeight: '600',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  langOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    gap: 12,
+  },
+  langOptionActive: {
+    backgroundColor: '#e8f4f4',
+  },
+  langFlag: {
+    fontSize: 24,
+  },
+  langName: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 16,
+    color: '#1a2a30',
+    flex: 1,
+  },
+  langNameActive: {
+    fontWeight: '600',
+    color: '#1a3a4a',
   },
 });

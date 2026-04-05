@@ -19,6 +19,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { api } from '../../src/services/api';
 import { useAuth } from '../../src/context/AuthContext';
+import { useLanguage } from '../../src/context/LanguageContext';
 
 const openLink = (url: string) => {
   if (Platform.OS === 'web') {
@@ -72,6 +73,7 @@ export default function HomeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { user, token } = useAuth();
+  const { t } = useLanguage();
   const [categories, setCategories] = useState<Category[]>([]);
   const [featuredExperiences, setFeaturedExperiences] = useState<Experience[]>([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -177,15 +179,15 @@ export default function HomeScreen() {
         {/* Featured Experiences */}
         <View style={styles.featuredSection}>
           <View style={styles.sectionLabelRow}>
-            <Text style={styles.sectionLabel}>CURATED FOR YOU</Text>
+            <Text style={styles.sectionLabel}>{t('home_curated')}</Text>
           </View>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Featured Experiences</Text>
+            <Text style={styles.sectionTitle}>{t('home_featured')}</Text>
             <TouchableOpacity
               onPress={() => router.navigate('/(tabs)/explore' as Href)}
               style={styles.viewAllBtn}
             >
-              <Text style={styles.viewAllText}>View All</Text>
+              <Text style={styles.viewAllText}>{t('home_view_all')}</Text>
               <Ionicons name="arrow-forward" size={16} color="#1a3a4a" />
             </TouchableOpacity>
           </View>
@@ -219,7 +221,7 @@ export default function HomeScreen() {
                   {experience.description}
                 </Text>
                 <View style={styles.experienceFooter}>
-                  <Text style={styles.priceLabel}>from</Text>
+                  <Text style={styles.priceLabel}>{t('detail_from')}</Text>
                   <Text style={styles.experiencePrice}>€{getLowestPrice(experience)}</Text>
                 </View>
               </View>
@@ -231,22 +233,22 @@ export default function HomeScreen() {
             onPress={() => router.navigate('/(tabs)/explore' as Href)}
             activeOpacity={0.8}
           >
-            <Text style={styles.viewAllFullText}>View All Experiences</Text>
+            <Text style={styles.viewAllFullText}>{t('home_view_all')}</Text>
             <Ionicons name="arrow-forward" size={18} color="#fff" />
           </TouchableOpacity>
         </View>
 
         {/* CTA Section */}
         <View style={styles.ctaSection}>
-          <Text style={styles.ctaTitle}>Ready for Your{'\n'}Next Adventure?</Text>
+          <Text style={styles.ctaTitle}>{t('home_cta_title')}</Text>
           <Text style={styles.ctaSubtitle}>
-            Book your Montenegro experience today and create memories that last a lifetime.
+            {t('home_cta_subtitle')}
           </Text>
           <TouchableOpacity
             style={styles.ctaButton}
             onPress={() => { setSearchQuery(''); setShowSearch(true); }}
           >
-            <Text style={styles.ctaButtonText}>Start Exploring</Text>
+            <Text style={styles.ctaButtonText}>{t('home_start_exploring')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -257,7 +259,7 @@ export default function HomeScreen() {
             onPress={() => router.push('/about')}
           >
             <Ionicons name="information-circle-outline" size={22} color="#1a3a4a" />
-            <Text style={styles.bottomLinkText}>About Us</Text>
+            <Text style={styles.bottomLinkText}>{t('about_title')}</Text>
             <Ionicons name="chevron-forward" size={18} color="#9ca3a3" />
           </TouchableOpacity>
           <TouchableOpacity
@@ -265,7 +267,7 @@ export default function HomeScreen() {
             onPress={() => openLink('https://wa.me/38269333693')}
           >
             <Ionicons name="logo-whatsapp" size={22} color="#25D366" />
-            <Text style={styles.bottomLinkText}>Contact Us</Text>
+            <Text style={styles.bottomLinkText}>{t('about_contact')}</Text>
             <Ionicons name="chevron-forward" size={18} color="#9ca3a3" />
           </TouchableOpacity>
         </View>
@@ -282,7 +284,7 @@ export default function HomeScreen() {
       >
         <View style={[styles.searchModal, { paddingTop: insets.top + 10 }]}>
           <View style={styles.searchModalHeader}>
-            <Text style={styles.searchModalTitle}>Find an Experience</Text>
+            <Text style={styles.searchModalTitle}>{t('home_find_experience')}</Text>
             <TouchableOpacity onPress={() => setShowSearch(false)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
               <Ionicons name="close" size={26} color="#1a2a30" />
             </TouchableOpacity>
