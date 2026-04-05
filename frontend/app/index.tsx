@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ImageBackground } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ImageBackground, Modal, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../src/context/AuthContext';
 import { useLanguage } from '../src/context/LanguageContext';
+import { LANGUAGES } from '../src/i18n/translations';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { width, height } = Dimensions.get('window');
@@ -12,7 +13,8 @@ export default function WelcomeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { user, isLoading } = useAuth();
-  const { t } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
+  const [showLangPicker, setShowLangPicker] = useState(false);
 
   useEffect(() => {
     if (!isLoading && user) {
@@ -35,11 +37,11 @@ export default function WelcomeScreen() {
 
   return (
     <ImageBackground
-      source={{ uri: 'https://images.unsplash.com/photo-1604729220139-314542b85436?w=900&q=80' }}
+      source={{ uri: 'https://images.pexels.com/photos/29071814/pexels-photo-29071814.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=1200&w=800' }}
       style={styles.container}
       resizeMode="cover"
     >
-      {/* Header with centered logo and brand name */}
+      {/* Header with centered logo, brand name, and language globe */}
       <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
         <Image
           source={require('../assets/images/wy-logo.png')}
@@ -47,6 +49,15 @@ export default function WelcomeScreen() {
           resizeMode="contain"
         />
         <Text style={styles.brandName}>WANDERING YACHT</Text>
+        <TouchableOpacity
+          style={styles.langGlobe}
+          onPress={() => setShowLangPicker(true)}
+        >
+          <Ionicons name="globe-outline" size={22} color="#1a3a4a" />
+          <Text style={styles.langGlobeText}>
+            {LANGUAGES.find(l => l.code === language)?.flag}
+          </Text>
+        </TouchableOpacity>
       </View>
 
       {/* Hero Content */}
@@ -77,6 +88,37 @@ export default function WelcomeScreen() {
           <Text style={styles.signInBold}>{t('sign_in')}</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Language Picker Modal */}
+      <Modal
+        visible={showLangPicker}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowLangPicker(false)}
+      >
+        <TouchableOpacity
+          style={styles.langModalOverlay}
+          activeOpacity={1}
+          onPress={() => setShowLangPicker(false)}
+        >
+          <View style={styles.langModalContent}>
+            <Text style={styles.langModalTitle}>{t('profile_language')}</Text>
+            <ScrollView style={{ maxHeight: 400 }} showsVerticalScrollIndicator={false}>
+              {LANGUAGES.map((lang) => (
+                <TouchableOpacity
+                  key={lang.code}
+                  style={[styles.langOption, language === lang.code && styles.langOptionActive]}
+                  onPress={() => { setLanguage(lang.code); setShowLangPicker(false); }}
+                >
+                  <Text style={styles.langFlag}>{lang.flag}</Text>
+                  <Text style={[styles.langName, language === lang.code && styles.langNameActive]}>{lang.name}</Text>
+                  {language === lang.code && <Ionicons name="checkmark" size={20} color="#1a3a4a" />}
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </ImageBackground>
   );
 }
@@ -120,6 +162,67 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     letterSpacing: 6,
     marginTop: 6,
+  },
+  langGlobe: {
+    position: 'absolute',
+    right: 18,
+    top: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 20,
+    gap: 4,
+  },
+  langGlobeText: {
+    fontSize: 16,
+  },
+  langModalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 30,
+  },
+  langModalContent: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 24,
+    width: '100%',
+    maxWidth: 340,
+  },
+  langModalTitle: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 20,
+    color: '#1a2a30',
+    fontWeight: '600',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  langOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    gap: 12,
+  },
+  langOptionActive: {
+    backgroundColor: '#e8f4f4',
+  },
+  langFlag: {
+    fontSize: 24,
+  },
+  langName: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 16,
+    color: '#1a2a30',
+    flex: 1,
+  },
+  langNameActive: {
+    fontWeight: '600',
+    color: '#1a3a4a',
   },
   menuButton: {
     padding: 4,
