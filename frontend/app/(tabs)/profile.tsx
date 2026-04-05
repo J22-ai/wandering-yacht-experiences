@@ -13,6 +13,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../../src/context/AuthContext';
 import { useFavorites } from '../../src/context/FavoritesContext';
+import { useLanguage } from '../../src/context/LanguageContext';
+import { LANGUAGES } from '../../src/i18n/translations';
 import { api } from '../../src/services/api';
 
 export default function ProfileScreen() {
@@ -20,7 +22,9 @@ export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
   const { user, token, logout } = useAuth();
   const { favorites, toggleFavorite, shareToNotes } = useFavorites();
+  const { language, setLanguage, t } = useLanguage();
   const [allExperiences, setAllExperiences] = useState<any[]>([]);
+  const [showLangPicker, setShowLangPicker] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -110,7 +114,53 @@ export default function ProfileScreen() {
             </TouchableOpacity>
           </View>
         )}
+
+        {/* Language Selector */}
+        <View style={styles.languageSection}>
+          <TouchableOpacity
+            style={styles.languageRow}
+            onPress={() => setShowLangPicker(true)}
+          >
+            <Ionicons name="globe-outline" size={20} color="#1a3a4a" />
+            <Text style={styles.languageLabel}>{t('profile_language')}</Text>
+            <Text style={styles.languageCurrent}>
+              {LANGUAGES.find(l => l.code === language)?.flag} {LANGUAGES.find(l => l.code === language)?.name}
+            </Text>
+            <Ionicons name="chevron-forward" size={18} color="#9ca3a3" />
+          </TouchableOpacity>
+        </View>
       </ScrollView>
+
+      {/* Language Picker Modal */}
+      <Modal
+        visible={showLangPicker}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowLangPicker(false)}
+      >
+        <TouchableOpacity
+          style={styles.langModalOverlay}
+          activeOpacity={1}
+          onPress={() => setShowLangPicker(false)}
+        >
+          <View style={styles.langModalContent}>
+            <Text style={styles.langModalTitle}>{t('profile_language')}</Text>
+            <ScrollView style={{ maxHeight: 400 }} showsVerticalScrollIndicator={false}>
+              {LANGUAGES.map((lang) => (
+                <TouchableOpacity
+                  key={lang.code}
+                  style={[styles.langOption, language === lang.code && styles.langOptionActive]}
+                  onPress={() => { setLanguage(lang.code); setShowLangPicker(false); }}
+                >
+                  <Text style={styles.langFlag}>{lang.flag}</Text>
+                  <Text style={[styles.langName, language === lang.code && styles.langNameActive]}>{lang.name}</Text>
+                  {language === lang.code && <Ionicons name="checkmark" size={20} color="#1a3a4a" />}
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        </TouchableOpacity>
+      </Modal>
 
       {/* Bottom Actions */}
       <View style={styles.bottomActions}>

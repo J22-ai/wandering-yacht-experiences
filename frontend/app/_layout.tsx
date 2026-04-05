@@ -3,6 +3,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { AuthProvider } from '../src/context/AuthContext';
 import { FavoritesProvider } from '../src/context/FavoritesContext';
+import { LanguageProvider } from '../src/context/LanguageContext';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { View, ActivityIndicator, StyleSheet, Text } from 'react-native';
@@ -29,6 +30,7 @@ export default function RootLayout() {
   }
 
   return (
+    <LanguageProvider>
     <AuthProvider>
       <FavoritesProvider>
       <StatusBar style="dark" />
@@ -50,6 +52,7 @@ export default function RootLayout() {
       </Stack>
       </FavoritesProvider>
     </AuthProvider>
+    </LanguageProvider>
   );
 }
 
