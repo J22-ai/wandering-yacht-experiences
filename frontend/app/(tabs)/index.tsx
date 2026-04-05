@@ -400,8 +400,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   featureLogo: {
-    width: 30,
-    height: 30,
+    width: 50,
+    height: 50,
   },
   featureTitle: {
     fontFamily: 'TraditionalArabic',
