@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -50,6 +50,7 @@ export default function ExploreScreen() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(params.category as string || null);
   const [searchQuery, setSearchQuery] = useState('');
   const [refreshing, setRefreshing] = useState(false);
+  const searchInputRef = useRef<any>(null);
 
   useEffect(() => {
     if (params.category) {
@@ -194,9 +195,14 @@ export default function ExploreScreen() {
       </View>
 
       {/* Search Bar */}
-      <View style={styles.searchContainer}>
+      <TouchableOpacity
+        style={styles.searchContainer}
+        activeOpacity={1}
+        onPress={() => searchInputRef.current?.focus()}
+      >
         <Ionicons name="search" size={18} color="#9ca3a3" />
         <TextInput
+          ref={searchInputRef}
           style={styles.searchInput}
           placeholder="Search experiences..."
           placeholderTextColor="#9ca3a3"
@@ -208,7 +214,7 @@ export default function ExploreScreen() {
             <Ionicons name="close-circle" size={18} color="#9ca3a3" />
           </TouchableOpacity>
         ) : null}
-      </View>
+      </TouchableOpacity>
 
       {/* Category List - only when no category pre-selected */}
       {!selectedCategory && (
