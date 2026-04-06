@@ -20,6 +20,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { api } from '../../src/services/api';
 import { useAuth } from '../../src/context/AuthContext';
 import { useLanguage } from '../../src/context/LanguageContext';
+import { getTranslatedExperience } from '../../src/i18n/experienceTranslations';
 
 const openLink = (url: string) => {
   if (Platform.OS === 'web') {
@@ -75,7 +76,7 @@ export default function HomeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { user, token } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [categories, setCategories] = useState<Category[]>([]);
   const [featuredExperiences, setFeaturedExperiences] = useState<Experience[]>([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -326,7 +327,7 @@ export default function HomeScreen() {
               >
                 <Image source={{ uri: exp.image_url }} style={styles.searchResultImage} />
                 <View style={styles.searchResultInfo}>
-                  <Text style={styles.searchResultTitle} numberOfLines={1}>{exp.title}</Text>
+                  <Text style={styles.searchResultTitle} numberOfLines={1}>{getTranslatedExperience(language, exp.title)?.title || exp.title}</Text>
                   <View style={styles.searchResultMeta}>
                     <Ionicons name="location-outline" size={13} color="#7a8a8a" />
                     <Text style={styles.searchResultLocation} numberOfLines={1}>{exp.location}</Text>

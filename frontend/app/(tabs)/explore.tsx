@@ -15,6 +15,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { api } from '../../src/services/api';
 import { useAuth } from '../../src/context/AuthContext';
 import { useLanguage } from '../../src/context/LanguageContext';
+import { getTranslatedExperience } from '../../src/i18n/experienceTranslations';
 
 interface Category {
   id: string;
@@ -46,7 +47,7 @@ export default function ExploreScreen() {
   const params = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const { token } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [categories, setCategories] = useState<Category[]>([]);
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(params.category as string || null);
@@ -165,7 +166,7 @@ export default function ExploreScreen() {
         style={styles.experienceImage}
       />
       <View style={styles.experienceContent}>
-        <Text style={styles.experienceTitle} numberOfLines={2}>{experience.title}</Text>
+        <Text style={styles.experienceTitle} numberOfLines={2}>{getTranslatedExperience(language, experience.title)?.title || experience.title}</Text>
         <View style={styles.experienceMeta}>
           <View style={styles.metaItem}>
             <Ionicons name="location-outline" size={14} color="#7a8a8a" />

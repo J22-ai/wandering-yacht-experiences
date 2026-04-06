@@ -20,6 +20,7 @@ import { api } from '../../src/services/api';
 import { useAuth } from '../../src/context/AuthContext';
 import { useFavorites } from '../../src/context/FavoritesContext';
 import { useLanguage } from '../../src/context/LanguageContext';
+import { getTranslatedExperience } from '../../src/i18n/experienceTranslations';
 
 const { width } = Dimensions.get('window');
 
@@ -82,7 +83,7 @@ export default function ExperienceDetailScreen() {
   const insets = useSafeAreaInsets();
   const { user, token } = useAuth();
   const { toggleFavorite, isFavorite } = useFavorites();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [experience, setExperience] = useState<Experience | null>(null);
   const [loading, setLoading] = useState(true);
   const [ticketCounts, setTicketCounts] = useState<{ [key: string]: number }>({});
@@ -261,7 +262,7 @@ export default function ExperienceDetailScreen() {
           </View>
 
           {/* Title */}
-          <Text style={styles.title}>{experience.title}</Text>
+          <Text style={styles.title}>{getTranslatedExperience(language, experience.title)?.title || experience.title}</Text>
           
           {/* Location - Clickable to open maps */}
           <TouchableOpacity
@@ -339,7 +340,7 @@ export default function ExperienceDetailScreen() {
           {/* Description */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>{t('detail_about')}</Text>
-            <Text style={styles.description}>{experience.description}</Text>
+            <Text style={styles.description}>{getTranslatedExperience(language, experience.title)?.description || experience.description}</Text>
           </View>
 
           {/* What's Included */}
