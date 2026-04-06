@@ -136,8 +136,18 @@ export default function ExploreScreen() {
   };
 
   const getCategoryName = (slug: string) => {
+    const nameMap: { [key: string]: string } = {
+      'water_adventures': 'WATER ADVENTURES',
+      'yacht_experiences': 'WELLNESS ON DECK',
+      'culinary_tours': 'CULINARY EXCURSIONS',
+      'nature_escapes': 'NATURE ESCAPES',
+      'concierge_services': 'CONCIERGE SERVICES',
+      'weddings_events': 'WEDDINGS & EVENTS',
+      'experiences': 'EXPERIENCES',
+    };
+    if (nameMap[slug]) return nameMap[slug];
     const cat = categories.find(c => c.slug === slug);
-    return cat ? cat.name : slug.replace(/-/g, ' ').toUpperCase();
+    return cat ? cat.name : slug.replace(/[_-]/g, ' ').toUpperCase();
   };
 
   const filteredExperiences = getFilteredExperiences();
