@@ -21,6 +21,7 @@ import { useAuth } from '../../src/context/AuthContext';
 import { useFavorites } from '../../src/context/FavoritesContext';
 import { useLanguage } from '../../src/context/LanguageContext';
 import { getTranslatedExperience } from '../../src/i18n/experienceTranslations';
+import { translateContent } from '../../src/i18n/contentTranslations';
 
 const { width } = Dimensions.get('window');
 
@@ -353,7 +354,7 @@ export default function ExperienceDetailScreen() {
                     <View style={styles.checkCircle}>
                       <Ionicons name="checkmark" size={14} color="#fff" />
                     </View>
-                    <Text style={styles.includedText}>{item}</Text>
+                    <Text style={styles.includedText}>{translateContent(language, item)}</Text>
                   </View>
                 ))}
               </View>
@@ -367,7 +368,7 @@ export default function ExperienceDetailScreen() {
               <View style={styles.amenitiesGrid}>
                 {experience.amenities.map((amenity, idx) => (
                   <View key={idx} style={styles.amenityChip}>
-                    <Text style={styles.amenityText}>{amenity}</Text>
+                    <Text style={styles.amenityText}>{translateContent(language, amenity)}</Text>
                   </View>
                 ))}
               </View>
@@ -408,8 +409,8 @@ export default function ExperienceDetailScreen() {
             {experience.ticket_types.map((ticket) => (
               <View key={ticket.id} style={styles.ticketCard}>
                 <View style={styles.ticketInfo}>
-                  <Text style={styles.ticketName}>{ticket.name}</Text>
-                  <Text style={styles.ticketDescription}>{ticket.description}</Text>
+                  <Text style={styles.ticketName}>{translateContent(language, ticket.name)}</Text>
+                  <Text style={styles.ticketDescription}>{translateContent(language, ticket.description)}</Text>
                   <Text style={styles.ticketPrice}>€{ticket.price}</Text>
                 </View>
                 <View style={styles.ticketCounter}>
