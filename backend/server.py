@@ -966,9 +966,9 @@ async def seed_data_internal():
         {
             "id": str(uuid.uuid4()),
             "title": "Wine Tasting with Art",
-            "description": "Combine wine tasting with contemporary art in a stunning gallery setting. A feast for all senses.",
+            "description": "Combine wine tasting with contemporary art in breathtaking outdoor settings across Tivat. Meeting points change weekly to paint new scenery. A feast for all senses.",
             "category": "culinary_tours",
-            "location": "Podgorica Art Gallery",
+            "location": "Tivat, Montenegro",
             "date": "2025-08-01",
             "image_url": "https://customer-assets.emergentagent.com/job_302e63cd-b681-4d63-bedc-f5e20506c0ed/artifacts/qcjuamnp_PHOTO-2026-03-16-15-05-01.jpg",
             "capacity": 10,
