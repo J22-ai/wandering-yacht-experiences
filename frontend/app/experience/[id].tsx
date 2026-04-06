@@ -283,7 +283,7 @@ export default function ExperienceDetailScreen() {
                 <Ionicons name="time-outline" size={22} color="#1a3a4a" />
                 <Text style={styles.infoLabel}>{t('detail_duration')}</Text>
                 <Text style={styles.infoValue}>
-                  {experience.duration_hours >= 1 ? `${experience.duration_hours} hour${experience.duration_hours > 1 ? 's' : ''}` : `${Math.round(experience.duration_hours * 60)} min`}
+                  {experience.duration_hours >= 1 ? `${experience.duration_hours} ${experience.duration_hours > 1 ? t('detail_hours') : t('detail_hour')}` : `${Math.round(experience.duration_hours * 60)} ${t('detail_minutes')}`}
                 </Text>
               </View>
             )}

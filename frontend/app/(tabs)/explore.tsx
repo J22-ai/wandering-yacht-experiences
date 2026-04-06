@@ -94,8 +94,8 @@ export default function ExploreScreen() {
 
   const formatDuration = (hours: number) => {
     if (hours === 0) return '';
-    if (hours >= 24) return `${Math.round(hours / 24)} days`;
-    return `${hours}h`;
+    if (hours >= 24) return `${Math.round(hours / 24)} ${t('detail_days')}`;
+    return `${hours} ${hours > 1 ? t('detail_hours') : t('detail_hour')}`;
   };
 
   // Filter experiences based on search and category
