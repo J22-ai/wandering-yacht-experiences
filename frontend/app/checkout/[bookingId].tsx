@@ -123,7 +123,7 @@ export default function CheckoutScreen() {
     return (
       <View style={[styles.container, styles.loadingContainer]}>
         <ActivityIndicator size="large" color="#1a3a4a" />
-        <Text style={styles.loadingText}>Loading checkout...</Text>
+        <Text style={styles.loadingText}>{t('checkout_loading')}</Text>
       </View>
     );
   }
@@ -132,12 +132,12 @@ export default function CheckoutScreen() {
     return (
       <View style={[styles.container, styles.loadingContainer]}>
         <Ionicons name="alert-circle-outline" size={64} color="#c4c9c9" />
-        <Text style={styles.errorText}>Booking not found</Text>
+        <Text style={styles.errorText}>{t('checkout_not_found')}</Text>
         <TouchableOpacity
           style={styles.backToHomeButton}
           onPress={() => router.replace('/(tabs)')}
         >
-          <Text style={styles.backToHomeText}>Go Home</Text>
+          <Text style={styles.backToHomeText}>{t('checkout_go_home')}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -149,13 +149,13 @@ export default function CheckoutScreen() {
         <View style={styles.successIcon}>
           <Ionicons name="checkmark" size={40} color="#fff" />
         </View>
-        <Text style={styles.paidTitle}>Already Paid</Text>
-        <Text style={styles.paidText}>This booking has already been completed.</Text>
+        <Text style={styles.paidTitle}>{t('checkout_already_paid')}</Text>
+        <Text style={styles.paidText}>{t('checkout_already_paid_text')}</Text>
         <TouchableOpacity
           style={styles.viewTicketButton}
           onPress={() => router.replace(`/ticket/${booking.id}`)}
         >
-          <Text style={styles.viewTicketText}>View Ticket</Text>
+          <Text style={styles.viewTicketText}>{t('checkout_view_ticket')}</Text>
           <Ionicons name="arrow-forward" size={18} color="#fff" />
         </TouchableOpacity>
       </View>
@@ -179,7 +179,7 @@ export default function CheckoutScreen() {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Booking Summary */}
         <View style={styles.summaryCard}>
-          <Text style={styles.cardLabel}>BOOKING SUMMARY</Text>
+          <Text style={styles.cardLabel}>{t('checkout_summary')}</Text>
           <Text style={styles.experienceTitle}>{booking.experience_title}</Text>
           
           <View style={styles.detailsContainer}>
@@ -201,7 +201,7 @@ export default function CheckoutScreen() {
 
         {/* Tickets */}
         <View style={styles.ticketsCard}>
-          <Text style={styles.cardLabel}>TICKETS</Text>
+          <Text style={styles.cardLabel}>{t('checkout_tickets')}</Text>
           {booking.tickets.map((ticket, idx) => (
             <View key={idx} style={styles.ticketRow}>
               <View>
@@ -215,7 +215,7 @@ export default function CheckoutScreen() {
           ))}
           
           <View style={styles.totalRow}>
-            <Text style={styles.totalLabel}>Total</Text>
+            <Text style={styles.totalLabel}>{t('checkout_total')}</Text>
             <Text style={styles.totalAmount}>€{booking.total_amount.toFixed(2)}</Text>
           </View>
         </View>
@@ -224,7 +224,7 @@ export default function CheckoutScreen() {
         <View style={styles.securityNotice}>
           <Ionicons name="shield-checkmark" size={20} color="#10b981" />
           <Text style={styles.securityText}>
-            Your payment information is secure and encrypted
+            {t('checkout_secure')}
           </Text>
         </View>
 
@@ -232,9 +232,9 @@ export default function CheckoutScreen() {
         <View style={styles.demoNotice}>
           <Ionicons name="information-circle-outline" size={22} color="#1a3a4a" />
           <View style={styles.demoTextContainer}>
-            <Text style={styles.demoTitle}>Demo Mode</Text>
+            <Text style={styles.demoTitle}>{t('checkout_demo')}</Text>
             <Text style={styles.demoText}>
-              This is a demo checkout. Tap "Complete Payment" to simulate a successful transaction.
+              {t('checkout_demo_text')}
             </Text>
           </View>
         </View>
@@ -245,7 +245,7 @@ export default function CheckoutScreen() {
       {/* Bottom Bar */}
       <View style={[styles.bottomBar, { paddingBottom: Math.max(insets.bottom, 16) + 16 }]}>
         <View style={styles.priceContainer}>
-          <Text style={styles.priceLabel}>Total</Text>
+          <Text style={styles.priceLabel}>{t('checkout_total')}</Text>
           <Text style={styles.priceValue}>€{booking.total_amount.toFixed(2)}</Text>
         </View>
         <TouchableOpacity

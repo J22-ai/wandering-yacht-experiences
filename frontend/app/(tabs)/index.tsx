@@ -63,12 +63,12 @@ interface Experience {
 }
 
 const featureItems = [
-  { title: 'WATER ADVENTURES', desc: 'Thrilling water sports and activities', slug: 'water_adventures', logo: require('../../assets/images/wy-splash.jpg') },
-  { title: 'WELLNESS ON DECK', desc: 'Luxury sailing and wellness on the water', slug: 'yacht_experiences', logo: require('../../assets/images/wy-wellness.jpg') },
-  { title: 'CULINARY EXCURSIONS', desc: 'Wine tasting and gourmet adventures', slug: 'culinary_tours', logo: require('../../assets/images/wy-culinary.jpg') },
-  { title: 'NATURE ESCAPES', desc: 'Explore breathtaking landscapes', slug: 'nature_escapes', logo: require('../../assets/images/wy-nature.jpg') },
-  { title: 'CONCIERGE SERVICES', desc: 'Personal assistant for your holiday', slug: 'concierge_services', logo: require('../../assets/images/wy-concierge.png') },
-  { title: 'WANDER WITH LOVE', desc: 'Your dream celebration on the water', slug: 'weddings_events', logo: require('../../assets/images/wy-wedding.png') },
+  { titleKey: 'cat_water_adventures', descKey: 'feat_water_desc', slug: 'water_adventures', logo: require('../../assets/images/wy-splash.jpg') },
+  { titleKey: 'cat_wellness_on_deck', descKey: 'feat_wellness_desc', slug: 'yacht_experiences', logo: require('../../assets/images/wy-wellness.jpg') },
+  { titleKey: 'cat_culinary_excursions', descKey: 'feat_culinary_desc', slug: 'culinary_tours', logo: require('../../assets/images/wy-culinary.jpg') },
+  { titleKey: 'cat_nature_escapes', descKey: 'feat_nature_desc', slug: 'nature_escapes', logo: require('../../assets/images/wy-nature.jpg') },
+  { titleKey: 'cat_concierge_services', descKey: 'feat_concierge_desc', slug: 'concierge_services', logo: require('../../assets/images/wy-concierge.png') },
+  { titleKey: 'cat_weddings_events', descKey: 'feat_weddings_desc', slug: 'weddings_events', logo: require('../../assets/images/wy-wedding.png') },
 ];
 
 export default function HomeScreen() {
@@ -174,8 +174,8 @@ export default function HomeScreen() {
                     resizeMode="contain"
                   />
                 </View>
-                <Text style={styles.featureTitle}>{item.title}</Text>
-                <Text style={styles.featureDesc}>{item.desc}</Text>
+                <Text style={styles.featureTitle}>{t(item.titleKey)}</Text>
+                <Text style={styles.featureDesc}>{t(item.descKey)}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -331,7 +331,7 @@ export default function HomeScreen() {
                     <Ionicons name="location-outline" size={13} color="#7a8a8a" />
                     <Text style={styles.searchResultLocation} numberOfLines={1}>{exp.location}</Text>
                   </View>
-                  <Text style={styles.searchResultPrice}>from €{getLowestPrice(exp)}</Text>
+                  <Text style={styles.searchResultPrice}>{t('search_from')} €{getLowestPrice(exp)}</Text>
                 </View>
                 <Ionicons name="chevron-forward" size={18} color="#9ca3a3" />
               </TouchableOpacity>

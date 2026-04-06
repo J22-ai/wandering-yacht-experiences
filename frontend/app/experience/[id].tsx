@@ -195,13 +195,17 @@ export default function ExperienceDetailScreen() {
   };
 
   const getCategoryLabel = (category: string) => {
-    const labels: { [key: string]: string } = {
-      experiences: 'Wellness',
-      boat_rental: 'Adventure',
-      yacht_charter: 'Luxury',
-      management: 'Service',
+    const catKeyMap: { [key: string]: string } = {
+      'water_adventures': 'cat_water_adventures',
+      'yacht_experiences': 'cat_wellness_on_deck',
+      'culinary_tours': 'cat_culinary_excursions',
+      'nature_escapes': 'cat_nature_escapes',
+      'concierge_services': 'cat_concierge_services',
+      'weddings_events': 'cat_weddings_events',
+      'experiences': 'cat_experiences',
     };
-    return labels[category] || category;
+    if (catKeyMap[category]) return t(catKeyMap[category]);
+    return category.replace(/[_-]/g, ' ');
   };
 
   if (loading) {
@@ -215,7 +219,7 @@ export default function ExperienceDetailScreen() {
   if (!experience) {
     return (
       <View style={[styles.container, styles.loadingContainer]}>
-        <Text style={styles.errorText}>Experience not found</Text>
+        <Text style={styles.errorText}>{t('detail_not_found')}</Text>
       </View>
     );
   }

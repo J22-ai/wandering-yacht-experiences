@@ -136,16 +136,16 @@ export default function ExploreScreen() {
   };
 
   const getCategoryName = (slug: string) => {
-    const nameMap: { [key: string]: string } = {
-      'water_adventures': 'WATER ADVENTURES',
-      'yacht_experiences': 'WELLNESS ON DECK',
-      'culinary_tours': 'CULINARY EXCURSIONS',
-      'nature_escapes': 'NATURE ESCAPES',
-      'concierge_services': 'CONCIERGE SERVICES',
-      'weddings_events': 'WEDDINGS & EVENTS',
-      'experiences': 'EXPERIENCES',
+    const catKeyMap: { [key: string]: string } = {
+      'water_adventures': 'cat_water_adventures',
+      'yacht_experiences': 'cat_wellness_on_deck',
+      'culinary_tours': 'cat_culinary_excursions',
+      'nature_escapes': 'cat_nature_escapes',
+      'concierge_services': 'cat_concierge_services',
+      'weddings_events': 'cat_weddings_events',
+      'experiences': 'cat_experiences',
     };
-    if (nameMap[slug]) return nameMap[slug];
+    if (catKeyMap[slug]) return t(catKeyMap[slug]);
     const cat = categories.find(c => c.slug === slug);
     return cat ? cat.name : slug.replace(/[_-]/g, ' ').toUpperCase();
   };
@@ -259,7 +259,7 @@ export default function ExploreScreen() {
         }
       >
         <Text style={styles.resultsCount}>
-          {filteredExperiences.length} experience{filteredExperiences.length !== 1 ? 's' : ''}
+          {filteredExperiences.length} {t('explore_results_count')}{filteredExperiences.length !== 1 ? 's' : ''}
         </Text>
 
         {selectedCategory || searchQuery.trim() ? (
