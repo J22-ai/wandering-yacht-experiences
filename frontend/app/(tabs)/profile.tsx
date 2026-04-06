@@ -214,9 +214,9 @@ const styles = StyleSheet.create({
   brandName: {
     fontFamily: 'TraditionalArabic',
     color: '#1a3a4a',
-    fontSize: 18,
+    fontSize: 28,
     fontWeight: '400',
-    letterSpacing: 3,
+    letterSpacing: 5,
     marginTop: 20,
     textAlign: 'center',
   },
