@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -33,17 +33,213 @@ interface Booking {
   payment_status: string;
 }
 
+// Web-only Stripe Card Component using @stripe/stripe-js
+function WebStripeCard({ clientSecret, publishableKey, onSuccess, onError, processing, setProcessing }: {
+  clientSecret: string;
+  publishableKey: string;
+  onSuccess: () => void;
+  onError: (msg: string) => void;
+  processing: boolean;
+  setProcessing: (v: boolean) => void;
+}) {
+  const stripeRef = useRef<any>(null);
+  const cardElementRef = useRef<any>(null);
+  const [cardReady, setCardReady] = useState(false);
+  const [cardError, setCardError] = useState('');
+  const mountedRef = useRef(false);
+
+  useEffect(() => {
+    if (Platform.OS !== 'web' || mountedRef.current) return;
+    mountedRef.current = true;
+
+    const initStripe = async () => {
+      try {
+        const stripeJs = await import('@stripe/stripe-js');
+        const stripe = await stripeJs.loadStripe(publishableKey);
+        if (!stripe) {
+          onError('Failed to load Stripe');
+          return;
+        }
+        stripeRef.current = stripe;
+
+        const elements = stripe.elements({ clientSecret });
+        const cardElement = elements.create('card', {
+          style: {
+            base: {
+              fontSize: '16px',
+              color: '#2d3a3a',
+              fontFamily: 'Arial, sans-serif',
+              '::placeholder': { color: '#a0aab0' },
+            },
+            invalid: { color: '#e53e3e' },
+          },
+        });
+
+        // Wait for DOM element to be available
+        setTimeout(() => {
+          const mountEl = document.getElementById('stripe-card-element');
+          if (mountEl) {
+            cardElement.mount(mountEl);
+            cardElementRef.current = cardElement;
+            cardElement.on('ready', () => setCardReady(true));
+            cardElement.on('change', (event: any) => {
+              setCardError(event.error ? event.error.message : '');
+            });
+          } else {
+            onError('Card element container not found');
+          }
+        }, 100);
+      } catch (err: any) {
+        console.error('Stripe init error:', err);
+        onError(err.message || 'Failed to initialize payment');
+      }
+    };
+
+    initStripe();
+
+    return () => {
+      if (cardElementRef.current) {
+        try { cardElementRef.current.destroy(); } catch (e) { /* noop */ }
+      }
+    };
+  }, [clientSecret, publishableKey]);
+
+  const handlePay = useCallback(async () => {
+    if (!stripeRef.current || !cardElementRef.current || processing) return;
+    setProcessing(true);
+    setCardError('');
+
+    try {
+      const { error, paymentIntent } = await stripeRef.current.confirmCardPayment(clientSecret, {
+        payment_method: { card: cardElementRef.current },
+      });
+
+      if (error) {
+        setCardError(error.message || 'Payment failed');
+        onError(error.message || 'Payment failed');
+      } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+        onSuccess();
+      } else {
+        setCardError('Payment was not completed');
+        onError('Payment was not completed. Please try again.');
+      }
+    } catch (err: any) {
+      setCardError(err.message || 'Payment failed');
+      onError(err.message || 'Payment failed');
+    } finally {
+      setProcessing(false);
+    }
+  }, [clientSecret, processing]);
+
+  if (Platform.OS !== 'web') return null;
+
+  return (
+    <View style={styles.cardSection}>
+      <Text style={styles.sectionLabel}>CARD DETAILS</Text>
+      <View style={styles.cardInputWrapper}>
+        {/* @ts-ignore - web-only DOM element */}
+        <div
+          id="stripe-card-element"
+          style={{
+            padding: '14px 12px',
+            backgroundColor: '#fff',
+            borderRadius: 12,
+            border: '1.5px solid #d5d0c8',
+            minHeight: 48,
+          }}
+        />
+      </View>
+      {cardError ? <Text style={styles.cardErrorText}>{cardError}</Text> : null}
+
+      <View style={styles.testCardHint}>
+        <Ionicons name="information-circle-outline" size={16} color="#7a8a8a" />
+        <Text style={styles.testCardText}>Test card: 4242 4242 4242 4242 | Any future date | Any CVC</Text>
+      </View>
+
+      <TouchableOpacity
+        style={[styles.payButton, (!cardReady || processing) && styles.payButtonDisabled]}
+        onPress={handlePay}
+        disabled={!cardReady || processing}
+      >
+        {processing ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <>
+            <Ionicons name="lock-closed" size={18} color="#fff" />
+            <Text style={styles.payButtonText}>Complete Payment</Text>
+          </>
+        )}
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+// Native Payment Component (API-based for Expo Go compatibility)
+function NativePaymentCard({ bookingId, onSuccess, onError, processing, setProcessing }: {
+  bookingId: string;
+  onSuccess: () => void;
+  onError: (msg: string) => void;
+  processing: boolean;
+  setProcessing: (v: boolean) => void;
+}) {
+  const handlePay = useCallback(async () => {
+    if (processing) return;
+    setProcessing(true);
+    try {
+      await api.confirmPayment(bookingId);
+      onSuccess();
+    } catch (err: any) {
+      onError(err.message || 'Payment failed');
+    } finally {
+      setProcessing(false);
+    }
+  }, [bookingId, processing]);
+
+  if (Platform.OS === 'web') return null;
+
+  return (
+    <View style={styles.cardSection}>
+      <Text style={styles.sectionLabel}>PAYMENT</Text>
+      <View style={styles.nativePayInfo}>
+        <Ionicons name="card-outline" size={32} color="#1a3a4a" />
+        <Text style={styles.nativePayText}>Secure payment via Stripe</Text>
+      </View>
+
+      <View style={styles.testCardHint}>
+        <Ionicons name="information-circle-outline" size={16} color="#1a3a4a" />
+        <Text style={styles.testCardText}>Test mode: Payment will be simulated</Text>
+      </View>
+
+      <TouchableOpacity
+        style={[styles.payButton, processing && styles.payButtonDisabled]}
+        onPress={handlePay}
+        disabled={processing}
+      >
+        {processing ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <>
+            <Ionicons name="lock-closed" size={18} color="#fff" />
+            <Text style={styles.payButtonText}>Complete Payment</Text>
+          </>
+        )}
+      </TouchableOpacity>
+    </View>
+  );
+}
+
 export default function CheckoutScreen() {
   const router = useRouter();
   const { bookingId } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const { token } = useAuth();
   const { t } = useLanguage();
-  
+
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
-  const [paymentReady, setPaymentReady] = useState(false);
+  const [clientSecret, setClientSecret] = useState('');
+  const [publishableKey, setPublishableKey] = useState('');
 
   useEffect(() => {
     if (token) {
@@ -56,13 +252,15 @@ export default function CheckoutScreen() {
     try {
       const data = await api.getBooking(bookingId as string);
       setBooking(data);
+
       if (data.payment_status === 'unpaid') {
-        // For demo purposes, mark as ready immediately
-        setPaymentReady(true);
+        const paymentData = await api.createPaymentIntent(data.id);
+        setClientSecret(paymentData.client_secret);
+        setPublishableKey(paymentData.publishable_key);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error loading booking:', error);
-      showAlert('Error', 'Failed to load booking');
+      showAlert('Error', error.message || 'Failed to load booking');
     } finally {
       setLoading(false);
     }
@@ -70,74 +268,57 @@ export default function CheckoutScreen() {
 
   const showAlert = (title: string, message: string) => {
     if (Platform.OS === 'web') {
-      alert(`${title}: ${message}`);
+      window.alert(`${title}: ${message}`);
     } else {
       Alert.alert(title, message);
     }
   };
 
-  const handlePayment = async () => {
-    if (!paymentReady || !booking) return;
-
-    setProcessing(true);
+  const handlePaymentSuccess = async () => {
     try {
-      // Create payment intent
-      await api.createPaymentIntent(booking.id);
-      
-      // Confirm payment (in production, this would happen after Stripe payment completion)
-      await api.confirmPayment(booking.id);
-      
-      if (Platform.OS === 'web') {
-        alert('Payment Successful! Your booking has been confirmed.');
-        router.replace(`/ticket/${booking.id}`);
-      } else {
-        Alert.alert(
-          'Payment Successful',
-          'Your booking has been confirmed! Check your tickets in the Bookings tab.',
-          [
-            {
-              text: 'View Ticket',
-              onPress: () => router.replace(`/ticket/${booking.id}`),
-            },
-          ]
-        );
-      }
-    } catch (error: any) {
-      showAlert('Error', error.message || 'Payment failed');
-    } finally {
-      setProcessing(false);
+      await api.confirmPayment(booking!.id);
+    } catch (e) {
+      // Payment already succeeded on Stripe, proceed anyway
     }
+    if (Platform.OS === 'web') {
+      window.alert('Payment Successful! Your booking has been confirmed.');
+      router.replace(`/ticket/${booking!.id}`);
+    } else {
+      Alert.alert(
+        'Payment Successful',
+        'Your booking has been confirmed!',
+        [{ text: 'View Ticket', onPress: () => router.replace(`/ticket/${booking!.id}`) }]
+      );
+    }
+  };
+
+  const handlePaymentError = (message: string) => {
+    showAlert('Payment Error', message);
   };
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
     return date.toLocaleDateString('en-US', {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
+      weekday: 'short', month: 'short', day: 'numeric', year: 'numeric',
     });
   };
 
   if (loading) {
     return (
-      <View style={[styles.container, styles.loadingContainer]}>
+      <View style={[styles.container, styles.centerContent]}>
         <ActivityIndicator size="large" color="#1a3a4a" />
-        <Text style={styles.loadingText}>{t('checkout_loading')}</Text>
+        <Text style={styles.loadingText}>{t('checkout_loading') || 'Loading checkout...'}</Text>
       </View>
     );
   }
 
   if (!booking) {
     return (
-      <View style={[styles.container, styles.loadingContainer]}>
+      <View style={[styles.container, styles.centerContent]}>
         <Ionicons name="alert-circle-outline" size={64} color="#c4c9c9" />
-        <Text style={styles.errorText}>{t('checkout_not_found')}</Text>
-        <TouchableOpacity
-          style={styles.backToHomeButton}
-          onPress={() => router.replace('/(tabs)')}
-        >
-          <Text style={styles.backToHomeText}>{t('checkout_go_home')}</Text>
+        <Text style={styles.errorText}>{t('checkout_not_found') || 'Booking not found'}</Text>
+        <TouchableOpacity style={styles.linkButton} onPress={() => router.replace('/(tabs)')}>
+          <Text style={styles.linkButtonText}>{t('checkout_go_home') || 'Go Home'}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -145,17 +326,14 @@ export default function CheckoutScreen() {
 
   if (booking.payment_status === 'paid') {
     return (
-      <View style={[styles.container, styles.loadingContainer]}>
-        <View style={styles.successIcon}>
+      <View style={[styles.container, styles.centerContent]}>
+        <View style={styles.successCircle}>
           <Ionicons name="checkmark" size={40} color="#fff" />
         </View>
-        <Text style={styles.paidTitle}>{t('checkout_already_paid')}</Text>
-        <Text style={styles.paidText}>{t('checkout_already_paid_text')}</Text>
-        <TouchableOpacity
-          style={styles.viewTicketButton}
-          onPress={() => router.replace(`/ticket/${booking.id}`)}
-        >
-          <Text style={styles.viewTicketText}>{t('checkout_view_ticket')}</Text>
+        <Text style={styles.successTitle}>{t('checkout_already_paid') || 'Already Paid'}</Text>
+        <Text style={styles.successSubtext}>{t('checkout_already_paid_text') || 'This booking is confirmed.'}</Text>
+        <TouchableOpacity style={styles.primaryButton} onPress={() => router.replace(`/ticket/${booking.id}`)}>
+          <Text style={styles.primaryButtonText}>{t('checkout_view_ticket') || 'View Ticket'}</Text>
           <Ionicons name="arrow-forward" size={18} color="#fff" />
         </TouchableOpacity>
       </View>
@@ -166,32 +344,27 @@ export default function CheckoutScreen() {
     <View style={[styles.container, { paddingTop: insets.top }]}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => router.back()}
-        >
+        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color="#2d3a3a" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>{t('checkout_title')}</Text>
+        <Text style={styles.headerTitle}>{t('checkout_title') || 'Checkout'}</Text>
         <View style={{ width: 44 }} />
       </View>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {/* Booking Summary */}
-        <View style={styles.summaryCard}>
-          <Text style={styles.cardLabel}>{t('checkout_summary')}</Text>
+        <View style={styles.card}>
+          <Text style={styles.sectionLabel}>{t('checkout_summary') || 'BOOKING SUMMARY'}</Text>
           <Text style={styles.experienceTitle}>{booking.experience_title}</Text>
-          
-          <View style={styles.detailsContainer}>
+          <View style={styles.detailsGroup}>
             <View style={styles.detailRow}>
-              <View style={styles.detailIcon}>
+              <View style={styles.detailIconBox}>
                 <Ionicons name="calendar-outline" size={18} color="#1a3a4a" />
               </View>
               <Text style={styles.detailText}>{formatDate(booking.experience_date)}</Text>
             </View>
-            
             <View style={styles.detailRow}>
-              <View style={styles.detailIcon}>
+              <View style={styles.detailIconBox}>
                 <Ionicons name="location-outline" size={18} color="#1a3a4a" />
               </View>
               <Text style={styles.detailText}>{booking.experience_location}</Text>
@@ -200,74 +373,62 @@ export default function CheckoutScreen() {
         </View>
 
         {/* Tickets */}
-        <View style={styles.ticketsCard}>
-          <Text style={styles.cardLabel}>{t('checkout_tickets')}</Text>
+        <View style={styles.card}>
+          <Text style={styles.sectionLabel}>{t('checkout_tickets') || 'TICKETS'}</Text>
           {booking.tickets.map((ticket, idx) => (
             <View key={idx} style={styles.ticketRow}>
               <View>
                 <Text style={styles.ticketName}>{ticket.ticket_name}</Text>
-                <Text style={styles.ticketQty}>{ticket.quantity} × €{ticket.price_per_ticket}</Text>
+                <Text style={styles.ticketQty}>{ticket.quantity} x €{ticket.price_per_ticket}</Text>
               </View>
-              <Text style={styles.ticketTotal}>
-                €{(ticket.quantity * ticket.price_per_ticket).toFixed(2)}
-              </Text>
+              <Text style={styles.ticketPrice}>€{(ticket.quantity * ticket.price_per_ticket).toFixed(2)}</Text>
             </View>
           ))}
-          
+          <View style={styles.totalDivider} />
           <View style={styles.totalRow}>
-            <Text style={styles.totalLabel}>{t('checkout_total')}</Text>
+            <Text style={styles.totalLabel}>{t('checkout_total') || 'Total'}</Text>
             <Text style={styles.totalAmount}>€{booking.total_amount.toFixed(2)}</Text>
           </View>
         </View>
 
-        {/* Security Notice */}
-        <View style={styles.securityNotice}>
-          <Ionicons name="shield-checkmark" size={20} color="#10b981" />
-          <Text style={styles.securityText}>
-            {t('checkout_secure')}
-          </Text>
-        </View>
-
-        {/* Demo Notice */}
-        <View style={styles.demoNotice}>
-          <Ionicons name="information-circle-outline" size={22} color="#1a3a4a" />
-          <View style={styles.demoTextContainer}>
-            <Text style={styles.demoTitle}>{t('checkout_demo')}</Text>
-            <Text style={styles.demoText}>
-              {t('checkout_demo_text')}
-            </Text>
+        {/* Payment - Platform-specific */}
+        {clientSecret && publishableKey ? (
+          <>
+            {Platform.OS === 'web' && (
+              <WebStripeCard
+                clientSecret={clientSecret}
+                publishableKey={publishableKey}
+                onSuccess={handlePaymentSuccess}
+                onError={handlePaymentError}
+                processing={processing}
+                setProcessing={setProcessing}
+              />
+            )}
+            {Platform.OS !== 'web' && (
+              <NativePaymentCard
+                bookingId={booking.id}
+                onSuccess={handlePaymentSuccess}
+                onError={handlePaymentError}
+                processing={processing}
+                setProcessing={setProcessing}
+              />
+            )}
+          </>
+        ) : (
+          <View style={[styles.card, styles.centerContent]}>
+            <ActivityIndicator size="small" color="#1a3a4a" />
+            <Text style={styles.loadingText}>Preparing payment...</Text>
           </View>
+        )}
+
+        {/* Security */}
+        <View style={styles.securityRow}>
+          <Ionicons name="shield-checkmark" size={20} color="#10b981" />
+          <Text style={styles.securityText}>{t('checkout_secure') || 'Your payment is secured with SSL encryption'}</Text>
         </View>
 
-        <View style={{ height: 140 }} />
+        <View style={{ height: 40 }} />
       </ScrollView>
-
-      {/* Bottom Bar */}
-      <View style={[styles.bottomBar, { paddingBottom: Math.max(insets.bottom, 16) + 16 }]}>
-        <View style={styles.priceContainer}>
-          <Text style={styles.priceLabel}>{t('checkout_total')}</Text>
-          <Text style={styles.priceValue}>€{booking.total_amount.toFixed(2)}</Text>
-        </View>
-        <TouchableOpacity
-          style={[
-            styles.payButton,
-            (!paymentReady || processing) && styles.payButtonDisabled,
-          ]}
-          onPress={handlePayment}
-          disabled={!paymentReady || processing}
-        >
-          {processing ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <>
-              <Ionicons name="lock-closed" size={18} color="#fff" />
-              <Text style={styles.payButtonText}>
-                {paymentReady ? t('checkout_complete_payment') : t('loading')}
-              </Text>
-            </>
-          )}
-        </TouchableOpacity>
-      </View>
     </View>
   );
 }
@@ -277,7 +438,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f8f6f3',
   },
-  loadingContainer: {
+  centerContent: {
     justifyContent: 'center',
     alignItems: 'center',
     padding: 40,
@@ -286,18 +447,17 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
     fontSize: 16,
-    fontFamily: 'TraditionalArabic',
     marginTop: 16,
+    textAlign: 'center',
   },
   errorText: {
     fontFamily: 'TraditionalArabic',
     color: '#2d3a3a',
     fontSize: 18,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '500',
     marginTop: 16,
   },
-  successIcon: {
+  successCircle: {
     width: 80,
     height: 80,
     borderRadius: 40,
@@ -306,23 +466,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
   },
-  paidTitle: {
+  successTitle: {
     fontFamily: 'TraditionalArabic',
     color: '#2d3a3a',
     fontSize: 24,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
     marginTop: 16,
   },
-  paidText: {
+  successSubtext: {
     fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
     fontSize: 15,
-    fontFamily: 'TraditionalArabic',
     marginTop: 8,
     textAlign: 'center',
   },
-  viewTicketButton: {
+  primaryButton: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#1a3a4a',
@@ -332,22 +490,20 @@ const styles = StyleSheet.create({
     marginTop: 32,
     gap: 8,
   },
-  viewTicketText: {
+  primaryButtonText: {
     fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
   },
-  backToHomeButton: {
+  linkButton: {
     marginTop: 20,
     padding: 12,
   },
-  backToHomeText: {
+  linkButtonText: {
     fontFamily: 'TraditionalArabic',
     color: '#1a3a4a',
     fontSize: 16,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
   },
   header: {
@@ -364,24 +520,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 2,
   },
   headerTitle: {
     fontFamily: 'TraditionalArabic',
     color: '#2d3a3a',
     fontSize: 20,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
   },
-  content: {
+  scrollContent: {
     flex: 1,
     paddingHorizontal: 20,
   },
-  summaryCard: {
+  card: {
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 20,
@@ -389,11 +539,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e8e5e0',
   },
-  cardLabel: {
+  sectionLabel: {
     fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
     fontSize: 11,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
     letterSpacing: 1,
     marginBottom: 12,
@@ -402,11 +551,10 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#2d3a3a',
     fontSize: 22,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
     marginBottom: 16,
   },
-  detailsContainer: {
+  detailsGroup: {
     gap: 12,
   },
   detailRow: {
@@ -414,7 +562,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
   },
-  detailIcon: {
+  detailIconBox: {
     width: 36,
     height: 36,
     borderRadius: 10,
@@ -426,15 +574,6 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#5a6a6a',
     fontSize: 15,
-    fontFamily: 'TraditionalArabic',
-  },
-  ticketsCard: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#e8e5e0',
   },
   ticketRow: {
     flexDirection: 'row',
@@ -448,29 +587,30 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#2d3a3a',
     fontSize: 16,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '500',
   },
   ticketQty: {
     fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
     fontSize: 13,
-    fontFamily: 'TraditionalArabic',
     marginTop: 2,
   },
-  ticketTotal: {
+  ticketPrice: {
     fontFamily: 'TraditionalArabic',
     color: '#2d3a3a',
     fontSize: 16,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
+  },
+  totalDivider: {
+    height: 1,
+    backgroundColor: '#e8e5e0',
+    marginTop: 4,
   },
   totalRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: 16,
-    marginTop: 4,
   },
   totalLabel: {
     fontFamily: 'TraditionalArabic',
@@ -482,86 +622,61 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#1a3a4a',
     fontSize: 26,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '700',
   },
-  securityNotice: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    padding: 16,
+  cardSection: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#e8e5e0',
   },
-  securityText: {
-    fontFamily: 'TraditionalArabic',
-    color: '#7a8a8a',
-    fontSize: 13,
-  },
-  demoNotice: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    backgroundColor: '#e8f4f4',
-    padding: 16,
-    borderRadius: 14,
-    gap: 12,
-  },
-  demoTextContainer: {
-    flex: 1,
-  },
-  demoTitle: {
-    fontFamily: 'TraditionalArabic',
-    color: '#1a3a4a',
-    fontSize: 15,
-    fontFamily: 'TraditionalArabic',
-    fontWeight: '600',
+  cardInputWrapper: {
+    width: '100%',
     marginBottom: 4,
   },
-  demoText: {
+  cardErrorText: {
     fontFamily: 'TraditionalArabic',
-    color: '#5a6a6a',
+    color: '#e53e3e',
     fontSize: 13,
-    fontFamily: 'TraditionalArabic',
-    lineHeight: 20,
+    marginTop: 8,
   },
-  bottomBar: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+  testCardHint: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#fff',
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    borderTopWidth: 1,
-    borderTopColor: '#e8e5e0',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.05,
-    shadowRadius: 12,
-    elevation: 10,
+    gap: 6,
+    backgroundColor: '#f0f7f7',
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderRadius: 8,
+    marginTop: 14,
+    marginBottom: 20,
   },
-  priceContainer: {},
-  priceLabel: {
+  testCardText: {
     fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
-    fontSize: 13,
-    fontFamily: 'TraditionalArabic',
+    fontSize: 12,
+    flex: 1,
   },
-  priceValue: {
+  nativePayInfo: {
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 24,
+  },
+  nativePayText: {
     fontFamily: 'TraditionalArabic',
-    color: '#2d3a3a',
-    fontSize: 26,
-    fontFamily: 'TraditionalArabic',
-    fontWeight: '700',
+    color: '#5a6a6a',
+    fontSize: 15,
+    textAlign: 'center',
   },
   payButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 8,
     backgroundColor: '#1a3a4a',
-    paddingHorizontal: 28,
+    paddingHorizontal: 32,
     paddingVertical: 16,
     borderRadius: 28,
   },
@@ -572,7 +687,18 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
+  },
+  securityRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    padding: 16,
+  },
+  securityText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
+    fontSize: 13,
   },
 });
