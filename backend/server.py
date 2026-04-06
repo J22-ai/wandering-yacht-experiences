@@ -342,12 +342,20 @@ async def get_categories():
             icon="water"
         ),
         ServiceCategory(
-            id="experiences",
-            name="WEDDING AND EVENT PLANNING",
-            slug="experiences",
-            description="Unforgettable moments on the water",
-            image_url="https://images.unsplash.com/photo-1531419746980-63af10612bf3?w=800",
-            icon="compass"
+            id="concierge_services",
+            name="CONCIERGE SERVICES",
+            slug="concierge_services",
+            description="Personal assistant for your holiday",
+            image_url="https://customer-assets.emergentagent.com/job_ac874aeb-cfb2-4c82-a97b-ff79f3b1c447/artifacts/kxu0ah94_KEY.jpeg",
+            icon="key"
+        ),
+        ServiceCategory(
+            id="weddings_events",
+            name="WEDDINGS & EVENTS",
+            slug="weddings_events",
+            description="Your dream celebration on the water",
+            image_url="https://customer-assets.emergentagent.com/job_ac874aeb-cfb2-4c82-a97b-ff79f3b1c447/artifacts/izj5hjhu_IMG_2955.jpeg",
+            icon="heart"
         )
     ]
     return categories
