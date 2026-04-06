@@ -210,7 +210,7 @@ export default function HomeScreen() {
                 style={styles.experienceImage}
               />
               <View style={styles.experienceContent}>
-                <Text style={styles.experienceTitle} numberOfLines={2}>{experience.title}</Text>
+                <Text style={styles.experienceTitle} numberOfLines={2}>{getTranslatedExperience(language, experience.title)?.title || experience.title}</Text>
                 <View style={styles.experienceMeta}>
                   <View style={styles.metaItem}>
                     <Ionicons name="location-outline" size={14} color="#7a8a8a" />
@@ -224,7 +224,7 @@ export default function HomeScreen() {
                   )}
                 </View>
                 <Text style={styles.experienceDescription} numberOfLines={2}>
-                  {experience.description}
+                  {getTranslatedExperience(language, experience.title)?.description || experience.description}
                 </Text>
                 <View style={styles.experienceFooter}>
                   <Text style={styles.priceLabel}>{t('detail_from')}</Text>
