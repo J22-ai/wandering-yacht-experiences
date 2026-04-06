@@ -69,7 +69,7 @@ export default function ProfileScreen() {
             style={styles.logo}
             resizeMode="contain"
           />
-          <Text style={styles.brandName}>WANDERING YACHT</Text>
+          <Text style={styles.brandName}>WANDERING{'\n'}YACHT</Text>
         </View>
 
         {/* Favorites Section */}
@@ -218,6 +218,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     letterSpacing: 3,
     marginTop: 20,
+    textAlign: 'center',
   },
   favoritesSection: {
     paddingHorizontal: 20,
