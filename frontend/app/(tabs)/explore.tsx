@@ -243,7 +243,7 @@ export default function ExploreScreen() {
               onPress={() => setSelectedCategory(category.slug)}
               activeOpacity={0.7}
             >
-              <Text style={styles.categoryRowText}>{category.name}</Text>
+              <Text style={styles.categoryRowText}>{getCategoryName(category.slug)}</Text>
               <Ionicons name="chevron-forward" size={18} color="#c17f59" />
             </TouchableOpacity>
           ))}
