@@ -31,16 +31,21 @@ interface Booking {
   total_amount: number;
   status: string;
   payment_status: string;
+  payment_type: string;
+  deposit_percentage: number;
+  deposit_amount: number;
+  remaining_balance: number;
 }
 
 // Web-only Stripe Card Component using @stripe/stripe-js
-function WebStripeCard({ clientSecret, publishableKey, onSuccess, onError, processing, setProcessing }: {
+function WebStripeCard({ clientSecret, publishableKey, onSuccess, onError, processing, setProcessing, payLabel }: {
   clientSecret: string;
   publishableKey: string;
   onSuccess: () => void;
   onError: (msg: string) => void;
   processing: boolean;
   setProcessing: (v: boolean) => void;
+  payLabel?: string;
 }) {
   const stripeRef = useRef<any>(null);
   const cardElementRef = useRef<any>(null);
@@ -166,7 +171,7 @@ function WebStripeCard({ clientSecret, publishableKey, onSuccess, onError, proce
         ) : (
           <>
             <Ionicons name="lock-closed" size={18} color="#fff" />
-            <Text style={styles.payButtonText}>Complete Payment</Text>
+            <Text style={styles.payButtonText}>{payLabel || 'Complete Payment'}</Text>
           </>
         )}
       </TouchableOpacity>
@@ -175,12 +180,13 @@ function WebStripeCard({ clientSecret, publishableKey, onSuccess, onError, proce
 }
 
 // Native Payment Component (API-based for Expo Go compatibility)
-function NativePaymentCard({ bookingId, onSuccess, onError, processing, setProcessing }: {
+function NativePaymentCard({ bookingId, onSuccess, onError, processing, setProcessing, payLabel }: {
   bookingId: string;
   onSuccess: () => void;
   onError: (msg: string) => void;
   processing: boolean;
   setProcessing: (v: boolean) => void;
+  payLabel?: string;
 }) {
   const handlePay = useCallback(async () => {
     if (processing) return;
@@ -220,7 +226,7 @@ function NativePaymentCard({ bookingId, onSuccess, onError, processing, setProce
         ) : (
           <>
             <Ionicons name="lock-closed" size={18} color="#fff" />
-            <Text style={styles.payButtonText}>Complete Payment</Text>
+            <Text style={styles.payButtonText}>{payLabel || 'Complete Payment'}</Text>
           </>
         )}
       </TouchableOpacity>
@@ -280,13 +286,20 @@ export default function CheckoutScreen() {
     } catch (e) {
       // Payment already succeeded on Stripe, proceed anyway
     }
+    
+    const isDeposit = booking!.payment_type === 'deposit';
+    const successTitle = isDeposit ? 'Deposit Received!' : 'Payment Successful!';
+    const successMessage = isDeposit 
+      ? `Your ${booking!.deposit_percentage}% deposit of €${booking!.deposit_amount.toFixed(2)} has been received. Your dates are now blocked! We will contact you regarding the remaining balance and itinerary.`
+      : 'Your booking has been confirmed!';
+    
     if (Platform.OS === 'web') {
-      window.alert('Payment Successful! Your booking has been confirmed.');
+      window.alert(`${successTitle}\n\n${successMessage}`);
       router.replace(`/ticket/${booking!.id}`);
     } else {
       Alert.alert(
-        'Payment Successful',
-        'Your booking has been confirmed!',
+        successTitle,
+        successMessage,
         [{ text: 'View Ticket', onPress: () => router.replace(`/ticket/${booking!.id}`) }]
       );
     }
@@ -324,14 +337,26 @@ export default function CheckoutScreen() {
     );
   }
 
-  if (booking.payment_status === 'paid') {
+  if (booking.payment_status === 'paid' || booking.payment_status === 'deposit_paid') {
+    const isDepositPaid = booking.payment_status === 'deposit_paid';
     return (
       <View style={[styles.container, styles.centerContent]}>
         <View style={styles.successCircle}>
           <Ionicons name="checkmark" size={40} color="#fff" />
         </View>
-        <Text style={styles.successTitle}>{t('checkout_already_paid') || 'Already Paid'}</Text>
-        <Text style={styles.successSubtext}>{t('checkout_already_paid_text') || 'This booking is confirmed.'}</Text>
+        <Text style={styles.successTitle}>
+          {isDepositPaid ? 'Deposit Confirmed' : (t('checkout_already_paid') || 'Already Paid')}
+        </Text>
+        <Text style={styles.successSubtext}>
+          {isDepositPaid 
+            ? `Your ${booking.deposit_percentage}% deposit has been received. Dates are blocked!`
+            : (t('checkout_already_paid_text') || 'This booking is confirmed.')}
+        </Text>
+        {isDepositPaid && booking.remaining_balance > 0 && (
+          <Text style={[styles.successSubtext, { marginTop: 4, color: '#1a3a4a', fontWeight: '600' }]}>
+            Remaining balance: €{booking.remaining_balance.toFixed(2)}
+          </Text>
+        )}
         <TouchableOpacity style={styles.primaryButton} onPress={() => router.replace(`/ticket/${booking.id}`)}>
           <Text style={styles.primaryButtonText}>{t('checkout_view_ticket') || 'View Ticket'}</Text>
           <Ionicons name="arrow-forward" size={18} color="#fff" />
@@ -391,6 +416,40 @@ export default function CheckoutScreen() {
           </View>
         </View>
 
+        {/* Deposit Notice - only for charter bookings */}
+        {booking.payment_type === 'deposit' && booking.deposit_amount > 0 && (
+          <View style={styles.depositCard}>
+            <View style={styles.depositBanner}>
+              <Ionicons name="boat-outline" size={22} color="#fff" />
+              <Text style={styles.depositBannerText}>DEPOSIT OF {booking.deposit_percentage}% NEEDED TODAY</Text>
+            </View>
+            <Text style={styles.depositSubtext}>
+              Pay a {booking.deposit_percentage}% deposit to block your dates immediately
+            </Text>
+            <View style={styles.depositBreakdown}>
+              <View style={styles.depositRow}>
+                <Text style={styles.depositLabel}>Charter Total</Text>
+                <Text style={styles.depositValue}>€{booking.total_amount.toFixed(2)}</Text>
+              </View>
+              <View style={styles.depositRowHighlight}>
+                <Text style={styles.depositLabelBold}>{booking.deposit_percentage}% Deposit Due Now</Text>
+                <Text style={styles.depositValueBold}>€{booking.deposit_amount.toFixed(2)}</Text>
+              </View>
+              <View style={styles.depositDivider} />
+              <View style={styles.depositRow}>
+                <Text style={styles.depositLabelMuted}>Remaining Balance</Text>
+                <Text style={styles.depositValueMuted}>€{booking.remaining_balance.toFixed(2)}</Text>
+              </View>
+            </View>
+            <View style={styles.depositNote}>
+              <Ionicons name="information-circle-outline" size={16} color="#7a8a8a" />
+              <Text style={styles.depositNoteText}>
+                Remaining balance will be invoiced. Full payment confirmation and itinerary details will follow.
+              </Text>
+            </View>
+          </View>
+        )}
+
         {/* Payment - Platform-specific */}
         {clientSecret && publishableKey ? (
           <>
@@ -402,6 +461,7 @@ export default function CheckoutScreen() {
                 onError={handlePaymentError}
                 processing={processing}
                 setProcessing={setProcessing}
+                payLabel={booking.payment_type === 'deposit' ? `Pay ${booking.deposit_percentage}% Deposit — €${booking.deposit_amount.toFixed(2)}` : 'Complete Payment'}
               />
             )}
             {Platform.OS !== 'web' && (
@@ -411,6 +471,7 @@ export default function CheckoutScreen() {
                 onError={handlePaymentError}
                 processing={processing}
                 setProcessing={setProcessing}
+                payLabel={booking.payment_type === 'deposit' ? `Pay ${booking.deposit_percentage}% Deposit — €${booking.deposit_amount.toFixed(2)}` : 'Complete Payment'}
               />
             )}
           </>
@@ -700,5 +761,111 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
     fontSize: 13,
+  },
+  // Deposit styles
+  depositCard: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    marginBottom: 16,
+    borderWidth: 2,
+    borderColor: '#1a3a4a',
+    overflow: 'hidden',
+  },
+  depositBanner: {
+    backgroundColor: '#1a3a4a',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+  },
+  depositBannerText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '700',
+    letterSpacing: 1,
+  },
+  depositSubtext: {
+    fontFamily: 'TraditionalArabic',
+    color: '#5a6a6a',
+    fontSize: 14,
+    textAlign: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 14,
+    paddingBottom: 4,
+  },
+  depositBreakdown: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+  },
+  depositRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 6,
+  },
+  depositRowHighlight: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#e8f4f4',
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    marginVertical: 4,
+  },
+  depositLabel: {
+    fontFamily: 'TraditionalArabic',
+    color: '#5a6a6a',
+    fontSize: 15,
+  },
+  depositValue: {
+    fontFamily: 'TraditionalArabic',
+    color: '#5a6a6a',
+    fontSize: 15,
+  },
+  depositLabelBold: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a3a4a',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  depositValueBold: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a3a4a',
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  depositDivider: {
+    height: 1,
+    backgroundColor: '#e8e5e0',
+    marginVertical: 4,
+  },
+  depositLabelMuted: {
+    fontFamily: 'TraditionalArabic',
+    color: '#a0aab0',
+    fontSize: 14,
+  },
+  depositValueMuted: {
+    fontFamily: 'TraditionalArabic',
+    color: '#a0aab0',
+    fontSize: 14,
+  },
+  depositNote: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 8,
+    paddingHorizontal: 20,
+    paddingBottom: 16,
+    paddingTop: 4,
+  },
+  depositNoteText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
+    fontSize: 12,
+    flex: 1,
+    lineHeight: 18,
   },
 });

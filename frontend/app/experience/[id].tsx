@@ -76,6 +76,8 @@ interface Experience {
   duration_hours: number;
   amenities: string[];
   included: string[];
+  requires_deposit?: boolean;
+  deposit_percentage?: number;
 }
 
 export default function ExperienceDetailScreen() {
@@ -435,6 +437,19 @@ export default function ExperienceDetailScreen() {
               </View>
             ))}
           </View>
+
+          {/* Deposit Notice for charter experiences */}
+          {experience.requires_deposit && (
+            <View style={styles.depositNotice}>
+              <View style={styles.depositNoticeHeader}>
+                <Ionicons name="boat-outline" size={18} color="#1a3a4a" />
+                <Text style={styles.depositNoticeTitle}>DEPOSIT OF {experience.deposit_percentage || 30}% NEEDED TODAY</Text>
+              </View>
+              <Text style={styles.depositNoticeText}>
+                A {experience.deposit_percentage || 30}% deposit is required to proceed with your booking and block your dates immediately. The remaining balance will be invoiced separately.
+              </Text>
+            </View>
+          )}
 
           <View style={{ height: 140 }} />
         </View>
@@ -822,7 +837,34 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '600',
+  },
+  // Deposit notice styles
+  depositNotice: {
+    backgroundColor: '#f0f7f7',
+    borderRadius: 14,
+    borderWidth: 1.5,
+    borderColor: '#1a3a4a',
+    padding: 16,
+    marginTop: 8,
+  },
+  depositNoticeHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
+  },
+  depositNoticeTitle: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a3a4a',
+    fontSize: 14,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  depositNoticeText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#5a6a6a',
+    fontSize: 13,
+    lineHeight: 20,
   },
 });

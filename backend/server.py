@@ -111,6 +111,8 @@ class ExperienceCreate(BaseModel):
     duration_hours: Optional[float] = None
     amenities: Optional[List[str]] = []
     included: Optional[List[str]] = []
+    requires_deposit: bool = False
+    deposit_percentage: float = 30
 
 class Experience(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
@@ -130,6 +132,8 @@ class Experience(BaseModel):
     tags: List[str] = []
     created_at: datetime = Field(default_factory=datetime.utcnow)
     is_active: bool = True
+    requires_deposit: bool = False
+    deposit_percentage: float = 30
 
 # Booking Models
 class BookingTicket(BaseModel):
@@ -155,7 +159,11 @@ class Booking(BaseModel):
     time_slot_id: Optional[str] = None
     total_amount: float
     status: str = "pending"  # pending, confirmed, cancelled, completed
-    payment_status: str = "unpaid"  # unpaid, paid, refunded
+    payment_status: str = "unpaid"  # unpaid, paid, refunded, deposit_paid
+    payment_type: str = "full"  # full, deposit
+    deposit_percentage: float = 0
+    deposit_amount: float = 0
+    remaining_balance: float = 0
     payment_intent_id: Optional[str] = None
     qr_code: Optional[str] = None
     special_requests: Optional[str] = None
@@ -425,6 +433,19 @@ async def create_booking(
     if total_tickets > experience["available_spots"]:
         raise HTTPException(status_code=400, detail="Not enough spots available")
     
+    # Check if experience requires deposit
+    requires_deposit = experience.get("requires_deposit", False)
+    deposit_percentage = experience.get("deposit_percentage", 30)
+    
+    deposit_amount = 0.0
+    remaining_balance = 0.0
+    payment_type = "full"
+    
+    if requires_deposit:
+        payment_type = "deposit"
+        deposit_amount = round(total_amount * (deposit_percentage / 100), 2)
+        remaining_balance = round(total_amount - deposit_amount, 2)
+    
     # Create booking
     booking = Booking(
         user_id=current_user["id"],
@@ -435,6 +456,10 @@ async def create_booking(
         tickets=booking_data.tickets,
         time_slot_id=booking_data.time_slot_id,
         total_amount=total_amount,
+        payment_type=payment_type,
+        deposit_percentage=deposit_percentage if requires_deposit else 0,
+        deposit_amount=deposit_amount,
+        remaining_balance=remaining_balance,
         special_requests=booking_data.special_requests
     )
     
@@ -482,17 +507,26 @@ async def create_payment_intent(
     if booking["payment_status"] == "paid":
         raise HTTPException(status_code=400, detail="Booking already paid")
     
-    amount_cents = int(booking["total_amount"] * 100)
+    # If deposit booking, charge only the deposit amount
+    if booking.get("payment_type") == "deposit" and booking.get("deposit_amount", 0) > 0:
+        charge_amount = booking["deposit_amount"]
+    else:
+        charge_amount = booking["total_amount"]
+    
+    amount_cents = int(charge_amount * 100)
     
     try:
         # Create payment intent
         intent = stripe.PaymentIntent.create(
             amount=amount_cents,
-            currency="usd",
+            currency="eur",
             metadata={
                 "booking_id": data.booking_id,
                 "user_id": current_user["id"],
-                "experience_title": booking["experience_title"]
+                "experience_title": booking["experience_title"],
+                "payment_type": booking.get("payment_type", "full"),
+                "total_amount": str(booking["total_amount"]),
+                "deposit_amount": str(booking.get("deposit_amount", 0)),
             },
             automatic_payment_methods={"enabled": True}
         )
@@ -539,13 +573,17 @@ async def confirm_payment(
     qr_data = f"WANDERING-YACHT-{booking_id}-{current_user['id']}"
     qr_code = generate_qr_code(qr_data)
     
+    # Set payment status based on payment type
+    payment_status = "deposit_paid" if booking.get("payment_type") == "deposit" else "paid"
+    booking_status = "confirmed"
+    
     # Update booking
     await db.bookings.update_one(
         {"id": booking_id},
         {
             "$set": {
-                "status": "confirmed",
-                "payment_status": "paid",
+                "status": booking_status,
+                "payment_status": payment_status,
                 "qr_code": qr_code,
                 "confirmed_at": datetime.utcnow()
             }
@@ -1055,9 +1093,11 @@ async def seed_data_internal():
             "duration_hours": 8,
             "amenities": ["GPS Navigation", "Bluetooth Audio", "Cooler"],
             "included": ["Fuel", "Safety equipment", "Brief training"],
+            "requires_deposit": True,
+            "deposit_percentage": 30,
             "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Low Season", "description": "Low season rate", "price": 1700, "max_per_booking": 1},
-                {"id": str(uuid.uuid4()), "name": "High Season", "description": "High season rate", "price": 1980, "max_per_booking": 1}
+                {"id": str(uuid.uuid4()), "name": "Full Day - Low Season", "description": "Full day low season rate", "price": 1700, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Full Day - High Season", "description": "Full day high season rate", "price": 1980, "max_per_booking": 1}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
@@ -1077,9 +1117,12 @@ async def seed_data_internal():
             "duration_hours": 4,
             "amenities": ["Professional Crew", "Water Toys", "Sound System", "Air Conditioning"],
             "included": ["Captain", "Fuel", "Water toys", "Ice & water"],
+            "requires_deposit": True,
+            "deposit_percentage": 30,
             "ticket_types": [
-                {"id": str(uuid.uuid4()), "name": "Low Season", "description": "4 hour low season charter", "price": 1690, "max_per_booking": 1},
-                {"id": str(uuid.uuid4()), "name": "High Season", "description": "4 hour high season charter", "price": 2600, "max_per_booking": 1}
+                {"id": str(uuid.uuid4()), "name": "Half Day - Low Season", "description": "4 hour low season charter", "price": 1690, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Half Day - High Season", "description": "4 hour high season charter", "price": 2600, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Full Day - 8 Hours", "description": "Full day charter (8 hours)", "price": 3200, "max_per_booking": 1}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
@@ -1097,10 +1140,14 @@ async def seed_data_internal():
             "duration_hours": 4,
             "amenities": ["Classic Sails", "Wooden Deck", "Professional Crew", "Authentic Experience"],
             "included": ["Captain", "Crew", "Refreshments", "Safety equipment"],
+            "requires_deposit": True,
+            "deposit_percentage": 30,
             "ticket_types": [
                 {"id": str(uuid.uuid4()), "name": "Per Person", "description": "Price per person", "price": 175, "max_per_booking": 20},
-                {"id": str(uuid.uuid4()), "name": "Low Season (Full Charter)", "description": "4 hour low season charter", "price": 1690, "max_per_booking": 1},
-                {"id": str(uuid.uuid4()), "name": "High Season (Full Charter)", "description": "4 hour high season charter", "price": 2690, "max_per_booking": 1}
+                {"id": str(uuid.uuid4()), "name": "Half Day - Low Season (Full Charter)", "description": "4 hour low season charter", "price": 1690, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Half Day - High Season (Full Charter)", "description": "4 hour high season charter", "price": 2690, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Full Day Charter - Low Season", "description": "8 hour low season full day charter", "price": 2900, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Full Day Charter - High Season", "description": "8 hour high season full day charter", "price": 4900, "max_per_booking": 1}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
@@ -1432,6 +1479,78 @@ async def add_new_experiences():
         added.append("Wedding Dream")
 
     return {"message": f"Added: {', '.join(added)}" if added else "Both already exist"}
+
+@api_router.post("/admin/setup-deposit-charters")
+async def setup_deposit_charters():
+    """Set requires_deposit=True for yacht/boat charter experiences and update their ticket types"""
+    import uuid as uuid_mod
+    results = []
+    
+    # 1. Speedboat Adventure - mark as deposit required, rename tickets
+    r1 = await db.experiences.update_one(
+        {"title": "Speedboat Adventure"},
+        {
+            "$set": {
+                "requires_deposit": True,
+                "deposit_percentage": 30,
+                "ticket_types": [
+                    {"id": str(uuid_mod.uuid4()), "name": "Full Day - Low Season", "description": "Full day low season rate", "price": 1700, "max_per_booking": 1},
+                    {"id": str(uuid_mod.uuid4()), "name": "Full Day - High Season", "description": "Full day high season rate", "price": 1980, "max_per_booking": 1}
+                ]
+            }
+        }
+    )
+    results.append(f"Speedboat: {r1.modified_count}")
+    
+    # 2. Catamaran - add Full Day ticket, mark as deposit required
+    r2 = await db.experiences.update_one(
+        {"title": "Catamaran Privilege 510 Yacht Charter"},
+        {
+            "$set": {
+                "requires_deposit": True,
+                "deposit_percentage": 30,
+                "ticket_types": [
+                    {"id": str(uuid_mod.uuid4()), "name": "Half Day - Low Season", "description": "4 hour low season charter", "price": 1690, "max_per_booking": 1},
+                    {"id": str(uuid_mod.uuid4()), "name": "Half Day - High Season", "description": "4 hour high season charter", "price": 2600, "max_per_booking": 1},
+                    {"id": str(uuid_mod.uuid4()), "name": "Full Day - 8 Hours", "description": "Full day charter (8 hours)", "price": 3200, "max_per_booking": 1}
+                ]
+            }
+        }
+    )
+    results.append(f"Catamaran: {r2.modified_count}")
+    
+    # 3. Classic Heritage Sail - add Full Day tickets, mark as deposit required
+    r3 = await db.experiences.update_one(
+        {"title": {"$regex": "Classic Heritage Sail"}},
+        {
+            "$set": {
+                "requires_deposit": True,
+                "deposit_percentage": 30,
+                "ticket_types": [
+                    {"id": str(uuid_mod.uuid4()), "name": "Per Person", "description": "Price per person", "price": 175, "max_per_booking": 20},
+                    {"id": str(uuid_mod.uuid4()), "name": "Half Day - Low Season (Full Charter)", "description": "4 hour low season charter", "price": 1690, "max_per_booking": 1},
+                    {"id": str(uuid_mod.uuid4()), "name": "Half Day - High Season (Full Charter)", "description": "4 hour high season charter", "price": 2690, "max_per_booking": 1},
+                    {"id": str(uuid_mod.uuid4()), "name": "Full Day Charter - Low Season", "description": "8 hour low season full day charter", "price": 2900, "max_per_booking": 1},
+                    {"id": str(uuid_mod.uuid4()), "name": "Full Day Charter - High Season", "description": "8 hour high season full day charter", "price": 4900, "max_per_booking": 1}
+                ]
+            }
+        }
+    )
+    results.append(f"Classic Heritage Sail: {r3.modified_count}")
+    
+    # 4. 24M Luxury Motor Yacht Charter - mark as deposit required
+    r4 = await db.experiences.update_one(
+        {"title": "24M Luxury Motor Yacht Charter"},
+        {
+            "$set": {
+                "requires_deposit": True,
+                "deposit_percentage": 30
+            }
+        }
+    )
+    results.append(f"24M Motor Yacht: {r4.modified_count}")
+    
+    return {"message": "Deposit charter setup complete", "results": results}
 
 # Include the router in the main app
 app.include_router(api_router)

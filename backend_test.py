@@ -1,419 +1,430 @@
 #!/usr/bin/env python3
 """
-WANDERING YACHT Backend API Test Suite
-Tests all backend APIs including authentication, booking flow, and payment integration
+Backend Test Suite for 30% Deposit Feature
+Testing the yacht/boat charter booking deposit functionality
 """
 
 import requests
 import json
 import sys
-import os
-from datetime import datetime
+from typing import Dict, Any, Optional
 
-# Base URL from frontend environment
+# Configuration
 BASE_URL = "https://wandering-yacht-1.preview.emergentagent.com/api"
+TEST_USER = {
+    "email": "test@wanderingyacht.com",
+    "password": "test123456",
+    "full_name": "Test User"
+}
 
-class WanderingYachtTester:
+class DepositFeatureTest:
     def __init__(self):
-        self.base_url = BASE_URL
         self.session = requests.Session()
         self.auth_token = None
-        self.test_user_email = "marina.yacht@example.com"
-        self.test_user_password = "SecurePass123!"
-        self.test_user_name = "Marina Yacht Enthusiast"
-        self.experience_id = None
-        self.ticket_type_id = None
-        self.booking_id = None
-        self.results = []
+        self.test_results = []
         
-    def log_result(self, test_name, success, message, details=None):
-        """Log test result"""
+    def log_test(self, test_name: str, success: bool, message: str, details: Any = None):
+        """Log test results"""
         status = "✅ PASS" if success else "❌ FAIL"
-        result = {
-            "test": test_name,
-            "status": status,
-            "message": message,
-            "details": details or {}
-        }
-        self.results.append(result)
-        print(f"{status}: {test_name} - {message}")
+        print(f"{status} {test_name}: {message}")
         if details and not success:
             print(f"   Details: {details}")
+        self.test_results.append({
+            "test": test_name,
+            "success": success,
+            "message": message,
+            "details": details
+        })
     
-    def test_health_check(self):
-        """Test 1: Health Check"""
+    def authenticate(self) -> bool:
+        """Authenticate user and get token"""
         try:
-            response = self.session.get(f"{self.base_url}/health", timeout=10)
-            if response.status_code == 200:
-                data = response.json()
-                if data.get("status") == "healthy":
-                    self.log_result("Health Check", True, "API is healthy")
-                    return True
-                else:
-                    self.log_result("Health Check", False, f"Unexpected response: {data}")
-                    return False
-            else:
-                self.log_result("Health Check", False, f"HTTP {response.status_code}: {response.text}")
-                return False
-        except Exception as e:
-            self.log_result("Health Check", False, f"Connection error: {str(e)}")
-            return False
-    
-    def test_categories(self):
-        """Test 2: Categories API"""
-        try:
-            response = self.session.get(f"{self.base_url}/categories", timeout=10)
-            if response.status_code == 200:
-                categories = response.json()
-                if len(categories) == 4:
-                    category_names = [cat["name"] for cat in categories]
-                    expected = ["Experiences", "Boat Rental", "Yacht Charter", "Management"]
-                    if all(name in category_names for name in expected):
-                        self.log_result("Categories API", True, f"Found all 4 categories: {category_names}")
-                        return True
-                    else:
-                        self.log_result("Categories API", False, f"Missing categories. Found: {category_names}")
-                        return False
-                else:
-                    self.log_result("Categories API", False, f"Expected 4 categories, got {len(categories)}")
-                    return False
-            else:
-                self.log_result("Categories API", False, f"HTTP {response.status_code}: {response.text}")
-                return False
-        except Exception as e:
-            self.log_result("Categories API", False, f"Error: {str(e)}")
-            return False
-    
-    def test_experiences(self):
-        """Test 3: Experiences API"""
-        try:
-            response = self.session.get(f"{self.base_url}/experiences", timeout=10)
-            if response.status_code == 200:
-                experiences = response.json()
-                if len(experiences) >= 7:
-                    # Store first experience for booking test
-                    self.experience_id = experiences[0]["id"]
-                    if experiences[0].get("ticket_types"):
-                        self.ticket_type_id = experiences[0]["ticket_types"][0]["id"]
-                    
-                    self.log_result("Experiences API", True, f"Found {len(experiences)} experiences, stored experience_id: {self.experience_id}")
-                    return True
-                else:
-                    self.log_result("Experiences API", False, f"Expected at least 7 experiences, got {len(experiences)}")
-                    return False
-            else:
-                self.log_result("Experiences API", False, f"HTTP {response.status_code}: {response.text}")
-                return False
-        except Exception as e:
-            self.log_result("Experiences API", False, f"Error: {str(e)}")
-            return False
-    
-    def test_user_registration(self):
-        """Test 4: User Registration"""
-        try:
-            # First try to register a new user
-            user_data = {
-                "email": self.test_user_email,
-                "password": self.test_user_password,
-                "full_name": self.test_user_name
-            }
+            # Try to login first
+            login_response = self.session.post(
+                f"{BASE_URL}/auth/login",
+                json={"email": TEST_USER["email"], "password": TEST_USER["password"]}
+            )
             
-            response = self.session.post(f"{self.base_url}/auth/register", 
-                                       json=user_data, timeout=10)
-            
-            if response.status_code == 200:
-                data = response.json()
-                if "access_token" in data and "user" in data:
+            if login_response.status_code == 200:
+                data = login_response.json()
+                self.auth_token = data["access_token"]
+                self.session.headers.update({"Authorization": f"Bearer {self.auth_token}"})
+                self.log_test("Authentication", True, "Login successful")
+                return True
+            elif login_response.status_code == 401:
+                # User doesn't exist, register
+                register_response = self.session.post(
+                    f"{BASE_URL}/auth/register",
+                    json=TEST_USER
+                )
+                
+                if register_response.status_code == 200:
+                    data = register_response.json()
                     self.auth_token = data["access_token"]
-                    self.log_result("User Registration", True, f"User registered successfully: {data['user']['email']}")
+                    self.session.headers.update({"Authorization": f"Bearer {self.auth_token}"})
+                    self.log_test("Authentication", True, "Registration and login successful")
                     return True
                 else:
-                    self.log_result("User Registration", False, f"Missing token or user in response: {data}")
+                    self.log_test("Authentication", False, f"Registration failed: {register_response.status_code}", register_response.text)
                     return False
-            elif response.status_code == 400 and "already registered" in response.text:
-                # User already exists, that's fine for testing
-                self.log_result("User Registration", True, "User already exists (expected for repeated tests)")
+            else:
+                self.log_test("Authentication", False, f"Login failed: {login_response.status_code}", login_response.text)
+                return False
+                
+        except Exception as e:
+            self.log_test("Authentication", False, f"Authentication error: {str(e)}")
+            return False
+    
+    def test_admin_setup_endpoint(self) -> bool:
+        """Test the admin setup endpoint"""
+        try:
+            response = self.session.post(f"{BASE_URL}/admin/setup-deposit-charters")
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log_test("Admin Setup", True, f"Setup successful: {data.get('message', 'OK')}")
                 return True
             else:
-                self.log_result("User Registration", False, f"HTTP {response.status_code}: {response.text}")
+                self.log_test("Admin Setup", False, f"Setup failed: {response.status_code}", response.text)
                 return False
+                
         except Exception as e:
-            self.log_result("User Registration", False, f"Error: {str(e)}")
+            self.log_test("Admin Setup", False, f"Setup error: {str(e)}")
             return False
     
-    def test_user_login(self):
-        """Test 5: User Login"""
+    def test_deposit_flagged_experiences(self) -> bool:
+        """Test that specific experiences have deposit flags"""
         try:
-            login_data = {
-                "email": self.test_user_email,
-                "password": self.test_user_password
-            }
+            response = self.session.get(f"{BASE_URL}/experiences")
             
-            response = self.session.post(f"{self.base_url}/auth/login", 
-                                       json=login_data, timeout=10)
+            if response.status_code != 200:
+                self.log_test("Deposit Experiences", False, f"Failed to get experiences: {response.status_code}")
+                return False
             
-            if response.status_code == 200:
-                data = response.json()
-                if "access_token" in data and "user" in data:
-                    self.auth_token = data["access_token"]
-                    self.log_result("User Login", True, f"Login successful for: {data['user']['email']}")
-                    return True
-                else:
-                    self.log_result("User Login", False, f"Missing token or user in response: {data}")
-                    return False
+            experiences = response.json()
+            
+            # Expected deposit experiences
+            expected_deposit_experiences = [
+                "Speedboat Adventure",
+                "Catamaran Privilege 510 Yacht Charter", 
+                "Classic Heritage Sail",
+                "24M Luxury Motor Yacht Charter"
+            ]
+            
+            found_deposit_experiences = []
+            catamaran_has_3200_ticket = False
+            heritage_has_2900_and_4900 = False
+            
+            for exp in experiences:
+                title = exp.get("title", "")
+                requires_deposit = exp.get("requires_deposit", False)
+                deposit_percentage = exp.get("deposit_percentage", 0)
+                
+                # Check if this is one of our expected deposit experiences
+                for expected in expected_deposit_experiences:
+                    if expected in title:
+                        if requires_deposit and deposit_percentage == 30:
+                            found_deposit_experiences.append(title)
+                            
+                            # Special checks for specific experiences
+                            if "Catamaran Privilege 510" in title:
+                                # Check for €3200 Full Day ticket
+                                for ticket in exp.get("ticket_types", []):
+                                    if "Full Day - 8 Hours" in ticket.get("name", "") and ticket.get("price") == 3200:
+                                        catamaran_has_3200_ticket = True
+                            
+                            elif "Classic Heritage Sail" in title:
+                                # Check for €2900 and €4900 Full Day Charter tickets
+                                prices_found = []
+                                for ticket in exp.get("ticket_types", []):
+                                    if "Full Day Charter" in ticket.get("name", ""):
+                                        prices_found.append(ticket.get("price"))
+                                if 2900 in prices_found and 4900 in prices_found:
+                                    heritage_has_2900_and_4900 = True
+                        break
+            
+            # Check results
+            all_found = len(found_deposit_experiences) == len(expected_deposit_experiences)
+            
+            if all_found and catamaran_has_3200_ticket and heritage_has_2900_and_4900:
+                self.log_test("Deposit Experiences", True, f"All deposit experiences found with correct settings: {found_deposit_experiences}")
+                return True
             else:
-                self.log_result("User Login", False, f"HTTP {response.status_code}: {response.text}")
+                missing = set(expected_deposit_experiences) - set([exp for exp in found_deposit_experiences])
+                issues = []
+                if missing:
+                    issues.append(f"Missing: {list(missing)}")
+                if not catamaran_has_3200_ticket:
+                    issues.append("Catamaran missing €3200 Full Day ticket")
+                if not heritage_has_2900_and_4900:
+                    issues.append("Heritage Sail missing €2900/€4900 Full Day tickets")
+                
+                self.log_test("Deposit Experiences", False, f"Issues found: {'; '.join(issues)}")
                 return False
+                
         except Exception as e:
-            self.log_result("User Login", False, f"Error: {str(e)}")
+            self.log_test("Deposit Experiences", False, f"Error checking experiences: {str(e)}")
             return False
     
-    def test_get_user_info(self):
-        """Test 6: Get User Info (authenticated)"""
-        if not self.auth_token:
-            self.log_result("Get User Info", False, "No auth token available")
-            return False
-        
+    def test_non_deposit_experiences(self) -> bool:
+        """Test that non-deposit experiences don't have deposit flags"""
         try:
-            headers = {"Authorization": f"Bearer {self.auth_token}"}
-            response = self.session.get(f"{self.base_url}/auth/me", 
-                                      headers=headers, timeout=10)
+            response = self.session.get(f"{BASE_URL}/experiences")
             
-            if response.status_code == 200:
-                user_data = response.json()
-                if "email" in user_data and user_data["email"] == self.test_user_email:
-                    self.log_result("Get User Info", True, f"Retrieved user info: {user_data['full_name']}")
-                    return True
-                else:
-                    self.log_result("Get User Info", False, f"Unexpected user data: {user_data}")
-                    return False
-            else:
-                self.log_result("Get User Info", False, f"HTTP {response.status_code}: {response.text}")
+            if response.status_code != 200:
+                self.log_test("Non-Deposit Experiences", False, f"Failed to get experiences: {response.status_code}")
                 return False
+            
+            experiences = response.json()
+            
+            # Check for Sunrise Yoga on Deck specifically
+            sunrise_yoga_found = False
+            sunrise_yoga_no_deposit = False
+            
+            for exp in experiences:
+                title = exp.get("title", "")
+                if "Sunrise Yoga on Deck" in title:
+                    sunrise_yoga_found = True
+                    requires_deposit = exp.get("requires_deposit", False)
+                    if not requires_deposit:
+                        sunrise_yoga_no_deposit = True
+                    break
+            
+            if sunrise_yoga_found and sunrise_yoga_no_deposit:
+                self.log_test("Non-Deposit Experiences", True, "Sunrise Yoga on Deck correctly has no deposit requirement")
+                return True
+            elif not sunrise_yoga_found:
+                self.log_test("Non-Deposit Experiences", False, "Sunrise Yoga on Deck not found")
+                return False
+            else:
+                self.log_test("Non-Deposit Experiences", False, "Sunrise Yoga on Deck incorrectly has deposit requirement")
+                return False
+                
         except Exception as e:
-            self.log_result("Get User Info", False, f"Error: {str(e)}")
+            self.log_test("Non-Deposit Experiences", False, f"Error checking non-deposit experiences: {str(e)}")
             return False
     
-    def test_create_booking(self):
-        """Test 7: Create Booking (authenticated)"""
-        if not self.auth_token or not self.experience_id or not self.ticket_type_id:
-            self.log_result("Create Booking", False, "Missing auth token, experience_id, or ticket_type_id")
-            return False
-        
+    def find_experience_and_ticket(self, experience_title: str, ticket_name: str = None) -> tuple:
+        """Find experience and specific ticket"""
         try:
-            headers = {"Authorization": f"Bearer {self.auth_token}"}
+            response = self.session.get(f"{BASE_URL}/experiences")
+            if response.status_code != 200:
+                return None, None
+            
+            experiences = response.json()
+            
+            for exp in experiences:
+                if experience_title in exp.get("title", ""):
+                    if ticket_name:
+                        for ticket in exp.get("ticket_types", []):
+                            if ticket_name in ticket.get("name", ""):
+                                return exp, ticket
+                    else:
+                        # Return first ticket if no specific ticket requested
+                        tickets = exp.get("ticket_types", [])
+                        if tickets:
+                            return exp, tickets[0]
+            
+            return None, None
+            
+        except Exception as e:
+            print(f"Error finding experience: {e}")
+            return None, None
+    
+    def test_deposit_booking_creation(self) -> bool:
+        """Test creating a booking for a deposit experience"""
+        try:
+            # Find Catamaran with Full Day - 8 Hours ticket (€3200)
+            experience, ticket = self.find_experience_and_ticket("Catamaran Privilege 510", "Full Day - 8 Hours")
+            
+            if not experience or not ticket:
+                self.log_test("Deposit Booking Creation", False, "Could not find Catamaran Full Day ticket")
+                return False
+            
+            # Create booking
             booking_data = {
-                "experience_id": self.experience_id,
-                "tickets": [
-                    {
-                        "ticket_type_id": self.ticket_type_id,
-                        "ticket_name": "Standard",
-                        "quantity": 2,
-                        "price_per_ticket": 150.0
-                    }
-                ]
+                "experience_id": experience["id"],
+                "tickets": [{
+                    "ticket_type_id": ticket["id"],
+                    "ticket_name": ticket["name"],
+                    "quantity": 1,
+                    "price_per_ticket": ticket["price"]
+                }]
             }
             
-            response = self.session.post(f"{self.base_url}/bookings", 
-                                       json=booking_data, headers=headers, timeout=10)
+            response = self.session.post(f"{BASE_URL}/bookings", json=booking_data)
             
-            if response.status_code == 200:
-                booking = response.json()
-                if "id" in booking and "total_amount" in booking:
-                    self.booking_id = booking["id"]
-                    expected_total = 2 * 150.0  # 2 tickets * $150 each
-                    if booking["total_amount"] == expected_total:
-                        self.log_result("Create Booking", True, f"Booking created: {self.booking_id}, Total: ${booking['total_amount']}")
-                        return True
-                    else:
-                        self.log_result("Create Booking", False, f"Total calculation error. Expected: ${expected_total}, Got: ${booking['total_amount']}")
-                        return False
-                else:
-                    self.log_result("Create Booking", False, f"Missing booking ID or total in response: {booking}")
-                    return False
-            else:
-                self.log_result("Create Booking", False, f"HTTP {response.status_code}: {response.text}")
+            if response.status_code != 200:
+                self.log_test("Deposit Booking Creation", False, f"Booking creation failed: {response.status_code}", response.text)
                 return False
+            
+            booking = response.json()
+            
+            # Verify deposit calculations
+            expected_total = 3200
+            expected_deposit = 960.0  # 30% of 3200
+            expected_remaining = 2240.0  # 70% of 3200
+            
+            checks = [
+                (booking.get("payment_type") == "deposit", "payment_type should be 'deposit'"),
+                (booking.get("deposit_percentage") == 30, "deposit_percentage should be 30"),
+                (booking.get("deposit_amount") == expected_deposit, f"deposit_amount should be {expected_deposit}"),
+                (booking.get("remaining_balance") == expected_remaining, f"remaining_balance should be {expected_remaining}"),
+                (booking.get("total_amount") == expected_total, f"total_amount should be {expected_total}")
+            ]
+            
+            failed_checks = [check[1] for check in checks if not check[0]]
+            
+            if not failed_checks:
+                self.log_test("Deposit Booking Creation", True, f"Deposit booking created correctly with €{expected_deposit} deposit")
+                return True
+            else:
+                self.log_test("Deposit Booking Creation", False, f"Deposit calculations incorrect: {'; '.join(failed_checks)}", booking)
+                return False
+                
         except Exception as e:
-            self.log_result("Create Booking", False, f"Error: {str(e)}")
+            self.log_test("Deposit Booking Creation", False, f"Error creating deposit booking: {str(e)}")
             return False
     
-    def test_get_user_bookings(self):
-        """Test 8: Get User Bookings (authenticated)"""
-        if not self.auth_token:
-            self.log_result("Get User Bookings", False, "No auth token available")
-            return False
-        
+    def test_non_deposit_booking_creation(self) -> bool:
+        """Test creating a booking for a non-deposit experience"""
         try:
-            headers = {"Authorization": f"Bearer {self.auth_token}"}
-            response = self.session.get(f"{self.base_url}/bookings", 
-                                      headers=headers, timeout=10)
+            # Find Sunrise Yoga on Deck
+            experience, ticket = self.find_experience_and_ticket("Sunrise Yoga on Deck")
             
-            if response.status_code == 200:
-                bookings = response.json()
-                if isinstance(bookings, list):
-                    if self.booking_id:
-                        # Check if our created booking is in the list
-                        booking_ids = [b["id"] for b in bookings]
-                        if self.booking_id in booking_ids:
-                            self.log_result("Get User Bookings", True, f"Found {len(bookings)} bookings including our test booking")
-                            return True
-                        else:
-                            self.log_result("Get User Bookings", False, f"Test booking {self.booking_id} not found in user bookings")
-                            return False
-                    else:
-                        self.log_result("Get User Bookings", True, f"Retrieved {len(bookings)} user bookings")
-                        return True
-                else:
-                    self.log_result("Get User Bookings", False, f"Expected list, got: {type(bookings)}")
-                    return False
-            else:
-                self.log_result("Get User Bookings", False, f"HTTP {response.status_code}: {response.text}")
+            if not experience or not ticket:
+                self.log_test("Non-Deposit Booking Creation", False, "Could not find Sunrise Yoga experience")
                 return False
+            
+            # Create booking
+            booking_data = {
+                "experience_id": experience["id"],
+                "tickets": [{
+                    "ticket_type_id": ticket["id"],
+                    "ticket_name": ticket["name"],
+                    "quantity": 1,
+                    "price_per_ticket": ticket["price"]
+                }]
+            }
+            
+            response = self.session.post(f"{BASE_URL}/bookings", json=booking_data)
+            
+            if response.status_code != 200:
+                self.log_test("Non-Deposit Booking Creation", False, f"Booking creation failed: {response.status_code}", response.text)
+                return False
+            
+            booking = response.json()
+            
+            # Verify full payment
+            checks = [
+                (booking.get("payment_type") == "full", "payment_type should be 'full'"),
+                (booking.get("deposit_amount") == 0, "deposit_amount should be 0"),
+                (booking.get("remaining_balance") == 0, "remaining_balance should be 0")
+            ]
+            
+            failed_checks = [check[1] for check in checks if not check[0]]
+            
+            if not failed_checks:
+                self.log_test("Non-Deposit Booking Creation", True, "Non-deposit booking created correctly with full payment")
+                return True
+            else:
+                self.log_test("Non-Deposit Booking Creation", False, f"Full payment calculations incorrect: {'; '.join(failed_checks)}", booking)
+                return False
+                
         except Exception as e:
-            self.log_result("Get User Bookings", False, f"Error: {str(e)}")
+            self.log_test("Non-Deposit Booking Creation", False, f"Error creating non-deposit booking: {str(e)}")
             return False
     
-    def test_create_payment_intent(self):
-        """Test 9: Create Payment Intent (authenticated)"""
-        if not self.auth_token or not self.booking_id:
-            self.log_result("Create Payment Intent", False, "Missing auth token or booking_id")
-            return False
-        
+    def test_payment_confirmation_deposit(self) -> bool:
+        """Test payment confirmation for deposit booking"""
         try:
-            headers = {"Authorization": f"Bearer {self.auth_token}"}
-            payment_data = {"booking_id": self.booking_id}
+            # Create a deposit booking first
+            experience, ticket = self.find_experience_and_ticket("Catamaran Privilege 510", "Full Day - 8 Hours")
             
-            response = self.session.post(f"{self.base_url}/payment/create-intent", 
-                                       json=payment_data, headers=headers, timeout=10)
-            
-            if response.status_code == 200:
-                payment_intent = response.json()
-                required_fields = ["client_secret", "payment_intent_id", "amount", "publishable_key"]
-                if all(field in payment_intent for field in required_fields):
-                    # Verify amount is correct (300.00 * 100 = 30000 cents)
-                    expected_amount = 30000  # $300 in cents
-                    if payment_intent["amount"] == expected_amount:
-                        self.log_result("Create Payment Intent", True, f"Payment intent created: {payment_intent['payment_intent_id']}, Amount: ${payment_intent['amount']/100}")
-                        return True
-                    else:
-                        self.log_result("Create Payment Intent", False, f"Amount mismatch. Expected: {expected_amount}, Got: {payment_intent['amount']}")
-                        return False
-                else:
-                    missing = [f for f in required_fields if f not in payment_intent]
-                    self.log_result("Create Payment Intent", False, f"Missing fields: {missing}")
-                    return False
-            else:
-                self.log_result("Create Payment Intent", False, f"HTTP {response.status_code}: {response.text}")
+            if not experience or not ticket:
+                self.log_test("Payment Confirmation Deposit", False, "Could not find Catamaran experience for payment test")
                 return False
-        except Exception as e:
-            self.log_result("Create Payment Intent", False, f"Error: {str(e)}")
-            return False
-    
-    def test_confirm_payment(self):
-        """Test 10: Confirm Payment (authenticated)"""
-        if not self.auth_token or not self.booking_id:
-            self.log_result("Confirm Payment", False, "Missing auth token or booking_id")
-            return False
-        
-        try:
-            headers = {"Authorization": f"Bearer {self.auth_token}"}
-            response = self.session.post(f"{self.base_url}/payment/confirm/{self.booking_id}", 
-                                       headers=headers, timeout=10)
             
-            if response.status_code == 200:
-                confirmed_booking = response.json()
-                if (confirmed_booking.get("status") == "confirmed" and 
-                    confirmed_booking.get("payment_status") == "paid" and
-                    confirmed_booking.get("qr_code")):
-                    
-                    # Verify QR code is base64 encoded image
-                    qr_code = confirmed_booking["qr_code"]
-                    if qr_code.startswith("data:image/png;base64,"):
-                        self.log_result("Confirm Payment", True, f"Payment confirmed, QR code generated for booking: {self.booking_id}")
-                        return True
-                    else:
-                        self.log_result("Confirm Payment", False, "QR code format invalid")
-                        return False
-                else:
-                    missing = []
-                    if confirmed_booking.get("status") != "confirmed":
-                        missing.append("status not confirmed")
-                    if confirmed_booking.get("payment_status") != "paid":
-                        missing.append("payment_status not paid")
-                    if not confirmed_booking.get("qr_code"):
-                        missing.append("qr_code missing")
-                    
-                    self.log_result("Confirm Payment", False, f"Payment confirmation issues: {missing}")
-                    return False
-            else:
-                self.log_result("Confirm Payment", False, f"HTTP {response.status_code}: {response.text}")
+            # Create booking
+            booking_data = {
+                "experience_id": experience["id"],
+                "tickets": [{
+                    "ticket_type_id": ticket["id"],
+                    "ticket_name": ticket["name"],
+                    "quantity": 1,
+                    "price_per_ticket": ticket["price"]
+                }]
+            }
+            
+            booking_response = self.session.post(f"{BASE_URL}/bookings", json=booking_data)
+            if booking_response.status_code != 200:
+                self.log_test("Payment Confirmation Deposit", False, "Could not create booking for payment test")
                 return False
+            
+            booking = booking_response.json()
+            booking_id = booking["id"]
+            
+            # Confirm payment
+            confirm_response = self.session.post(f"{BASE_URL}/payment/confirm/{booking_id}")
+            
+            if confirm_response.status_code != 200:
+                self.log_test("Payment Confirmation Deposit", False, f"Payment confirmation failed: {confirm_response.status_code}", confirm_response.text)
+                return False
+            
+            confirmed_booking = confirm_response.json()
+            
+            # Check payment status
+            if confirmed_booking.get("payment_status") == "deposit_paid":
+                self.log_test("Payment Confirmation Deposit", True, "Payment status correctly set to 'deposit_paid'")
+                return True
+            else:
+                self.log_test("Payment Confirmation Deposit", False, f"Payment status incorrect: {confirmed_booking.get('payment_status')}", confirmed_booking)
+                return False
+                
         except Exception as e:
-            self.log_result("Confirm Payment", False, f"Error: {str(e)}")
+            self.log_test("Payment Confirmation Deposit", False, f"Error testing payment confirmation: {str(e)}")
             return False
     
     def run_all_tests(self):
-        """Run all tests in sequence"""
-        print(f"🚢 WANDERING YACHT Backend API Test Suite")
-        print(f"Base URL: {self.base_url}")
-        print(f"Test Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        print("=" * 60)
+        """Run all deposit feature tests"""
+        print("🚢 Starting 30% Deposit Feature Tests")
+        print("=" * 50)
         
-        # Run tests in order
+        # Authenticate first
+        if not self.authenticate():
+            print("❌ Authentication failed - cannot continue tests")
+            return False
+        
+        # Run admin setup
+        self.test_admin_setup_endpoint()
+        
+        # Run all tests
         tests = [
-            self.test_health_check,
-            self.test_categories,
-            self.test_experiences,
-            self.test_user_registration,
-            self.test_user_login,
-            self.test_get_user_info,
-            self.test_create_booking,
-            self.test_get_user_bookings,
-            self.test_create_payment_intent,
-            self.test_confirm_payment
+            self.test_deposit_flagged_experiences,
+            self.test_non_deposit_experiences,
+            self.test_deposit_booking_creation,
+            self.test_non_deposit_booking_creation,
+            self.test_payment_confirmation_deposit
         ]
         
         passed = 0
-        failed = 0
+        total = len(tests)
         
         for test in tests:
-            try:
-                if test():
-                    passed += 1
-                else:
-                    failed += 1
-            except Exception as e:
-                print(f"❌ FAIL: {test.__name__} - Unexpected error: {str(e)}")
-                failed += 1
-            print()  # Add spacing between tests
+            if test():
+                passed += 1
         
-        # Summary
-        print("=" * 60)
-        print(f"📊 TEST SUMMARY")
-        print(f"✅ Passed: {passed}")
-        print(f"❌ Failed: {failed}")
-        print(f"📈 Success Rate: {(passed/(passed+failed)*100):.1f}%")
+        print("\n" + "=" * 50)
+        print(f"🏁 Test Results: {passed}/{total} tests passed")
         
-        if failed > 0:
-            print("\n🔍 FAILED TESTS:")
-            for result in self.results:
-                if "❌ FAIL" in result["status"]:
-                    print(f"   • {result['test']}: {result['message']}")
-        
-        return failed == 0
-
-def main():
-    """Main test runner"""
-    tester = WanderingYachtTester()
-    success = tester.run_all_tests()
-    
-    if success:
-        print("\n🎉 All tests passed! Backend APIs are working correctly.")
-        sys.exit(0)
-    else:
-        print("\n⚠️  Some tests failed. Check the details above.")
-        sys.exit(1)
+        if passed == total:
+            print("✅ All deposit feature tests PASSED!")
+            return True
+        else:
+            print("❌ Some tests FAILED - see details above")
+            return False
 
 if __name__ == "__main__":
-    main()
+    tester = DepositFeatureTest()
+    success = tester.run_all_tests()
+    sys.exit(0 if success else 1)
