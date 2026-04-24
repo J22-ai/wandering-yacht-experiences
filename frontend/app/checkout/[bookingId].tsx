@@ -424,7 +424,7 @@ export default function CheckoutScreen() {
               <Text style={styles.depositBannerText}>DEPOSIT OF {booking.deposit_percentage}% NEEDED TODAY</Text>
             </View>
             <Text style={styles.depositSubtext}>
-              For Half-Day and Full-Day Charter Bookings Only
+              For Half-Day and Full-Day Charter Bookings
             </Text>
             <Text style={[styles.depositSubtext, { marginTop: 2, fontSize: 13 }]}>
               Pay a {booking.deposit_percentage}% deposit to block your dates immediately
