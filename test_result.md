@@ -325,6 +325,33 @@ frontend:
         agent: "main"
         comment: "User info display with menu items and sign out"
 
+  - task: "30% Deposit for Yacht/Boat Charters (Backend)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Implemented deposit logic for 4 charter experiences. Backend calculates 30% deposit on booking creation. Payment intent charges only deposit amount. Confirmation sets payment_status to deposit_paid."
+      - working: true
+        agent: "testing"
+        comment: "All 6 deposit tests passed with 100% success rate."
+
+  - task: "30% Deposit UI (Frontend Checkout & Experience Detail)"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/checkout/[bookingId].tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Checkout shows deposit banner, breakdown (total/deposit/remaining), dynamic pay button. Experience detail page shows deposit notice for charter experiences."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
