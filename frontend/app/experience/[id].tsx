@@ -78,6 +78,7 @@ interface Experience {
   included: string[];
   requires_deposit?: boolean;
   deposit_percentage?: number;
+  taxes_included?: boolean;
 }
 
 export default function ExperienceDetailScreen() {
@@ -449,6 +450,14 @@ export default function ExperienceDetailScreen() {
               <Text style={styles.depositNoticeText}>
                 A {experience.deposit_percentage || 30}% deposit is required to proceed with your booking and block your dates immediately. The remaining balance will be invoiced separately.
               </Text>
+              <View style={styles.taxNotice}>
+                <Ionicons name="receipt-outline" size={15} color={experience.taxes_included ? '#2a7a5a' : '#c47a20'} />
+                <Text style={[styles.taxNoticeText, { color: experience.taxes_included ? '#2a7a5a' : '#c47a20' }]}>
+                  {experience.taxes_included
+                    ? 'Taxes of 21% are included'
+                    : 'Taxes of 21% are added upon Checkout'}
+                </Text>
+              </View>
             </View>
           )}
 
@@ -875,5 +884,19 @@ const styles = StyleSheet.create({
     color: '#5a6a6a',
     fontSize: 13,
     lineHeight: 20,
+  },
+  taxNotice: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 10,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#d8e2e2',
+  },
+  taxNoticeText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    fontWeight: '600',
   },
 });
