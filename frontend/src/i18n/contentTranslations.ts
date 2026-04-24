@@ -289,7 +289,11 @@ export const contentTranslations: AllContentTranslations = {
     'Water toys': 'ألعاب مائية',
     '12 stone villas & 6 apartments': '12 فيلا حجرية و 6 شقق',
     'Advanced lessons': 'دروس متقدمة',
-    'Floral design & décor': 'تصميم زهري وديكور',
+    'Floral design & décor': 'تصميم زهري وديكور',    '2 Deckhands': '2 بحارة',
+    '1 Jet Ski': '1 جت سكي',
+    '1 Tender': '1 قارب مساعد',
+    'Sun Deck': 'سطح شمسي',
+
   },
   fr: {
     'Adult': 'Adulte',
@@ -570,6 +574,10 @@ export const contentTranslations: AllContentTranslations = {
     'Waterproof Bags': 'Sacs etanches',
     'Waterproof Phone Case': 'Coque telephone etanche',
     'Wooden Deck': 'Pont en bois',
+    '2 Deckhands': '2 matelots',
+    '1 Jet Ski': '1 jet ski',
+    '1 Tender': '1 annexe',
+    'Sun Deck': 'Pont soleil',
 
   },
   it: {
@@ -778,7 +786,11 @@ export const contentTranslations: AllContentTranslations = {
     'Wedding cake': 'Torta nuziale',
     'Wedding/Presidential Suite': 'Suite nuziale/presidenziale',
     '12 stone villas & 6 apartments': '12 ville in pietra & 6 appartamenti',
-    'Water toys': 'Giochi d\'acqua',
+    'Water toys': 'Giochi d\'acqua',    '2 Deckhands': '2 marinai',
+    '1 Jet Ski': '1 jet ski',
+    '1 Tender': '1 tender',
+    'Sun Deck': 'Ponte sole',
+
   },
   es: {
     'Adult': 'Adulto',
@@ -985,7 +997,11 @@ export const contentTranslations: AllContentTranslations = {
     'Wedding cake': 'Pastel de bodas',
     'Wedding/Presidential Suite': 'Suite nupcial/presidencial',
     '12 stone villas & 6 apartments': '12 villas de piedra & 6 apartamentos',
-    'Water toys': 'Juguetes acuaticos',
+    'Water toys': 'Juguetes acuaticos',    '2 Deckhands': '2 marineros',
+    '1 Jet Ski': '1 jet ski',
+    '1 Tender': '1 tender',
+    'Sun Deck': 'Cubierta de sol',
+
   },
   de: {
     'Adult': 'Erwachsener',
@@ -1190,6 +1206,10 @@ export const contentTranslations: AllContentTranslations = {
     '12 stone villas & 6 apartments': '12 Steinvillen & 6 Apartments',
     'Water toys': 'Wasserspielzeug',    'GPS Navigation': 'GPS-Navigation',
     'Vintage Fiat 500': 'Fiat 500 Oldtimer',
+    '2 Deckhands': '2 Deckhand',
+    '1 Jet Ski': '1 Jetski',
+    '1 Tender': '1 Beiboot',
+    'Sun Deck': 'Sonnendeck',
 
   },
   ru: {
@@ -1396,6 +1416,10 @@ export const contentTranslations: AllContentTranslations = {
     'Wedding/Presidential Suite': 'Свадебный/президентский люкс',
     '12 stone villas & 6 apartments': '12 каменных вилл и 6 апартаментов',
     'Water toys': 'Водные игрушки',    'Vintage Fiat 500': 'Винтажный Fiat 500',
+    '2 Deckhands': '2 матроса',
+    '1 Jet Ski': '1 гидроцикл',
+    '1 Tender': '1 тендер',
+    'Sun Deck': 'Солнечная палуба',
 
   },
   hr: {
@@ -1599,6 +1623,10 @@ export const contentTranslations: AllContentTranslations = {
     'Vintage Fiat 500': 'Vintage Fiat 500',
     'Waterproof Bags': 'Vodootporne torbe',
     'Waterproof Phone Case': 'Vodootporna futrola za mobitel',
+    '2 Deckhands': '2 mornara',
+    '1 Jet Ski': '1 jet ski',
+    '1 Tender': '1 tender',
+    'Sun Deck': 'Paluba za suncanje',
 
   },
   zh: {
@@ -1802,6 +1830,10 @@ export const contentTranslations: AllContentTranslations = {
     'Vintage Fiat 500': '复古菲亚特500',
     'Waterproof Bags': '防水袋',
     'Waterproof Phone Case': '防水手机壳',
+    '2 Deckhands': '2名水手',
+    '1 Jet Ski': '1台摩托艇',
+    '1 Tender': '1艘小艇',
+    'Sun Deck': '日光甲板',
 
   },
   pt: {
@@ -2004,6 +2036,10 @@ export const contentTranslations: AllContentTranslations = {
     'Vintage Fiat 500': 'Fiat 500 classico',
     'Waterproof Bags': 'Sacos impermeavel',
     'Waterproof Phone Case': 'Capa de telefone impermeavel',
+    '2 Deckhands': '2 marinheiros',
+    '1 Jet Ski': '1 jet ski',
+    '1 Tender': '1 tender',
+    'Sun Deck': 'Deck de sol',
 
   },
   ja: {
@@ -2207,6 +2243,10 @@ export const contentTranslations: AllContentTranslations = {
     'Vintage Fiat 500': 'ヴィンテージフィアット500',
     'Waterproof Bags': '防水バッグ',
     'Waterproof Phone Case': '防水スマホケース',
+    '2 Deckhands': '2名のデッキハンド',
+    '1 Jet Ski': 'ジェットスキー1台',
+    '1 Tender': 'テンダー1艇',
+    'Sun Deck': 'サンデッキ',
 
   },
 };
