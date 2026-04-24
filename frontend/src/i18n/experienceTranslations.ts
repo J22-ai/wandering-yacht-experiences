@@ -79,7 +79,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Mercedes Minivan Transfer Service': { title: 'Service de Transfert Mercedes Minivan', description: 'Voyagez au Monténégro avec confort et élégance.' },
     'Wedding Dream': { title: 'Mariage de Rêve', description: 'Créez la plus belle expérience et cérémonie style "Mamma Mia".' },
     'Concierge Services': { title: 'Services de Conciergerie', description: 'Services quotidiens, hebdomadaires et mensuels. Assistant personnel pour organiser votre séjour.' },
-    '24M Luxury Motor Yacht Charter': { title: 'Charter Yacht a Moteur de Luxe 24M', description: 'Decouvrez l\'Adriatique a bord d\'un magnifique yacht Ferretti de 24 metres, construit en 2015. Disponible en charter hebdomadaire au depart de Porto Montenegro a Tivat. Accueille 6 passagers avec equipage complet incluant Capitaine, 2 matelots et un Chef. Nourriture non incluse.' },
+    '24M Luxury Motor Yacht Charter': { title: 'Charter Yacht a Moteur de Luxe 24M', description: 'Decouvrez l\'Adriatique a bord d\'un magnifique yacht Ferretti de 24 metres, construit en 2015. Disponible en charter journalier et hebdomadaire au depart de Porto Montenegro a Tivat. Accueille 6 passagers avec equipage complet incluant Capitaine, 2 matelots et un Chef. Nourriture non incluse.' },
   },
   it: {
     'Sunrise Yoga on Deck': { title: 'Yoga all\'Alba sul Ponte', description: 'Inizia la giornata con una sessione di yoga rigenerante sul ponte del nostro yacht all\'alba sull\'Adriatico.' },
@@ -112,7 +112,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Mercedes Minivan Transfer Service': { title: 'Servizio Transfer Mercedes Minivan', description: 'Viaggia in Montenegro con comfort ed eleganza.' },
     'Wedding Dream': { title: 'Sogno di Matrimonio', description: 'Crea la più bella esperienza e cerimonia stile "Mamma Mia".' },
     'Concierge Services': { title: 'Servizi Concierge', description: 'Servizi giornalieri, settimanali e mensili. Assistente personale per il tuo soggiorno.' },
-    '24M Luxury Motor Yacht Charter': { title: 'Charter Yacht a Motore di Lusso 24M', description: 'Vivi l\'Adriatico a bordo di uno splendido yacht Ferretti di 24 metri, costruito nel 2015. Disponibile per charter settimanali da Porto Montenegro a Tivat. Ospita 6 persone con equipaggio completo inclusi Capitano, 2 marinai e Chef. Cibo non incluso.' },
+    '24M Luxury Motor Yacht Charter': { title: 'Charter Yacht a Motore di Lusso 24M', description: 'Vivi l\'Adriatico a bordo di uno splendido yacht Ferretti di 24 metri, costruito nel 2015. Disponibile per charter giornalieri e settimanali da Porto Montenegro a Tivat. Ospita 6 persone con equipaggio completo inclusi Capitano, 2 marinai e Chef. Cibo non incluso.' },
   },
   es: {
     'Sunrise Yoga on Deck': { title: 'Yoga al Amanecer en Cubierta', description: 'Comienza tu día con una sesión de yoga revitalizante en la cubierta de nuestro yate al amanecer.' },
@@ -145,7 +145,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Mercedes Minivan Transfer Service': { title: 'Servicio de Transfer Mercedes Minivan', description: 'Viaja por Montenegro con comodidad y estilo.' },
     'Wedding Dream': { title: 'Boda de Ensueño', description: 'Crea la experiencia y ceremonia más espectacular estilo "Mamma Mia".' },
     'Concierge Services': { title: 'Servicios de Conserjería', description: 'Servicios diarios, semanales y mensuales. Asistente personal para tu estancia.' },
-    '24M Luxury Motor Yacht Charter': { title: 'Charter Yate a Motor de Lujo 24M', description: 'Experimenta el Adriatico a bordo de un impresionante yate Ferretti de 24 metros, construido en 2015. Disponible para charter semanales desde Porto Montenegro en Tivat. Capacidad para 6 huespedes con tripulacion completa incluyendo Capitan, 2 marineros y Chef. Comida no incluida.' },
+    '24M Luxury Motor Yacht Charter': { title: 'Charter Yate a Motor de Lujo 24M', description: 'Experimenta el Adriatico a bordo de un impresionante yate Ferretti de 24 metros, construido en 2015. Disponible para charter diarios y semanales desde Porto Montenegro en Tivat. Capacidad para 6 huespedes con tripulacion completa incluyendo Capitan, 2 marineros y Chef. Comida no incluida.' },
   },
   de: {
     'Sunrise Yoga on Deck': { title: 'Sonnenaufgang-Yoga an Deck', description: 'Beginnen Sie Ihren Tag mit einer belebenden Yoga-Sitzung auf dem Deck unserer Yacht beim Sonnenaufgang.' },
@@ -178,7 +178,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Mercedes Minivan Transfer Service': { title: 'Mercedes Minivan Transferservice', description: 'Reisen Sie durch Montenegro mit Komfort und Stil.' },
     'Wedding Dream': { title: 'Hochzeitstraum', description: 'Erschaffen Sie das atemberaubendste "Mamma Mia" Erlebnis und Zeremonie.' },
     'Concierge Services': { title: 'Concierge-Dienste', description: 'Tägliche, wöchentliche und monatliche Dienste. Persönlicher Assistent für Ihren Aufenthalt.' },
-    '24M Luxury Motor Yacht Charter': { title: '24M Luxus-Motoryacht Charter', description: 'Erleben Sie die Adria an Bord einer atemberaubenden 24-Meter Ferretti Motoryacht, Baujahr 2015. Verfügbar für Wochencharter ab Porto Montenegro in Tivat. Platz für 6 Gäste mit vollständiger Crew inklusive Kapitän, 2 Deckhand und Koch. Essen nicht inbegriffen.' },
+    '24M Luxury Motor Yacht Charter': { title: '24M Luxus-Motoryacht Charter', description: 'Erleben Sie die Adria an Bord einer atemberaubenden 24-Meter Ferretti Motoryacht, Baujahr 2015. Verfügbar für Tages- und Wochencharter ab Porto Montenegro in Tivat. Platz für 6 Gäste mit vollständiger Crew inklusive Kapitän, 2 Deckhand und Koch. Essen nicht inbegriffen.' },
   },
   ru: {
     'Sunrise Yoga on Deck': { title: 'Йога на Рассвете на Палубе', description: 'Начните день с освежающей йоги на палубе нашей яхты на рассвете.' },
@@ -211,7 +211,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Mercedes Minivan Transfer Service': { title: 'Трансфер на Мерседес Минивэне', description: 'Путешествуйте по Черногории с комфортом и стилем.' },
     'Wedding Dream': { title: 'Свадьба Мечты', description: 'Создайте потрясающую церемонию в стиле "Мамма Мия".' },
     'Concierge Services': { title: 'Консьерж-Сервис', description: 'Ежедневные, еженедельные и ежемесячные услуги. Личный помощник.' },
-    '24M Luxury Motor Yacht Charter': { title: 'Аренда люксовой моторной яхты 24м', description: 'Испытайте Адриатику на борту потрясающей моторной яхты Ferretti длиной 24 метра, 2015 года постройки. Доступна для недельной аренды из Порто Монтенегро в Тивате. Вместимость 6 гостей с полным экипажем: капитан, 2 матроса и шеф-повар. Питание не включено.' },
+    '24M Luxury Motor Yacht Charter': { title: 'Аренда люксовой моторной яхты 24м', description: 'Испытайте Адриатику на борту потрясающей моторной яхты Ferretti длиной 24 метра, 2015 года постройки. Доступна для дневной и недельной аренды из Порто Монтенегро в Тивате. Вместимость 6 гостей с полным экипажем: капитан, 2 матроса и шеф-повар. Питание не включено.' },
   },
   hr: {
     'Sunrise Yoga on Deck': { title: 'Yoga na Izlasku Sunca na Palubi', description: 'Započnite dan osvježavajućom jogom na palubi naše jahte na izlasku sunca.' },
@@ -244,7 +244,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Mercedes Minivan Transfer Service': { title: 'Mercedes Minivan Transfer Usluga', description: 'Putujte Crnom Gorom udobno i elegantno.' },
     'Wedding Dream': { title: 'San o Vjenčanju', description: 'Stvorite najljepšu "Mamma Mia" ceremoniju.' },
     'Concierge Services': { title: 'Concierge Usluge', description: 'Dnevne, tjedne i mjesečne usluge. Osobni asistent za vaš boravak.' },
-    '24M Luxury Motor Yacht Charter': { title: 'Charter luksuzne motorne jahte 24M', description: 'Dozivite Jadran na prekrasnoj 24-metarskoj Ferretti motornoj jahti, izgradenoj 2015. Dostupna za tjedni najam iz Porto Montenegra u Tivtu. Prima 6 gostiju s kompletnom posadom ukljucujuci kapetana, 2 mornara i kuhara. Hrana nije ukljucena.' },
+    '24M Luxury Motor Yacht Charter': { title: 'Charter luksuzne motorne jahte 24M', description: 'Dozivite Jadran na prekrasnoj 24-metarskoj Ferretti motornoj jahti, izgradenoj 2015. Dostupna za dnevni i tjedni najam iz Porto Montenegra u Tivtu. Prima 6 gostiju s kompletnom posadom ukljucujuci kapetana, 2 mornara i kuhara. Hrana nije ukljucena.' },
   },
   zh: {
     'Sunrise Yoga on Deck': { title: '甲板日出瑜伽', description: '在亚得里亚海日出时分，在游艇甲板上开始一天的瑜伽。' },
@@ -277,7 +277,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Mercedes Minivan Transfer Service': { title: '奔驰商务车接送服务', description: '舒适优雅地畅游黑山。' },
     'Wedding Dream': { title: '梦想婚礼', description: '打造最令人惊叹的"妈妈咪呀"风格婚礼体验。' },
     'Concierge Services': { title: '礼宾服务', description: '提供每日、每周和每月服务。私人助理为您安排行程。' },
-    '24M Luxury Motor Yacht Charter': { title: '24米豪华游艇周租', description: '乘坐这艘2015年建造的24米法拉帝豪华游艇畅游亚得里亚海。从蒂瓦特的波尔图黑山出发，提供周租服务。可容纳6位宾客，配备船长、2名水手和厨师。不含餐食。' },
+    '24M Luxury Motor Yacht Charter': { title: '24米豪华游艇周租', description: '乘坐这艘2015年建造的24米法拉帝豪华游艇畅游亚得里亚海。从蒂瓦特的波尔图黑山出发，提供日租和周租服务。可容纳6位宾客，配备船长、2名水手和厨师。不含餐食。' },
   },
   pt: {
     'Sunrise Yoga on Deck': { title: 'Yoga ao Nascer do Sol no Convés', description: 'Comece o dia com uma sessão de yoga revigorante no convés do nosso iate ao nascer do sol.' },
@@ -310,7 +310,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Mercedes Minivan Transfer Service': { title: 'Serviço de Transfer Mercedes Minivan', description: 'Viaje por Montenegro com conforto e elegância.' },
     'Wedding Dream': { title: 'Casamento de Sonho', description: 'Crie a mais deslumbrante experiência e cerimónia estilo "Mamma Mia".' },
     'Concierge Services': { title: 'Serviços de Concierge', description: 'Serviços diários, semanais e mensais. Assistente pessoal para a sua estadia.' },
-    '24M Luxury Motor Yacht Charter': { title: 'Charter Iate a Motor de Luxo 24M', description: 'Experimente o Adriatico a bordo de um deslumbrante iate Ferretti de 24 metros, construido em 2015. Disponivel para charter semanal a partir de Porto Montenegro em Tivat. Acomoda 6 hospedes com tripulacao completa incluindo Capitao, 2 marinheiros e Chef. Comida nao incluida.' },
+    '24M Luxury Motor Yacht Charter': { title: 'Charter Iate a Motor de Luxo 24M', description: 'Experimente o Adriatico a bordo de um deslumbrante iate Ferretti de 24 metros, construido em 2015. Disponivel para charter diario e semanal a partir de Porto Montenegro em Tivat. Acomoda 6 hospedes com tripulacao completa incluindo Capitao, 2 marinheiros e Chef. Comida nao incluida.' },
   },
   ja: {
     'Sunrise Yoga on Deck': { title: 'デッキで日の出ヨガ', description: 'アドリア海の日の出とともに、ヨットのデッキで爽やかなヨガセッション。' },
@@ -343,7 +343,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Mercedes Minivan Transfer Service': { title: 'メルセデス ミニバン送迎サービス', description: '快適でスタイリッシュにモンテネグロを旅行。' },
     'Wedding Dream': { title: 'ウェディングドリーム', description: '最も素晴らしい「マンマ・ミーア」スタイルの体験とセレモニーを。' },
     'Concierge Services': { title: 'コンシェルジュサービス', description: '日次・週次・月次サービス。パーソナルアシスタントがご滞在をサポート。' },
-    '24M Luxury Motor Yacht Charter': { title: '24M ラグジュアリーモーターヨットチャーター', description: '2015年建造の24メートルフェレッティモーターヨットでアドリア海を体験。ティヴァトのポルトモンテネグロから週間チャーター可能。キャプテン、デッキハンド2名、シェフ付き。6名様まで。食事は含まれません。' },
+    '24M Luxury Motor Yacht Charter': { title: '24M ラグジュアリーモーターヨットチャーター', description: '2015年建造の24メートルフェレッティモーターヨットでアドリア海を体験。ティヴァトのポルトモンテネグロから日帰りおよび週間チャーター可能。キャプテン、デッキハンド2名、シェフ付き。6名様まで。食事は含まれません。' },
   },
 };
 

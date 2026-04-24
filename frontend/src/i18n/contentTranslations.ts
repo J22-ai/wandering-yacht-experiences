@@ -293,6 +293,10 @@ export const contentTranslations: AllContentTranslations = {
     '1 Jet Ski': '1 جت سكي',
     '1 Tender': '1 قارب مساعد',
     'Sun Deck': 'سطح شمسي',
+    'Full Day Charter (up to 6 guests)': 'استئجار ليوم كامل (حتى 6 ضيوف)',
+    'Weekly Charter (up to 6 guests)': 'استئجار اسبوعي (حتى 6 ضيوف)',
+    'Full day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'استئجار ليوم كامل ليخت فيريتي 24 متر. يشمل الطاقم. الطعام غير مشمول.',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'استئجار لمدة 7 ايام ليخت فيريتي 24 متر. يشمل الطاقم. الطعام غير مشمول.',
 
   },
   fr: {
@@ -578,6 +582,10 @@ export const contentTranslations: AllContentTranslations = {
     '1 Jet Ski': '1 jet ski',
     '1 Tender': '1 annexe',
     'Sun Deck': 'Pont soleil',
+    'Full Day Charter (up to 6 guests)': 'Charter journee complete (jusqu\'a 6 passagers)',
+    'Weekly Charter (up to 6 guests)': 'Charter hebdomadaire (jusqu\'a 6 passagers)',
+    'Full day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'Charter journee complete du yacht Ferretti 24M. Equipage inclus. Nourriture non incluse.',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'Charter 7 jours du yacht Ferretti 24M. Equipage inclus. Nourriture non incluse.',
 
   },
   it: {
@@ -790,6 +798,10 @@ export const contentTranslations: AllContentTranslations = {
     '1 Jet Ski': '1 jet ski',
     '1 Tender': '1 tender',
     'Sun Deck': 'Ponte sole',
+    'Full Day Charter (up to 6 guests)': 'Charter giornaliero (fino a 6 ospiti)',
+    'Weekly Charter (up to 6 guests)': 'Charter settimanale (fino a 6 ospiti)',
+    'Full day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'Charter giornaliero dello yacht Ferretti 24M. Equipaggio incluso. Cibo non incluso.',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'Charter 7 giorni dello yacht Ferretti 24M. Equipaggio incluso. Cibo non incluso.',
 
   },
   es: {
@@ -1001,6 +1013,10 @@ export const contentTranslations: AllContentTranslations = {
     '1 Jet Ski': '1 jet ski',
     '1 Tender': '1 tender',
     'Sun Deck': 'Cubierta de sol',
+    'Full Day Charter (up to 6 guests)': 'Charter dia completo (hasta 6 huespedes)',
+    'Weekly Charter (up to 6 guests)': 'Charter semanal (hasta 6 huespedes)',
+    'Full day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'Charter dia completo del yate Ferretti 24M. Tripulacion incluida. Comida no incluida.',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'Charter 7 dias del yate Ferretti 24M. Tripulacion incluida. Comida no incluida.',
 
   },
   de: {
@@ -1210,6 +1226,10 @@ export const contentTranslations: AllContentTranslations = {
     '1 Jet Ski': '1 Jetski',
     '1 Tender': '1 Beiboot',
     'Sun Deck': 'Sonnendeck',
+    'Full Day Charter (up to 6 guests)': 'Ganztags-Charter (bis 6 Gäste)',
+    'Weekly Charter (up to 6 guests)': 'Wochen-Charter (bis 6 Gäste)',
+    'Full day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'Ganztags-Charter der 24M Ferretti Motoryacht. Crew inklusive. Essen nicht inbegriffen.',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': '7-Tage-Charter der 24M Ferretti Motoryacht. Crew inklusive. Essen nicht inbegriffen.',
 
   },
   ru: {
@@ -1420,6 +1440,10 @@ export const contentTranslations: AllContentTranslations = {
     '1 Jet Ski': '1 гидроцикл',
     '1 Tender': '1 тендер',
     'Sun Deck': 'Солнечная палуба',
+    'Full Day Charter (up to 6 guests)': 'Дневная аренда (до 6 гостей)',
+    'Weekly Charter (up to 6 guests)': 'Недельная аренда (до 6 гостей)',
+    'Full day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'Дневная аренда яхты Ferretti 24м. Экипаж включен. Питание не включено.',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': '7-дневная аренда яхты Ferretti 24м. Экипаж включен. Питание не включено.',
 
   },
   hr: {
@@ -1627,6 +1651,10 @@ export const contentTranslations: AllContentTranslations = {
     '1 Jet Ski': '1 jet ski',
     '1 Tender': '1 tender',
     'Sun Deck': 'Paluba za suncanje',
+    'Full Day Charter (up to 6 guests)': 'Cjelodnevni najam (do 6 gostiju)',
+    'Weekly Charter (up to 6 guests)': 'Tjedni najam (do 6 gostiju)',
+    'Full day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'Cjelodnevni najam jahte Ferretti 24M. Posada ukljucena. Hrana nije ukljucena.',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': '7-dnevni najam jahte Ferretti 24M. Posada ukljucena. Hrana nije ukljucena.',
 
   },
   zh: {
@@ -1834,6 +1862,10 @@ export const contentTranslations: AllContentTranslations = {
     '1 Jet Ski': '1台摩托艇',
     '1 Tender': '1艘小艇',
     'Sun Deck': '日光甲板',
+    'Full Day Charter (up to 6 guests)': '全天包租(最多6位宾客)',
+    'Weekly Charter (up to 6 guests)': '周租(最多6位宾客)',
+    'Full day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': '24米法拉帝游艇全天包租。含船员。不含餐食。',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': '24米法拉帝游艇7天包租。含船员。不含餐食。',
 
   },
   pt: {
@@ -2040,6 +2072,10 @@ export const contentTranslations: AllContentTranslations = {
     '1 Jet Ski': '1 jet ski',
     '1 Tender': '1 tender',
     'Sun Deck': 'Deck de sol',
+    'Full Day Charter (up to 6 guests)': 'Charter dia inteiro (ate 6 hospedes)',
+    'Weekly Charter (up to 6 guests)': 'Charter semanal (ate 6 hospedes)',
+    'Full day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'Charter dia inteiro do iate Ferretti 24M. Tripulacao incluida. Comida nao incluida.',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'Charter 7 dias do iate Ferretti 24M. Tripulacao incluida. Comida nao incluida.',
 
   },
   ja: {
@@ -2247,6 +2283,10 @@ export const contentTranslations: AllContentTranslations = {
     '1 Jet Ski': 'ジェットスキー1台',
     '1 Tender': 'テンダー1艇',
     'Sun Deck': 'サンデッキ',
+    'Full Day Charter (up to 6 guests)': '1日チャーター(最大6名)',
+    'Weekly Charter (up to 6 guests)': '週間チャーター(最大6名)',
+    'Full day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': '24Mフェレッティヨット1日チャーター。クルー付き。食事別。',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': '24Mフェレッティヨット7日間チャーター。クルー付き。食事別。',
 
   },
 };
