@@ -17,6 +17,10 @@ import secrets
 import base64
 import qrcode
 from io import BytesIO
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -35,6 +39,12 @@ stripe.api_key = STRIPE_SECRET_KEY
 SECRET_KEY = os.environ.get('JWT_SECRET_KEY', secrets.token_hex(32))
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
+
+# SMTP Email Configuration
+SMTP_HOST = os.environ.get('SMTP_HOST', 'smtp.dreamhost.com')
+SMTP_PORT = int(os.environ.get('SMTP_PORT', '465'))
+SMTP_EMAIL = os.environ.get('SMTP_EMAIL', 'orders@wanderingyacht.com')
+SMTP_PASSWORD = os.environ.get('SMTP_PASSWORD', '')
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -244,6 +254,171 @@ def generate_qr_code(data: str) -> str:
     img.save(buffer, format='PNG')
     img_str = base64.b64encode(buffer.getvalue()).decode()
     return f"data:image/png;base64,{img_str}"
+
+def send_booking_email(to_email: str, customer_name: str, booking: dict, experience: dict):
+    """Send booking confirmation email with QR code ticket"""
+    try:
+        is_deposit = booking.get('payment_type') == 'deposit'
+        
+        # Build ticket rows HTML
+        ticket_rows = ""
+        for ticket in booking.get('tickets', []):
+            ticket_rows += f"""
+            <tr>
+                <td style="padding:8px 0;border-bottom:1px solid #eee;font-family:Georgia,serif;color:#3a4a50;">{ticket['ticket_name']}</td>
+                <td style="padding:8px 0;border-bottom:1px solid #eee;font-family:Georgia,serif;color:#3a4a50;text-align:center;">{ticket['quantity']}</td>
+                <td style="padding:8px 0;border-bottom:1px solid #eee;font-family:Georgia,serif;color:#3a4a50;text-align:right;">€{ticket['price_per_ticket']:.2f}</td>
+            </tr>"""
+        
+        # Deposit section
+        deposit_html = ""
+        if is_deposit:
+            deposit_html = f"""
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px;background:#f0f7f7;border-radius:12px;border:2px solid #1a3a4a;">
+                <tr><td style="padding:16px 20px;background:#1a3a4a;border-radius:10px 10px 0 0;">
+                    <p style="margin:0;color:#fff;font-family:Georgia,serif;font-size:15px;font-weight:bold;text-align:center;letter-spacing:1px;">DEPOSIT OF {int(booking.get('deposit_percentage', 30))}% RECEIVED</p>
+                </td></tr>
+                <tr><td style="padding:20px;">
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td style="padding:6px 0;font-family:Georgia,serif;color:#5a6a6a;">Charter Total</td>
+                            <td style="padding:6px 0;font-family:Georgia,serif;color:#5a6a6a;text-align:right;">€{booking['total_amount']:.2f}</td>
+                        </tr>
+                        <tr style="background:#d4eaea;border-radius:8px;">
+                            <td style="padding:10px 8px;font-family:Georgia,serif;color:#1a3a4a;font-weight:bold;">Deposit Paid</td>
+                            <td style="padding:10px 8px;font-family:Georgia,serif;color:#1a3a4a;font-weight:bold;text-align:right;font-size:18px;">€{booking.get('deposit_amount', 0):.2f}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px 0;font-family:Georgia,serif;color:#a0aab0;">Remaining Balance</td>
+                            <td style="padding:6px 0;font-family:Georgia,serif;color:#a0aab0;text-align:right;">€{booking.get('remaining_balance', 0):.2f}</td>
+                        </tr>
+                    </table>
+                    <p style="margin:12px 0 0;font-family:Georgia,serif;font-size:12px;color:#7a8a8a;text-align:center;">Your dates are now blocked. We will contact you regarding the remaining balance and itinerary details.</p>
+                </td></tr>
+            </table>"""
+        
+        # QR code image (extract base64 data)
+        qr_base64 = booking.get('qr_code', '')
+        qr_img_data = None
+        if qr_base64 and ',' in qr_base64:
+            qr_img_data = base64.b64decode(qr_base64.split(',')[1])
+        
+        subject = f"{'Deposit Confirmation' if is_deposit else 'Booking Confirmation'} — {booking['experience_title']} | WANDERING YACHT"
+        
+        html_body = f"""
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#f5f3f0;font-family:Georgia,serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f3f0;">
+<tr><td align="center" style="padding:20px 10px;">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+    
+    <!-- Header -->
+    <tr><td style="background:#1a3a4a;padding:30px 40px;text-align:center;">
+        <h1 style="margin:0;color:#fff;font-family:Georgia,serif;font-size:24px;letter-spacing:3px;">WANDERING</h1>
+        <h1 style="margin:0;color:#fff;font-family:Georgia,serif;font-size:24px;letter-spacing:3px;">YACHT</h1>
+        <p style="margin:10px 0 0;color:#c17f59;font-family:Georgia,serif;font-size:13px;letter-spacing:2px;">{'DEPOSIT CONFIRMATION' if is_deposit else 'BOOKING CONFIRMATION'}</p>
+    </td></tr>
+    
+    <!-- Greeting -->
+    <tr><td style="padding:30px 40px 10px;">
+        <p style="margin:0;font-family:Georgia,serif;color:#1a3a4a;font-size:16px;">Dear {customer_name},</p>
+        <p style="margin:10px 0 0;font-family:Georgia,serif;color:#5a6a6a;font-size:14px;line-height:22px;">
+            {'Your deposit has been received and your dates are now secured.' if is_deposit else 'Thank you for your booking. Your experience has been confirmed.'}
+        </p>
+    </td></tr>
+    
+    <!-- Experience Details -->
+    <tr><td style="padding:10px 40px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background:#faf9f7;border-radius:12px;border:1px solid #ebe8e3;">
+            <tr><td style="padding:20px;">
+                <h2 style="margin:0 0 12px;font-family:Georgia,serif;color:#1a3a4a;font-size:18px;">{booking['experience_title']}</h2>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td style="padding:4px 0;font-family:Georgia,serif;color:#7a8a8a;font-size:13px;">📍 Location</td>
+                        <td style="padding:4px 0;font-family:Georgia,serif;color:#3a4a50;font-size:13px;text-align:right;">{booking['experience_location']}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:4px 0;font-family:Georgia,serif;color:#7a8a8a;font-size:13px;">📅 Date</td>
+                        <td style="padding:4px 0;font-family:Georgia,serif;color:#3a4a50;font-size:13px;text-align:right;">{booking['experience_date']}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:4px 0;font-family:Georgia,serif;color:#7a8a8a;font-size:13px;">🎫 Booking ID</td>
+                        <td style="padding:4px 0;font-family:Georgia,serif;color:#3a4a50;font-size:13px;text-align:right;">{booking['id'][:8].upper()}</td>
+                    </tr>
+                </table>
+            </td></tr>
+        </table>
+    </td></tr>
+    
+    <!-- Tickets -->
+    <tr><td style="padding:10px 40px;">
+        <h3 style="margin:0 0 10px;font-family:Georgia,serif;color:#1a3a4a;font-size:14px;letter-spacing:1px;">TICKETS</h3>
+        <table width="100%" cellpadding="0" cellspacing="0">
+            <tr style="border-bottom:2px solid #1a3a4a;">
+                <th style="padding:8px 0;font-family:Georgia,serif;color:#1a3a4a;font-size:12px;text-align:left;">Type</th>
+                <th style="padding:8px 0;font-family:Georgia,serif;color:#1a3a4a;font-size:12px;text-align:center;">Qty</th>
+                <th style="padding:8px 0;font-family:Georgia,serif;color:#1a3a4a;font-size:12px;text-align:right;">Price</th>
+            </tr>
+            {ticket_rows}
+            <tr>
+                <td colspan="2" style="padding:12px 0;font-family:Georgia,serif;color:#1a3a4a;font-size:16px;font-weight:bold;">Total</td>
+                <td style="padding:12px 0;font-family:Georgia,serif;color:#1a3a4a;font-size:20px;font-weight:bold;text-align:right;">€{booking['total_amount']:.2f}</td>
+            </tr>
+        </table>
+    </td></tr>
+    
+    {deposit_html}
+    
+    <!-- QR Code -->
+    <tr><td style="padding:20px 40px;text-align:center;">
+        <p style="margin:0 0 10px;font-family:Georgia,serif;color:#1a3a4a;font-size:14px;letter-spacing:1px;font-weight:bold;">YOUR TICKET</p>
+        <p style="margin:0 0 16px;font-family:Georgia,serif;color:#7a8a8a;font-size:12px;">Present this QR code upon arrival</p>
+        {'<img src="cid:qrcode" width="180" height="180" style="border-radius:12px;border:1px solid #eee;" />' if qr_img_data else ''}
+    </td></tr>
+    
+    <!-- Footer -->
+    <tr><td style="background:#1a3a4a;padding:24px 40px;text-align:center;">
+        <p style="margin:0;color:#c17f59;font-family:Georgia,serif;font-size:12px;letter-spacing:1px;">WANDERING YACHT</p>
+        <p style="margin:6px 0 0;color:#8a9a9a;font-family:Georgia,serif;font-size:11px;">Montenegro • Croatia • Albania • Greece</p>
+        <p style="margin:8px 0 0;color:#8a9a9a;font-family:Georgia,serif;font-size:11px;">info@wanderingyacht.com</p>
+    </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>"""
+        
+        # Build the email
+        msg = MIMEMultipart('related')
+        msg['Subject'] = subject
+        msg['From'] = f'WANDERING YACHT <{SMTP_EMAIL}>'
+        msg['To'] = to_email
+        
+        # Attach HTML body
+        html_part = MIMEText(html_body, 'html')
+        msg.attach(html_part)
+        
+        # Attach QR code image inline
+        if qr_img_data:
+            img_part = MIMEImage(qr_img_data, name='qrcode.png')
+            img_part.add_header('Content-ID', '<qrcode>')
+            img_part.add_header('Content-Disposition', 'inline', filename='qrcode.png')
+            msg.attach(img_part)
+        
+        # Send via SMTP SSL
+        with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as server:
+            server.login(SMTP_EMAIL, SMTP_PASSWORD)
+            server.send_message(msg)
+        
+        logger.info(f"Booking confirmation email sent to {to_email} for booking {booking['id']}")
+        return True
+        
+    except Exception as e:
+        logger.error(f"Failed to send email to {to_email}: {str(e)}")
+        return False
 
 # ======================== AUTH ROUTES ========================
 
@@ -593,6 +768,21 @@ async def confirm_payment(
     )
     
     updated_booking = await db.bookings.find_one({"id": booking_id})
+    
+    # Send confirmation email
+    try:
+        user = await db.users.find_one({"id": current_user["id"]})
+        if user and user.get("email"):
+            experience = await db.experiences.find_one({"id": booking.get("experience_id")})
+            send_booking_email(
+                to_email=user["email"],
+                customer_name=user.get("name", user["email"].split("@")[0]),
+                booking=updated_booking,
+                experience=experience or {}
+            )
+    except Exception as e:
+        logger.error(f"Email send failed (non-blocking): {str(e)}")
+    
     return Booking(**updated_booking)
 
 @api_router.post("/webhook/stripe")
