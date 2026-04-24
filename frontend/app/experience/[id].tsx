@@ -79,6 +79,7 @@ interface Experience {
   requires_deposit?: boolean;
   deposit_percentage?: number;
   taxes_included?: boolean;
+  deposit_note?: string;
 }
 
 export default function ExperienceDetailScreen() {
@@ -446,7 +447,7 @@ export default function ExperienceDetailScreen() {
                 <Ionicons name="boat-outline" size={18} color="#1a3a4a" />
                 <Text style={styles.depositNoticeTitle}>DEPOSIT OF {experience.deposit_percentage || 30}% NEEDED TODAY</Text>
               </View>
-              <Text style={styles.depositNoticeSubline}>For Half-Day and Full-Day Charter Bookings Only</Text>
+              <Text style={styles.depositNoticeSubline}>{experience.deposit_note || 'For Half-Day and Full-Day Charter Bookings Only'}</Text>
               <Text style={styles.depositNoticeText}>
                 A {experience.deposit_percentage || 30}% deposit is required to proceed with your booking and block your dates immediately. The remaining balance will be invoiced separately.
               </Text>
