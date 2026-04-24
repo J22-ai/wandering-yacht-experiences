@@ -407,6 +407,24 @@ export default function ExperienceDetailScreen() {
             </View>
           )}
 
+          {/* Season Dates - shown when experience has seasonal pricing */}
+          {experience.ticket_types.some(t => t.name.toLowerCase().includes('season')) && (
+            <View style={styles.seasonCard}>
+              <View style={styles.seasonRow}>
+                <View style={styles.seasonBlock}>
+                  <Text style={styles.seasonLabel}>LOW SEASON</Text>
+                  <Text style={styles.seasonDates}>May 1 — June 14</Text>
+                  <Text style={styles.seasonDates}>Sep 16 — Oct 31</Text>
+                </View>
+                <View style={styles.seasonDividerVert} />
+                <View style={styles.seasonBlock}>
+                  <Text style={[styles.seasonLabel, { color: '#c17f59' }]}>HIGH SEASON</Text>
+                  <Text style={styles.seasonDates}>June 15 — Sep 15</Text>
+                </View>
+              </View>
+            </View>
+          )}
+
           {/* Ticket Selection */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>{t('detail_select_tickets')}</Text>
@@ -926,6 +944,44 @@ const styles = StyleSheet.create({
   // Fleet inquiry banner
   fleetBanner: {
     marginTop: 16,
+  },
+  // Season dates card
+  seasonCard: {
+    backgroundColor: '#f4f1ec',
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#e0dcd5',
+  },
+  seasonRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
+  seasonBlock: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  seasonDividerVert: {
+    width: 1,
+    backgroundColor: '#c8c3bb',
+    alignSelf: 'stretch',
+    marginHorizontal: 12,
+  },
+  seasonLabel: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#1a3a4a',
+    letterSpacing: 0.5,
+    marginBottom: 4,
+  },
+  seasonDates: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    color: '#5a6a6a',
+    lineHeight: 20,
   },
   fleetDivider: {
     height: 1,
