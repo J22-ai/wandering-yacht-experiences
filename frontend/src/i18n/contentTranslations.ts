@@ -294,9 +294,9 @@ export const contentTranslations: AllContentTranslations = {
     '1 Tender': '1 قارب مساعد',
     'Sun Deck': 'سطح شمسي',
     'Full Day Charter (up to 14 guests)': 'استئجار ليوم كامل (حتى 14 ضيفا)',
-    'Weekly Charter (up to 6 guests)': 'استئجار اسبوعي (حتى 6 ضيوف)',
+    'Weekly Charter (6-8 guests)': 'استئجار اسبوعي (6-8 ضيوف)',
     'Full day charter of the 24M Ferretti motor yacht. Includes crew, snacks and lunch.': 'استئجار ليوم كامل ليخت فيريتي 24 متر. يشمل الطاقم والوجبات الخفيفة والغداء.',
-    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'استئجار لمدة 7 ايام ليخت فيريتي 24 متر. يشمل الطاقم. الطعام غير مشمول.',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew, daily breakfast and one meal per day. Additional food at extra cost.': 'استئجار 7 ايام ليخت فيريتي 24 متر. يشمل الطاقم والفطور ووجبة يومية. تسوق اضافي بتكلفة اضافية.',
 
   },
   fr: {
@@ -583,9 +583,9 @@ export const contentTranslations: AllContentTranslations = {
     '1 Tender': '1 annexe',
     'Sun Deck': 'Pont soleil',
     'Full Day Charter (up to 14 guests)': 'Charter journee complete (jusqu\'a 6 passagers)',
-    'Weekly Charter (up to 6 guests)': 'Charter hebdomadaire (jusqu\'a 6 passagers)',
+    'Weekly Charter (6-8 guests)': 'Charter hebdomadaire (jusqu\'a 6 passagers)',
     'Full day charter of the 24M Ferretti motor yacht. Includes crew, snacks and lunch.': 'Charter journee complete du yacht Ferretti 24M. Equipage, collations et dejeuner inclus.',
-    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'Charter 7 jours du yacht Ferretti 24M. Equipage inclus. Nourriture non incluse.',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew, daily breakfast and one meal per day. Additional food at extra cost.': 'Charter 7 jours du yacht Ferretti 24M. Equipage, petit-dejeuner et un repas quotidien inclus. Courses supplementaires en sus.',
 
   },
   it: {
@@ -799,9 +799,9 @@ export const contentTranslations: AllContentTranslations = {
     '1 Tender': '1 tender',
     'Sun Deck': 'Ponte sole',
     'Full Day Charter (up to 14 guests)': 'Charter giornaliero (fino a 14 ospiti)',
-    'Weekly Charter (up to 6 guests)': 'Charter settimanale (fino a 6 ospiti)',
+    'Weekly Charter (6-8 guests)': 'Charter settimanale (6-8 ospiti)',
     'Full day charter of the 24M Ferretti motor yacht. Includes crew, snacks and lunch.': 'Charter giornaliero dello yacht Ferretti 24M. Equipaggio, snack e pranzo inclusi.',
-    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'Charter 7 giorni dello yacht Ferretti 24M. Equipaggio incluso. Cibo non incluso.',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew, daily breakfast and one meal per day. Additional food at extra cost.': 'Charter 7 giorni dello yacht Ferretti 24M. Equipaggio, colazione e un pasto al giorno inclusi. Spesa aggiuntiva a parte.',
 
   },
   es: {
@@ -1014,9 +1014,9 @@ export const contentTranslations: AllContentTranslations = {
     '1 Tender': '1 tender',
     'Sun Deck': 'Cubierta de sol',
     'Full Day Charter (up to 14 guests)': 'Charter dia completo (hasta 14 huespedes)',
-    'Weekly Charter (up to 6 guests)': 'Charter semanal (hasta 6 huespedes)',
+    'Weekly Charter (6-8 guests)': 'Charter semanal (6-8 huespedes)',
     'Full day charter of the 24M Ferretti motor yacht. Includes crew, snacks and lunch.': 'Charter dia completo del yate Ferretti 24M. Tripulacion, snacks y almuerzo incluidos.',
-    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'Charter 7 dias del yate Ferretti 24M. Tripulacion incluida. Comida no incluida.',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew, daily breakfast and one meal per day. Additional food at extra cost.': 'Charter 7 dias del yate Ferretti 24M. Tripulacion, desayuno y una comida diaria incluidos. Compras adicionales con coste extra.',
 
   },
   de: {
@@ -1227,9 +1227,9 @@ export const contentTranslations: AllContentTranslations = {
     '1 Tender': '1 Beiboot',
     'Sun Deck': 'Sonnendeck',
     'Full Day Charter (up to 14 guests)': 'Ganztags-Charter (bis 14 Gäste)',
-    'Weekly Charter (up to 6 guests)': 'Wochen-Charter (bis 6 Gäste)',
+    'Weekly Charter (6-8 guests)': 'Wochen-Charter (6-8 Gäste)',
     'Full day charter of the 24M Ferretti motor yacht. Includes crew, snacks and lunch.': 'Ganztags-Charter der 24M Ferretti Motoryacht. Crew, Snacks und Mittagessen inklusive.',
-    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': '7-Tage-Charter der 24M Ferretti Motoryacht. Crew inklusive. Essen nicht inbegriffen.',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew, daily breakfast and one meal per day. Additional food at extra cost.': '7-Tage-Charter der 24M Ferretti. Crew, Frühstück und eine Mahlzeit pro Tag inklusive. Zusätzliche Lebensmittel gegen Aufpreis.',
 
   },
   ru: {
@@ -1441,9 +1441,9 @@ export const contentTranslations: AllContentTranslations = {
     '1 Tender': '1 тендер',
     'Sun Deck': 'Солнечная палуба',
     'Full Day Charter (up to 14 guests)': 'Дневная аренда (до 14 гостей)',
-    'Weekly Charter (up to 6 guests)': 'Недельная аренда (до 6 гостей)',
+    'Weekly Charter (6-8 guests)': 'Недельная аренда (6-8 гостей)',
     'Full day charter of the 24M Ferretti motor yacht. Includes crew, snacks and lunch.': 'Дневная аренда яхты Ferretti 24м. Экипаж, закуски и обед включены.',
-    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': '7-дневная аренда яхты Ferretti 24м. Экипаж включен. Питание не включено.',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew, daily breakfast and one meal per day. Additional food at extra cost.': '7-дневная аренда яхты Ferretti 24м. Экипаж, завтрак и один прием пищи в день включены. Дополнительные продукты за отдельную плату.',
 
   },
   hr: {
@@ -1652,9 +1652,9 @@ export const contentTranslations: AllContentTranslations = {
     '1 Tender': '1 tender',
     'Sun Deck': 'Paluba za suncanje',
     'Full Day Charter (up to 14 guests)': 'Cjelodnevni najam (do 14 gostiju)',
-    'Weekly Charter (up to 6 guests)': 'Tjedni najam (do 6 gostiju)',
+    'Weekly Charter (6-8 guests)': 'Tjedni najam (6-8 gostiju)',
     'Full day charter of the 24M Ferretti motor yacht. Includes crew, snacks and lunch.': 'Cjelodnevni najam jahte Ferretti 24M. Posada, grickalice i rucak ukljuceni.',
-    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': '7-dnevni najam jahte Ferretti 24M. Posada ukljucena. Hrana nije ukljucena.',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew, daily breakfast and one meal per day. Additional food at extra cost.': '7-dnevni najam jahte Ferretti 24M. Posada, dorucak i jedan obrok dnevno ukljuceni. Dodatna hrana po dodatnoj cijeni.',
 
   },
   zh: {
@@ -1863,9 +1863,9 @@ export const contentTranslations: AllContentTranslations = {
     '1 Tender': '1艘小艇',
     'Sun Deck': '日光甲板',
     'Full Day Charter (up to 14 guests)': '全天包租(最多14位宾客)',
-    'Weekly Charter (up to 6 guests)': '周租(最多6位宾客)',
+    'Weekly Charter (6-8 guests)': '周租(6-8位宾客)',
     'Full day charter of the 24M Ferretti motor yacht. Includes crew, snacks and lunch.': '24米法拉帝游艇全天包租。含船员、零食和午餐。',
-    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': '24米法拉帝游艇7天包租。含船员。不含餐食。',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew, daily breakfast and one meal per day. Additional food at extra cost.': '24米法拉帝游艇7天包租。含船员、每日早餐和一餐。额外食材需另付费。',
 
   },
   pt: {
@@ -2073,9 +2073,9 @@ export const contentTranslations: AllContentTranslations = {
     '1 Tender': '1 tender',
     'Sun Deck': 'Deck de sol',
     'Full Day Charter (up to 14 guests)': 'Charter dia inteiro (ate 14 hospedes)',
-    'Weekly Charter (up to 6 guests)': 'Charter semanal (ate 6 hospedes)',
+    'Weekly Charter (6-8 guests)': 'Charter semanal (6-8 hospedes)',
     'Full day charter of the 24M Ferretti motor yacht. Includes crew, snacks and lunch.': 'Charter dia inteiro do iate Ferretti 24M. Tripulacao, snacks e almoco incluidos.',
-    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': 'Charter 7 dias do iate Ferretti 24M. Tripulacao incluida. Comida nao incluida.',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew, daily breakfast and one meal per day. Additional food at extra cost.': 'Charter 7 dias do iate Ferretti 24M. Tripulacao, pequeno-almoco e uma refeicao diaria incluidos. Compras adicionais com custo extra.',
 
   },
   ja: {
@@ -2284,9 +2284,9 @@ export const contentTranslations: AllContentTranslations = {
     '1 Tender': 'テンダー1艇',
     'Sun Deck': 'サンデッキ',
     'Full Day Charter (up to 14 guests)': '1日チャーター(最大14名)',
-    'Weekly Charter (up to 6 guests)': '週間チャーター(最大6名)',
+    'Weekly Charter (6-8 guests)': '週間チャーター(6-8名)',
     'Full day charter of the 24M Ferretti motor yacht. Includes crew, snacks and lunch.': '24Mフェレッティヨット1日チャーター。クルー、軽食、ランチ付き。',
-    '7-day charter of the 24M Ferretti motor yacht. Includes crew. Food not included.': '24Mフェレッティヨット7日間チャーター。クルー付き。食事別。',
+    '7-day charter of the 24M Ferretti motor yacht. Includes crew, daily breakfast and one meal per day. Additional food at extra cost.': '24Mフェレッティヨット7日間チャーター。クルー、朝食、1日1食付き。追加食材は別途。',
 
   },
 };
