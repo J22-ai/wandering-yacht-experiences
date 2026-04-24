@@ -462,6 +462,29 @@ export default function ExperienceDetailScreen() {
             </View>
           )}
 
+          {/* Fleet Inquiry Banner - for charter/water adventure experiences */}
+          {experience.requires_deposit && (
+            <View style={styles.fleetBanner}>
+              <View style={styles.fleetDivider} />
+              <Text style={styles.fleetText}>
+                Please inquire about our entire fleet of yachts that you can charter in Montenegro, Croatia, Albania and Greece.
+              </Text>
+              <TouchableOpacity
+                style={styles.fleetButton}
+                onPress={() => {
+                  const subject = encodeURIComponent('NEW INQUIRY for CHARTERING AN ADDITIONAL YACHT');
+                  const body = encodeURIComponent('Hello Wandering Yacht,\n\nI would like to inquire about chartering a yacht from your fleet outside of the Wandering Yacht Experiences app.\n\nPlease share available options for:\n- Destination: \n- Dates: \n- Number of guests: \n\nThank you.');
+                  Linking.openURL(`mailto:info@wanderingyacht.com?subject=${subject}&body=${body}`);
+                }}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="mail-outline" size={16} color="#fff" />
+                <Text style={styles.fleetButtonText}>Inquire Here</Text>
+              </TouchableOpacity>
+              <View style={styles.fleetDivider} />
+            </View>
+          )}
+
           <View style={{ height: 140 }} />
         </View>
       </ScrollView>
@@ -898,6 +921,41 @@ const styles = StyleSheet.create({
   taxNoticeText: {
     fontFamily: 'TraditionalArabic',
     fontSize: 13,
+    fontWeight: '600',
+  },
+  // Fleet inquiry banner
+  fleetBanner: {
+    marginTop: 16,
+  },
+  fleetDivider: {
+    height: 1,
+    backgroundColor: '#d0ccc5',
+    marginVertical: 12,
+  },
+  fleetText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 15,
+    color: '#3a4a50',
+    textAlign: 'center',
+    lineHeight: 22,
+    marginBottom: 14,
+    fontStyle: 'italic',
+  },
+  fleetButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1a3a4a',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 10,
+    gap: 8,
+    alignSelf: 'center',
+  },
+  fleetButtonText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 15,
+    color: '#fff',
     fontWeight: '600',
   },
 });

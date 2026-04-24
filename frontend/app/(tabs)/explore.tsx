@@ -8,6 +8,7 @@ import {
   Image,
   TextInput,
   RefreshControl,
+  Linking,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -151,6 +152,26 @@ export default function ExploreScreen() {
     return cat ? cat.name : slug.replace(/[_-]/g, ' ').toUpperCase();
   };
 
+  const handleFleetInquiry = () => {
+    const subject = encodeURIComponent('NEW INQUIRY for CHARTERING AN ADDITIONAL YACHT');
+    const body = encodeURIComponent('Hello Wandering Yacht,\n\nI would like to inquire about chartering a yacht from your fleet outside of the Wandering Yacht Experiences app.\n\nPlease share available options for:\n- Destination: \n- Dates: \n- Number of guests: \n\nThank you.');
+    Linking.openURL(`mailto:info@wanderingyacht.com?subject=${subject}&body=${body}`);
+  };
+
+  const renderFleetInquiryBanner = () => (
+    <View style={styles.fleetBanner}>
+      <View style={styles.fleetDivider} />
+      <Text style={styles.fleetText}>
+        Please inquire about our entire fleet of yachts that you can charter in Montenegro, Croatia, Albania and Greece.
+      </Text>
+      <TouchableOpacity style={styles.fleetButton} onPress={handleFleetInquiry} activeOpacity={0.7}>
+        <Ionicons name="mail-outline" size={16} color="#fff" />
+        <Text style={styles.fleetButtonText}>Inquire Here</Text>
+      </TouchableOpacity>
+      <View style={styles.fleetDivider} />
+    </View>
+  );
+
   const filteredExperiences = getFilteredExperiences();
   const groupedExperiences = getGroupedExperiences();
 
@@ -265,7 +286,10 @@ export default function ExploreScreen() {
 
         {selectedCategory || searchQuery.trim() ? (
           /* Single category or search results view */
-          filteredExperiences.map(renderExperienceCard)
+          <>
+            {filteredExperiences.map(renderExperienceCard)}
+            {selectedCategory === 'water_adventures' && renderFleetInquiryBanner()}
+          </>
         ) : (
           /* Grouped by category */
           Object.keys(groupedExperiences).map((categorySlug) => (
@@ -276,6 +300,7 @@ export default function ExploreScreen() {
                 <View style={styles.sectionLine} />
               </View>
               {groupedExperiences[categorySlug].map(renderExperienceCard)}
+              {categorySlug === 'water_adventures' && renderFleetInquiryBanner()}
             </View>
           ))
         )}
@@ -463,5 +488,42 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#fff',
     fontWeight: '500',
+  },
+  // Fleet inquiry banner
+  fleetBanner: {
+    marginTop: 16,
+    marginBottom: 8,
+    paddingHorizontal: 4,
+  },
+  fleetDivider: {
+    height: 1,
+    backgroundColor: '#d0ccc5',
+    marginVertical: 12,
+  },
+  fleetText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 15,
+    color: '#3a4a50',
+    textAlign: 'center',
+    lineHeight: 22,
+    marginBottom: 14,
+    fontStyle: 'italic',
+  },
+  fleetButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1a3a4a',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 10,
+    gap: 8,
+    alignSelf: 'center',
+  },
+  fleetButtonText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 15,
+    color: '#fff',
+    fontWeight: '600',
   },
 });
