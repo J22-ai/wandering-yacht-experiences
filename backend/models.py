@@ -11,6 +11,9 @@ class UserCreate(BaseModel):
     full_name: str
     phone: Optional[str] = None
     whatsapp_number: Optional[str] = None
+    # Anti-bot fields (invisible to real users)
+    website: Optional[str] = None  # Honeypot - bots fill this, humans don't see it
+    form_loaded_at: Optional[str] = None  # Timing check
 
 class UserLogin(BaseModel):
     email: EmailStr

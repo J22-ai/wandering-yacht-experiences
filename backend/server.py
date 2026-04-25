@@ -48,6 +48,12 @@ from services.email import (
 from services.calendar import get_google_calendar_service, create_calendar_event
 from services.qr import generate_qr_code
 
+# Direct SMTP imports for weekly digest (inline in server.py)
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from config import SMTP_HOST, SMTP_PORT, SMTP_EMAIL, SMTP_PASSWORD
+
 ROOT_DIR = Path(__file__).parent
 
 # Stripe configuration
@@ -60,6 +66,23 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Rate limiting store (in-memory, resets on restart)
+rate_limit_store = {}  # {ip: [timestamp, timestamp, ...]}
+RATE_LIMIT_MAX = 5  # max registrations per IP
+RATE_LIMIT_WINDOW = 3600  # 1 hour in seconds
+
+def check_rate_limit(ip: str) -> bool:
+    """Returns True if request is allowed, False if rate-limited."""
+    now = datetime.utcnow().timestamp()
+    if ip not in rate_limit_store:
+        rate_limit_store[ip] = []
+    # Clean old entries
+    rate_limit_store[ip] = [t for t in rate_limit_store[ip] if now - t < RATE_LIMIT_WINDOW]
+    if len(rate_limit_store[ip]) >= RATE_LIMIT_MAX:
+        return False
+    rate_limit_store[ip].append(now)
+    return True
+
 # Create the main app
 app = FastAPI(title="Wandering Yacht API")
 
@@ -69,7 +92,31 @@ api_router = APIRouter(prefix="/api")
 # ======================== AUTH ROUTES ========================
 
 @api_router.post("/auth/register", response_model=TokenResponse)
-async def register(user_data: UserCreate):
+async def register(user_data: UserCreate, request: Request):
+    # Anti-bot: Rate limiting
+    client_ip = request.client.host if request.client else "unknown"
+    if not check_rate_limit(client_ip):
+        logger.warning(f"Rate limit exceeded for registration from IP: {client_ip}")
+        raise HTTPException(status_code=429, detail="Too many registration attempts. Please try again later.")
+    
+    # Anti-bot: Honeypot check (if 'website' field is filled, it's a bot)
+    honeypot = getattr(user_data, 'website', None)
+    if honeypot:
+        logger.warning(f"Honeypot triggered from IP: {client_ip}")
+        raise HTTPException(status_code=400, detail="Registration failed")
+    
+    # Anti-bot: Form timing check (reject if submitted too fast)
+    form_loaded_at = getattr(user_data, 'form_loaded_at', None)
+    if form_loaded_at:
+        try:
+            loaded = float(form_loaded_at)
+            elapsed = datetime.utcnow().timestamp() - loaded
+            if elapsed < 2.0:
+                logger.warning(f"Form submitted too fast ({elapsed:.1f}s) from IP: {client_ip}")
+                raise HTTPException(status_code=400, detail="Registration failed")
+        except (ValueError, TypeError):
+            pass
+    
     # Check if user exists
     existing_user = await db.users.find_one({"email": user_data.email})
     if existing_user:
@@ -1821,6 +1868,277 @@ async def biometric_refresh(current_user: dict = Depends(get_current_user)):
             "created_at": current_user["created_at"].isoformat(),
         }
     }
+
+# ======================== EMAIL MARKETING DATABASE ========================
+
+def send_weekly_digest():
+    """Send weekly email digest with client database info to booking@wanderingyacht.com"""
+    import asyncio
+    from motor.motor_asyncio import AsyncIOMotorClient as AsyncClient
+    from config import MONGO_URL, DB_NAME, SMTP_HOST, SMTP_PORT, SMTP_EMAIL, SMTP_PASSWORD
+    
+    # Create new connection for background task
+    bg_client = AsyncClient(MONGO_URL)
+    bg_db = bg_client[DB_NAME]
+    
+    async def _send():
+        try:
+            now = datetime.utcnow()
+            week_ago = now - timedelta(days=7)
+            
+            # Get all users
+            all_users = await bg_db.users.find({}).to_list(10000)
+            total_count = len(all_users)
+            
+            # Get users from last 7 days
+            new_users = [u for u in all_users if u.get('created_at', now) >= week_ago]
+            new_count = len(new_users)
+            
+            # Build new users table rows
+            new_user_rows = ""
+            for u in sorted(new_users, key=lambda x: x.get('created_at', now), reverse=True):
+                created = u.get('created_at', now).strftime('%Y-%m-%d %H:%M')
+                new_user_rows += f"""
+                <tr>
+                    <td style="padding:6px 12px;border-bottom:1px solid #eee;font-family:Georgia,serif;font-size:13px;color:#333;">{u.get('full_name','—')}</td>
+                    <td style="padding:6px 12px;border-bottom:1px solid #eee;font-family:Georgia,serif;font-size:13px;color:#333;">{u.get('email','—')}</td>
+                    <td style="padding:6px 12px;border-bottom:1px solid #eee;font-family:Georgia,serif;font-size:13px;color:#7a8a8a;">{u.get('phone','—')}</td>
+                    <td style="padding:6px 12px;border-bottom:1px solid #eee;font-family:Georgia,serif;font-size:13px;color:#7a8a8a;">{u.get('whatsapp_number','—')}</td>
+                    <td style="padding:6px 12px;border-bottom:1px solid #eee;font-family:Georgia,serif;font-size:12px;color:#999;">{created}</td>
+                </tr>"""
+            
+            if not new_user_rows:
+                new_user_rows = '<tr><td colspan="5" style="padding:16px;text-align:center;color:#999;font-family:Georgia,serif;">No new signups this week</td></tr>'
+            
+            # Build full database rows (last 50)
+            all_user_rows = ""
+            for u in sorted(all_users, key=lambda x: x.get('created_at', now), reverse=True)[:50]:
+                created = u.get('created_at', now).strftime('%Y-%m-%d')
+                all_user_rows += f"""
+                <tr>
+                    <td style="padding:4px 10px;border-bottom:1px solid #f0f0f0;font-size:12px;color:#333;">{u.get('full_name','—')}</td>
+                    <td style="padding:4px 10px;border-bottom:1px solid #f0f0f0;font-size:12px;color:#333;">{u.get('email','—')}</td>
+                    <td style="padding:4px 10px;border-bottom:1px solid #f0f0f0;font-size:12px;color:#999;">{created}</td>
+                </tr>"""
+            
+            week_range = f"{week_ago.strftime('%b %d')} — {now.strftime('%b %d, %Y')}"
+            
+            subject = f"📊 Weekly Client Report | {new_count} New Signups | {total_count} Total — WANDERING YACHT"
+            
+            html = f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#f5f3f0;font-family:Georgia,serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f3f0;">
+<tr><td align="center" style="padding:20px;">
+<table width="650" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+    <tr><td style="background:#1a3a4a;padding:24px 30px;">
+        <h1 style="margin:0;color:#fff;font-size:20px;letter-spacing:2px;">WANDERING YACHT</h1>
+        <p style="margin:6px 0 0;color:#c17f59;font-size:13px;letter-spacing:1px;">WEEKLY CLIENT DATABASE REPORT</p>
+        <p style="margin:6px 0 0;color:#8a9a9a;font-size:12px;">{week_range}</p>
+    </td></tr>
+    
+    <tr><td style="padding:24px 30px;">
+        <table width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+                <td style="text-align:center;padding:16px;background:#f0f7f7;border-radius:10px;width:50%;">
+                    <p style="margin:0;color:#c17f59;font-size:36px;font-weight:bold;">{new_count}</p>
+                    <p style="margin:4px 0 0;color:#5a6a6a;font-size:12px;letter-spacing:1px;">NEW THIS WEEK</p>
+                </td>
+                <td style="width:16px;"></td>
+                <td style="text-align:center;padding:16px;background:#faf9f7;border-radius:10px;width:50%;">
+                    <p style="margin:0;color:#1a3a4a;font-size:36px;font-weight:bold;">{total_count}</p>
+                    <p style="margin:4px 0 0;color:#5a6a6a;font-size:12px;letter-spacing:1px;">TOTAL DATABASE</p>
+                </td>
+            </tr>
+        </table>
+    </td></tr>
+    
+    <tr><td style="padding:0 30px 20px;">
+        <h3 style="margin:0 0 10px;color:#1a3a4a;font-size:14px;letter-spacing:1px;">🆕 NEW SIGNUPS THIS WEEK</h3>
+        <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #eee;border-radius:8px;overflow:hidden;">
+            <tr style="background:#faf9f7;">
+                <th style="padding:8px 12px;text-align:left;font-size:11px;color:#7a8a8a;letter-spacing:0.5px;">Name</th>
+                <th style="padding:8px 12px;text-align:left;font-size:11px;color:#7a8a8a;letter-spacing:0.5px;">Email</th>
+                <th style="padding:8px 12px;text-align:left;font-size:11px;color:#7a8a8a;letter-spacing:0.5px;">Phone</th>
+                <th style="padding:8px 12px;text-align:left;font-size:11px;color:#7a8a8a;letter-spacing:0.5px;">WhatsApp</th>
+                <th style="padding:8px 12px;text-align:left;font-size:11px;color:#7a8a8a;letter-spacing:0.5px;">Joined</th>
+            </tr>
+            {new_user_rows}
+        </table>
+    </td></tr>
+    
+    <tr><td style="padding:0 30px 20px;">
+        <h3 style="margin:0 0 10px;color:#1a3a4a;font-size:14px;letter-spacing:1px;">📋 FULL CLIENT DATABASE (Latest 50)</h3>
+        <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #eee;border-radius:8px;overflow:hidden;">
+            <tr style="background:#faf9f7;">
+                <th style="padding:6px 10px;text-align:left;font-size:11px;color:#7a8a8a;">Name</th>
+                <th style="padding:6px 10px;text-align:left;font-size:11px;color:#7a8a8a;">Email</th>
+                <th style="padding:6px 10px;text-align:left;font-size:11px;color:#7a8a8a;">Joined</th>
+            </tr>
+            {all_user_rows}
+        </table>
+        {'<p style="margin:10px 0 0;color:#999;font-size:11px;text-align:center;">Showing latest 50 of ' + str(total_count) + ' total clients</p>' if total_count > 50 else ''}
+    </td></tr>
+    
+    <tr><td style="padding:16px 30px;background:#1a3a4a;text-align:center;">
+        <p style="margin:0;color:#c17f59;font-size:11px;letter-spacing:1px;">WANDERING YACHT — Automated Weekly Report</p>
+        <p style="margin:4px 0 0;color:#8a9a9a;font-size:10px;">Generated {now.strftime('%Y-%m-%d %H:%M UTC')}</p>
+    </td></tr>
+</table></td></tr></table></body></html>"""
+            
+            msg = MIMEMultipart('related')
+            msg['Subject'] = subject
+            msg['From'] = f'WANDERING YACHT <{SMTP_EMAIL}>'
+            msg['To'] = SMTP_EMAIL
+            html_part = MIMEText(html, 'html')
+            msg.attach(html_part)
+            
+            with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as server:
+                server.login(SMTP_EMAIL, SMTP_PASSWORD)
+                server.send_message(msg)
+            
+            logger.info(f"Weekly digest sent: {new_count} new, {total_count} total clients")
+            return {"new_count": new_count, "total_count": total_count}
+        except Exception as e:
+            logger.error(f"Weekly digest failed: {e}")
+            raise
+        finally:
+            bg_client.close()
+    
+    return asyncio.get_event_loop().run_until_complete(_send())
+
+@api_router.post("/marketing/send-digest")
+async def trigger_weekly_digest(current_user: dict = Depends(get_current_user)):
+    """Manually trigger the weekly client email digest."""
+    now = datetime.utcnow()
+    week_ago = now - timedelta(days=7)
+    
+    all_users = await db.users.find({}).to_list(10000)
+    total_count = len(all_users)
+    new_users = [u for u in all_users if u.get('created_at', now) >= week_ago]
+    new_count = len(new_users)
+    
+    # Build and send inline (reusing email service)
+    from services.email import send_booking_email as _  # ensure SMTP imports available
+    from config import SMTP_HOST, SMTP_PORT, SMTP_EMAIL, SMTP_PASSWORD
+    
+    new_user_rows = ""
+    for u in sorted(new_users, key=lambda x: x.get('created_at', now), reverse=True):
+        created = u.get('created_at', now).strftime('%Y-%m-%d %H:%M')
+        new_user_rows += f'<tr><td style="padding:6px 12px;border-bottom:1px solid #eee;font-size:13px;color:#333;">{u.get("full_name","—")}</td><td style="padding:6px 12px;border-bottom:1px solid #eee;font-size:13px;color:#333;">{u.get("email","—")}</td><td style="padding:6px 12px;border-bottom:1px solid #eee;font-size:13px;color:#7a8a8a;">{u.get("phone","—")}</td><td style="padding:6px 12px;border-bottom:1px solid #eee;font-size:12px;color:#999;">{created}</td></tr>'
+    
+    if not new_user_rows:
+        new_user_rows = '<tr><td colspan="4" style="padding:16px;text-align:center;color:#999;">No new signups this week</td></tr>'
+    
+    all_user_rows = ""
+    for u in sorted(all_users, key=lambda x: x.get('created_at', now), reverse=True)[:50]:
+        created = u.get('created_at', now).strftime('%Y-%m-%d')
+        all_user_rows += f'<tr><td style="padding:4px 10px;border-bottom:1px solid #f0f0f0;font-size:12px;color:#333;">{u.get("full_name","—")}</td><td style="padding:4px 10px;border-bottom:1px solid #f0f0f0;font-size:12px;color:#333;">{u.get("email","—")}</td><td style="padding:4px 10px;border-bottom:1px solid #f0f0f0;font-size:12px;color:#999;">{created}</td></tr>'
+    
+    week_range = f"{week_ago.strftime('%b %d')} — {now.strftime('%b %d, %Y')}"
+    subject = f"📊 Weekly Client Report | {new_count} New Signups | {total_count} Total — WANDERING YACHT"
+    
+    html = f"""<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background:#f5f3f0;font-family:Georgia,serif;">
+<table width="100%" style="background:#f5f3f0;"><tr><td align="center" style="padding:20px;">
+<table width="650" style="background:#fff;border-radius:12px;overflow:hidden;">
+<tr><td style="background:#1a3a4a;padding:24px 30px;"><h1 style="margin:0;color:#fff;font-size:20px;letter-spacing:2px;">WANDERING YACHT</h1><p style="margin:6px 0 0;color:#c17f59;font-size:13px;letter-spacing:1px;">WEEKLY CLIENT DATABASE REPORT</p><p style="margin:6px 0 0;color:#8a9a9a;font-size:12px;">{week_range}</p></td></tr>
+<tr><td style="padding:24px 30px;"><table width="100%"><tr><td style="text-align:center;padding:16px;background:#f0f7f7;border-radius:10px;width:50%;"><p style="margin:0;color:#c17f59;font-size:36px;font-weight:bold;">{new_count}</p><p style="margin:4px 0 0;color:#5a6a6a;font-size:12px;">NEW THIS WEEK</p></td><td style="width:16px;"></td><td style="text-align:center;padding:16px;background:#faf9f7;border-radius:10px;width:50%;"><p style="margin:0;color:#1a3a4a;font-size:36px;font-weight:bold;">{total_count}</p><p style="margin:4px 0 0;color:#5a6a6a;font-size:12px;">TOTAL DATABASE</p></td></tr></table></td></tr>
+<tr><td style="padding:0 30px 20px;"><h3 style="margin:0 0 10px;color:#1a3a4a;font-size:14px;">🆕 NEW SIGNUPS THIS WEEK</h3><table width="100%" style="border:1px solid #eee;border-radius:8px;overflow:hidden;"><tr style="background:#faf9f7;"><th style="padding:8px 12px;text-align:left;font-size:11px;color:#7a8a8a;">Name</th><th style="padding:8px 12px;text-align:left;font-size:11px;color:#7a8a8a;">Email</th><th style="padding:8px 12px;text-align:left;font-size:11px;color:#7a8a8a;">Phone</th><th style="padding:8px 12px;text-align:left;font-size:11px;color:#7a8a8a;">Joined</th></tr>{new_user_rows}</table></td></tr>
+<tr><td style="padding:0 30px 20px;"><h3 style="margin:0 0 10px;color:#1a3a4a;font-size:14px;">📋 FULL CLIENT DATABASE (Latest 50)</h3><table width="100%" style="border:1px solid #eee;border-radius:8px;overflow:hidden;"><tr style="background:#faf9f7;"><th style="padding:6px 10px;text-align:left;font-size:11px;color:#7a8a8a;">Name</th><th style="padding:6px 10px;text-align:left;font-size:11px;color:#7a8a8a;">Email</th><th style="padding:6px 10px;text-align:left;font-size:11px;color:#7a8a8a;">Joined</th></tr>{all_user_rows}</table></td></tr>
+<tr><td style="padding:16px 30px;background:#1a3a4a;text-align:center;"><p style="margin:0;color:#c17f59;font-size:11px;">WANDERING YACHT — Automated Weekly Report</p></td></tr>
+</table></td></tr></table></body></html>"""
+    
+    try:
+        msg = MIMEMultipart('related')
+        msg['Subject'] = subject
+        msg['From'] = f'WANDERING YACHT <{SMTP_EMAIL}>'
+        msg['To'] = SMTP_EMAIL
+        msg.attach(MIMEText(html, 'html'))
+        
+        with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as server:
+            server.login(SMTP_EMAIL, SMTP_PASSWORD)
+            server.send_message(msg)
+        
+        logger.info(f"Weekly digest sent manually: {new_count} new, {total_count} total")
+        return {"status": "success", "new_signups": new_count, "total_clients": total_count, "sent_to": SMTP_EMAIL}
+    except Exception as e:
+        logger.error(f"Manual digest failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/marketing/clients-csv")
+async def export_clients_csv(current_user: dict = Depends(get_current_user)):
+    """Export all client emails as CSV for marketing tools (Mailchimp, HubSpot, etc.)"""
+    from fastapi.responses import PlainTextResponse
+    
+    all_users = await db.users.find({}).to_list(10000)
+    
+    csv_lines = ["name,email,phone,whatsapp,joined"]
+    for u in sorted(all_users, key=lambda x: x.get('created_at', datetime.utcnow()), reverse=True):
+        name = u.get('full_name', '').replace(',', ' ')
+        email = u.get('email', '')
+        phone = u.get('phone', '').replace(',', ' ')
+        whatsapp = u.get('whatsapp_number', '').replace(',', ' ')
+        joined = u.get('created_at', datetime.utcnow()).strftime('%Y-%m-%d')
+        csv_lines.append(f"{name},{email},{phone},{whatsapp},{joined}")
+    
+    csv_content = "\n".join(csv_lines)
+    return PlainTextResponse(
+        content=csv_content,
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=wandering_yacht_clients.csv"}
+    )
+
+@api_router.get("/marketing/stats")
+async def get_marketing_stats(current_user: dict = Depends(get_current_user)):
+    """Get client database statistics."""
+    now = datetime.utcnow()
+    week_ago = now - timedelta(days=7)
+    month_ago = now - timedelta(days=30)
+    
+    all_users = await db.users.find({}).to_list(10000)
+    total = len(all_users)
+    
+    new_week = len([u for u in all_users if u.get('created_at', now) >= week_ago])
+    new_month = len([u for u in all_users if u.get('created_at', now) >= month_ago])
+    
+    with_phone = len([u for u in all_users if u.get('phone')])
+    with_whatsapp = len([u for u in all_users if u.get('whatsapp_number')])
+    
+    return {
+        "total_clients": total,
+        "new_this_week": new_week,
+        "new_this_month": new_month,
+        "with_phone": with_phone,
+        "with_whatsapp": with_whatsapp,
+        "emails": [u.get('email') for u in all_users],
+    }
+
+# ======================== WEEKLY DIGEST SCHEDULER ========================
+
+import threading
+import time as _time
+
+def _weekly_digest_scheduler():
+    """Background thread that sends weekly digest every Monday at 8:00 AM UTC."""
+    logger.info("Weekly digest scheduler started")
+    while True:
+        now = datetime.utcnow()
+        # Check if it's Monday and between 8:00-8:05 AM UTC
+        if now.weekday() == 0 and now.hour == 8 and now.minute < 5:
+            try:
+                send_weekly_digest()
+                logger.info("Scheduled weekly digest sent successfully")
+            except Exception as e:
+                logger.error(f"Scheduled weekly digest failed: {e}")
+            # Sleep for 6 minutes to avoid duplicate sends
+            _time.sleep(360)
+        else:
+            # Check every 60 seconds
+            _time.sleep(60)
+
+# Start the scheduler in a daemon thread
+_digest_thread = threading.Thread(target=_weekly_digest_scheduler, daemon=True)
+_digest_thread.start()
 
 # ======================== GOOGLE CALENDAR TEST ENDPOINT ========================
 @api_router.get("/calendar/test")

@@ -31,6 +31,7 @@ export default function RegisterScreen() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [formLoadedAt] = useState(String(Date.now() / 1000));
 
   const handleRegister = async () => {
     if (!fullName || !email || !password || !confirmPassword) {
