@@ -48,6 +48,8 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Concierge Services': { title: 'خدمات الكونسيرج', description: 'خدمات يومية وأسبوعية وشهرية. مساعد شخصي لتنظيم جدولك ومسار رحلتك.' },
     '24M Luxury Motor Yacht Charter': { title: 'استئجار يخت فاخر 24 متر', description: 'استمتع بالبحر الادرياتيكي على متن يخت فيريتي الفاخر بطول 24 مترا، صنع عام 2015. متاح للاستئجار الاسبوعي من بورتو مونتينيغرو في تيفات. استئجار يومي لـ14 ضيفا مع وجبات خفيفة وغداء. استئجار اسبوعي لـ6-8 ضيوف مع فطور ووجبة واحدة يوميا. تسوق اضافي بتكلفة اضافية. طاقم كامل: قبطان و2 بحارة وطاه.' },
     'Spa Day at Mamula Island': { title: 'يوم سبا في جزيرة مامولا', description: 'استرخ، جد توازنك، انغمس في واحتك. انطلق بحرا الساعة 9 صباحا من بورتو مونتينيغرو الى جزيرة مامولا الساحرة. اقض يوما كاملا في المنتجع الصحي الانيق مع علاجات التدليك والعناية بالبشرة. يوم كامل من التدليل مع الغداء والعودة الساعة 6 مساء.' },
+    'L\'Odyssey — Heritage Sail Charter': 'لوديسي — رحلة الإبحار التراثي المستأجرة',
+    'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'استأجر سفينتنا الشراعية التراثية بطول 82 قدم لتجربة خاصة لا تُنسى في خليج كوتور. اختر بين رحلة نصف يوم أو يوم كامل مع طاقم مخصص وطعام فاخر وترفيه منسق.',
   },
   fr: {
     'Sunrise Yoga on Deck': { title: 'Yoga au Lever du Soleil sur le Pont', description: 'Commencez votre journée par une séance de yoga revigorante sur le pont de notre yacht au lever du soleil sur l\'Adriatique.' },
@@ -82,6 +84,8 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Concierge Services': { title: 'Services de Conciergerie', description: 'Services quotidiens, hebdomadaires et mensuels. Assistant personnel pour organiser votre séjour.' },
     '24M Luxury Motor Yacht Charter': { title: 'Charter Yacht a Moteur de Luxe 24M', description: 'Decouvrez l\'Adriatique a bord d\'un magnifique yacht Ferretti de 24 metres, construit en 2015. Disponible en charter journalier et hebdomadaire au depart de Porto Montenegro a Tivat. Charters journaliers pour 14 passagers avec collations et dejeuner inclus. Charters hebdomadaires pour 6-8 passagers avec petit-dejeuner et un repas quotidien inclus. Courses supplementaires en sus. Equipage complet avec Capitaine, 2 matelots et Chef.' },
     'Spa Day at Mamula Island': { title: 'Journee Spa a l\'ile Mamula', description: 'Retraite, trouvez votre equilibre, immergez-vous dans votre sanctuaire. Depart en mer a 9h00 de Porto Montenegro vers la magnifique ile Mamula. Journee complete dans le spa elegant avec massages, soins du visage et bien-etre. Dejeuner inclus, retour a 18h00.' },
+    'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Charter Voilier Heritage',
+    'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Afretez notre voilier historique de 82 pieds pour une experience privee inoubliable dans la baie de Kotor. Choisissez un charter demi-journee ou journee complete avec equipage dedie, restauration gastronomique et divertissement.',
   },
   it: {
     'Sunrise Yoga on Deck': { title: 'Yoga all\'Alba sul Ponte', description: 'Inizia la giornata con una sessione di yoga rigenerante sul ponte del nostro yacht all\'alba sull\'Adriatico.' },
@@ -116,6 +120,8 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Concierge Services': { title: 'Servizi Concierge', description: 'Servizi giornalieri, settimanali e mensili. Assistente personale per il tuo soggiorno.' },
     '24M Luxury Motor Yacht Charter': { title: 'Charter Yacht a Motore di Lusso 24M', description: 'Vivi l\'Adriatico a bordo di uno splendido yacht Ferretti di 24 metri, costruito nel 2015. Disponibile per charter giornalieri e settimanali da Porto Montenegro a Tivat. Charter giornalieri per 14 ospiti con snack e pranzo inclusi. Charter settimanali per 6-8 ospiti con colazione e un pasto al giorno inclusi. Spesa alimentare aggiuntiva a parte. Equipaggio completo con Capitano, 2 marinai e Chef.' },
     'Spa Day at Mamula Island': { title: 'Giornata Spa all\'Isola Mamula', description: 'Ritiro, trova il tuo equilibrio, immergiti nel tuo santuario. Partenza via mare alle 9:00 da Porto Montenegro verso la splendida Isola Mamula. Giornata completa nella spa elegante con massaggi, trattamenti viso e benessere. Pranzo incluso, rientro alle 18:00.' },
+    'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Charter Barca a Vela Heritage',
+    'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Noleggiate la nostra storica nave a vela di 82 piedi per un\'esperienza privata indimenticabile nella Baia di Kotor. Scegliete tra charter mezza giornata o giornata intera con equipaggio dedicato, catering gourmet e intrattenimento.',
   },
   es: {
     'Sunrise Yoga on Deck': { title: 'Yoga al Amanecer en Cubierta', description: 'Comienza tu día con una sesión de yoga revitalizante en la cubierta de nuestro yate al amanecer.' },
@@ -150,6 +156,8 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Concierge Services': { title: 'Servicios de Conserjería', description: 'Servicios diarios, semanales y mensuales. Asistente personal para tu estancia.' },
     '24M Luxury Motor Yacht Charter': { title: 'Charter Yate a Motor de Lujo 24M', description: 'Experimenta el Adriatico a bordo de un impresionante yate Ferretti de 24 metros, construido en 2015. Disponible para charter diarios y semanales desde Porto Montenegro en Tivat. Charter diarios para 14 huespedes con snacks y almuerzo incluidos. Charter semanales para 6-8 huespedes con desayuno y una comida diaria incluidos. Compras adicionales con coste extra. Tripulacion completa con Capitan, 2 marineros y Chef.' },
     'Spa Day at Mamula Island': { title: 'Dia de Spa en la Isla Mamula', description: 'Retiro, encuentra tu equilibrio, suergete en tu santuario. Salida por mar a las 9:00 desde Porto Montenegro hacia la impresionante Isla Mamula. Dia completo en el elegante spa con masajes, tratamientos faciales y bienestar. Almuerzo incluido, regreso a las 18:00.' },
+    'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Charter Velero Heritage',
+    'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Alquile nuestro historico velero de 82 pies para una experiencia privada inolvidable en la Bahia de Kotor. Elija entre charter de medio dia o dia completo con tripulacion dedicada, catering gourmet y entretenimiento.',
   },
   de: {
     'Sunrise Yoga on Deck': { title: 'Sonnenaufgang-Yoga an Deck', description: 'Beginnen Sie Ihren Tag mit einer belebenden Yoga-Sitzung auf dem Deck unserer Yacht beim Sonnenaufgang.' },
@@ -184,6 +192,8 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Concierge Services': { title: 'Concierge-Dienste', description: 'Tägliche, wöchentliche und monatliche Dienste. Persönlicher Assistent für Ihren Aufenthalt.' },
     '24M Luxury Motor Yacht Charter': { title: '24M Luxus-Motoryacht Charter', description: 'Erleben Sie die Adria an Bord einer atemberaubenden 24-Meter Ferretti Motoryacht, Baujahr 2015. Verfügbar für Tages- und Wochencharter ab Porto Montenegro in Tivat. Tagescharter für 14 Gäste mit Snacks und Mittagessen inklusive. Wochencharter für 6-8 Gäste mit Frühstück und einer Mahlzeit pro Tag inklusive. Zusätzliche Lebensmittel gegen Aufpreis. Crew: Kapitän, 2 Deckhand und Koch.' },
     'Spa Day at Mamula Island': { title: 'Spa-Tag auf der Insel Mamula', description: 'Rückzug, finden Sie Ihre Balance, tauchen Sie ein in Ihr Refugium. Abfahrt um 9:00 Uhr von Porto Montenegro zur atemberaubenden Insel Mamula. Ein ganzer Tag im eleganten Spa mit Massagen, Gesichtsbehandlungen und Wellness. Mittagessen inklusive, Rückkehr um 18:00 Uhr.' },
+    'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Heritage Segelcharter',
+    'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Chartern Sie unser historisches 82-Fuss-Segelschiff fur ein unvergessliches privates Erlebnis in der Bucht von Kotor. Wahlen Sie zwischen Halbtags- oder Ganztags-Charter mit dedizierter Crew, Gourmet-Catering und Unterhaltung.',
   },
   ru: {
     'Sunrise Yoga on Deck': { title: 'Йога на Рассвете на Палубе', description: 'Начните день с освежающей йоги на палубе нашей яхты на рассвете.' },
@@ -218,6 +228,8 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Concierge Services': { title: 'Консьерж-Сервис', description: 'Ежедневные, еженедельные и ежемесячные услуги. Личный помощник.' },
     '24M Luxury Motor Yacht Charter': { title: 'Аренда люксовой моторной яхты 24м', description: 'Испытайте Адриатику на борту потрясающей моторной яхты Ferretti длиной 24 метра, 2015 года постройки. Доступна для дневной и недельной аренды из Порто Монтенегро в Тивате. Дневная аренда для 14 гостей с закусками и обедом. Недельная аренда для 6-8 гостей с завтраком и одним приемом пищи в день. Дополнительные продукты за отдельную плату. Экипаж: капитан, 2 матроса и шеф-повар.' },
     'Spa Day at Mamula Island': { title: 'Спа-день на острове Мамула', description: 'Уединение, найдите свой баланс, погрузитесь в свое убежище. Отправление морем в 9:00 из Порто Монтенегро на потрясающий остров Мамула. Полный день в элегантном спа с массажем, процедурами для лица и оздоровлением. Обед включен, возвращение в 18:00.' },
+    'L\'Odyssey — Heritage Sail Charter': 'Л\'Одиссей — Чартер наследственного парусника',
+    'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Арендуйте наше историческое 82-футовое парусное судно для незабываемого частного опыта в Которском заливе. Выберите полудневной или полнодневной чартер с выделенным экипажем, изысканным кейтерингом и развлечениями.',
   },
   hr: {
     'Sunrise Yoga on Deck': { title: 'Yoga na Izlasku Sunca na Palubi', description: 'Započnite dan osvježavajućom jogom na palubi naše jahte na izlasku sunca.' },
@@ -252,6 +264,8 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Concierge Services': { title: 'Concierge Usluge', description: 'Dnevne, tjedne i mjesečne usluge. Osobni asistent za vaš boravak.' },
     '24M Luxury Motor Yacht Charter': { title: 'Charter luksuzne motorne jahte 24M', description: 'Dozivite Jadran na prekrasnoj 24-metarskoj Ferretti motornoj jahti, izgradenoj 2015. Dostupna za dnevni i tjedni najam iz Porto Montenegra u Tivtu. Dnevni najam za 14 gostiju s grickalicama i ruckom. Tjedni najam za 6-8 gostiju s doruckom i jednim obrokom dnevno. Dodatna kupovina hrane po dodatnoj cijeni. Posada: kapetan, 2 mornara i kuhar.' },
     'Spa Day at Mamula Island': { title: 'Spa Dan na Otoku Mamula', description: 'Povlacenje, pronadite svoju ravnotezu, uronite u svoje utociste. Polazak morem u 9:00 iz Porto Montenegra prema prekrasnom otoku Mamula. Cijeli dan u elegantnom spa centru s masazama, tretmanima lica i wellnessom. Rucak ukljucen, povratak u 18:00.' },
+    'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Heritage Jedrilica Charter',
+    'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Unajmite nas povijesni 82-stopni jedrenjak za nezaboravno privatno iskustvo u Bokokotorskom zaljevu. Odaberite poludnevni ili cjelodnevni najam s posvecenom posadom, gurmanskim cateringom i zabavom.',
   },
   zh: {
     'Sunrise Yoga on Deck': { title: '甲板日出瑜伽', description: '在亚得里亚海日出时分，在游艇甲板上开始一天的瑜伽。' },
@@ -286,6 +300,8 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Concierge Services': { title: '礼宾服务', description: '提供每日、每周和每月服务。私人助理为您安排行程。' },
     '24M Luxury Motor Yacht Charter': { title: '24米豪华游艇周租', description: '乘坐这艘2015年建造的24米法拉帝豪华游艇畅游亚得里亚海。从蒂瓦特的波尔图黑山出发，提供日租和周租服务。日租可容纳14位宾客，含零食和午餐。周租可容纳6-8位宾客，含每日早餐和一餐。额外食材需另付费。配备船长、2名水手和厨师。' },
     'Spa Day at Mamula Island': { title: '玛穆拉岛水疗日', description: '放松身心，找到平衡，沉浸在您的避风港。上午9点从波尔图黑山乘船出发前往迷人的玛穆拉岛。在优雅的水疗中心享受按摩、面部护理和更多健康项目。含午餐，下午6点返回。' },
+    'L\'Odyssey — Heritage Sail Charter': '奥德赛号 — 传统帆船包租',
+    'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': '包租我们82英尺的传统帆船，在科托尔湾享受难忘的私人体验。选择半日或全日包租，配备专属船员、美食餐饮和精心策划的娱乐活动。',
   },
   pt: {
     'Sunrise Yoga on Deck': { title: 'Yoga ao Nascer do Sol no Convés', description: 'Comece o dia com uma sessão de yoga revigorante no convés do nosso iate ao nascer do sol.' },
@@ -320,6 +336,8 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Concierge Services': { title: 'Serviços de Concierge', description: 'Serviços diários, semanais e mensais. Assistente pessoal para a sua estadia.' },
     '24M Luxury Motor Yacht Charter': { title: 'Charter Iate a Motor de Luxo 24M', description: 'Experimente o Adriatico a bordo de um deslumbrante iate Ferretti de 24 metros, construido em 2015. Disponivel para charter diario e semanal a partir de Porto Montenegro em Tivat. Charter diario para 14 hospedes com snacks e almoco incluidos. Charter semanal para 6-8 hospedes com pequeno-almoco e uma refeicao diaria incluidos. Compras adicionais com custo extra. Tripulacao: Capitao, 2 marinheiros e Chef.' },
     'Spa Day at Mamula Island': { title: 'Dia de Spa na Ilha Mamula', description: 'Retiro, encontre o seu equilibrio, mergulhe no seu santuario. Partida por mar as 9:00 de Porto Montenegro para a deslumbrante Ilha Mamula. Dia completo no elegante spa com massagens, tratamentos faciais e bem-estar. Almoco incluido, regresso as 18:00.' },
+    'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Charter Veleiro Heritage',
+    'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Frete nosso historico veleiro de 82 pes para uma experiencia privada inesquecivel na Baia de Kotor. Escolha entre charter de meio dia ou dia inteiro com tripulacao dedicada, catering gourmet e entretenimento.',
   },
   ja: {
     'Sunrise Yoga on Deck': { title: 'デッキで日の出ヨガ', description: 'アドリア海の日の出とともに、ヨットのデッキで爽やかなヨガセッション。' },
@@ -354,6 +372,8 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Concierge Services': { title: 'コンシェルジュサービス', description: '日次・週次・月次サービス。パーソナルアシスタントがご滞在をサポート。' },
     '24M Luxury Motor Yacht Charter': { title: '24M ラグジュアリーモーターヨットチャーター', description: '2015年建造の24メートルフェレッティモーターヨットでアドリア海を体験。ティヴァトのポルトモンテネグロから日帰りおよび週間チャーター可能。デイチャーターは14名様まで、軽食とランチ付き。ウィークリーチャーターは6-8名様、朝食と1日1食付き。追加食材は別途費用。キャプテン、デッキハンド2名、シェフ付き。' },
     'Spa Day at Mamula Island': { title: 'マムラ島スパデイ', description: 'リトリート、バランスを見つけ、あなたのサンクチュアリに浸る。朝9時にポルトモンテネグロから船で出発し、美しいマムラ島へ。エレガントなスパでマッサージ、フェイシャル、ウェルネスを満喫する一日。ランチ付き、午後6時帰着。' },
+    'L\'Odyssey — Heritage Sail Charter': 'ロディセイ — ヘリテージセーリングチャーター',
+    'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'コトル湾で忘れられないプライベート体験のために、82フィートのヘリテージ帆船をチャーターしてください。専属クルー、グルメケータリング、エンターテイメント付きの半日または終日チャーターからお選びください。',
   },
 };
 
