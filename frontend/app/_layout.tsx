@@ -25,8 +25,9 @@ export default function RootLayout() {
   if (!fontsLoaded && !fontError) {
     return (
       <View style={styles.loadingContainer}>
-        <Text style={styles.splashBrandName}>WANDERING YACHT</Text>
-        <ActivityIndicator size="large" color="#1a3a4a" style={{ marginTop: 20 }} />
+        <Text style={styles.splashBrandTop}>WANDERING</Text>
+        <Text style={styles.splashBrandBottom}>YACHT</Text>
+        <ActivityIndicator size="large" color="#c17f59" style={{ marginTop: 24 }} />
       </View>
     );
   }
@@ -61,14 +62,21 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
-    backgroundColor: '#faf9f7',
+    backgroundColor: '#1a3a4a',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  splashBrandName: {
-    fontSize: 28,
-    color: '#000000',
+  splashBrandTop: {
+    fontSize: 32,
+    color: '#ffffff',
     fontWeight: '700',
     letterSpacing: 6,
+  },
+  splashBrandBottom: {
+    fontSize: 32,
+    color: '#ffffff',
+    fontWeight: '700',
+    letterSpacing: 6,
+    marginTop: -2,
   },
 });

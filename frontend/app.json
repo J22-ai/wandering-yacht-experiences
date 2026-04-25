@@ -15,7 +15,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#1a3a4a"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.wanderingyacht.app"
@@ -33,7 +33,7 @@
           "image": "./assets/images/splash.png",
           "imageWidth": 400,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#1a3a4a"
         }
       ],
       [
