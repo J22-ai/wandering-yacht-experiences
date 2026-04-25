@@ -80,6 +80,10 @@ interface Experience {
   deposit_percentage?: number;
   taxes_included?: boolean;
   deposit_note?: string;
+  charter_packages?: Array<{
+    title: string;
+    items: string[];
+  }>;
 }
 
 export default function ExperienceDetailScreen() {
@@ -376,6 +380,27 @@ export default function ExperienceDetailScreen() {
                   </View>
                 ))}
               </View>
+              {/* Charter Packages - structured display */}
+              {experience.charter_packages && experience.charter_packages.length > 0 && (
+                <View style={styles.charterPackagesWrap}>
+                  {experience.charter_packages.map((pkg, idx) => (
+                    <View key={idx} style={styles.charterPackageCard}>
+                      <View style={styles.charterPackageHeader}>
+                        <Ionicons name={idx === 0 ? 'sunny-outline' : 'partly-sunny-outline'} size={16} color="#c17f59" />
+                        <Text style={styles.charterPackageTitle}>{translateContent(language, pkg.title)}</Text>
+                      </View>
+                      <View style={styles.charterPackageItems}>
+                        {pkg.items.map((item, iIdx) => (
+                          <View key={iIdx} style={styles.charterPackageItem}>
+                            <View style={styles.charterDot} />
+                            <Text style={styles.charterPackageItemText}>{translateContent(language, item)}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              )}
             </View>
           )}
 
@@ -753,7 +778,55 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#5a6a6a',
     fontSize: 14,
+  },
+  // Charter packages
+  charterPackagesWrap: {
+    marginTop: 16,
+    gap: 12,
+  },
+  charterPackageCard: {
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#e0dcd5',
+    overflow: 'hidden',
+  },
+  charterPackageHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#faf7f3',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ebe8e3',
+  },
+  charterPackageTitle: {
     fontFamily: 'TraditionalArabic',
+    color: '#1a3a4a',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  charterPackageItems: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    gap: 6,
+  },
+  charterPackageItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  charterDot: {
+    width: 5,
+    height: 5,
+    borderRadius: 3,
+    backgroundColor: '#c17f59',
+  },
+  charterPackageItemText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#5a6a6a',
+    fontSize: 13,
   },
   timeSlot: {
     backgroundColor: '#fff',

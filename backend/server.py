@@ -146,6 +146,7 @@ class Experience(BaseModel):
     deposit_percentage: float = 30
     taxes_included: Optional[bool] = None
     deposit_note: Optional[str] = None
+    charter_packages: Optional[List[dict]] = None
 
 # Booking Models
 class BookingTicket(BaseModel):
