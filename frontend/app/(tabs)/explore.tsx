@@ -158,6 +158,18 @@ export default function ExploreScreen() {
     Linking.openURL(`mailto:info@wanderingyacht.com?subject=${subject}&body=${body}`);
   };
 
+  const getCategoryIcon = (slug) => {
+    const icons = {
+      'water_adventures': 'boat-outline',
+      'yacht_experiences': 'leaf-outline',
+      'culinary_tours': 'restaurant-outline',
+      'nature_escapes': 'earth-outline',
+      'concierge_services': 'diamond-outline',
+      'weddings_events': 'heart-outline',
+    };
+    return icons[slug] || 'star-outline';
+  };
+
   const renderFleetInquiryBanner = () => (
     <View style={styles.fleetBanner}>
       <View style={styles.fleetDivider} />
@@ -175,17 +187,23 @@ export default function ExploreScreen() {
   const filteredExperiences = getFilteredExperiences();
   const groupedExperiences = getGroupedExperiences();
 
-  const renderExperienceCard = (experience: Experience) => (
+  const renderExperienceCard = (experience) => (
     <TouchableOpacity
       key={experience.id}
       style={styles.experienceCard}
       onPress={() => router.push(`/experience/${experience.id}`)}
       activeOpacity={0.85}
     >
-      <Image
-        source={{ uri: experience.image_url || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800' }}
-        style={styles.experienceImage}
-      />
+      <View style={styles.experienceImageWrap}>
+        <Image
+          source={{ uri: experience.image_url || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800' }}
+          style={styles.experienceImage}
+        />
+        <View style={styles.imageOverlay} />
+        <View style={styles.imageBadge}>
+          <Text style={styles.imageBadgeText}>{t('detail_from')} €{getLowestPrice(experience)}</Text>
+        </View>
+      </View>
       <View style={styles.experienceContent}>
         <Text style={styles.experienceTitle} numberOfLines={2}>{getTranslatedExperience(language, experience.title)?.title || experience.title}</Text>
         <View style={styles.experienceMeta}>
@@ -201,9 +219,9 @@ export default function ExploreScreen() {
           )}
         </View>
         <View style={styles.experienceFooter}>
-          <View>
-            <Text style={styles.priceLabel}>{t('detail_from')}</Text>
-            <Text style={styles.experiencePrice}>€{getLowestPrice(experience)}</Text>
+          <View style={styles.spotsRow}>
+            <View style={styles.spotDot} />
+            <Text style={styles.spotsText}>{experience.available_spots} {t('detail_spots')}</Text>
           </View>
           <View style={styles.viewBtn}>
             <Text style={styles.viewBtnText}>{t('view')}</Text>
@@ -264,6 +282,9 @@ export default function ExploreScreen() {
               onPress={() => setSelectedCategory(category.slug)}
               activeOpacity={0.7}
             >
+              <View style={styles.categoryIconWrap}>
+                <Ionicons name={getCategoryIcon(category.slug)} size={18} color="#c17f59" />
+              </View>
               <Text style={styles.categoryRowText}>{getCategoryName(category.slug)}</Text>
               <Ionicons name="chevron-forward" size={18} color="#c17f59" />
             </TouchableOpacity>
@@ -365,16 +386,25 @@ const styles = StyleSheet.create({
   categoryRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     backgroundColor: '#fff',
     paddingHorizontal: 18,
     paddingVertical: 14,
-    borderRadius: 10,
+    borderRadius: 12,
     marginBottom: 8,
     borderWidth: 1,
     borderColor: '#ede9e3',
+    gap: 12,
+  },
+  categoryIconWrap: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    backgroundColor: '#faf5f0',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   categoryRowText: {
+    flex: 1,
     fontFamily: 'TraditionalArabic',
     fontSize: 15,
     color: '#1a3a4a',
@@ -416,19 +446,45 @@ const styles = StyleSheet.create({
   },
   experienceCard: {
     backgroundColor: '#fff',
-    borderRadius: 14,
+    borderRadius: 16,
     overflow: 'hidden',
     marginBottom: 16,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 10,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 3,
+  },
+  experienceImageWrap: {
+    position: 'relative',
   },
   experienceImage: {
     width: '100%',
-    height: 180,
+    height: 190,
     backgroundColor: '#e8e5e0',
+  },
+  imageOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 60,
+    backgroundColor: 'rgba(0,0,0,0.15)',
+  },
+  imageBadge: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    backgroundColor: 'rgba(26,58,74,0.9)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+  },
+  imageBadgeText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    color: '#fff',
+    fontWeight: '700',
   },
   experienceContent: {
     padding: 16,
@@ -463,16 +519,21 @@ const styles = StyleSheet.create({
     borderTopColor: '#f0ede8',
     paddingTop: 12,
   },
-  priceLabel: {
-    fontFamily: 'TraditionalArabic',
-    fontSize: 12,
-    color: '#9ca3a3',
+  spotsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
   },
-  experiencePrice: {
+  spotDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#4caf50',
+  },
+  spotsText: {
     fontFamily: 'TraditionalArabic',
-    fontSize: 22,
-    color: '#1a2a30',
-    fontWeight: '600',
+    fontSize: 13,
+    color: '#5a6a6a',
   },
   viewBtn: {
     flexDirection: 'row',

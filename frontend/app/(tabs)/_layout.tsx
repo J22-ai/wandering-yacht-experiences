@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { Platform } from 'react-native';
+import { Platform, View, StyleSheet } from 'react-native';
 import { useLanguage } from '../../src/context/LanguageContext';
 
 export default function TabLayout() {
@@ -15,16 +15,22 @@ export default function TabLayout() {
           backgroundColor: '#fff',
           borderTopColor: '#f0ede8',
           borderTopWidth: 1,
-          height: Platform.OS === 'ios' ? 85 : 65,
-          paddingBottom: Platform.OS === 'ios' ? 25 : 10,
-          paddingTop: 10,
+          height: Platform.OS === 'ios' ? 88 : 68,
+          paddingBottom: Platform.OS === 'ios' ? 28 : 12,
+          paddingTop: 8,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.04,
+          shadowRadius: 8,
+          elevation: 8,
         },
         tabBarActiveTintColor: '#1a3a4a',
-        tabBarInactiveTintColor: '#9ca3a3',
+        tabBarInactiveTintColor: '#b0b8b8',
         tabBarLabelStyle: {
           fontFamily: 'TraditionalArabic',
           fontSize: 11,
-          fontWeight: '500',
+          fontWeight: '600',
+          marginTop: 2,
         },
       }}
     >
@@ -32,8 +38,11 @@ export default function TabLayout() {
         name="index"
         options={{
           title: t('tab_home'),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home-outline" size={size} color={color} />
+          tabBarIcon: ({ color, focused, size }) => (
+            <View style={focused ? styles.activeIconWrap : undefined}>
+              <Ionicons name={focused ? 'home' : 'home-outline'} size={22} color={color} />
+              {focused && <View style={styles.activeIndicator} />}
+            </View>
           ),
         }}
       />
@@ -41,8 +50,11 @@ export default function TabLayout() {
         name="explore"
         options={{
           title: t('tab_explore'),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="compass-outline" size={size} color={color} />
+          tabBarIcon: ({ color, focused, size }) => (
+            <View style={focused ? styles.activeIconWrap : undefined}>
+              <Ionicons name={focused ? 'compass' : 'compass-outline'} size={22} color={color} />
+              {focused && <View style={styles.activeIndicator} />}
+            </View>
           ),
         }}
       />
@@ -50,8 +62,11 @@ export default function TabLayout() {
         name="bookings"
         options={{
           title: t('tab_bookings'),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="ticket-outline" size={size} color={color} />
+          tabBarIcon: ({ color, focused, size }) => (
+            <View style={focused ? styles.activeIconWrap : undefined}>
+              <Ionicons name={focused ? 'ticket' : 'ticket-outline'} size={22} color={color} />
+              {focused && <View style={styles.activeIndicator} />}
+            </View>
           ),
         }}
       />
@@ -59,11 +74,27 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: t('tab_profile'),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person-outline" size={size} color={color} />
+          tabBarIcon: ({ color, focused, size }) => (
+            <View style={focused ? styles.activeIconWrap : undefined}>
+              <Ionicons name={focused ? 'person' : 'person-outline'} size={22} color={color} />
+              {focused && <View style={styles.activeIndicator} />}
+            </View>
           ),
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  activeIconWrap: {
+    alignItems: 'center',
+  },
+  activeIndicator: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#c17f59',
+    marginTop: 3,
+  },
+});
