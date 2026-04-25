@@ -21,7 +21,7 @@ interface AuthContextType {
   isBiometricEnabled: boolean;
   biometricLabel: string;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, fullName: string, phone?: string, whatsappNumber?: string) => Promise<void>;
+  register: (email: string, password: string, fullName: string, phone?: string, whatsappNumber?: string, website?: string, formLoadedAt?: string) => Promise<void>;
   logout: () => Promise<void>;
   loginWithBiometric: () => Promise<boolean>;
   enableBiometric: () => Promise<boolean>;
@@ -124,8 +124,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const register = async (email: string, password: string, fullName: string, phone?: string, whatsappNumber?: string) => {
-    const response = await api.register(email, password, fullName, phone, whatsappNumber);
+  const register = async (email: string, password: string, fullName: string, phone?: string, whatsappNumber?: string, website?: string, formLoadedAt?: string) => {
+    const response = await api.register(email, password, fullName, phone, whatsappNumber, website, formLoadedAt);
     
     await AsyncStorage.setItem('auth_token', response.access_token);
     await AsyncStorage.setItem('auth_user', JSON.stringify(response.user));

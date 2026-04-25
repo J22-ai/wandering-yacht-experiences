@@ -51,7 +51,7 @@ export default function RegisterScreen() {
 
     setLoading(true);
     try {
-      await register(email, password, fullName, phone || undefined, whatsapp || undefined);
+      await register(email, password, fullName, phone || undefined, whatsapp || undefined, '', formLoadedAt);
       router.replace('/(tabs)');
     } catch (error: any) {
       Alert.alert('Error', error.message || 'Registration failed');
