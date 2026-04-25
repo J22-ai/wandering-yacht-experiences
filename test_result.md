@@ -352,14 +352,29 @@ frontend:
         agent: "main"
         comment: "Checkout shows deposit banner, breakdown (total/deposit/remaining), dynamic pay button. Experience detail page shows deposit notice for charter experiences."
 
+  - task: "Google Calendar Integration"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented Google Calendar integration. Service account auth working, calendar test endpoint returns success. Calendar event creation hooked into confirm_payment endpoint. Events include: customer name, booking ID, tickets, payment info, deposit details, location, special requests. Color-coded (green=paid, blue=deposit). Reminders set at 1 day and 2 hours before. Calendar ID verified: WANDERING YACHT EXPERIENCES."
+      - working: true
+        agent: "testing"
+        comment: "Google Calendar integration testing completed successfully. ✅ Calendar connectivity test passes - returns 'WANDERING YACHT EXPERIENCES' calendar name. ✅ Full booking+payment+confirmation flow tested with both regular and deposit bookings. ✅ Calendar events are being created successfully (confirmed via backend logs showing event IDs: u8e9igj449hk3lfti9gqgssgsc, m15sdosdnn4f0f021jdrormr9g, l07vflkf2gc0oc1sdg4t5lqpr0, qbiu0tio0i5mggpr9bnefq9v7o). Minor: API response doesn't immediately include calendar_event_id due to async processing, but events are created and logged. Integration is fully functional."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 1
+  test_sequence: 2
   run_ui: false
 
 test_plan:
-  current_focus: []
+  current_focus: ["Google Calendar Integration"]
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -373,5 +388,7 @@ agent_communication:
     message: "WhatsApp number functionality testing completed successfully. All 6 WhatsApp-specific tests passed."
   - agent: "main"
     message: "NEW: Implemented 30% deposit feature for Yacht/Boat charters. 4 experiences marked requires_deposit=True: Speedboat Adventure, Catamaran Privilege 510, Classic Heritage Sail, 24M Luxury Motor Yacht Charter. Backend now calculates deposit_amount (30%), remaining_balance (70%) on booking creation. Payment intent charges deposit_amount for deposit bookings. Payment confirms as deposit_paid. Frontend checkout shows deposit banner, breakdown, and dynamic pay button. Experience detail page shows deposit notice. Please test: 1) Creating a booking for a deposit-required experience and verifying deposit fields, 2) Creating a booking for a non-deposit experience and verifying full payment, 3) Verifying the admin/setup-deposit-charters endpoint. Test credentials in /app/memory/test_credentials.md."
+  - agent: "main"
+    message: "NEW: Google Calendar Integration implemented. Service account auth working, /api/calendar/test returns success with calendar name 'WANDERING YACHT EXPERIENCES'. Event creation hooked into confirm_payment endpoint - creates calendar events with customer details, tickets, payment info, color-coded (green=paid, blue=deposit), and reminders. Please test: 1) /api/calendar/test endpoint connectivity, 2) Full booking+payment+confirmation flow to verify calendar event creation. Test credentials in /app/memory/test_credentials.md. Backend URL: http://localhost:8001"
   - agent: "testing"
-    message: "30% Deposit Feature Testing COMPLETED SUCCESSFULLY. All 6 comprehensive tests passed with 100% success rate: ✅ Admin setup endpoint functional, ✅ All 4 deposit experiences correctly flagged (Speedboat Adventure, Catamaran Privilege 510, Classic Heritage Sail, 24M Luxury Motor Yacht Charter) with requires_deposit=true and deposit_percentage=30, ✅ Catamaran has €3200 Full Day ticket, Heritage Sail has €2900/€4900 Full Day Charter tickets, ✅ Non-deposit experiences (Sunrise Yoga) correctly have no deposit requirement, ✅ Deposit booking creation calculates perfectly (€960 deposit + €2240 remaining = €3200 total), ✅ Non-deposit booking creation works with full payment, ✅ Payment confirmation correctly sets status to 'deposit_paid' for deposit bookings. The entire deposit feature is working flawlessly - ready for production use."
+    message: "Google Calendar Integration testing completed successfully! ✅ Calendar connectivity test passes (returns 'WANDERING YACHT EXPERIENCES'). ✅ Full booking+payment flow tested with both regular and deposit bookings. ✅ Calendar events are being created successfully - confirmed via backend logs showing multiple event IDs created during testing. ✅ Payment confirmation works correctly (status updates, QR codes generated). Minor note: API response doesn't immediately include calendar_event_id due to async processing, but events are definitely being created. Integration is fully functional and working as expected."
