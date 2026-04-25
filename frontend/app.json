@@ -10,7 +10,10 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.wanderingyacht.app"
+      "bundleIdentifier": "com.wanderingyacht.app",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Sign in quickly with Face ID"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -18,7 +21,8 @@
         "backgroundColor": "#1a3a4a"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.wanderingyacht.app"
+      "package": "com.wanderingyacht.app",
+      "permissions": ["USE_BIOMETRIC", "USE_FINGERPRINT"]
     },
     "web": {
       "bundler": "metro",
@@ -43,7 +47,13 @@
           "enableGooglePay": true
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Sign in quickly with Face ID"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

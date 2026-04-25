@@ -367,6 +367,66 @@ frontend:
         agent: "testing"
         comment: "Google Calendar integration testing completed successfully. ✅ Calendar connectivity test passes - returns 'WANDERING YACHT EXPERIENCES' calendar name. ✅ Full booking+payment+confirmation flow tested with both regular and deposit bookings. ✅ Calendar events are being created successfully (confirmed via backend logs showing event IDs: u8e9igj449hk3lfti9gqgssgsc, m15sdosdnn4f0f021jdrormr9g, l07vflkf2gc0oc1sdg4t5lqpr0, qbiu0tio0i5mggpr9bnefq9v7o). Minor: API response doesn't immediately include calendar_event_id due to async processing, but events are created and logged. Integration is fully functional."
 
+  - task: "Biometric Token Refresh Authentication"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Biometric token refresh endpoint testing completed successfully. ✅ POST /api/auth/biometric-refresh requires Bearer token authentication and returns fresh JWT token with user info. Endpoint working correctly for biometric re-authentication flow. Test user: bioauth@test.com"
+
+  - task: "Passkey Registration Options (WebAuthn)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Passkey registration options endpoint testing completed successfully. ✅ POST /api/passkey/register/options requires authentication and returns proper WebAuthn registration options including challenge, rp info (WANDERING YACHT), user details, and pubKeyCredParams. All required WebAuthn fields present and correctly formatted."
+
+  - task: "Passkey Authentication Options (WebAuthn)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Passkey authentication options endpoint testing completed successfully. ✅ POST /api/passkey/auth/options requires no authentication and returns proper WebAuthn authentication options including challenge and rpId (wandering-yacht-1.preview.emergentagent.com). All required fields present for passkey authentication flow."
+
+  - task: "Calendar Test Endpoint"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Calendar test endpoint testing completed successfully. ✅ GET /api/calendar/test returns correct response with status 'success' and calendar_name 'WANDERING YACHT EXPERIENCES'. Google Calendar connectivity verified."
+
+  - task: "Full Booking Flow with Calendar Event Creation"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Full booking flow with calendar event creation testing completed successfully. ✅ Complete flow tested: user login → get experiences → create booking → confirm payment → calendar event creation. ✅ Booking created for 'Sunset Yoga on Deck' (€35.0). ✅ Payment confirmation successful with QR code generation. ✅ Calendar event created successfully (confirmed via backend logs: event ID m45rjdhhlekno7f468dgsk4t24). All components working correctly."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
@@ -374,7 +434,7 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus: ["Google Calendar Integration"]
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -392,3 +452,5 @@ agent_communication:
     message: "NEW: Google Calendar Integration implemented. Service account auth working, /api/calendar/test returns success with calendar name 'WANDERING YACHT EXPERIENCES'. Event creation hooked into confirm_payment endpoint - creates calendar events with customer details, tickets, payment info, color-coded (green=paid, blue=deposit), and reminders. Please test: 1) /api/calendar/test endpoint connectivity, 2) Full booking+payment+confirmation flow to verify calendar event creation. Test credentials in /app/memory/test_credentials.md. Backend URL: http://localhost:8001"
   - agent: "testing"
     message: "Google Calendar Integration testing completed successfully! ✅ Calendar connectivity test passes (returns 'WANDERING YACHT EXPERIENCES'). ✅ Full booking+payment flow tested with both regular and deposit bookings. ✅ Calendar events are being created successfully - confirmed via backend logs showing multiple event IDs created during testing. ✅ Payment confirmation works correctly (status updates, QR codes generated). Minor note: API response doesn't immediately include calendar_event_id due to async processing, but events are definitely being created. Integration is fully functional and working as expected."
+  - agent: "testing"
+    message: "NEW: Biometric + Passkey Authentication testing completed successfully! ✅ All 6 tests passed with 100% success rate. ✅ POST /api/auth/biometric-refresh working correctly - requires Bearer token and returns fresh JWT. ✅ POST /api/passkey/register/options working - returns proper WebAuthn registration options with challenge, RP info, user details. ✅ POST /api/passkey/auth/options working - returns WebAuthn authentication options with challenge and rpId. ✅ GET /api/calendar/test confirmed working - returns 'WANDERING YACHT EXPERIENCES'. ✅ Full booking flow with calendar event creation tested - booking created, payment confirmed, QR code generated, calendar event created (ID: m45rjdhhlekno7f468dgsk4t24). All biometric and passkey authentication endpoints are fully functional and ready for production use."

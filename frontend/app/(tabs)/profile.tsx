@@ -8,6 +8,8 @@ import {
   Image,
   ScrollView,
   Modal,
+  Platform,
+  Switch,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,11 +23,21 @@ import { api } from '../../src/services/api';
 export default function ProfileScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { user, token, logout } = useAuth();
+  const {
+    user,
+    token,
+    logout,
+    isBiometricAvailable,
+    isBiometricEnabled,
+    biometricLabel,
+    enableBiometric,
+    disableBiometric,
+  } = useAuth();
   const { favorites, toggleFavorite, shareToNotes } = useFavorites();
   const { language, setLanguage, t } = useLanguage();
-  const [allExperiences, setAllExperiences] = useState<any[]>([]);
+  const [allExperiences, setAllExperiences] = useState([]);
   const [showLangPicker, setShowLangPicker] = useState(false);
+  const [biometricToggling, setBiometricToggling] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -44,6 +56,33 @@ export default function ProfileScreen() {
   };
 
   const favoriteExperiences = allExperiences.filter((exp) => favorites.includes(exp.id));
+
+  const handleBiometricToggle = async (value) => {
+    setBiometricToggling(true);
+    try {
+      if (value) {
+        const success = await enableBiometric();
+        if (success) {
+          Alert.alert('Enabled', `${biometricLabel} login has been enabled.`);
+        } else {
+          Alert.alert('Error', `Could not enable ${biometricLabel}.`);
+        }
+      } else {
+        await disableBiometric();
+        Alert.alert('Disabled', `${biometricLabel} login has been disabled.`);
+      }
+    } catch (err) {
+      console.error('Biometric toggle error:', err);
+    } finally {
+      setBiometricToggling(false);
+    }
+  };
+
+  const getBiometricIcon = () => {
+    if (biometricLabel.includes('Face')) return 'scan-outline';
+    if (biometricLabel.includes('Fingerprint') || biometricLabel.includes('Touch')) return 'finger-print-outline';
+    return 'shield-checkmark-outline';
+  };
 
   const handleLogout = () => {
     Alert.alert(t('profile_sign_out'), '', [
@@ -130,6 +169,36 @@ export default function ProfileScreen() {
             <Ionicons name="chevron-forward" size={18} color="#9ca3a3" />
           </TouchableOpacity>
         </View>
+
+        {/* Security Section - Biometric Toggle */}
+        {user && Platform.OS !== 'web' && isBiometricAvailable && (
+          <View style={styles.securitySection}>
+            <View style={styles.sectionHeaderRow}>
+              <View style={styles.sectionLine} />
+              <Text style={styles.sectionTitle}>SECURITY</Text>
+              <View style={styles.sectionLine} />
+            </View>
+
+            <View style={styles.securityRow}>
+              <Ionicons name={getBiometricIcon()} size={22} color="#1a3a4a" />
+              <View style={styles.securityInfo}>
+                <Text style={styles.securityLabel}>{biometricLabel} Login</Text>
+                <Text style={styles.securityDesc}>
+                  {isBiometricEnabled
+                    ? `Use ${biometricLabel} for quick sign-in`
+                    : `Enable ${biometricLabel} for faster access`}
+                </Text>
+              </View>
+              <Switch
+                value={isBiometricEnabled}
+                onValueChange={handleBiometricToggle}
+                disabled={biometricToggling}
+                trackColor={{ false: '#d5d0c8', true: '#1a3a4a' }}
+                thumbColor={isBiometricEnabled ? '#fff' : '#faf9f7'}
+              />
+            </View>
+          </View>
+        )}
 
         {/* Auth Actions */}
         <View style={styles.bottomActions}>
@@ -375,6 +444,55 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     fontSize: 14,
     color: '#7a8a8a',
+  },
+  // Security section
+  securitySection: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+  },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+    gap: 12,
+  },
+  sectionLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#d5d0c8',
+  },
+  sectionTitle: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    color: '#c17f59',
+    fontWeight: '600',
+    letterSpacing: 1.5,
+  },
+  securityRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ede9e3',
+    gap: 12,
+  },
+  securityInfo: {
+    flex: 1,
+  },
+  securityLabel: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 15,
+    color: '#1a3a4a',
+    fontWeight: '600',
+  },
+  securityDesc: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 12,
+    color: '#7a8a8a',
+    marginTop: 2,
   },
   langModalOverlay: {
     flex: 1,

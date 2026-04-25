@@ -111,6 +111,40 @@ class ApiService {
       method: 'POST',
     });
   }
+
+  // Biometric
+  async biometricRefresh() {
+    return this.request('/auth/biometric-refresh', {
+      method: 'POST',
+    });
+  }
+
+  // Passkey / WebAuthn
+  async getPasskeyRegisterOptions() {
+    return this.request('/passkey/register/options', {
+      method: 'POST',
+    });
+  }
+
+  async verifyPasskeyRegister(credential: string) {
+    return this.request('/passkey/register/verify', {
+      method: 'POST',
+      body: JSON.stringify({ credential }),
+    });
+  }
+
+  async getPasskeyAuthOptions() {
+    return this.request('/passkey/auth/options', {
+      method: 'POST',
+    });
+  }
+
+  async verifyPasskeyAuth(credential: string) {
+    return this.request('/passkey/auth/verify', {
+      method: 'POST',
+      body: JSON.stringify({ credential }),
+    });
+  }
 }
 
 export const api = new ApiService();

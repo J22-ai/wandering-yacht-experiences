@@ -4,6 +4,7 @@ from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
+import json
 from pathlib import Path
 from pydantic import BaseModel, Field, EmailStr
 from typing import List, Optional
@@ -26,12 +27,27 @@ from email.mime.image import MIMEImage
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
+# WebAuthn / Passkey imports
+import webauthn
+from webauthn.helpers.structs import (
+    AuthenticatorSelectionCriteria,
+    ResidentKeyRequirement,
+    UserVerificationRequirement,
+    PublicKeyCredentialDescriptor,
+)
+from webauthn.helpers import bytes_to_base64url, base64url_to_bytes
+
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 # Google Calendar Configuration
 GOOGLE_CALENDAR_ID = "1f685ad064eff11c51f7a78b3f935f2380e2c5114ebfa4e17e7b02f98714b6a6@group.calendar.google.com"
 GOOGLE_CREDENTIALS_PATH = ROOT_DIR / "google_calendar_credentials.json"
+
+# WebAuthn / Passkey Configuration
+WEBAUTHN_RP_ID = os.environ.get("WEBAUTHN_RP_ID", "wandering-yacht-1.preview.emergentagent.com")
+WEBAUTHN_RP_NAME = "WANDERING YACHT"
+WEBAUTHN_ORIGIN = os.environ.get("WEBAUTHN_ORIGIN", "https://wandering-yacht-1.preview.emergentagent.com")
 
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
@@ -492,7 +508,6 @@ def create_calendar_event(booking: dict, experience: dict, customer_name: str, c
 
         # Duration from experience if available
         duration_hours = experience.get('duration_hours', 4) or 4
-        end_time = event_date + timedelta(hours=duration_hours)
 
         event_title = f"🚢 {booking['experience_title']} — {customer_name}"
 
@@ -1874,6 +1889,211 @@ async def setup_deposit_charters():
     results.append(f"24M Motor Yacht: {r4.modified_count}")
     
     return {"message": "Deposit charter setup complete", "results": results}
+
+# ======================== PASSKEY / WEBAUTHN ENDPOINTS ========================
+
+class PasskeyRegisterRequest(BaseModel):
+    credential: str  # JSON string of credential from navigator.credentials.create()
+
+class PasskeyAuthRequest(BaseModel):
+    credential: str  # JSON string of credential from navigator.credentials.get()
+
+@api_router.post("/passkey/register/options")
+async def passkey_register_options(current_user: dict = Depends(get_current_user)):
+    """Generate WebAuthn registration options for the authenticated user."""
+    try:
+        # Get existing passkeys for this user
+        existing_creds = await db.passkeys.find({"user_id": current_user["id"]}).to_list(100)
+        exclude_credentials = []
+        for cred in existing_creds:
+            exclude_credentials.append(
+                PublicKeyCredentialDescriptor(id=base64url_to_bytes(cred["credential_id"]))
+            )
+
+        options = webauthn.generate_registration_options(
+            rp_id=WEBAUTHN_RP_ID,
+            rp_name=WEBAUTHN_RP_NAME,
+            user_id=current_user["id"].encode(),
+            user_name=current_user["email"],
+            user_display_name=current_user.get("full_name", current_user["email"]),
+            exclude_credentials=exclude_credentials,
+            authenticator_selection=AuthenticatorSelectionCriteria(
+                resident_key=ResidentKeyRequirement.PREFERRED,
+                user_verification=UserVerificationRequirement.PREFERRED,
+            ),
+        )
+
+        # Store challenge in DB for verification
+        challenge_b64 = bytes_to_base64url(options.challenge)
+        await db.webauthn_challenges.update_one(
+            {"user_id": current_user["id"], "type": "registration"},
+            {"$set": {
+                "challenge": challenge_b64,
+                "created_at": datetime.utcnow(),
+            }},
+            upsert=True
+        )
+
+        # Serialize options to JSON-compatible dict
+        options_dict = json.loads(webauthn.options_to_json(options))
+        return options_dict
+
+    except Exception as e:
+        logger.error(f"Passkey register options error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/passkey/register/verify")
+async def passkey_register_verify(data: PasskeyRegisterRequest, current_user: dict = Depends(get_current_user)):
+    """Verify and store the WebAuthn registration response."""
+    try:
+        # Retrieve stored challenge
+        challenge_doc = await db.webauthn_challenges.find_one(
+            {"user_id": current_user["id"], "type": "registration"}
+        )
+        if not challenge_doc:
+            raise HTTPException(status_code=400, detail="No registration challenge found. Start registration again.")
+
+        expected_challenge = base64url_to_bytes(challenge_doc["challenge"])
+
+        verification = webauthn.verify_registration_response(
+            credential=data.credential,
+            expected_challenge=expected_challenge,
+            expected_rp_id=WEBAUTHN_RP_ID,
+            expected_origin=WEBAUTHN_ORIGIN,
+        )
+
+        # Store the credential in DB
+        credential_id_b64 = bytes_to_base64url(verification.credential_id)
+        public_key_b64 = bytes_to_base64url(verification.credential_public_key)
+
+        await db.passkeys.insert_one({
+            "id": str(uuid.uuid4()),
+            "user_id": current_user["id"],
+            "credential_id": credential_id_b64,
+            "public_key": public_key_b64,
+            "sign_count": verification.sign_count,
+            "device_name": "Passkey",
+            "created_at": datetime.utcnow(),
+        })
+
+        # Clean up challenge
+        await db.webauthn_challenges.delete_one({"user_id": current_user["id"], "type": "registration"})
+
+        return {"status": "success", "message": "Passkey registered successfully"}
+
+    except Exception as e:
+        logger.error(f"Passkey register verify error: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
+
+@api_router.post("/passkey/auth/options")
+async def passkey_auth_options():
+    """Generate WebAuthn authentication options (no auth required)."""
+    try:
+        options = webauthn.generate_authentication_options(
+            rp_id=WEBAUTHN_RP_ID,
+            user_verification=UserVerificationRequirement.PREFERRED,
+        )
+
+        challenge_b64 = bytes_to_base64url(options.challenge)
+        # Store challenge temporarily keyed by value (since we don't know user yet)
+        await db.webauthn_challenges.insert_one({
+            "challenge": challenge_b64,
+            "type": "authentication",
+            "created_at": datetime.utcnow(),
+        })
+
+        options_dict = json.loads(webauthn.options_to_json(options))
+        return options_dict
+
+    except Exception as e:
+        logger.error(f"Passkey auth options error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/passkey/auth/verify")
+async def passkey_auth_verify(data: PasskeyAuthRequest):
+    """Verify WebAuthn authentication and return JWT token."""
+    try:
+        # Parse the credential to get the credential ID
+        cred_json = json.loads(data.credential)
+        raw_id = cred_json.get("rawId", cred_json.get("id", ""))
+
+        # Look up the stored passkey
+        stored_passkey = await db.passkeys.find_one({"credential_id": raw_id})
+        if not stored_passkey:
+            raise HTTPException(status_code=401, detail="Passkey not recognized")
+
+        # Find a valid challenge
+        challenge_doc = await db.webauthn_challenges.find_one({"type": "authentication"})
+        if not challenge_doc:
+            raise HTTPException(status_code=400, detail="No authentication challenge found")
+
+        expected_challenge = base64url_to_bytes(challenge_doc["challenge"])
+
+        verification = webauthn.verify_authentication_response(
+            credential=data.credential,
+            expected_challenge=expected_challenge,
+            expected_rp_id=WEBAUTHN_RP_ID,
+            expected_origin=WEBAUTHN_ORIGIN,
+            credential_public_key=base64url_to_bytes(stored_passkey["public_key"]),
+            credential_current_sign_count=stored_passkey["sign_count"],
+        )
+
+        # Update sign count
+        await db.passkeys.update_one(
+            {"credential_id": raw_id},
+            {"$set": {"sign_count": verification.new_sign_count}}
+        )
+
+        # Clean up challenge
+        await db.webauthn_challenges.delete_one({"_id": challenge_doc["_id"]})
+
+        # Get user and issue JWT
+        user = await db.users.find_one({"id": stored_passkey["user_id"]})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        access_token = create_access_token(data={"sub": user["id"]})
+
+        return {
+            "status": "success",
+            "access_token": access_token,
+            "token_type": "bearer",
+            "user": {
+                "id": user["id"],
+                "email": user["email"],
+                "full_name": user["full_name"],
+                "phone": user.get("phone"),
+                "whatsapp_number": user.get("whatsapp_number"),
+                "created_at": user["created_at"].isoformat(),
+            }
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Passkey auth verify error: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
+
+# ======================== BIOMETRIC TOKEN REFRESH ========================
+
+@api_router.post("/auth/biometric-refresh")
+async def biometric_refresh(current_user: dict = Depends(get_current_user)):
+    """Refresh JWT token for biometric re-login. Called after biometric verification on device."""
+    # The user already authenticated via their stored token + biometric check on device
+    # We issue a fresh JWT
+    access_token = create_access_token(data={"sub": current_user["id"]})
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user": {
+            "id": current_user["id"],
+            "email": current_user["email"],
+            "full_name": current_user["full_name"],
+            "phone": current_user.get("phone"),
+            "whatsapp_number": current_user.get("whatsapp_number"),
+            "created_at": current_user["created_at"].isoformat(),
+        }
+    }
 
 # ======================== GOOGLE CALENDAR TEST ENDPOINT ========================
 @api_router.get("/calendar/test")
