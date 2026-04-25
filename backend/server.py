@@ -22,8 +22,16 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 
+# Google Calendar imports
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
+
+# Google Calendar Configuration
+GOOGLE_CALENDAR_ID = "1f685ad064eff11c51f7a78b3f935f2380e2c5114ebfa4e17e7b02f98714b6a6@group.calendar.google.com"
+GOOGLE_CREDENTIALS_PATH = ROOT_DIR / "google_calendar_credentials.json"
 
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
@@ -422,6 +430,106 @@ def send_booking_email(to_email: str, customer_name: str, booking: dict, experie
         logger.error(f"Failed to send email to {to_email}: {str(e)}")
         return False
 
+# ======================== GOOGLE CALENDAR HELPER ========================
+
+def get_google_calendar_service():
+    """Authenticate and return a Google Calendar API service instance."""
+    try:
+        SCOPES = ['https://www.googleapis.com/auth/calendar']
+        credentials = service_account.Credentials.from_service_account_file(
+            str(GOOGLE_CREDENTIALS_PATH),
+            scopes=SCOPES
+        )
+        service = build('calendar', 'v3', credentials=credentials)
+        return service
+    except Exception as e:
+        logger.error(f"Failed to create Google Calendar service: {e}")
+        return None
+
+def create_calendar_event(booking: dict, experience: dict, customer_name: str, customer_email: str):
+    """Create a Google Calendar event for a confirmed booking."""
+    try:
+        service = get_google_calendar_service()
+        if not service:
+            logger.error("Google Calendar service unavailable — skipping event creation.")
+            return None
+
+        is_deposit = booking.get('payment_type') == 'deposit'
+        payment_label = "DEPOSIT PAID" if is_deposit else "FULLY PAID"
+        deposit_info = ""
+        if is_deposit:
+            deposit_info = (
+                f"\n💰 Deposit ({int(booking.get('deposit_percentage', 30))}%): €{booking.get('deposit_amount', 0):.2f}"
+                f"\n⏳ Remaining Balance: €{booking.get('remaining_balance', 0):.2f}"
+            )
+
+        # Build ticket summary
+        ticket_lines = []
+        for t in booking.get('tickets', []):
+            ticket_lines.append(f"  • {t['ticket_name']} x{t['quantity']} @ €{t['price_per_ticket']:.2f}")
+        ticket_summary = "\n".join(ticket_lines)
+
+        description = (
+            f"🎫 BOOKING CONFIRMED — {payment_label}\n"
+            f"━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            f"📋 Booking ID: {booking['id'][:8].upper()}\n"
+            f"👤 Customer: {customer_name}\n"
+            f"📧 Email: {customer_email}\n"
+            f"\n🎟️ Tickets:\n{ticket_summary}\n"
+            f"\n💶 Total: €{booking['total_amount']:.2f}"
+            f"{deposit_info}\n"
+            f"\n📍 Location: {booking.get('experience_location', 'TBD')}\n"
+            f"━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            f"Special Requests: {booking.get('special_requests', 'None')}\n"
+        )
+
+        # Parse experience date for the event
+        experience_date_str = booking.get('experience_date', '')
+        try:
+            event_date = datetime.strptime(experience_date_str, "%Y-%m-%d")
+        except (ValueError, TypeError):
+            event_date = datetime.utcnow()
+
+        # Duration from experience if available
+        duration_hours = experience.get('duration_hours', 4) or 4
+        end_time = event_date + timedelta(hours=duration_hours)
+
+        event_title = f"🚢 {booking['experience_title']} — {customer_name}"
+
+        event_body = {
+            'summary': event_title,
+            'description': description,
+            'location': booking.get('experience_location', ''),
+            'start': {
+                'dateTime': event_date.strftime('%Y-%m-%dT09:00:00'),
+                'timeZone': 'Europe/Podgorica',
+            },
+            'end': {
+                'dateTime': event_date.replace(hour=9) .strftime('%Y-%m-%dT') + f"{9 + int(duration_hours):02d}:00:00",
+                'timeZone': 'Europe/Podgorica',
+            },
+            'colorId': '9' if is_deposit else '10',  # 9=blueberry (deposit), 10=basil (paid)
+            'reminders': {
+                'useDefault': False,
+                'overrides': [
+                    {'method': 'popup', 'minutes': 60 * 24},  # 1 day before
+                    {'method': 'popup', 'minutes': 120},       # 2 hours before
+                ],
+            },
+        }
+
+        created_event = service.events().insert(
+            calendarId=GOOGLE_CALENDAR_ID,
+            body=event_body
+        ).execute()
+
+        logger.info(f"Google Calendar event created: {created_event.get('id')} for booking {booking['id'][:8]}")
+        return created_event.get('id')
+
+    except Exception as e:
+        logger.error(f"Failed to create Google Calendar event: {e}")
+        return None
+
 # ======================== AUTH ROUTES ========================
 
 @api_router.post("/auth/register", response_model=TokenResponse)
@@ -771,17 +879,37 @@ async def confirm_payment(
     
     updated_booking = await db.bookings.find_one({"id": booking_id})
     
-    # Send confirmation email
+    # Send confirmation email & create Google Calendar event
     try:
         user = await db.users.find_one({"id": current_user["id"]})
         if user and user.get("email"):
             experience = await db.experiences.find_one({"id": booking.get("experience_id")})
+            customer_name = user.get("full_name", user.get("name", user["email"].split("@")[0]))
+            
+            # Send email
             send_booking_email(
                 to_email=user["email"],
-                customer_name=user.get("name", user["email"].split("@")[0]),
+                customer_name=customer_name,
                 booking=updated_booking,
                 experience=experience or {}
             )
+            
+            # Push to Google Calendar (non-blocking)
+            try:
+                calendar_event_id = create_calendar_event(
+                    booking=updated_booking,
+                    experience=experience or {},
+                    customer_name=customer_name,
+                    customer_email=user["email"]
+                )
+                if calendar_event_id:
+                    await db.bookings.update_one(
+                        {"id": booking_id},
+                        {"$set": {"calendar_event_id": calendar_event_id}}
+                    )
+                    updated_booking = await db.bookings.find_one({"id": booking_id})
+            except Exception as cal_err:
+                logger.error(f"Google Calendar event creation failed (non-blocking): {cal_err}")
     except Exception as e:
         logger.error(f"Email send failed (non-blocking): {str(e)}")
     
@@ -1746,6 +1874,26 @@ async def setup_deposit_charters():
     results.append(f"24M Motor Yacht: {r4.modified_count}")
     
     return {"message": "Deposit charter setup complete", "results": results}
+
+# ======================== GOOGLE CALENDAR TEST ENDPOINT ========================
+@api_router.get("/calendar/test")
+async def test_google_calendar():
+    """Test endpoint to verify Google Calendar connectivity."""
+    try:
+        service = get_google_calendar_service()
+        if not service:
+            return {"status": "error", "message": "Could not create Google Calendar service"}
+        
+        # Try to get calendar info
+        calendar = service.calendars().get(calendarId=GOOGLE_CALENDAR_ID).execute()
+        return {
+            "status": "success",
+            "calendar_name": calendar.get('summary', 'Unknown'),
+            "calendar_id": GOOGLE_CALENDAR_ID,
+            "message": "Google Calendar connection verified!"
+        }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
 
 # Include the router in the main app
 app.include_router(api_router)
