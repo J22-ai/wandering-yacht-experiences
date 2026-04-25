@@ -50,6 +50,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Spa Day at Mamula Island': { title: 'يوم سبا في جزيرة مامولا', description: 'استرخ، جد توازنك، انغمس في واحتك. انطلق بحرا الساعة 9 صباحا من بورتو مونتينيغرو الى جزيرة مامولا الساحرة. اقض يوما كاملا في المنتجع الصحي الانيق مع علاجات التدليك والعناية بالبشرة. يوم كامل من التدليل مع الغداء والعودة الساعة 6 مساء.' },
     'L\'Odyssey — Heritage Sail Charter': 'لوديسي — رحلة الإبحار التراثي المستأجرة',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'استأجر سفينتنا الشراعية التراثية بطول 82 قدم لتجربة خاصة لا تُنسى في خليج كوتور. اختر بين رحلة نصف يوم أو يوم كامل مع طاقم مخصص وطعام فاخر وترفيه منسق.',
+    'L\'Odyssey - Sailing Charter': 'لوديسي - إيجار الإبحار',
   },
   fr: {
     'Sunrise Yoga on Deck': { title: 'Yoga au Lever du Soleil sur le Pont', description: 'Commencez votre journée par une séance de yoga revigorante sur le pont de notre yacht au lever du soleil sur l\'Adriatique.' },
@@ -86,6 +87,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Spa Day at Mamula Island': { title: 'Journee Spa a l\'ile Mamula', description: 'Retraite, trouvez votre equilibre, immergez-vous dans votre sanctuaire. Depart en mer a 9h00 de Porto Montenegro vers la magnifique ile Mamula. Journee complete dans le spa elegant avec massages, soins du visage et bien-etre. Dejeuner inclus, retour a 18h00.' },
     'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Charter Voilier Heritage',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Afretez notre voilier historique de 82 pieds pour une experience privee inoubliable dans la baie de Kotor. Choisissez un charter demi-journee ou journee complete avec equipage dedie, restauration gastronomique et divertissement.',
+    'L\'Odyssey - Sailing Charter': 'L\'Odyssey - Charter Voilier',
   },
   it: {
     'Sunrise Yoga on Deck': { title: 'Yoga all\'Alba sul Ponte', description: 'Inizia la giornata con una sessione di yoga rigenerante sul ponte del nostro yacht all\'alba sull\'Adriatico.' },
@@ -122,6 +124,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Spa Day at Mamula Island': { title: 'Giornata Spa all\'Isola Mamula', description: 'Ritiro, trova il tuo equilibrio, immergiti nel tuo santuario. Partenza via mare alle 9:00 da Porto Montenegro verso la splendida Isola Mamula. Giornata completa nella spa elegante con massaggi, trattamenti viso e benessere. Pranzo incluso, rientro alle 18:00.' },
     'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Charter Barca a Vela Heritage',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Noleggiate la nostra storica nave a vela di 82 piedi per un\'esperienza privata indimenticabile nella Baia di Kotor. Scegliete tra charter mezza giornata o giornata intera con equipaggio dedicato, catering gourmet e intrattenimento.',
+    'L\'Odyssey - Sailing Charter': 'L\'Odyssey - Charter a Vela',
   },
   es: {
     'Sunrise Yoga on Deck': { title: 'Yoga al Amanecer en Cubierta', description: 'Comienza tu día con una sesión de yoga revitalizante en la cubierta de nuestro yate al amanecer.' },
@@ -158,6 +161,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Spa Day at Mamula Island': { title: 'Dia de Spa en la Isla Mamula', description: 'Retiro, encuentra tu equilibrio, suergete en tu santuario. Salida por mar a las 9:00 desde Porto Montenegro hacia la impresionante Isla Mamula. Dia completo en el elegante spa con masajes, tratamientos faciales y bienestar. Almuerzo incluido, regreso a las 18:00.' },
     'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Charter Velero Heritage',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Alquile nuestro historico velero de 82 pies para una experiencia privada inolvidable en la Bahia de Kotor. Elija entre charter de medio dia o dia completo con tripulacion dedicada, catering gourmet y entretenimiento.',
+    'L\'Odyssey - Sailing Charter': 'L\'Odyssey - Charter Velero',
   },
   de: {
     'Sunrise Yoga on Deck': { title: 'Sonnenaufgang-Yoga an Deck', description: 'Beginnen Sie Ihren Tag mit einer belebenden Yoga-Sitzung auf dem Deck unserer Yacht beim Sonnenaufgang.' },
@@ -194,6 +198,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Spa Day at Mamula Island': { title: 'Spa-Tag auf der Insel Mamula', description: 'Rückzug, finden Sie Ihre Balance, tauchen Sie ein in Ihr Refugium. Abfahrt um 9:00 Uhr von Porto Montenegro zur atemberaubenden Insel Mamula. Ein ganzer Tag im eleganten Spa mit Massagen, Gesichtsbehandlungen und Wellness. Mittagessen inklusive, Rückkehr um 18:00 Uhr.' },
     'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Heritage Segelcharter',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Chartern Sie unser historisches 82-Fuss-Segelschiff fur ein unvergessliches privates Erlebnis in der Bucht von Kotor. Wahlen Sie zwischen Halbtags- oder Ganztags-Charter mit dedizierter Crew, Gourmet-Catering und Unterhaltung.',
+    'L\'Odyssey - Sailing Charter': 'L\'Odyssey - Segelcharter',
   },
   ru: {
     'Sunrise Yoga on Deck': { title: 'Йога на Рассвете на Палубе', description: 'Начните день с освежающей йоги на палубе нашей яхты на рассвете.' },
@@ -230,6 +235,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Spa Day at Mamula Island': { title: 'Спа-день на острове Мамула', description: 'Уединение, найдите свой баланс, погрузитесь в свое убежище. Отправление морем в 9:00 из Порто Монтенегро на потрясающий остров Мамула. Полный день в элегантном спа с массажем, процедурами для лица и оздоровлением. Обед включен, возвращение в 18:00.' },
     'L\'Odyssey — Heritage Sail Charter': 'Л\'Одиссей — Чартер наследственного парусника',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Арендуйте наше историческое 82-футовое парусное судно для незабываемого частного опыта в Которском заливе. Выберите полудневной или полнодневной чартер с выделенным экипажем, изысканным кейтерингом и развлечениями.',
+    'L\'Odyssey - Sailing Charter': 'Л\'Одиссей - Парусный чартер',
   },
   hr: {
     'Sunrise Yoga on Deck': { title: 'Yoga na Izlasku Sunca na Palubi', description: 'Započnite dan osvježavajućom jogom na palubi naše jahte na izlasku sunca.' },
@@ -266,6 +272,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Spa Day at Mamula Island': { title: 'Spa Dan na Otoku Mamula', description: 'Povlacenje, pronadite svoju ravnotezu, uronite u svoje utociste. Polazak morem u 9:00 iz Porto Montenegra prema prekrasnom otoku Mamula. Cijeli dan u elegantnom spa centru s masazama, tretmanima lica i wellnessom. Rucak ukljucen, povratak u 18:00.' },
     'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Heritage Jedrilica Charter',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Unajmite nas povijesni 82-stopni jedrenjak za nezaboravno privatno iskustvo u Bokokotorskom zaljevu. Odaberite poludnevni ili cjelodnevni najam s posvecenom posadom, gurmanskim cateringom i zabavom.',
+    'L\'Odyssey - Sailing Charter': 'L\'Odyssey - Jedrilica Charter',
   },
   zh: {
     'Sunrise Yoga on Deck': { title: '甲板日出瑜伽', description: '在亚得里亚海日出时分，在游艇甲板上开始一天的瑜伽。' },
@@ -302,6 +309,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Spa Day at Mamula Island': { title: '玛穆拉岛水疗日', description: '放松身心，找到平衡，沉浸在您的避风港。上午9点从波尔图黑山乘船出发前往迷人的玛穆拉岛。在优雅的水疗中心享受按摩、面部护理和更多健康项目。含午餐，下午6点返回。' },
     'L\'Odyssey — Heritage Sail Charter': '奥德赛号 — 传统帆船包租',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': '包租我们82英尺的传统帆船，在科托尔湾享受难忘的私人体验。选择半日或全日包租，配备专属船员、美食餐饮和精心策划的娱乐活动。',
+    'L\'Odyssey - Sailing Charter': '奥德赛号 - 帆船包租',
   },
   pt: {
     'Sunrise Yoga on Deck': { title: 'Yoga ao Nascer do Sol no Convés', description: 'Comece o dia com uma sessão de yoga revigorante no convés do nosso iate ao nascer do sol.' },
@@ -338,6 +346,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Spa Day at Mamula Island': { title: 'Dia de Spa na Ilha Mamula', description: 'Retiro, encontre o seu equilibrio, mergulhe no seu santuario. Partida por mar as 9:00 de Porto Montenegro para a deslumbrante Ilha Mamula. Dia completo no elegante spa com massagens, tratamentos faciais e bem-estar. Almoco incluido, regresso as 18:00.' },
     'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Charter Veleiro Heritage',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Frete nosso historico veleiro de 82 pes para uma experiencia privada inesquecivel na Baia de Kotor. Escolha entre charter de meio dia ou dia inteiro com tripulacao dedicada, catering gourmet e entretenimento.',
+    'L\'Odyssey - Sailing Charter': 'L\'Odyssey - Charter Veleiro',
   },
   ja: {
     'Sunrise Yoga on Deck': { title: 'デッキで日の出ヨガ', description: 'アドリア海の日の出とともに、ヨットのデッキで爽やかなヨガセッション。' },
@@ -374,6 +383,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'Spa Day at Mamula Island': { title: 'マムラ島スパデイ', description: 'リトリート、バランスを見つけ、あなたのサンクチュアリに浸る。朝9時にポルトモンテネグロから船で出発し、美しいマムラ島へ。エレガントなスパでマッサージ、フェイシャル、ウェルネスを満喫する一日。ランチ付き、午後6時帰着。' },
     'L\'Odyssey — Heritage Sail Charter': 'ロディセイ — ヘリテージセーリングチャーター',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'コトル湾で忘れられないプライベート体験のために、82フィートのヘリテージ帆船をチャーターしてください。専属クルー、グルメケータリング、エンターテイメント付きの半日または終日チャーターからお選びください。',
+    'L\'Odyssey - Sailing Charter': 'ロディセイ - セーリングチャーター',
   },
 };
 
