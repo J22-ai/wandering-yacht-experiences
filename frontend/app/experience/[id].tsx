@@ -84,6 +84,7 @@ interface Experience {
     title: string;
     items: string[];
   }>;
+  images?: string[];
 }
 
 export default function ExperienceDetailScreen() {
@@ -99,6 +100,7 @@ export default function ExperienceDetailScreen() {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [booking, setBooking] = useState(false);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   useEffect(() => {
     if (token) {
@@ -237,12 +239,44 @@ export default function ExperienceDetailScreen() {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Hero Image */}
+        {/* Hero Image Gallery */}
         <View style={styles.heroContainer}>
-          <Image
-            source={{ uri: experience.image_url || 'https://images.unsplash.com/photo-1531419746980-63af10612bf3?w=1200' }}
-            style={styles.heroImage}
-          />
+          {experience.images && experience.images.length > 1 ? (
+            <>
+              <ScrollView
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                onScroll={(e) => {
+                  const idx = Math.round(e.nativeEvent.contentOffset.x / Dimensions.get('window').width);
+                  setActiveImageIndex(idx);
+                }}
+                scrollEventThrottle={16}
+              >
+                {experience.images.map((imgUrl, idx) => (
+                  <Image
+                    key={idx}
+                    source={{ uri: imgUrl }}
+                    style={[styles.heroImage, { width: Dimensions.get('window').width }]}
+                  />
+                ))}
+              </ScrollView>
+              {/* Pagination dots */}
+              <View style={styles.paginationDots}>
+                {experience.images.map((_, idx) => (
+                  <View
+                    key={idx}
+                    style={[styles.dot, activeImageIndex === idx && styles.dotActive]}
+                  />
+                ))}
+              </View>
+            </>
+          ) : (
+            <Image
+              source={{ uri: experience.image_url || 'https://images.unsplash.com/photo-1531419746980-63af10612bf3?w=1200' }}
+              style={styles.heroImage}
+            />
+          )}
           <View style={[styles.heroOverlay, { paddingTop: insets.top }]}>
             <TouchableOpacity
               style={styles.backButton}
@@ -586,6 +620,28 @@ const styles = StyleSheet.create({
   heroImage: {
     width: '100%',
     height: '100%',
+  },
+  paginationDots: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 16,
+    left: 0,
+    right: 0,
+    gap: 6,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: 'rgba(255,255,255,0.4)',
+  },
+  dotActive: {
+    backgroundColor: '#fff',
+    width: 10,
+    height: 10,
+    borderRadius: 5,
   },
   heroOverlay: {
     position: 'absolute',

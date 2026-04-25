@@ -147,6 +147,7 @@ class Experience(BaseModel):
     taxes_included: Optional[bool] = None
     deposit_note: Optional[str] = None
     charter_packages: Optional[List[dict]] = None
+    images: Optional[List[str]] = None
 
 # Booking Models
 class BookingTicket(BaseModel):
