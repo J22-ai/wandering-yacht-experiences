@@ -43,7 +43,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
 # SMTP Email Configuration
 SMTP_HOST = os.environ.get('SMTP_HOST', 'smtp.dreamhost.com')
 SMTP_PORT = int(os.environ.get('SMTP_PORT', '465'))
-SMTP_EMAIL = os.environ.get('SMTP_EMAIL', 'orders@wanderingyacht.com')
+SMTP_EMAIL = os.environ.get('SMTP_EMAIL', 'booking@wanderingyacht.com')
 SMTP_PASSWORD = os.environ.get('SMTP_PASSWORD', '')
 
 # Password hashing
