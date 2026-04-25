@@ -1339,8 +1339,8 @@ async def seed_data_internal():
             "ticket_types": [
                 {"id": str(uuid.uuid4()), "name": "Per Person - Low Season", "description": "Price per person low season", "price": 225, "max_per_booking": 20},
                 {"id": str(uuid.uuid4()), "name": "Per Person - High Season", "description": "Price per person high season", "price": 350, "max_per_booking": 20},
-                {"id": str(uuid.uuid4()), "name": "Half Day - Low Season (Full Charter)", "description": "4 hour low season charter", "price": 1690, "max_per_booking": 1},
-                {"id": str(uuid.uuid4()), "name": "Half Day - High Season (Full Charter)", "description": "4 hour high season charter", "price": 2690, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Half Day - Low Season", "description": "4 hour low season charter", "price": 1690, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Half Day - High Season", "description": "4 hour high season charter", "price": 2690, "max_per_booking": 1},
                 {"id": str(uuid.uuid4()), "name": "Full Day Charter - Low Season", "description": "8 hour low season full day charter", "price": 3400, "max_per_booking": 1},
                 {"id": str(uuid.uuid4()), "name": "Full Day Charter - High Season", "description": "8 hour high season full day charter", "price": 4900, "max_per_booking": 1}
             ],
