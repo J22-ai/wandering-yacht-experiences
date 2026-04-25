@@ -427,10 +427,43 @@ frontend:
         agent: "testing"
         comment: "Full booking flow with calendar event creation testing completed successfully. ✅ Complete flow tested: user login → get experiences → create booking → confirm payment → calendar event creation. ✅ Booking created for 'Sunset Yoga on Deck' (€35.0). ✅ Payment confirmation successful with QR code generation. ✅ Calendar event created successfully (confirmed via backend logs: event ID m45rjdhhlekno7f468dgsk4t24). All components working correctly."
 
+  - agent: "main"
+    message: "NEW: 70% Balance Collection Flow + Business Invoice System implemented. 1) Every payment (deposit or full) now sends an invoice copy to booking@wanderingyacht.com with customer details, booking info, ticket breakdown, and amount received. 2) Balance request endpoint (POST /api/payment/request-balance/{booking_id}) sends styled email to customer with 'PAY REMAINING BALANCE' button linking to /balance/{booking_id}. 3) Balance payment flow: GET /api/payment/balance-info/{id}, POST /api/payment/create-balance-intent/{id}, POST /api/payment/confirm-balance/{id}. 4) On balance confirmation: sends full payment confirmation email with itinerary planning prompt, sends business invoice, updates Google Calendar event to green/fully paid. 5) Admin endpoint GET /api/bookings/deposit-pending lists all bookings awaiting balance. 6) Frontend balance payment page at /balance/[id] with full breakdown and success state. Please test the full flow: create deposit booking → confirm deposit → request balance → get balance info → confirm balance. Test credentials in /app/memory/test_credentials.md. Backend URL: http://localhost:8001"
+
+  - task: "70% Balance Collection Flow"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented complete 70% balance collection flow with email templates, Stripe integration, Google Calendar updates, and business invoice forwarding."
+      - working: true
+        agent: "testing"
+        comment: "Comprehensive 70% balance collection flow testing completed successfully! ✅ All 9 tests passed with 100% success rate. Complete multi-step flow verified: 1) User registration and deposit booking creation (€3200 total, €960 deposit, €2240 remaining), 2) Deposit payment confirmation with QR code generation and status set to 'deposit_paid', 3) Balance info endpoint returns all required fields (booking_id, experience_title, amounts, status), 4) Balance request email sent successfully to customer, 5) Balance payment intent created with correct amount (€2240) and Stripe integration, 6) Balance payment confirmation upgrades booking to 'paid' status with remaining_balance=0, 7) Deposit pending bookings endpoint correctly excludes fully paid bookings. Backend logs confirm: booking confirmation emails sent, business invoices sent to booking@wanderingyacht.com for both deposit and balance payments, Google Calendar events created and updated to 'FULLY PAID' status. Real email integration working (sends to customer and business). Stripe payment intents created successfully. All balance calculations accurate (30% deposit, 70% remaining). Flow is production-ready."
+
+  - task: "Business Invoice to booking@wanderingyacht.com"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Every payment confirmation now sends a styled invoice email to booking@wanderingyacht.com with full booking details."
+      - working: true
+        agent: "testing"
+        comment: "Business invoice system testing completed successfully! ✅ Confirmed via backend logs that business invoices are sent to booking@wanderingyacht.com for both deposit payments ('Deposit Payment' label) and balance payments ('Balance Payment' label). Invoice emails include customer details, booking information, and payment amounts. Integration working correctly as part of the complete balance collection flow."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 2
+  test_sequence: 3
   run_ui: false
 
 test_plan:
@@ -454,3 +487,7 @@ agent_communication:
     message: "Google Calendar Integration testing completed successfully! ✅ Calendar connectivity test passes (returns 'WANDERING YACHT EXPERIENCES'). ✅ Full booking+payment flow tested with both regular and deposit bookings. ✅ Calendar events are being created successfully - confirmed via backend logs showing multiple event IDs created during testing. ✅ Payment confirmation works correctly (status updates, QR codes generated). Minor note: API response doesn't immediately include calendar_event_id due to async processing, but events are definitely being created. Integration is fully functional and working as expected."
   - agent: "testing"
     message: "NEW: Biometric + Passkey Authentication testing completed successfully! ✅ All 6 tests passed with 100% success rate. ✅ POST /api/auth/biometric-refresh working correctly - requires Bearer token and returns fresh JWT. ✅ POST /api/passkey/register/options working - returns proper WebAuthn registration options with challenge, RP info, user details. ✅ POST /api/passkey/auth/options working - returns WebAuthn authentication options with challenge and rpId. ✅ GET /api/calendar/test confirmed working - returns 'WANDERING YACHT EXPERIENCES'. ✅ Full booking flow with calendar event creation tested - booking created, payment confirmed, QR code generated, calendar event created (ID: m45rjdhhlekno7f468dgsk4t24). All biometric and passkey authentication endpoints are fully functional and ready for production use."
+  - agent: "main"
+    message: "NEW: 70% Balance Collection Flow + Business Invoice System implemented. 1) Every payment (deposit or full) now sends an invoice copy to booking@wanderingyacht.com with customer details, booking info, ticket breakdown, and amount received. 2) Balance request endpoint (POST /api/payment/request-balance/{booking_id}) sends styled email to customer with 'PAY REMAINING BALANCE' button linking to /balance/{booking_id}. 3) Balance payment flow: GET /api/payment/balance-info/{id}, POST /api/payment/create-balance-intent/{id}, POST /api/payment/confirm-balance/{id}. 4) On balance confirmation: sends full payment confirmation email with itinerary planning prompt, sends business invoice, updates Google Calendar event to green/fully paid. 5) Admin endpoint GET /api/bookings/deposit-pending lists all bookings awaiting balance. 6) Frontend balance payment page at /balance/[id] with full breakdown and success state. Please test the full flow: create deposit booking → confirm deposit → request balance → get balance info → confirm balance. Test credentials in /app/memory/test_credentials.md. Backend URL: http://localhost:8001"
+  - agent: "testing"
+    message: "🎉 70% Balance Collection Flow + Business Invoice System testing completed successfully! ✅ ALL 9 TESTS PASSED with 100% success rate. Complete multi-step flow verified: 1) User registration and deposit booking creation (€3200 total, €960 deposit, €2240 remaining balance), 2) Deposit payment confirmation with QR code generation and status='deposit_paid', 3) Balance info endpoint returns all required fields, 4) Balance request email sent successfully, 5) Balance payment intent created with correct Stripe integration (€2240), 6) Balance payment confirmation upgrades booking to 'paid' status with remaining_balance=0, 7) Deposit pending bookings correctly excludes fully paid bookings. Backend logs confirm: booking confirmation emails sent, business invoices sent to booking@wanderingyacht.com for both deposit and balance payments, Google Calendar events created and updated to 'FULLY PAID'. Real email integration working. Stripe payment intents successful. All calculations accurate. System is production-ready!"

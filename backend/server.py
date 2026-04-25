@@ -446,6 +446,328 @@ def send_booking_email(to_email: str, customer_name: str, booking: dict, experie
         logger.error(f"Failed to send email to {to_email}: {str(e)}")
         return False
 
+def send_business_invoice(customer_name: str, customer_email: str, booking: dict, experience: dict, payment_label: str = "Payment"):
+    """Send invoice copy to booking@wanderingyacht.com for every payment received."""
+    try:
+        is_deposit = booking.get('payment_type') == 'deposit'
+        amount_paid = booking.get('deposit_amount', 0) if is_deposit else booking['total_amount']
+        
+        ticket_rows = ""
+        for ticket in booking.get('tickets', []):
+            ticket_rows += f"""
+            <tr>
+                <td style="padding:6px 0;border-bottom:1px solid #eee;font-family:Georgia,serif;color:#3a4a50;">{ticket['ticket_name']}</td>
+                <td style="padding:6px 0;border-bottom:1px solid #eee;font-family:Georgia,serif;color:#3a4a50;text-align:center;">{ticket['quantity']}</td>
+                <td style="padding:6px 0;border-bottom:1px solid #eee;font-family:Georgia,serif;color:#3a4a50;text-align:right;">€{ticket['price_per_ticket']:.2f}</td>
+            </tr>"""
+
+        deposit_section = ""
+        if is_deposit:
+            deposit_section = f"""
+            <tr><td style="padding:10px 30px;background:#fff8e1;">
+                <table width="100%">
+                    <tr><td style="font-family:Georgia,serif;color:#e67e22;font-weight:bold;">⚠ DEPOSIT ONLY ({int(booking.get('deposit_percentage', 30))}%)</td></tr>
+                    <tr><td style="font-family:Georgia,serif;color:#555;padding-top:6px;">
+                        Deposit Paid: <b>€{booking.get('deposit_amount', 0):.2f}</b><br/>
+                        Remaining Balance Due: <b>€{booking.get('remaining_balance', 0):.2f}</b>
+                    </td></tr>
+                </table>
+            </td></tr>"""
+
+        balance_paid_section = ""
+        if payment_label == "Balance Payment":
+            balance_paid_section = f"""
+            <tr><td style="padding:10px 30px;background:#e8f5e9;">
+                <table width="100%">
+                    <tr><td style="font-family:Georgia,serif;color:#2e7d32;font-weight:bold;">✅ BALANCE PAYMENT RECEIVED</td></tr>
+                    <tr><td style="font-family:Georgia,serif;color:#555;padding-top:6px;">
+                        Balance Paid: <b>€{booking.get('remaining_balance', 0):.2f}</b><br/>
+                        Total Charter Value: <b>€{booking['total_amount']:.2f}</b><br/>
+                        Status: <b>FULLY PAID</b>
+                    </td></tr>
+                </table>
+            </td></tr>"""
+
+        subject = f"💰 {payment_label} — {booking['experience_title']} — {customer_name} | €{amount_paid:.2f}"
+
+        html = f"""
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#f0f0f0;font-family:Georgia,serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f0f0;">
+<tr><td align="center" style="padding:20px;">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:8px;overflow:hidden;border:1px solid #ddd;">
+    <tr><td style="background:#1a3a4a;padding:20px 30px;">
+        <h2 style="margin:0;color:#fff;font-size:18px;letter-spacing:2px;">WANDERING YACHT — INVOICE</h2>
+        <p style="margin:4px 0 0;color:#c17f59;font-size:12px;letter-spacing:1px;">{payment_label.upper()}</p>
+    </td></tr>
+    
+    <tr><td style="padding:20px 30px;">
+        <table width="100%" cellpadding="0" cellspacing="0">
+            <tr><td style="font-family:Georgia,serif;color:#888;font-size:12px;padding:4px 0;">Customer</td>
+                <td style="font-family:Georgia,serif;color:#333;font-size:14px;text-align:right;padding:4px 0;">{customer_name}</td></tr>
+            <tr><td style="font-family:Georgia,serif;color:#888;font-size:12px;padding:4px 0;">Email</td>
+                <td style="font-family:Georgia,serif;color:#333;font-size:14px;text-align:right;padding:4px 0;">{customer_email}</td></tr>
+            <tr><td style="font-family:Georgia,serif;color:#888;font-size:12px;padding:4px 0;">Booking ID</td>
+                <td style="font-family:Georgia,serif;color:#333;font-size:14px;text-align:right;padding:4px 0;">{booking['id'][:8].upper()}</td></tr>
+            <tr><td style="font-family:Georgia,serif;color:#888;font-size:12px;padding:4px 0;">Experience</td>
+                <td style="font-family:Georgia,serif;color:#333;font-size:14px;text-align:right;padding:4px 0;">{booking['experience_title']}</td></tr>
+            <tr><td style="font-family:Georgia,serif;color:#888;font-size:12px;padding:4px 0;">Date</td>
+                <td style="font-family:Georgia,serif;color:#333;font-size:14px;text-align:right;padding:4px 0;">{booking['experience_date']}</td></tr>
+            <tr><td style="font-family:Georgia,serif;color:#888;font-size:12px;padding:4px 0;">Location</td>
+                <td style="font-family:Georgia,serif;color:#333;font-size:14px;text-align:right;padding:4px 0;">{booking['experience_location']}</td></tr>
+        </table>
+    </td></tr>
+
+    <tr><td style="padding:10px 30px;">
+        <h3 style="margin:0 0 8px;color:#1a3a4a;font-size:13px;letter-spacing:1px;">TICKETS</h3>
+        <table width="100%" cellpadding="0" cellspacing="0">{ticket_rows}
+            <tr>
+                <td colspan="2" style="padding:10px 0;font-family:Georgia,serif;color:#1a3a4a;font-weight:bold;font-size:16px;">Total</td>
+                <td style="padding:10px 0;font-family:Georgia,serif;color:#1a3a4a;font-weight:bold;font-size:18px;text-align:right;">€{booking['total_amount']:.2f}</td>
+            </tr>
+        </table>
+    </td></tr>
+
+    {deposit_section}
+    {balance_paid_section}
+
+    <tr><td style="padding:10px 30px;background:#fafafa;border-top:1px solid #eee;">
+        <table width="100%">
+            <tr>
+                <td style="font-family:Georgia,serif;color:#1a3a4a;font-weight:bold;font-size:16px;">AMOUNT RECEIVED</td>
+                <td style="font-family:Georgia,serif;color:#2e7d32;font-weight:bold;font-size:22px;text-align:right;">€{amount_paid:.2f}</td>
+            </tr>
+        </table>
+    </td></tr>
+
+    <tr><td style="padding:14px 30px;background:#1a3a4a;text-align:center;">
+        <p style="margin:0;color:#8a9a9a;font-size:11px;">This is an automated invoice notification.</p>
+    </td></tr>
+</table>
+</td></tr></table>
+</body></html>"""
+
+        msg = MIMEMultipart('related')
+        msg['Subject'] = subject
+        msg['From'] = f'WANDERING YACHT <{SMTP_EMAIL}>'
+        msg['To'] = SMTP_EMAIL  # Send to business email
+        
+        html_part = MIMEText(html, 'html')
+        msg.attach(html_part)
+        
+        with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as server:
+            server.login(SMTP_EMAIL, SMTP_PASSWORD)
+            server.send_message(msg)
+        
+        logger.info(f"Business invoice sent to {SMTP_EMAIL} for booking {booking['id'][:8]} — {payment_label}")
+        return True
+    except Exception as e:
+        logger.error(f"Failed to send business invoice: {str(e)}")
+        return False
+
+def send_balance_request_email(to_email: str, customer_name: str, booking: dict, payment_url: str):
+    """Send email requesting remaining balance payment."""
+    try:
+        remaining = booking.get('remaining_balance', 0)
+        subject = f"Remaining Balance Due — {booking['experience_title']} | WANDERING YACHT"
+
+        html = f"""
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#f5f3f0;font-family:Georgia,serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f3f0;">
+<tr><td align="center" style="padding:20px 10px;">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+    
+    <tr><td style="background:#1a3a4a;padding:30px 40px;text-align:center;">
+        <h1 style="margin:0;color:#fff;font-family:Georgia,serif;font-size:24px;letter-spacing:3px;">WANDERING</h1>
+        <h1 style="margin:0;color:#fff;font-family:Georgia,serif;font-size:24px;letter-spacing:3px;">YACHT</h1>
+        <p style="margin:10px 0 0;color:#c17f59;font-family:Georgia,serif;font-size:13px;letter-spacing:2px;">BALANCE PAYMENT DUE</p>
+    </td></tr>
+    
+    <tr><td style="padding:30px 40px;">
+        <p style="margin:0;font-family:Georgia,serif;color:#1a3a4a;font-size:16px;">Dear {customer_name},</p>
+        <p style="margin:12px 0 0;font-family:Georgia,serif;color:#5a6a6a;font-size:14px;line-height:24px;">
+            Thank you for your deposit on <strong>{booking['experience_title']}</strong>. Your dates are secured and we are looking forward to hosting you.
+        </p>
+        <p style="margin:12px 0 0;font-family:Georgia,serif;color:#5a6a6a;font-size:14px;line-height:24px;">
+            Please complete the remaining balance to confirm your full booking:
+        </p>
+    </td></tr>
+
+    <tr><td style="padding:0 40px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background:#faf9f7;border-radius:12px;border:1px solid #ebe8e3;">
+            <tr><td style="padding:20px;">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr><td style="padding:6px 0;font-family:Georgia,serif;color:#7a8a8a;font-size:13px;">Experience</td>
+                        <td style="padding:6px 0;font-family:Georgia,serif;color:#1a3a4a;font-size:13px;text-align:right;font-weight:bold;">{booking['experience_title']}</td></tr>
+                    <tr><td style="padding:6px 0;font-family:Georgia,serif;color:#7a8a8a;font-size:13px;">Date</td>
+                        <td style="padding:6px 0;font-family:Georgia,serif;color:#1a3a4a;font-size:13px;text-align:right;">{booking['experience_date']}</td></tr>
+                    <tr><td style="padding:6px 0;font-family:Georgia,serif;color:#7a8a8a;font-size:13px;">Booking ID</td>
+                        <td style="padding:6px 0;font-family:Georgia,serif;color:#1a3a4a;font-size:13px;text-align:right;">{booking['id'][:8].upper()}</td></tr>
+                    <tr><td style="padding:6px 0;font-family:Georgia,serif;color:#7a8a8a;font-size:13px;">Charter Total</td>
+                        <td style="padding:6px 0;font-family:Georgia,serif;color:#1a3a4a;font-size:13px;text-align:right;">€{booking['total_amount']:.2f}</td></tr>
+                    <tr><td style="padding:6px 0;font-family:Georgia,serif;color:#7a8a8a;font-size:13px;">Deposit Paid</td>
+                        <td style="padding:6px 0;font-family:Georgia,serif;color:#2e7d32;font-size:13px;text-align:right;">-€{booking.get('deposit_amount', 0):.2f}</td></tr>
+                </table>
+            </td></tr>
+            <tr><td style="padding:0 20px 20px;">
+                <table width="100%" cellpadding="0" cellspacing="0" style="background:#1a3a4a;border-radius:10px;">
+                    <tr><td style="padding:16px 20px;">
+                        <table width="100%"><tr>
+                            <td style="font-family:Georgia,serif;color:#c17f59;font-size:14px;letter-spacing:1px;">REMAINING BALANCE</td>
+                            <td style="font-family:Georgia,serif;color:#fff;font-size:24px;font-weight:bold;text-align:right;">€{remaining:.2f}</td>
+                        </tr></table>
+                    </td></tr>
+                </table>
+            </td></tr>
+        </table>
+    </td></tr>
+
+    <tr><td style="padding:24px 40px;text-align:center;">
+        <a href="{payment_url}" style="display:inline-block;background:#c17f59;color:#fff;font-family:Georgia,serif;font-size:16px;font-weight:bold;text-decoration:none;padding:16px 48px;border-radius:30px;letter-spacing:1px;">
+            PAY REMAINING BALANCE
+        </a>
+    </td></tr>
+
+    <tr><td style="padding:0 40px 20px;">
+        <p style="margin:0;font-family:Georgia,serif;color:#5a6a6a;font-size:13px;line-height:22px;text-align:center;">
+            Upon full payment, your booking will be fully confirmed and we will reach out to discuss your preferred itinerary.
+        </p>
+    </td></tr>
+
+    <tr><td style="background:#1a3a4a;padding:24px 40px;text-align:center;">
+        <p style="margin:0;color:#c17f59;font-family:Georgia,serif;font-size:12px;letter-spacing:1px;">WANDERING YACHT</p>
+        <p style="margin:6px 0 0;color:#8a9a9a;font-family:Georgia,serif;font-size:11px;">Montenegro • Croatia • Albania • Greece</p>
+        <p style="margin:8px 0 0;color:#8a9a9a;font-family:Georgia,serif;font-size:11px;">info@wanderingyacht.com</p>
+    </td></tr>
+</table>
+</td></tr></table>
+</body></html>"""
+
+        msg = MIMEMultipart('related')
+        msg['Subject'] = subject
+        msg['From'] = f'WANDERING YACHT <{SMTP_EMAIL}>'
+        msg['To'] = to_email
+        
+        html_part = MIMEText(html, 'html')
+        msg.attach(html_part)
+        
+        with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as server:
+            server.login(SMTP_EMAIL, SMTP_PASSWORD)
+            server.send_message(msg)
+        
+        logger.info(f"Balance request email sent to {to_email} for booking {booking['id'][:8]}")
+        return True
+    except Exception as e:
+        logger.error(f"Failed to send balance request email: {str(e)}")
+        return False
+
+def send_full_payment_confirmation(to_email: str, customer_name: str, booking: dict):
+    """Send confirmation email after full balance is paid, asking about itinerary."""
+    try:
+        subject = f"Full Payment Confirmed — {booking['experience_title']} | WANDERING YACHT"
+
+        html = f"""
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#f5f3f0;font-family:Georgia,serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f3f0;">
+<tr><td align="center" style="padding:20px 10px;">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+    
+    <tr><td style="background:#1a3a4a;padding:30px 40px;text-align:center;">
+        <h1 style="margin:0;color:#fff;font-size:24px;letter-spacing:3px;">WANDERING</h1>
+        <h1 style="margin:0;color:#fff;font-size:24px;letter-spacing:3px;">YACHT</h1>
+        <p style="margin:10px 0 0;color:#c17f59;font-size:13px;letter-spacing:2px;">BOOKING FULLY CONFIRMED</p>
+    </td></tr>
+    
+    <tr><td style="padding:30px 40px;">
+        <p style="margin:0;color:#1a3a4a;font-size:16px;">Dear {customer_name},</p>
+        <p style="margin:12px 0;color:#5a6a6a;font-size:14px;line-height:24px;">
+            Wonderful news! Your full payment for <strong>{booking['experience_title']}</strong> has been received. 
+            Your booking is now <strong>fully confirmed</strong>.
+        </p>
+    </td></tr>
+
+    <tr><td style="padding:0 40px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background:#e8f5e9;border-radius:12px;border:2px solid #4caf50;">
+            <tr><td style="padding:20px;text-align:center;">
+                <p style="margin:0;color:#2e7d32;font-size:20px;font-weight:bold;">✅ FULLY PAID</p>
+                <p style="margin:8px 0 0;color:#2e7d32;font-size:28px;font-weight:bold;">€{booking['total_amount']:.2f}</p>
+            </td></tr>
+        </table>
+    </td></tr>
+
+    <tr><td style="padding:24px 40px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background:#faf9f7;border-radius:12px;border:1px solid #ebe8e3;">
+            <tr><td style="padding:20px;">
+                <table width="100%">
+                    <tr><td style="padding:4px 0;color:#7a8a8a;font-size:13px;">📍 Location</td>
+                        <td style="padding:4px 0;color:#1a3a4a;font-size:13px;text-align:right;">{booking['experience_location']}</td></tr>
+                    <tr><td style="padding:4px 0;color:#7a8a8a;font-size:13px;">📅 Date</td>
+                        <td style="padding:4px 0;color:#1a3a4a;font-size:13px;text-align:right;">{booking['experience_date']}</td></tr>
+                    <tr><td style="padding:4px 0;color:#7a8a8a;font-size:13px;">🎫 Booking ID</td>
+                        <td style="padding:4px 0;color:#1a3a4a;font-size:13px;text-align:right;">{booking['id'][:8].upper()}</td></tr>
+                </table>
+            </td></tr>
+        </table>
+    </td></tr>
+
+    <tr><td style="padding:0 40px 10px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background:#fff8e1;border-radius:12px;border:2px solid #f0c14b;">
+            <tr><td style="padding:20px;">
+                <p style="margin:0;color:#c17f59;font-size:15px;font-weight:bold;text-align:center;">🗺 CREATE YOUR ITINERARY</p>
+                <p style="margin:10px 0 0;color:#5a6a6a;font-size:13px;line-height:22px;text-align:center;">
+                    Now that your booking is confirmed, we'd love to help you plan the perfect experience. 
+                    What itinerary would you like to create? Reply to this email or contact us with your preferences:
+                </p>
+                <ul style="color:#5a6a6a;font-size:13px;line-height:26px;">
+                    <li>Preferred departure time</li>
+                    <li>Desired route or stops</li>
+                    <li>Special dietary requirements</li>
+                    <li>Any celebrations or special occasions</li>
+                    <li>Additional services (chef, DJ, photographer, etc.)</li>
+                </ul>
+            </td></tr>
+        </table>
+    </td></tr>
+
+    <tr><td style="padding:16px 40px;text-align:center;">
+        <a href="mailto:info@wanderingyacht.com?subject=Itinerary%20for%20Booking%20{booking['id'][:8].upper()}" 
+           style="display:inline-block;background:#1a3a4a;color:#fff;font-size:15px;font-weight:bold;text-decoration:none;padding:14px 40px;border-radius:30px;letter-spacing:1px;">
+            SHARE YOUR ITINERARY PREFERENCES
+        </a>
+    </td></tr>
+
+    <tr><td style="background:#1a3a4a;padding:24px 40px;text-align:center;">
+        <p style="margin:0;color:#c17f59;font-size:12px;letter-spacing:1px;">WANDERING YACHT</p>
+        <p style="margin:6px 0 0;color:#8a9a9a;font-size:11px;">Montenegro • Croatia • Albania • Greece</p>
+        <p style="margin:8px 0 0;color:#8a9a9a;font-size:11px;">info@wanderingyacht.com</p>
+    </td></tr>
+</table>
+</td></tr></table>
+</body></html>"""
+
+        msg = MIMEMultipart('related')
+        msg['Subject'] = subject
+        msg['From'] = f'WANDERING YACHT <{SMTP_EMAIL}>'
+        msg['To'] = to_email
+        
+        html_part = MIMEText(html, 'html')
+        msg.attach(html_part)
+        
+        with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as server:
+            server.login(SMTP_EMAIL, SMTP_PASSWORD)
+            server.send_message(msg)
+        
+        logger.info(f"Full payment confirmation email sent to {to_email} for booking {booking['id'][:8]}")
+        return True
+    except Exception as e:
+        logger.error(f"Failed to send full payment confirmation: {str(e)}")
+        return False
+
 # ======================== GOOGLE CALENDAR HELPER ========================
 
 def get_google_calendar_service():
@@ -901,13 +1223,26 @@ async def confirm_payment(
             experience = await db.experiences.find_one({"id": booking.get("experience_id")})
             customer_name = user.get("full_name", user.get("name", user["email"].split("@")[0]))
             
-            # Send email
+            # Send email to customer
             send_booking_email(
                 to_email=user["email"],
                 customer_name=customer_name,
                 booking=updated_booking,
                 experience=experience or {}
             )
+            
+            # Send invoice copy to business email
+            try:
+                payment_label = "Deposit Payment" if updated_booking.get('payment_type') == 'deposit' else "Full Payment"
+                send_business_invoice(
+                    customer_name=customer_name,
+                    customer_email=user["email"],
+                    booking=updated_booking,
+                    experience=experience or {},
+                    payment_label=payment_label
+                )
+            except Exception as inv_err:
+                logger.error(f"Business invoice send failed (non-blocking): {inv_err}")
             
             # Push to Google Calendar (non-blocking)
             try:
@@ -1889,6 +2224,212 @@ async def setup_deposit_charters():
     results.append(f"24M Motor Yacht: {r4.modified_count}")
     
     return {"message": "Deposit charter setup complete", "results": results}
+
+# ======================== 70% BALANCE COLLECTION FLOW ========================
+
+class BalancePaymentRequest(BaseModel):
+    payment_intent_id: Optional[str] = None
+
+@api_router.post("/payment/request-balance/{booking_id}")
+async def request_balance_payment(booking_id: str, current_user: dict = Depends(get_current_user)):
+    """Send balance payment request email to the customer for a deposit booking."""
+    booking = await db.bookings.find_one({"id": booking_id})
+    if not booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
+    
+    if booking.get("payment_status") != "deposit_paid":
+        raise HTTPException(status_code=400, detail="This booking does not have a pending balance")
+    
+    user = await db.users.find_one({"id": booking["user_id"]})
+    if not user:
+        raise HTTPException(status_code=404, detail="Customer not found")
+    
+    customer_name = user.get("full_name", user.get("name", user["email"].split("@")[0]))
+    
+    # Generate the balance payment URL
+    app_base_url = os.environ.get("APP_BASE_URL", "https://wandering-yacht-1.preview.emergentagent.com")
+    payment_url = f"{app_base_url}/balance/{booking_id}"
+    
+    # Send the balance request email
+    success = send_balance_request_email(
+        to_email=user["email"],
+        customer_name=customer_name,
+        booking=booking,
+        payment_url=payment_url
+    )
+    
+    if success:
+        # Track that balance request was sent
+        await db.bookings.update_one(
+            {"id": booking_id},
+            {"$set": {
+                "balance_requested_at": datetime.utcnow(),
+                "balance_request_count": (booking.get("balance_request_count", 0) + 1)
+            }}
+        )
+        return {"status": "success", "message": f"Balance request email sent to {user['email']}"}
+    else:
+        raise HTTPException(status_code=500, detail="Failed to send balance request email")
+
+@api_router.get("/payment/balance-info/{booking_id}")
+async def get_balance_info(booking_id: str):
+    """Get balance payment info for a booking (public endpoint for email links)."""
+    booking = await db.bookings.find_one({"id": booking_id})
+    if not booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
+    
+    if booking.get("payment_status") not in ["deposit_paid"]:
+        raise HTTPException(status_code=400, detail="No balance due for this booking")
+    
+    experience = await db.experiences.find_one({"id": booking.get("experience_id")})
+    
+    return {
+        "booking_id": booking["id"],
+        "experience_title": booking["experience_title"],
+        "experience_date": booking["experience_date"],
+        "experience_location": booking["experience_location"],
+        "experience_image": experience.get("images", [experience.get("image", "")])[0] if experience else "",
+        "total_amount": booking["total_amount"],
+        "deposit_amount": booking.get("deposit_amount", 0),
+        "remaining_balance": booking.get("remaining_balance", 0),
+        "deposit_percentage": booking.get("deposit_percentage", 30),
+        "status": booking.get("payment_status"),
+    }
+
+@api_router.post("/payment/create-balance-intent/{booking_id}")
+async def create_balance_payment_intent(booking_id: str, current_user: dict = Depends(get_current_user)):
+    """Create a Stripe PaymentIntent for the remaining balance."""
+    booking = await db.bookings.find_one({"id": booking_id, "user_id": current_user["id"]})
+    if not booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
+    
+    if booking.get("payment_status") != "deposit_paid":
+        raise HTTPException(status_code=400, detail="No balance due for this booking")
+    
+    remaining = booking.get("remaining_balance", 0)
+    if remaining <= 0:
+        raise HTTPException(status_code=400, detail="No balance remaining")
+    
+    try:
+        payment_intent = stripe.PaymentIntent.create(
+            amount=int(remaining * 100),  # Convert to cents
+            currency="eur",
+            metadata={
+                "booking_id": booking_id,
+                "type": "balance_payment",
+                "experience": booking["experience_title"],
+            }
+        )
+        
+        # Store the balance payment intent
+        await db.bookings.update_one(
+            {"id": booking_id},
+            {"$set": {"balance_payment_intent_id": payment_intent.id}}
+        )
+        
+        return {
+            "client_secret": payment_intent.client_secret,
+            "amount": remaining,
+            "payment_intent_id": payment_intent.id,
+        }
+    except stripe.error.StripeError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@api_router.post("/payment/confirm-balance/{booking_id}")
+async def confirm_balance_payment(booking_id: str, current_user: dict = Depends(get_current_user)):
+    """Confirm the remaining balance payment — upgrades booking to fully paid."""
+    booking = await db.bookings.find_one({"id": booking_id, "user_id": current_user["id"]})
+    if not booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
+    
+    if booking.get("payment_status") != "deposit_paid":
+        raise HTTPException(status_code=400, detail="No balance due for this booking")
+    
+    # Verify Stripe payment if intent exists
+    balance_intent_id = booking.get("balance_payment_intent_id")
+    if balance_intent_id:
+        try:
+            intent = stripe.PaymentIntent.retrieve(balance_intent_id)
+            if intent.status not in ["succeeded", "requires_payment_method", "requires_confirmation"]:
+                raise HTTPException(status_code=400, detail=f"Payment status: {intent.status}")
+        except stripe.error.StripeError as e:
+            logger.warning(f"Stripe balance verification skipped: {e}")
+    
+    # Update booking to fully paid
+    await db.bookings.update_one(
+        {"id": booking_id},
+        {"$set": {
+            "payment_status": "paid",
+            "status": "confirmed",
+            "balance_paid_at": datetime.utcnow(),
+            "remaining_balance": 0,
+        }}
+    )
+    
+    updated_booking = await db.bookings.find_one({"id": booking_id})
+    
+    # Send emails and update calendar
+    try:
+        user = await db.users.find_one({"id": current_user["id"]})
+        if user and user.get("email"):
+            experience = await db.experiences.find_one({"id": booking.get("experience_id")})
+            customer_name = user.get("full_name", user.get("name", user["email"].split("@")[0]))
+            
+            # Send full payment confirmation + itinerary prompt to customer
+            send_full_payment_confirmation(
+                to_email=user["email"],
+                customer_name=customer_name,
+                booking=updated_booking
+            )
+            
+            # Send invoice to business email
+            try:
+                send_business_invoice(
+                    customer_name=customer_name,
+                    customer_email=user["email"],
+                    booking=updated_booking,
+                    experience=experience or {},
+                    payment_label="Balance Payment"
+                )
+            except Exception as inv_err:
+                logger.error(f"Balance invoice send failed (non-blocking): {inv_err}")
+            
+            # Update Google Calendar event color to green (fully paid)
+            cal_event_id = booking.get("calendar_event_id")
+            if cal_event_id:
+                try:
+                    service = get_google_calendar_service()
+                    if service:
+                        event = service.events().get(calendarId=GOOGLE_CALENDAR_ID, eventId=cal_event_id).execute()
+                        event['colorId'] = '10'  # basil/green = fully paid
+                        event['summary'] = event['summary'].replace('🚢', '✅')
+                        event['description'] = event['description'].replace('DEPOSIT PAID', 'FULLY PAID') + f"\n\n✅ Balance of €{booking.get('deposit_amount', 0):.2f} received on {datetime.utcnow().strftime('%Y-%m-%d')}"
+                        service.events().update(calendarId=GOOGLE_CALENDAR_ID, eventId=cal_event_id, body=event).execute()
+                        logger.info(f"Calendar event {cal_event_id} updated to FULLY PAID")
+                except Exception as cal_err:
+                    logger.error(f"Calendar update failed (non-blocking): {cal_err}")
+    except Exception as e:
+        logger.error(f"Balance confirmation emails failed (non-blocking): {str(e)}")
+    
+    return {
+        "status": "success",
+        "message": "Balance payment confirmed! Booking is now fully paid.",
+        "booking": Booking(**updated_booking).dict()
+    }
+
+@api_router.get("/bookings/deposit-pending")
+async def get_deposit_pending_bookings(current_user: dict = Depends(get_current_user)):
+    """Get all bookings with pending balance (for admin to send balance requests)."""
+    bookings = await db.bookings.find({"payment_status": "deposit_paid"}).to_list(100)
+    result = []
+    for b in bookings:
+        user = await db.users.find_one({"id": b["user_id"]})
+        result.append({
+            "booking": Booking(**b).dict(),
+            "customer_name": user.get("full_name", "Unknown") if user else "Unknown",
+            "customer_email": user.get("email", "Unknown") if user else "Unknown",
+        })
+    return result
 
 # ======================== PASSKEY / WEBAUTHN ENDPOINTS ========================
 

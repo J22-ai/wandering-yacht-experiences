@@ -112,6 +112,33 @@ class ApiService {
     });
   }
 
+  // Balance Payment Flow
+  async getBalanceInfo(bookingId) {
+    return this.request(`/payment/balance-info/${bookingId}`);
+  }
+
+  async createBalanceIntent(bookingId) {
+    return this.request(`/payment/create-balance-intent/${bookingId}`, {
+      method: 'POST',
+    });
+  }
+
+  async confirmBalancePayment(bookingId) {
+    return this.request(`/payment/confirm-balance/${bookingId}`, {
+      method: 'POST',
+    });
+  }
+
+  async requestBalancePayment(bookingId) {
+    return this.request(`/payment/request-balance/${bookingId}`, {
+      method: 'POST',
+    });
+  }
+
+  async getDepositPendingBookings() {
+    return this.request('/bookings/deposit-pending');
+  }
+
   // Biometric
   async biometricRefresh() {
     return this.request('/auth/biometric-refresh', {
