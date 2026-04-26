@@ -13,6 +13,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../../src/context/AuthContext';
+import { useLanguage } from '../../src/context/LanguageContext';
 import { api } from '../../src/services/api';
 
 export default function BalancePaymentScreen() {
@@ -20,6 +21,7 @@ export default function BalancePaymentScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { user, token } = useAuth();
+  const { t } = useLanguage();
   const [balanceInfo, setBalanceInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [paying, setPaying] = useState(false);
@@ -44,9 +46,9 @@ export default function BalancePaymentScreen() {
 
   const handlePayBalance = async () => {
     if (!user || !token) {
-      Alert.alert('Sign In Required', 'Please sign in to complete your payment.', [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Sign In', onPress: () => router.push('/auth/login') },
+      Alert.alert(t('balance_sign_in_required'), t('balance_sign_in_message'), [
+        { text: t('cancel'), style: 'cancel' },
+        { text: t('sign_in'), onPress: () => router.push('/auth/login') },
       ]);
       return;
     }
@@ -67,7 +69,7 @@ export default function BalancePaymentScreen() {
         setPaymentComplete(true);
       }
     } catch (err) {
-      Alert.alert('Payment Error', err.message || 'Payment failed. Please try again.');
+      Alert.alert(t('balance_payment_error'), err.message || t('balance_payment_failed'));
     } finally {
       setPaying(false);
     }
@@ -77,7 +79,7 @@ export default function BalancePaymentScreen() {
     return (
       <View style={[styles.container, styles.centered]}>
         <ActivityIndicator size="large" color="#1a3a4a" />
-        <Text style={styles.loadingText}>Loading booking details...</Text>
+        <Text style={styles.loadingText}>{t('balance_loading')}</Text>
       </View>
     );
   }
@@ -88,7 +90,7 @@ export default function BalancePaymentScreen() {
         <Ionicons name="alert-circle-outline" size={48} color="#e74c3c" />
         <Text style={styles.errorText}>{error}</Text>
         <TouchableOpacity style={styles.retryButton} onPress={fetchBalanceInfo}>
-          <Text style={styles.retryButtonText}>Retry</Text>
+          <Text style={styles.retryButtonText}>{t('balance_retry')}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -101,39 +103,39 @@ export default function BalancePaymentScreen() {
           <View style={styles.successIcon}>
             <Ionicons name="checkmark-circle" size={80} color="#2e7d32" />
           </View>
-          <Text style={styles.successTitle}>Payment Complete!</Text>
+          <Text style={styles.successTitle}>{t('balance_payment_complete')}</Text>
           <Text style={styles.successSubtitle}>
-            Your booking for {balanceInfo?.experience_title} is now fully confirmed.
+            {t('balance_fully_confirmed')}
           </Text>
 
           <View style={styles.successCard}>
             <View style={styles.successRow}>
-              <Text style={styles.successLabel}>Total Paid</Text>
+              <Text style={styles.successLabel}>{t('balance_total_paid')}</Text>
               <Text style={styles.successValue}>€{balanceInfo?.total_amount?.toFixed(2)}</Text>
             </View>
             <View style={styles.successDivider} />
             <View style={styles.successRow}>
-              <Text style={styles.successLabel}>Status</Text>
-              <Text style={[styles.successValue, { color: '#2e7d32' }]}>FULLY PAID</Text>
+              <Text style={styles.successLabel}>{t('balance_status')}</Text>
+              <Text style={[styles.successValue, { color: '#2e7d32' }]}>{t('balance_fully_paid')}</Text>
             </View>
           </View>
 
           <View style={styles.itineraryCard}>
-            <Text style={styles.itineraryTitle}>🗺 Create Your Itinerary</Text>
+            <Text style={styles.itineraryTitle}>🗺 {t('balance_itinerary_title')}</Text>
             <Text style={styles.itineraryText}>
-              We{"'"}ll be reaching out to help plan your perfect experience. Think about:
+              {t('balance_itinerary_text')}
             </Text>
-            <Text style={styles.itineraryItem}>• Preferred departure time</Text>
-            <Text style={styles.itineraryItem}>• Desired route or stops</Text>
-            <Text style={styles.itineraryItem}>• Special dietary requirements</Text>
-            <Text style={styles.itineraryItem}>• Additional services (chef, DJ, photographer)</Text>
+            <Text style={styles.itineraryItem}>• {t('balance_itinerary_departure')}</Text>
+            <Text style={styles.itineraryItem}>• {t('balance_itinerary_route')}</Text>
+            <Text style={styles.itineraryItem}>• {t('balance_itinerary_dietary')}</Text>
+            <Text style={styles.itineraryItem}>• {t('balance_itinerary_services')}</Text>
           </View>
 
           <TouchableOpacity
             style={styles.homeButton}
             onPress={() => router.replace('/(tabs)')}
           >
-            <Text style={styles.homeButtonText}>Back to Home</Text>
+            <Text style={styles.homeButtonText}>{t('balance_back_home')}</Text>
           </TouchableOpacity>
         </ScrollView>
       </View>
@@ -147,7 +149,7 @@ export default function BalancePaymentScreen() {
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color="#1a3a4a" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Balance Payment</Text>
+        <Text style={styles.headerTitle}>{t('balance_title')}</Text>
         <View style={{ width: 44 }} />
       </View>
 
@@ -175,22 +177,22 @@ export default function BalancePaymentScreen() {
 
         {/* Payment Breakdown */}
         <View style={styles.breakdownCard}>
-          <Text style={styles.breakdownTitle}>PAYMENT BREAKDOWN</Text>
+          <Text style={styles.breakdownTitle}>{t('balance_breakdown')}</Text>
           
           <View style={styles.breakdownRow}>
-            <Text style={styles.breakdownLabel}>Charter Total</Text>
+            <Text style={styles.breakdownLabel}>{t('balance_charter_total')}</Text>
             <Text style={styles.breakdownValue}>€{balanceInfo?.total_amount?.toFixed(2)}</Text>
           </View>
           
           <View style={styles.breakdownRow}>
-            <Text style={styles.breakdownLabel}>Deposit Paid ({balanceInfo?.deposit_percentage}%)</Text>
+            <Text style={styles.breakdownLabel}>{t('balance_deposit_paid')} ({balanceInfo?.deposit_percentage}%)</Text>
             <Text style={[styles.breakdownValue, { color: '#2e7d32' }]}>-€{balanceInfo?.deposit_amount?.toFixed(2)}</Text>
           </View>
           
           <View style={styles.breakdownDivider} />
           
           <View style={styles.balanceDueBox}>
-            <Text style={styles.balanceDueLabel}>REMAINING BALANCE</Text>
+            <Text style={styles.balanceDueLabel}>{t('balance_remaining')}</Text>
             <Text style={styles.balanceDueAmount}>€{balanceInfo?.remaining_balance?.toFixed(2)}</Text>
           </View>
         </View>
@@ -207,14 +209,14 @@ export default function BalancePaymentScreen() {
             <>
               <Ionicons name="card-outline" size={20} color="#fff" />
               <Text style={styles.payButtonText}>
-                Pay €{balanceInfo?.remaining_balance?.toFixed(2)}
+                {t('balance_pay')} €{balanceInfo?.remaining_balance?.toFixed(2)}
               </Text>
             </>
           )}
         </TouchableOpacity>
 
         <Text style={styles.secureText}>
-          <Ionicons name="lock-closed-outline" size={12} color="#7a8a8a" /> Secure payment powered by Stripe
+          <Ionicons name="lock-closed-outline" size={12} color="#7a8a8a" /> {t('balance_secure')}
         </Text>
       </ScrollView>
     </View>

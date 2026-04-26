@@ -234,7 +234,7 @@ export default function LoginScreen() {
                 <>
                   <Ionicons name={getBiometricIcon()} size={32} color="#1a3a4a" />
                   <Text style={styles.biometricButtonText}>
-                    Sign in with {biometricLabel}
+                    {t('auth_sign_in_with')} {biometricLabel}
                   </Text>
                   {storedEmail && (
                     <Text style={styles.biometricEmail}>{storedEmail}</Text>
@@ -245,7 +245,7 @@ export default function LoginScreen() {
 
             <View style={styles.dividerRow}>
               <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>or use password</Text>
+              <Text style={styles.dividerText}>{t('auth_or_use_password')}</Text>
               <View style={styles.dividerLine} />
             </View>
           </View>
@@ -260,12 +260,12 @@ export default function LoginScreen() {
               disabled={loading}
             >
               <Ionicons name="key-outline" size={24} color="#fff" />
-              <Text style={styles.passkeyButtonText}>Sign in with Passkey</Text>
+              <Text style={styles.passkeyButtonText}>{t('auth_sign_in_passkey')}</Text>
             </TouchableOpacity>
 
             <View style={styles.dividerRow}>
               <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>or use password</Text>
+              <Text style={styles.dividerText}>{t('auth_or_use_password')}</Text>
               <View style={styles.dividerLine} />
             </View>
           </View>

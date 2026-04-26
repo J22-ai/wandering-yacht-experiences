@@ -63,13 +63,13 @@ export default function ProfileScreen() {
       if (value) {
         const success = await enableBiometric();
         if (success) {
-          Alert.alert('Enabled', `${biometricLabel} login has been enabled.`);
+          Alert.alert(t('profile_enabled'), `${biometricLabel} ${t('profile_biometric_login')} - ${t('profile_enabled')}`);
         } else {
-          Alert.alert('Error', `Could not enable ${biometricLabel}.`);
+          Alert.alert('Error', `${biometricLabel} - Error`);
         }
       } else {
         await disableBiometric();
-        Alert.alert('Disabled', `${biometricLabel} login has been disabled.`);
+        Alert.alert(t('profile_disabled'), `${biometricLabel} ${t('profile_biometric_login')} - ${t('profile_disabled')}`);
       }
     } catch (err) {
       console.error('Biometric toggle error:', err);
@@ -175,18 +175,18 @@ export default function ProfileScreen() {
           <View style={styles.securitySection}>
             <View style={styles.sectionHeaderRow}>
               <View style={styles.sectionLine} />
-              <Text style={styles.sectionTitle}>SECURITY</Text>
+              <Text style={styles.sectionTitle}>{t('profile_security')}</Text>
               <View style={styles.sectionLine} />
             </View>
 
             <View style={styles.securityRow}>
               <Ionicons name={getBiometricIcon()} size={22} color="#1a3a4a" />
               <View style={styles.securityInfo}>
-                <Text style={styles.securityLabel}>{biometricLabel} Login</Text>
+                <Text style={styles.securityLabel}>{biometricLabel} {t('profile_biometric_login')}</Text>
                 <Text style={styles.securityDesc}>
                   {isBiometricEnabled
-                    ? `Use ${biometricLabel} for quick sign-in`
-                    : `Enable ${biometricLabel} for faster access`}
+                    ? `${biometricLabel} ${t('profile_biometric_quick_signin')}`
+                    : `${biometricLabel} ${t('profile_biometric_enable')}`}
                 </Text>
               </View>
               <Switch

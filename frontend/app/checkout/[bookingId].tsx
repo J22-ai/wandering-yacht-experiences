@@ -205,7 +205,7 @@ function NativePaymentCard({ bookingId, onSuccess, onError, processing, setProce
 
   return (
     <View style={styles.cardSection}>
-      <Text style={styles.sectionLabel}>PAYMENT</Text>
+      <Text style={styles.sectionLabel}>{t('checkout_payment')}</Text>
       <View style={styles.nativePayInfo}>
         <Ionicons name="card-outline" size={32} color="#1a3a4a" />
         <Text style={styles.nativePayText}>Secure payment via Stripe</Text>
@@ -288,10 +288,10 @@ export default function CheckoutScreen() {
     }
     
     const isDeposit = booking!.payment_type === 'deposit';
-    const successTitle = isDeposit ? 'Deposit Received!' : 'Payment Successful!';
+    const successTitle = isDeposit ? t('checkout_deposit_received') : t('checkout_payment_success');
     const successMessage = isDeposit 
-      ? `Your ${booking!.deposit_percentage}% deposit of €${booking!.deposit_amount.toFixed(2)} has been received. Your dates are now blocked! We will contact you regarding the remaining balance and itinerary.`
-      : 'Your booking has been confirmed!';
+      ? t('checkout_deposit_message')
+      : t('checkout_booking_confirmed');
     
     if (Platform.OS === 'web') {
       window.alert(`${successTitle}\n\n${successMessage}`);
@@ -300,7 +300,7 @@ export default function CheckoutScreen() {
       Alert.alert(
         successTitle,
         successMessage,
-        [{ text: 'View Ticket', onPress: () => router.replace(`/ticket/${booking!.id}`) }]
+        [{ text: t('checkout_view_ticket_btn'), onPress: () => router.replace(`/ticket/${booking!.id}`) }]
       );
     }
   };
@@ -345,16 +345,16 @@ export default function CheckoutScreen() {
           <Ionicons name="checkmark" size={40} color="#fff" />
         </View>
         <Text style={styles.successTitle}>
-          {isDepositPaid ? 'Deposit Confirmed' : (t('checkout_already_paid') || 'Already Paid')}
+          {isDepositPaid ? t('checkout_deposit_confirmed') : (t('checkout_already_paid') || 'Already Paid')}
         </Text>
         <Text style={styles.successSubtext}>
           {isDepositPaid 
-            ? `Your ${booking.deposit_percentage}% deposit has been received. Dates are blocked!`
+            ? t('checkout_deposit_dates_blocked')
             : (t('checkout_already_paid_text') || 'This booking is confirmed.')}
         </Text>
         {isDepositPaid && booking.remaining_balance > 0 && (
           <Text style={[styles.successSubtext, { marginTop: 4, color: '#1a3a4a', fontWeight: '600' }]}>
-            Remaining balance: €{booking.remaining_balance.toFixed(2)}
+            {t('checkout_remaining_balance')}: €{booking.remaining_balance.toFixed(2)}
           </Text>
         )}
         <TouchableOpacity style={styles.primaryButton} onPress={() => router.replace(`/ticket/${booking.id}`)}>
@@ -421,33 +421,33 @@ export default function CheckoutScreen() {
           <View style={styles.depositCard}>
             <View style={styles.depositBanner}>
               <Ionicons name="boat-outline" size={22} color="#fff" />
-              <Text style={styles.depositBannerText}>DEPOSIT OF {booking.deposit_percentage}% NEEDED TODAY</Text>
+              <Text style={styles.depositBannerText}>{booking.deposit_percentage}% {t('checkout_deposit_needed')}</Text>
             </View>
             <Text style={styles.depositSubtext}>
-              For Half-Day and Full-Day Charter Bookings
+              {t('checkout_charter_bookings')}
             </Text>
             <Text style={[styles.depositSubtext, { marginTop: 2, fontSize: 13 }]}>
-              Pay a {booking.deposit_percentage}% deposit to block your dates immediately
+              {t('checkout_deposit_block_dates')}
             </Text>
             <View style={styles.depositBreakdown}>
               <View style={styles.depositRow}>
-                <Text style={styles.depositLabel}>Charter Total</Text>
+                <Text style={styles.depositLabel}>{t('checkout_charter_total')}</Text>
                 <Text style={styles.depositValue}>€{booking.total_amount.toFixed(2)}</Text>
               </View>
               <View style={styles.depositRowHighlight}>
-                <Text style={styles.depositLabelBold}>{booking.deposit_percentage}% Deposit Due Now</Text>
+                <Text style={styles.depositLabelBold}>{booking.deposit_percentage}% {t('checkout_deposit_due')}</Text>
                 <Text style={styles.depositValueBold}>€{booking.deposit_amount.toFixed(2)}</Text>
               </View>
               <View style={styles.depositDivider} />
               <View style={styles.depositRow}>
-                <Text style={styles.depositLabelMuted}>Remaining Balance</Text>
+                <Text style={styles.depositLabelMuted}>{t('checkout_remaining_balance')}</Text>
                 <Text style={styles.depositValueMuted}>€{booking.remaining_balance.toFixed(2)}</Text>
               </View>
             </View>
             <View style={styles.depositNote}>
               <Ionicons name="information-circle-outline" size={16} color="#7a8a8a" />
               <Text style={styles.depositNoteText}>
-                Remaining balance will be invoiced. Full payment confirmation and itinerary details will follow.
+                {t('checkout_remaining_note')}
               </Text>
             </View>
           </View>
@@ -464,7 +464,7 @@ export default function CheckoutScreen() {
                 onError={handlePaymentError}
                 processing={processing}
                 setProcessing={setProcessing}
-                payLabel={booking.payment_type === 'deposit' ? `Pay ${booking.deposit_percentage}% Deposit — €${booking.deposit_amount.toFixed(2)}` : 'Complete Payment'}
+                payLabel={booking.payment_type === 'deposit' ? `${t('checkout_pay_deposit')} — €${booking.deposit_amount.toFixed(2)}` : t('checkout_payment')}
               />
             )}
             {Platform.OS !== 'web' && (
@@ -474,7 +474,7 @@ export default function CheckoutScreen() {
                 onError={handlePaymentError}
                 processing={processing}
                 setProcessing={setProcessing}
-                payLabel={booking.payment_type === 'deposit' ? `Pay ${booking.deposit_percentage}% Deposit — €${booking.deposit_amount.toFixed(2)}` : 'Complete Payment'}
+                payLabel={booking.payment_type === 'deposit' ? `${t('checkout_pay_deposit')} — €${booking.deposit_amount.toFixed(2)}` : t('checkout_payment')}
               />
             )}
           </>
