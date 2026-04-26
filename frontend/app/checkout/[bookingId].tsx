@@ -8,6 +8,7 @@ import {
   Alert,
   ActivityIndicator,
   Platform,
+  Modal,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -246,6 +247,8 @@ export default function CheckoutScreen() {
   const [processing, setProcessing] = useState(false);
   const [clientSecret, setClientSecret] = useState('');
   const [publishableKey, setPublishableKey] = useState('');
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -453,8 +456,141 @@ export default function CheckoutScreen() {
           </View>
         )}
 
+        {/* Terms & Conditions */}
+        <View style={styles.termsSection}>
+          <TouchableOpacity
+            style={styles.termsCheckRow}
+            onPress={() => setTermsAccepted(!termsAccepted)}
+            activeOpacity={0.7}
+          >
+            <View style={[styles.checkbox, termsAccepted && styles.checkboxChecked]}>
+              {termsAccepted && <Ionicons name="checkmark" size={14} color="#fff" />}
+            </View>
+            <Text style={styles.termsCheckText}>
+              {t('terms_i_accept')}{' '}
+              <Text
+                style={styles.termsLink}
+                onPress={() => setShowTermsModal(true)}
+              >
+                {t('terms_title')}
+              </Text>
+            </Text>
+          </TouchableOpacity>
+          {!termsAccepted && (
+            <Text style={styles.termsRequired}>{t('terms_required')}</Text>
+          )}
+        </View>
+
+        {/* Terms & Conditions Modal */}
+        <Modal
+          visible={showTermsModal}
+          animationType="slide"
+          presentationStyle="pageSheet"
+          onRequestClose={() => setShowTermsModal(false)}
+        >
+          <View style={[styles.modalContainer, { paddingTop: insets.top }]}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>{t('terms_title')}</Text>
+              <TouchableOpacity onPress={() => setShowTermsModal(false)}>
+                <Ionicons name="close" size={28} color="#1a3a4a" />
+              </TouchableOpacity>
+            </View>
+            <ScrollView style={styles.modalBody} showsVerticalScrollIndicator={true}>
+              <Text style={styles.termsHeading}>WANDERING YACHT — TERMS & CONDITIONS</Text>
+              <Text style={styles.termsDate}>Effective Date: January 1, 2025</Text>
+
+              <Text style={styles.termsSectionTitle}>1. ASSUMPTION OF RISK & LIABILITY WAIVER</Text>
+              <Text style={styles.termsBody}>
+                By booking and participating in any experience, charter, tour, or activity ("Experience") offered by Wandering Yacht d.o.o. ("Company"), you acknowledge and accept that such activities involve inherent risks including, but not limited to, risks associated with water-based activities, boating, swimming, adverse weather conditions, physical exertion, wildlife encounters, and transportation by land or sea.{'\n\n'}
+                You voluntarily assume all risks of personal injury, illness, death, or property damage arising from your participation. The Company, its owners, directors, officers, employees, agents, contractors, guides, captains, crew members, and affiliates shall not be held liable for any injury, loss, damage, or expense of any kind, whether direct or indirect, arising from or related to your participation in any Experience.{'\n\n'}
+                This waiver applies to all claims, including but not limited to negligence, breach of contract, or breach of statutory duty, to the fullest extent permitted by applicable law.
+              </Text>
+
+              <Text style={styles.termsSectionTitle}>2. MEDICAL FITNESS & PERSONAL RESPONSIBILITY</Text>
+              <Text style={styles.termsBody}>
+                Participants must be in adequate physical and mental health to take part in the booked Experience. You are responsible for disclosing any medical conditions, allergies, dietary restrictions, mobility limitations, or other health concerns that may affect your participation.{'\n\n'}
+                The Company reserves the right to refuse participation to any individual deemed unfit for safety reasons, without refund.{'\n\n'}
+                Participants must follow all safety instructions provided by guides, captains, and crew at all times. Failure to comply may result in immediate removal from the Experience without refund.
+              </Text>
+
+              <Text style={styles.termsSectionTitle}>3. WEATHER & ITINERARY CHANGES</Text>
+              <Text style={styles.termsBody}>
+                Experiences may be modified, rerouted, or relocated due to weather conditions, sea state, mechanical issues, or other factors beyond the Company's control. The Company reserves the right to alter itineraries, change departure times, substitute vessels, or move activities to alternative indoor or outdoor locations as necessary for safety.{'\n\n'}
+                No refunds will be issued for itinerary modifications made in the interest of safety. In cases of full cancellation by the Company due to extreme weather or force majeure, a full reschedule or credit will be offered.
+              </Text>
+
+              <Text style={styles.termsSectionTitle}>4. CANCELLATION & REFUND POLICY</Text>
+              <Text style={styles.termsBody}>
+                • Cancellations made 72+ hours before the Experience: Full refund minus processing fees.{'\n'}
+                • Cancellations made 24–72 hours before: 50% refund.{'\n'}
+                • Cancellations made less than 24 hours before or no-shows: No refund.{'\n'}
+                • Deposit payments are non-refundable unless the Company cancels the Experience.{'\n\n'}
+                The Company reserves the right to cancel any Experience at its sole discretion for safety, operational, or logistical reasons, in which case a full refund or reschedule will be provided.
+              </Text>
+
+              <Text style={styles.termsSectionTitle}>5. PRIVACY & DATA PROTECTION</Text>
+              <Text style={styles.termsBody}>
+                Wandering Yacht is committed to protecting your personal information. We collect personal data (name, email, phone number, WhatsApp number, payment details) solely for the purpose of processing bookings, communicating about your Experiences, and improving our services.{'\n\n'}
+                We will never sell, rent, or share your personal information with third parties for marketing purposes. Your data may only be shared with trusted service providers (payment processors, email services) strictly necessary to fulfil your booking.{'\n\n'}
+                You may request access to, correction of, or deletion of your personal data at any time by contacting booking@wanderingyacht.com.
+              </Text>
+
+              <Text style={styles.termsSectionTitle}>6. PHOTOGRAPHY & MEDIA</Text>
+              <Text style={styles.termsBody}>
+                The Company may take photographs or video during Experiences for promotional purposes. By participating, you grant the Company a non-exclusive, royalty-free license to use such media. If you do not wish to be photographed, please inform your guide or captain at the start of the Experience.
+              </Text>
+
+              <Text style={styles.termsSectionTitle}>7. ALCOHOL & SUBSTANCE POLICY</Text>
+              <Text style={styles.termsBody}>
+                Where alcoholic beverages are included in an Experience (e.g., wine tastings), consumption is at your own risk. The Company is not responsible for any incidents arising from alcohol consumption. Participants must be of legal drinking age. The Company reserves the right to refuse service to intoxicated individuals.
+              </Text>
+
+              <Text style={styles.termsSectionTitle}>8. MINORS</Text>
+              <Text style={styles.termsBody}>
+                Participants under the age of 18 must be accompanied by a parent or legal guardian who accepts these Terms & Conditions on their behalf. The accompanying adult assumes full responsibility for the minor's safety and conduct.
+              </Text>
+
+              <Text style={styles.termsSectionTitle}>9. PERSONAL BELONGINGS</Text>
+              <Text style={styles.termsBody}>
+                The Company is not responsible for any loss, theft, or damage to personal belongings, including electronic devices, jewellery, or other valuables, during any Experience. Participants are advised to leave valuables in a secure location.
+              </Text>
+
+              <Text style={styles.termsSectionTitle}>10. FORCE MAJEURE</Text>
+              <Text style={styles.termsBody}>
+                The Company shall not be liable for any failure or delay in performing obligations due to events beyond its reasonable control, including but not limited to natural disasters, pandemics, government restrictions, civil unrest, strikes, or severe weather events.
+              </Text>
+
+              <Text style={styles.termsSectionTitle}>11. GOVERNING LAW</Text>
+              <Text style={styles.termsBody}>
+                These Terms & Conditions are governed by and construed in accordance with the laws of Montenegro. Any disputes arising from these terms shall be subject to the exclusive jurisdiction of the courts of Montenegro.
+              </Text>
+
+              <Text style={styles.termsSectionTitle}>12. CONTACT</Text>
+              <Text style={styles.termsBody}>
+                For questions regarding these Terms & Conditions, please contact:{'\n'}
+                Wandering Yacht{'\n'}
+                Email: booking@wanderingyacht.com
+              </Text>
+
+              <View style={{ height: 40 }} />
+            </ScrollView>
+            <View style={[styles.modalFooter, { paddingBottom: insets.bottom + 16 }]}>
+              <TouchableOpacity
+                style={styles.acceptButton}
+                onPress={() => {
+                  setTermsAccepted(true);
+                  setShowTermsModal(false);
+                }}
+              >
+                <Ionicons name="checkmark-circle" size={20} color="#fff" />
+                <Text style={styles.acceptButtonText}>{t('terms_accept')}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
         {/* Payment - Platform-specific */}
-        {clientSecret && publishableKey ? (
+        {clientSecret && publishableKey && termsAccepted ? (
           <>
             {Platform.OS === 'web' && (
               <WebStripeCard
@@ -870,5 +1006,127 @@ const styles = StyleSheet.create({
     fontSize: 12,
     flex: 1,
     lineHeight: 18,
+  },
+  // Terms & Conditions styles
+  termsSection: {
+    marginHorizontal: 16,
+    marginBottom: 16,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 16,
+  },
+  termsCheckRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: '#c0c8c8',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  checkboxChecked: {
+    backgroundColor: '#1a3a4a',
+    borderColor: '#1a3a4a',
+  },
+  termsCheckText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#2d3a3a',
+    fontSize: 14,
+    flex: 1,
+    lineHeight: 20,
+  },
+  termsLink: {
+    color: '#0077b6',
+    textDecorationLine: 'underline' as const,
+    fontWeight: '600' as const,
+  },
+  termsRequired: {
+    fontFamily: 'TraditionalArabic',
+    color: '#e53e3e',
+    fontSize: 12,
+    marginTop: 8,
+    marginLeft: 36,
+  },
+  // Modal styles
+  modalContainer: {
+    flex: 1,
+    backgroundColor: '#f8f6f3',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e8e5e0',
+  },
+  modalTitle: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#1a3a4a',
+  },
+  modalBody: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  termsHeading: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#1a3a4a',
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  termsDate: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    color: '#7a8a8a',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  termsSectionTitle: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#1a3a4a',
+    marginTop: 20,
+    marginBottom: 8,
+  },
+  termsBody: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 14,
+    color: '#3d4a4a',
+    lineHeight: 22,
+  },
+  modalFooter: {
+    backgroundColor: '#fff',
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#e8e5e0',
+  },
+  acceptButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: '#1a3a4a',
+    paddingVertical: 16,
+    borderRadius: 28,
+  },
+  acceptButtonText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

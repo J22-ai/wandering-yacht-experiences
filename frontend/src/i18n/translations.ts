@@ -204,6 +204,11 @@ type TranslationStrings = {
   checkout_payment: string;
   checkout_pay_deposit: string;
   checkout_view_ticket_btn: string;
+  // Terms & Conditions
+  terms_title: string;
+  terms_i_accept: string;
+  terms_required: string;
+  terms_accept: string;
 };
 
 const translations: Record<Language, TranslationStrings> = {
@@ -380,6 +385,10 @@ const translations: Record<Language, TranslationStrings> = {
     checkout_payment: 'PAYMENT',
     checkout_pay_deposit: 'Pay Deposit',
     checkout_view_ticket_btn: 'View Ticket',
+    terms_title: 'Terms & Conditions',
+    terms_i_accept: 'I accept the',
+    terms_required: 'You must accept the Terms & Conditions to proceed',
+    terms_accept: 'I Accept & Agree',
   },
   ar: {
     welcome_title: 'تجاربنا الغامرة',
@@ -550,6 +559,10 @@ const translations: Record<Language, TranslationStrings> = {
     checkout_payment: 'الدفع',
     checkout_pay_deposit: 'دفع العربون',
     checkout_view_ticket_btn: 'عرض التذكرة',
+    terms_title: 'الشروط والأحكام',
+    terms_i_accept: 'أوافق على',
+    terms_required: 'يجب قبول الشروط والأحكام للمتابعة',
+    terms_accept: 'أوافق وأقبل',
   },
   fr: {
     welcome_title: 'Nos Expériences Immersives',
@@ -720,6 +733,10 @@ const translations: Record<Language, TranslationStrings> = {
     checkout_payment: 'PAIEMENT',
     checkout_pay_deposit: "Payer l'Acompte",
     checkout_view_ticket_btn: 'Voir le Billet',
+    terms_title: 'Conditions Générales',
+    terms_i_accept: "J'accepte les",
+    terms_required: 'Vous devez accepter les Conditions Générales pour continuer',
+    terms_accept: "J'Accepte",
   },
   it: {
     welcome_title: 'Le Nostre Esperienze Immersive',
@@ -890,6 +907,10 @@ const translations: Record<Language, TranslationStrings> = {
     checkout_payment: 'PAGAMENTO',
     checkout_pay_deposit: "Paga l'Acconto",
     checkout_view_ticket_btn: 'Vedi Biglietto',
+    terms_title: 'Termini e Condizioni',
+    terms_i_accept: 'Accetto i',
+    terms_required: 'Devi accettare i Termini e Condizioni per procedere',
+    terms_accept: 'Accetto',
   },
   es: {
     welcome_title: 'Nuestras Experiencias Inmersivas',
@@ -1060,6 +1081,10 @@ const translations: Record<Language, TranslationStrings> = {
     checkout_payment: 'PAGO',
     checkout_pay_deposit: 'Pagar Depósito',
     checkout_view_ticket_btn: 'Ver Boleto',
+    terms_title: 'Términos y Condiciones',
+    terms_i_accept: 'Acepto los',
+    terms_required: 'Debe aceptar los Términos y Condiciones para continuar',
+    terms_accept: 'Acepto',
   },
   de: {
     welcome_title: 'Unsere Immersiven Erlebnisse',
@@ -1230,6 +1255,10 @@ const translations: Record<Language, TranslationStrings> = {
     checkout_payment: 'ZAHLUNG',
     checkout_pay_deposit: 'Anzahlung Leisten',
     checkout_view_ticket_btn: 'Ticket Anzeigen',
+    terms_title: 'Allgemeine Geschäftsbedingungen',
+    terms_i_accept: 'Ich akzeptiere die',
+    terms_required: 'Sie müssen die AGB akzeptieren um fortzufahren',
+    terms_accept: 'Ich Akzeptiere',
   },
   ru: {
     welcome_title: 'Наши Иммерсивные Впечатления',
@@ -1400,6 +1429,10 @@ const translations: Record<Language, TranslationStrings> = {
     checkout_payment: 'ОПЛАТА',
     checkout_pay_deposit: 'Оплатить Задаток',
     checkout_view_ticket_btn: 'Показать Билет',
+    terms_title: 'Условия и Положения',
+    terms_i_accept: 'Я принимаю',
+    terms_required: 'Необходимо принять Условия для продолжения',
+    terms_accept: 'Принимаю',
   },
   hr: {
     welcome_title: 'Naša Impresivna Iskustva',
@@ -1570,6 +1603,10 @@ const translations: Record<Language, TranslationStrings> = {
     checkout_payment: 'PLAĆANJE',
     checkout_pay_deposit: 'Plati Predujam',
     checkout_view_ticket_btn: 'Prikaži Kartu',
+    terms_title: 'Uvjeti i Odredbe',
+    terms_i_accept: 'Prihvaćam',
+    terms_required: 'Morate prihvatiti Uvjete i Odredbe za nastavak',
+    terms_accept: 'Prihvaćam',
   },
   zh: {
     welcome_title: '我们的沉浸式体验',
@@ -1740,6 +1777,10 @@ const translations: Record<Language, TranslationStrings> = {
     checkout_payment: '支付',
     checkout_pay_deposit: '支付定金',
     checkout_view_ticket_btn: '查看票据',
+    terms_title: '条款与条件',
+    terms_i_accept: '我接受',
+    terms_required: '您必须接受条款与条件才能继续',
+    terms_accept: '我同意',
   },
   pt: {
     welcome_title: 'As Nossas Experiências Imersivas',
@@ -1910,6 +1951,10 @@ const translations: Record<Language, TranslationStrings> = {
     checkout_payment: 'PAGAMENTO',
     checkout_pay_deposit: 'Pagar Depósito',
     checkout_view_ticket_btn: 'Ver Bilhete',
+    terms_title: 'Termos e Condições',
+    terms_i_accept: 'Aceito os',
+    terms_required: 'Deve aceitar os Termos e Condições para continuar',
+    terms_accept: 'Aceito',
   },
   ja: {
     welcome_title: '没入型体験',
@@ -2080,6 +2125,10 @@ const translations: Record<Language, TranslationStrings> = {
     checkout_payment: '支払い',
     checkout_pay_deposit: '頭金を支払う',
     checkout_view_ticket_btn: 'チケットを見る',
+    terms_title: '利用規約',
+    terms_i_accept: '以下に同意します：',
+    terms_required: '続行するには利用規約に同意する必要があります',
+    terms_accept: '同意する',
   },
 };
 
