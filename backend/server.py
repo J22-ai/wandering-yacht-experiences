@@ -861,7 +861,7 @@ async def seed_data_internal():
         {
             "id": str(uuid.uuid4()),
             "title": "Secret Places to Visit",
-            "description": "Discover hidden gems and secret spots that only locals know. A curated journey off the beaten path.",
+            "description": "Discover hidden gems and secret spots that only locals know. A curated journey off the beaten path. Includes lunch. Transportation can be by land or by sea.",
             "category": "yacht_experiences",
             "location": "Montenegro Hidden Gems",
             "date": "2025-08-01",
