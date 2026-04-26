@@ -918,7 +918,7 @@ async def seed_data_internal():
         {
             "id": str(uuid.uuid4()),
             "title": "Wine Tasting with Art",
-            "description": "Combine wine tasting with contemporary art in breathtaking outdoor settings across Tivat. Meeting points change weekly to paint new scenery. A feast for all senses.",
+            "description": "Combine wine tasting with contemporary art in breathtaking outdoor settings across Tivat. Meeting points change weekly to paint new scenery. We may move the location for painting, creating other art forms or mediums in various locations around Tivat. In case of bad weather we will choose an indoor location in Tivat to have the event. A feast for all senses.",
             "category": "culinary_tours",
             "location": "Tivat, Montenegro",
             "date": "2025-08-01",
