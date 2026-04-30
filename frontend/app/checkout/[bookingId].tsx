@@ -181,8 +181,10 @@ function WebStripeCard({ clientSecret, publishableKey, onSuccess, onError, proce
 }
 
 // Native Payment Component (API-based for Expo Go compatibility)
-function NativePaymentCard({ bookingId, onSuccess, onError, processing, setProcessing, payLabel }: {
+function NativePaymentCard({ bookingId, clientSecret, publishableKey, onSuccess, onError, processing, setProcessing, payLabel }: {
   bookingId: string;
+  clientSecret: string;
+  publishableKey: string;
   onSuccess: () => void;
   onError: (msg: string) => void;
   processing: boolean;
@@ -190,48 +192,108 @@ function NativePaymentCard({ bookingId, onSuccess, onError, processing, setProce
   payLabel?: string;
 }) {
   const { t } = useLanguage();
-  const handlePay = useCallback(async () => {
-    if (processing) return;
-    setProcessing(true);
-    try {
-      await api.confirmPayment(bookingId);
-      onSuccess();
-    } catch (err: any) {
-      onError(err.message || 'Payment failed');
-    } finally {
-      setProcessing(false);
-    }
-  }, [bookingId, processing]);
+  const webViewRef = useRef<any>(null);
 
   if (Platform.OS === 'web') return null;
 
+  const stripeHtml = `
+<!DOCTYPE html>
+<html><head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f6f3; padding: 16px; }
+  .card-container { background: #fff; border-radius: 12px; padding: 16px; border: 1px solid #e0ddd8; }
+  .card-label { font-size: 13px; font-weight: 600; color: #7a8a8a; letter-spacing: 0.5px; margin-bottom: 12px; text-transform: uppercase; }
+  #card-element { padding: 14px 0; }
+  #card-errors { color: #e53e3e; font-size: 13px; margin-top: 8px; min-height: 20px; }
+  .pay-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 16px; margin-top: 16px; background: #1a3a4a; color: #fff; border: none; border-radius: 28px; font-size: 16px; font-weight: 600; cursor: pointer; }
+  .pay-btn:disabled { opacity: 0.6; }
+  .pay-btn .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .6s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .secure-text { text-align: center; font-size: 12px; color: #7a8a8a; margin-top: 12px; }
+</style>
+</head><body>
+<div class="card-container">
+  <div class="card-label">Card Details</div>
+  <div id="card-element"></div>
+  <div id="card-errors"></div>
+</div>
+<button id="pay-btn" class="pay-btn" onclick="handlePay()">
+  🔒 ${(payLabel || 'Complete Payment').replace(/'/g, "\\'")}
+</button>
+<div class="secure-text">🔒 Secure payment powered by Stripe</div>
+
+<script>
+  var stripe = Stripe('${publishableKey}');
+  var elements = stripe.elements();
+  var card = elements.create('card', {
+    style: {
+      base: { fontSize: '16px', color: '#2d3a3a', fontFamily: '-apple-system, sans-serif', '::placeholder': { color: '#a0aab0' } },
+      invalid: { color: '#e53e3e' }
+    }
+  });
+  card.mount('#card-element');
+  card.on('change', function(e) {
+    document.getElementById('card-errors').textContent = e.error ? e.error.message : '';
+  });
+
+  async function handlePay() {
+    var btn = document.getElementById('pay-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Processing...';
+    try {
+      var result = await stripe.confirmCardPayment('${clientSecret}', { payment_method: { card: card } });
+      if (result.error) {
+        document.getElementById('card-errors').textContent = result.error.message;
+        btn.disabled = false;
+        btn.innerHTML = '🔒 ${(payLabel || 'Complete Payment').replace(/'/g, "\\'")}';
+        window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'error', message: result.error.message }));
+      } else if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
+        btn.innerHTML = '✓ Payment Successful';
+        window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'success' }));
+      }
+    } catch(err) {
+      btn.disabled = false;
+      btn.innerHTML = '🔒 ${(payLabel || 'Complete Payment').replace(/'/g, "\\'")}';
+      window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'error', message: err.message || 'Payment failed' }));
+    }
+  }
+</script>
+</body></html>`;
+
+  const handleMessage = (event: any) => {
+    try {
+      const data = JSON.parse(event.nativeEvent.data);
+      if (data.type === 'success') {
+        setProcessing(true);
+        api.confirmPayment(bookingId)
+          .then(() => onSuccess())
+          .catch((err: any) => onError(err.message || 'Payment confirmation failed'))
+          .finally(() => setProcessing(false));
+      } else if (data.type === 'error') {
+        onError(data.message || 'Payment failed');
+      }
+    } catch (e) {
+      // ignore
+    }
+  };
+
+  const WebView = require('react-native-webview').default;
+
   return (
     <View style={styles.cardSection}>
-      <Text style={styles.sectionLabel}>{t('checkout_payment')}</Text>
-      <View style={styles.nativePayInfo}>
-        <Ionicons name="card-outline" size={32} color="#1a3a4a" />
-        <Text style={styles.nativePayText}>Secure payment via Stripe</Text>
-      </View>
-
-      <View style={styles.testCardHint}>
-        <Ionicons name="information-circle-outline" size={16} color="#1a3a4a" />
-        <Text style={styles.testCardText}>Test mode: Payment will be simulated</Text>
-      </View>
-
-      <TouchableOpacity
-        style={[styles.payButton, processing && styles.payButtonDisabled]}
-        onPress={handlePay}
-        disabled={processing}
-      >
-        {processing ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <>
-            <Ionicons name="lock-closed" size={18} color="#fff" />
-            <Text style={styles.payButtonText}>{payLabel || 'Complete Payment'}</Text>
-          </>
-        )}
-      </TouchableOpacity>
+      <WebView
+        ref={webViewRef}
+        source={{ html: stripeHtml }}
+        style={{ height: 280, backgroundColor: 'transparent' }}
+        scrollEnabled={false}
+        onMessage={handleMessage}
+        javaScriptEnabled={true}
+        domStorageEnabled={true}
+        originWhitelist={['*']}
+      />
     </View>
   );
 }
@@ -633,6 +695,8 @@ export default function CheckoutScreen() {
             {Platform.OS !== 'web' && (
               <NativePaymentCard
                 bookingId={booking.id}
+                clientSecret={clientSecret}
+                publishableKey={publishableKey}
                 onSuccess={handlePaymentSuccess}
                 onError={handlePaymentError}
                 processing={processing}
