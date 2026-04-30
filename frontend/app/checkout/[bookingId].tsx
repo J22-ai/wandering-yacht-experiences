@@ -593,6 +593,32 @@ export default function CheckoutScreen() {
         {/* Payment - Platform-specific */}
         {clientSecret && publishableKey && termsAccepted ? (
           <>
+            {/* Accepted Card Brands */}
+            <View style={styles.cardBrandsSection}>
+              <Text style={styles.cardBrandsLabel}>{t('checkout_payment')}</Text>
+              <View style={styles.cardBrandsRow}>
+                <View style={styles.cardBrand}>
+                  <Text style={styles.cardBrandVisa}>VISA</Text>
+                </View>
+                <View style={styles.cardBrand}>
+                  <View style={styles.mcCircles}>
+                    <View style={[styles.mcCircle, { backgroundColor: '#EB001B' }]} />
+                    <View style={[styles.mcCircle, { backgroundColor: '#F79E1B', marginLeft: -8 }]} />
+                  </View>
+                </View>
+                <View style={styles.cardBrand}>
+                  <Text style={styles.cardBrandAmex}>AMEX</Text>
+                </View>
+                <View style={styles.cardBrand}>
+                  <Ionicons name="card" size={20} color="#1a3a4a" />
+                </View>
+                <View style={styles.cardBrandApplePay}>
+                  <Ionicons name="logo-apple" size={16} color="#000" />
+                  <Text style={styles.applePayText}>Pay</Text>
+                </View>
+              </View>
+            </View>
+
             {Platform.OS === 'web' && (
               <WebStripeCard
                 clientSecret={clientSecret}
@@ -1128,6 +1154,72 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#fff',
     fontSize: 16,
+    fontWeight: '600',
+  },
+  // Card Brand Icons
+  cardBrandsSection: {
+    marginHorizontal: 16,
+    marginBottom: 12,
+  },
+  cardBrandsLabel: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#7a8a8a',
+    letterSpacing: 1,
+    marginBottom: 10,
+  },
+  cardBrandsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  cardBrand: {
+    backgroundColor: '#fff',
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#e0ddd8',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 48,
+    height: 32,
+  },
+  cardBrandVisa: {
+    fontWeight: '800',
+    fontSize: 14,
+    color: '#1a1f71',
+    fontStyle: 'italic',
+  },
+  mcCircles: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  mcCircle: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    opacity: 0.85,
+  },
+  cardBrandAmex: {
+    fontWeight: '800',
+    fontSize: 11,
+    color: '#006FCF',
+  },
+  cardBrandApplePay: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#000',
+    borderRadius: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    height: 32,
+    gap: 2,
+  },
+  applePayText: {
+    color: '#fff',
+    fontSize: 14,
     fontWeight: '600',
   },
 });

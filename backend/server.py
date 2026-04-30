@@ -427,6 +427,7 @@ async def confirm_payment(
     
     # IDEMPOTENCY: If already confirmed, return existing booking without duplicate side-effects
     if booking.get("status") == "confirmed" and booking.get("qr_code"):
+        booking.pop("_id", None)
         return {
             "booking": booking,
             "message": "Booking already confirmed"
