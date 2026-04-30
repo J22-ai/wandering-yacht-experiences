@@ -30,10 +30,11 @@ export default function WelcomeScreen() {
     return (
       <View style={styles.loadingContainer}>
         <Image
-          source={require('../assets/images/splash.png')}
-          style={styles.loadingSplash}
+          source={require('../assets/images/wy-logo-solid.png')}
+          style={styles.loadingLogo}
           resizeMode="contain"
         />
+        <Text style={styles.loadingBrandName}>WANDERING YACHT</Text>
       </View>
     );
   }
@@ -136,9 +137,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  loadingSplash: {
-    width: 280,
-    height: 400,
+  loadingLogo: {
+    width: 120,
+    height: 120,
+  },
+  loadingBrandName: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 26,
+    color: '#000000',
+    fontWeight: '700',
+    letterSpacing: 6,
+    marginTop: 16,
+    textAlign: 'center',
   },
   header: {
     alignItems: 'center',
