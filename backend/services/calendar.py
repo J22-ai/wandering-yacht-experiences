@@ -64,19 +64,44 @@ def create_calendar_event(booking: dict, experience: dict, customer_name: str, c
         except (ValueError, TypeError):
             event_date = datetime.utcnow()
 
+        # Use the actual time slot if available, otherwise default to 09:00
+        time_slot_id = booking.get('time_slot_id')
+        start_hour = 9
+        start_minute = 0
+        end_hour = None
+        
+        if time_slot_id and experience.get('time_slots'):
+            for slot in experience['time_slots']:
+                if slot.get('id') == time_slot_id:
+                    try:
+                        start_parts = slot['start_time'].split(':')
+                        start_hour = int(start_parts[0])
+                        start_minute = int(start_parts[1]) if len(start_parts) > 1 else 0
+                        end_parts = slot['end_time'].split(':')
+                        end_hour = int(end_parts[0])
+                    except (KeyError, ValueError, IndexError):
+                        pass
+                    break
+
         duration_hours = experience.get('duration_hours', 4) or 4
+        if end_hour is None:
+            end_hour = start_hour + int(duration_hours)
+        
         event_title = f"\U0001f6a2 {booking['experience_title']} \u2014 {customer_name}"
+
+        start_time_str = f"{start_hour:02d}:{start_minute:02d}:00"
+        end_time_str = f"{end_hour:02d}:{start_minute:02d}:00"
 
         event_body = {
             'summary': event_title,
             'description': description,
             'location': booking.get('experience_location', ''),
             'start': {
-                'dateTime': event_date.strftime('%Y-%m-%dT09:00:00'),
+                'dateTime': event_date.strftime(f'%Y-%m-%dT{start_time_str}'),
                 'timeZone': 'Europe/Podgorica',
             },
             'end': {
-                'dateTime': event_date.replace(hour=9).strftime('%Y-%m-%dT') + f"{9 + int(duration_hours):02d}:00:00",
+                'dateTime': event_date.strftime(f'%Y-%m-%dT{end_time_str}'),
                 'timeZone': 'Europe/Podgorica',
             },
             'colorId': '9' if is_deposit else '10',
