@@ -41,21 +41,17 @@ def create_calendar_event(booking: dict, experience: dict, customer_name: str, c
 
         ticket_lines = []
         for t in booking.get('tickets', []):
-            ticket_lines.append(f"  \u2022 {t['ticket_name']} x{t['quantity']} @ \u20ac{t['price_per_ticket']:.2f}")
+            ticket_lines.append(f"  {t['ticket_name']} x{t['quantity']}")
         ticket_summary = "\n".join(ticket_lines)
 
         description = (
-            f"\U0001f3ab BOOKING CONFIRMED \u2014 {payment_label}\n"
-            f"\u2501" * 24 + "\n"
-            f"\U0001f4cb Booking ID: {booking['id'][:8].upper()}\n"
-            f"\U0001f464 Customer: {customer_name}\n"
-            f"\U0001f4e7 Email: {customer_email}\n"
-            f"\n\U0001f39f\ufe0f Tickets:\n{ticket_summary}\n"
-            f"\n\U0001f4b6 Total: \u20ac{booking['total_amount']:.2f}"
+            f"BOOKING CONFIRMED — {payment_label}\n\n"
+            f"Customer: {customer_name}\n"
+            f"Email: {customer_email}\n"
+            f"Tickets: {ticket_summary}\n"
+            f"Total: €{booking['total_amount']:.2f}"
             f"{deposit_info}\n"
-            f"\n\U0001f4cd Location: {booking.get('experience_location', 'TBD')}\n"
-            f"\u2501" * 24 + "\n"
-            f"Special Requests: {booking.get('special_requests', 'None')}\n"
+            f"Location: {booking.get('experience_location', 'TBD')}\n"
         )
 
         experience_date_str = booking.get('experience_date', '')

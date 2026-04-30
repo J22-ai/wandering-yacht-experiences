@@ -425,6 +425,13 @@ async def confirm_payment(
     if not booking:
         raise HTTPException(status_code=404, detail="Booking not found")
     
+    # IDEMPOTENCY: If already confirmed, return existing booking without duplicate side-effects
+    if booking.get("status") == "confirmed" and booking.get("qr_code"):
+        return {
+            "booking": booking,
+            "message": "Booking already confirmed"
+        }
+    
     # In demo mode, allow confirmation without strict Stripe verification
     # In production, you would verify payment_intent.status == "succeeded"
     if booking.get("payment_intent_id"):
