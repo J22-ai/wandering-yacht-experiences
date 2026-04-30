@@ -185,6 +185,7 @@ export default function ExperienceDetailScreen() {
         experience_id: experience!.id,
         tickets,
         time_slot_id: selectedTimeSlot || undefined,
+        selected_date: selectedDate || undefined,
       };
 
       const result = await api.createBooking(bookingData);

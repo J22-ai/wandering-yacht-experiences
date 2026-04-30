@@ -111,6 +111,7 @@ class BookingCreate(BaseModel):
     tickets: List[BookingTicket]
     time_slot_id: Optional[str] = None
     special_requests: Optional[str] = None
+    selected_date: Optional[str] = None
 
 class Booking(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))

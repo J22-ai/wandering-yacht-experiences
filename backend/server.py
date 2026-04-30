@@ -312,12 +312,15 @@ async def create_booking(
         deposit_amount = round(total_amount * (deposit_percentage / 100), 2)
         remaining_balance = round(total_amount - deposit_amount, 2)
     
+    # Use the user's selected date if provided, otherwise fall back to experience date
+    booking_date = booking_data.selected_date or experience["date"]
+    
     # Create booking
     booking = Booking(
         user_id=current_user["id"],
         experience_id=booking_data.experience_id,
         experience_title=experience["title"],
-        experience_date=experience["date"],
+        experience_date=booking_date,
         experience_location=experience["location"],
         tickets=booking_data.tickets,
         time_slot_id=booking_data.time_slot_id,
