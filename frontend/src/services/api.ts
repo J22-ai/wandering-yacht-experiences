@@ -79,6 +79,7 @@ class ApiService {
     }>;
     time_slot_id?: string;
     special_requests?: string;
+    selected_date?: string;
   }) {
     return this.request('/bookings', {
       method: 'POST',
