@@ -22,7 +22,10 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "com.wanderingyacht.app",
-      "permissions": ["USE_BIOMETRIC", "USE_FINGERPRINT"]
+      "permissions": [
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -53,7 +56,8 @@
         {
           "faceIDPermission": "Sign in quickly with Face ID"
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true
