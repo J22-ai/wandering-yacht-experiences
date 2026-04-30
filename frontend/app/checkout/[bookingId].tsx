@@ -189,6 +189,7 @@ function NativePaymentCard({ bookingId, onSuccess, onError, processing, setProce
   setProcessing: (v: boolean) => void;
   payLabel?: string;
 }) {
+  const { t } = useLanguage();
   const handlePay = useCallback(async () => {
     if (processing) return;
     setProcessing(true);
