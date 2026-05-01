@@ -1,4 +1,5 @@
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request
+from fastapi.responses import HTMLResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -2170,6 +2171,105 @@ async def test_google_calendar():
         }
     except Exception as e:
         return {"status": "error", "message": str(e)}
+
+# ======================== PRIVACY POLICY ========================
+@api_router.get("/privacy-policy", response_class=HTMLResponse)
+async def privacy_policy():
+    """Public privacy policy page for Google Play Store submission."""
+    return HTMLResponse(content="""<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Wandering Yacht</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f6f3; color: #2d3a3a; line-height: 1.7; }
+  .header { background: #1a3a4a; color: #fff; padding: 40px 20px; text-align: center; }
+  .header h1 { font-size: 28px; letter-spacing: 4px; margin-bottom: 8px; }
+  .header p { opacity: 0.8; font-size: 14px; }
+  .container { max-width: 720px; margin: 0 auto; padding: 32px 20px 60px; }
+  h2 { color: #1a3a4a; font-size: 18px; margin: 28px 0 12px; }
+  p, li { font-size: 15px; margin-bottom: 12px; }
+  ul { padding-left: 24px; }
+  .footer { text-align: center; padding: 24px; color: #7a8a8a; font-size: 13px; border-top: 1px solid #e0ddd8; margin-top: 40px; }
+</style>
+</head><body>
+<div class="header">
+  <h1>WANDERING YACHT</h1>
+  <p>Privacy Policy</p>
+</div>
+<div class="container">
+  <p><strong>Effective Date:</strong> January 1, 2025</p>
+  <p>Wandering Yacht d.o.o. ("Company", "we", "us") is committed to protecting your personal information. This Privacy Policy explains how we collect, use, and safeguard your data when you use the Wandering Yacht mobile application ("App").</p>
+
+  <h2>1. Information We Collect</h2>
+  <p>We collect the following personal information when you create an account or make a booking:</p>
+  <ul>
+    <li>Full name</li>
+    <li>Email address</li>
+    <li>Phone number (optional)</li>
+    <li>WhatsApp number (optional)</li>
+    <li>Payment information (processed securely by Stripe — we do not store card details)</li>
+    <li>Booking history and preferences</li>
+  </ul>
+
+  <h2>2. How We Use Your Information</h2>
+  <p>Your personal data is used solely for the following purposes:</p>
+  <ul>
+    <li>Processing and confirming bookings</li>
+    <li>Sending booking confirmations, tickets, and receipts via email</li>
+    <li>Communicating about your scheduled experiences</li>
+    <li>Creating calendar events for your bookings</li>
+    <li>Improving our services and user experience</li>
+    <li>Sending periodic updates about new experiences (you may opt out at any time)</li>
+  </ul>
+
+  <h2>3. We Will Never Sell Your Data</h2>
+  <p><strong>We will never sell, rent, or share your personal information with third parties for marketing purposes.</strong> Your data may only be shared with trusted service providers strictly necessary to fulfil your booking:</p>
+  <ul>
+    <li><strong>Stripe</strong> — for secure payment processing</li>
+    <li><strong>Google Calendar</strong> — for scheduling booking events</li>
+    <li><strong>Email services</strong> — for sending confirmations and tickets</li>
+  </ul>
+
+  <h2>4. Data Security</h2>
+  <p>We implement industry-standard security measures to protect your personal information, including:</p>
+  <ul>
+    <li>Encrypted data transmission (HTTPS/TLS)</li>
+    <li>Secure password hashing (bcrypt)</li>
+    <li>JWT-based authentication tokens</li>
+    <li>Biometric authentication support (Face ID / Fingerprint)</li>
+    <li>No storage of credit card numbers on our servers</li>
+  </ul>
+
+  <h2>5. Data Retention</h2>
+  <p>We retain your personal data for as long as your account is active or as needed to provide services. You may request deletion of your account and all associated data at any time.</p>
+
+  <h2>6. Your Rights</h2>
+  <p>You have the right to:</p>
+  <ul>
+    <li>Access your personal data</li>
+    <li>Request correction of inaccurate data</li>
+    <li>Request deletion of your data</li>
+    <li>Opt out of marketing communications</li>
+    <li>Export your data in a portable format</li>
+  </ul>
+
+  <h2>7. Children's Privacy</h2>
+  <p>The App is not intended for children under 18. We do not knowingly collect personal information from minors. Participants under 18 must be accompanied by a parent or legal guardian.</p>
+
+  <h2>8. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy within the App and updating the effective date.</p>
+
+  <h2>9. Contact Us</h2>
+  <p>For questions about this Privacy Policy or to exercise your data rights, please contact:</p>
+  <p><strong>Wandering Yacht</strong><br>
+  Email: <a href="mailto:booking@wanderingyacht.com">booking@wanderingyacht.com</a></p>
+
+  <div class="footer">
+    &copy; 2025 Wandering Yacht d.o.o. — All rights reserved.
+  </div>
+</div>
+</body></html>""", status_code=200)
 
 # Include the router in the main app
 app.include_router(api_router)
