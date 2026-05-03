@@ -51,6 +51,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'L\'Odyssey — Heritage Sail Charter': 'لوديسي — رحلة الإبحار التراثي المستأجرة',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'استأجر سفينتنا الشراعية التراثية بطول 82 قدم لتجربة خاصة لا تُنسى في خليج كوتور. اختر بين رحلة نصف يوم أو يوم كامل مع طاقم مخصص وطعام فاخر وترفيه منسق.',
     'L\'Odyssey - Sailing Charter': 'لوديسي - إيجار الإبحار',
+    'SMOOTH SEA X GOLFSKI': { title: 'البحر الهادئ × غولفسكي', description: 'انطلق من بورتو مونتينيغرو بقارب هيدروفويل إلى خليج لوستيكا. العب الغولف في نادي لوستيكا باي للغولف، تناول الغداء، ثم استمتع بمشروب في فندق شيدي قبل العودة بالقارب. 5 محطات، 6 ساعات من الرفاهية.' },
   },
   fr: {
     'Sunrise Yoga on Deck': { title: 'Yoga au Lever du Soleil sur le Pont', description: 'Commencez votre journée par une séance de yoga revigorante sur le pont de notre yacht au lever du soleil sur l\'Adriatique.' },
@@ -88,6 +89,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Charter Voilier Heritage',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Afretez notre voilier historique de 82 pieds pour une experience privee inoubliable dans la baie de Kotor. Choisissez un charter demi-journee ou journee complete avec equipage dedie, restauration gastronomique et divertissement.',
     'L\'Odyssey - Sailing Charter': 'L\'Odyssey - Charter Voilier',
+    'SMOOTH SEA X GOLFSKI': { title: 'SMOOTH SEA X GOLFSKI', description: 'Départ de Porto Montenegro en hydrofoil vers Lustica Bay. Golf au prestigieux Lustica Bay Golf Club, déjeuner sur place, puis un verre au Chedi Hotel avant le retour en bateau. 5 arrêts, 6 heures de luxe.' },
   },
   it: {
     'Sunrise Yoga on Deck': { title: 'Yoga all\'Alba sul Ponte', description: 'Inizia la giornata con una sessione di yoga rigenerante sul ponte del nostro yacht all\'alba sull\'Adriatico.' },
@@ -125,6 +127,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Charter Barca a Vela Heritage',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Noleggiate la nostra storica nave a vela di 82 piedi per un\'esperienza privata indimenticabile nella Baia di Kotor. Scegliete tra charter mezza giornata o giornata intera con equipaggio dedicato, catering gourmet e intrattenimento.',
     'L\'Odyssey - Sailing Charter': 'L\'Odyssey - Charter a Vela',
+    'SMOOTH SEA X GOLFSKI': { title: 'SMOOTH SEA X GOLFSKI', description: 'Partenza da Porto Montenegro in aliscafo verso Lustica Bay. Golf al prestigioso Lustica Bay Golf Club, pranzo sul posto, poi un drink al Chedi Hotel prima del ritorno in barca. 5 tappe, 6 ore di lusso.' },
   },
   es: {
     'Sunrise Yoga on Deck': { title: 'Yoga al Amanecer en Cubierta', description: 'Comienza tu día con una sesión de yoga revitalizante en la cubierta de nuestro yate al amanecer.' },
@@ -162,6 +165,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Charter Velero Heritage',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Alquile nuestro historico velero de 82 pies para una experiencia privada inolvidable en la Bahia de Kotor. Elija entre charter de medio dia o dia completo con tripulacion dedicada, catering gourmet y entretenimiento.',
     'L\'Odyssey - Sailing Charter': 'L\'Odyssey - Charter Velero',
+    'SMOOTH SEA X GOLFSKI': { title: 'SMOOTH SEA X GOLFSKI', description: 'Salida desde Porto Montenegro en hidroala hacia Lustica Bay. Golf en el prestigioso Lustica Bay Golf Club, almuerzo allí, luego una copa en el Chedi Hotel antes de regresar en barco. 5 paradas, 6 horas de lujo.' },
   },
   de: {
     'Sunrise Yoga on Deck': { title: 'Sonnenaufgang-Yoga an Deck', description: 'Beginnen Sie Ihren Tag mit einer belebenden Yoga-Sitzung auf dem Deck unserer Yacht beim Sonnenaufgang.' },
@@ -199,6 +203,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Heritage Segelcharter',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Chartern Sie unser historisches 82-Fuss-Segelschiff fur ein unvergessliches privates Erlebnis in der Bucht von Kotor. Wahlen Sie zwischen Halbtags- oder Ganztags-Charter mit dedizierter Crew, Gourmet-Catering und Unterhaltung.',
     'L\'Odyssey - Sailing Charter': 'L\'Odyssey - Segelcharter',
+    'SMOOTH SEA X GOLFSKI': { title: 'SMOOTH SEA X GOLFSKI', description: 'Abfahrt von Porto Montenegro mit dem Tragflächenboot nach Lustica Bay. Golf im renommierten Lustica Bay Golf Club, Mittagessen vor Ort, dann ein Drink im Chedi Hotel vor der Rückfahrt. 5 Stationen, 6 Stunden Luxus.' },
   },
   ru: {
     'Sunrise Yoga on Deck': { title: 'Йога на Рассвете на Палубе', description: 'Начните день с освежающей йоги на палубе нашей яхты на рассвете.' },
@@ -236,6 +241,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'L\'Odyssey — Heritage Sail Charter': 'Л\'Одиссей — Чартер наследственного парусника',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Арендуйте наше историческое 82-футовое парусное судно для незабываемого частного опыта в Которском заливе. Выберите полудневной или полнодневной чартер с выделенным экипажем, изысканным кейтерингом и развлечениями.',
     'L\'Odyssey - Sailing Charter': 'Л\'Одиссей - Парусный чартер',
+    'SMOOTH SEA X GOLFSKI': { title: 'SMOOTH SEA X GOLFSKI', description: 'Отправление из Порто Монтенегро на судне на подводных крыльях в залив Луштица. Гольф в престижном Lustica Bay Golf Club, обед, затем напиток в отеле Chedi перед возвращением на лодке. 5 остановок, 6 часов роскоши.' },
   },
   hr: {
     'Sunrise Yoga on Deck': { title: 'Yoga na Izlasku Sunca na Palubi', description: 'Započnite dan osvježavajućom jogom na palubi naše jahte na izlasku sunca.' },
@@ -273,6 +279,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Heritage Jedrilica Charter',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Unajmite nas povijesni 82-stopni jedrenjak za nezaboravno privatno iskustvo u Bokokotorskom zaljevu. Odaberite poludnevni ili cjelodnevni najam s posvecenom posadom, gurmanskim cateringom i zabavom.',
     'L\'Odyssey - Sailing Charter': 'L\'Odyssey - Jedrilica Charter',
+    'SMOOTH SEA X GOLFSKI': { title: 'SMOOTH SEA X GOLFSKI', description: 'Polazak iz Porto Montenegra hidrogliserom do Lustica Bay. Golf u prestižnom Lustica Bay Golf Clubu, ručak tamo, zatim piće u Chedi Hotelu prije povratka brodom. 5 stanica, 6 sati luksuza.' },
   },
   zh: {
     'Sunrise Yoga on Deck': { title: '甲板日出瑜伽', description: '在亚得里亚海日出时分，在游艇甲板上开始一天的瑜伽。' },
@@ -310,6 +317,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'L\'Odyssey — Heritage Sail Charter': '奥德赛号 — 传统帆船包租',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': '包租我们82英尺的传统帆船，在科托尔湾享受难忘的私人体验。选择半日或全日包租，配备专属船员、美食餐饮和精心策划的娱乐活动。',
     'L\'Odyssey - Sailing Charter': '奥德赛号 - 帆船包租',
+    'SMOOTH SEA X GOLFSKI': { title: 'SMOOTH SEA X GOLFSKI', description: '从黑山港出发乘水翼船前往卢什蒂卡湾。在著名的卢什蒂卡湾高尔夫俱乐部打高尔夫，午餐后到切迪酒店享用饮品，然后乘船返回。5站，6小时极致奢华。' },
   },
   pt: {
     'Sunrise Yoga on Deck': { title: 'Yoga ao Nascer do Sol no Convés', description: 'Comece o dia com uma sessão de yoga revigorante no convés do nosso iate ao nascer do sol.' },
@@ -347,6 +355,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'L\'Odyssey — Heritage Sail Charter': 'L\'Odyssey — Charter Veleiro Heritage',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'Frete nosso historico veleiro de 82 pes para uma experiencia privada inesquecivel na Baia de Kotor. Escolha entre charter de meio dia ou dia inteiro com tripulacao dedicada, catering gourmet e entretenimento.',
     'L\'Odyssey - Sailing Charter': 'L\'Odyssey - Charter Veleiro',
+    'SMOOTH SEA X GOLFSKI': { title: 'SMOOTH SEA X GOLFSKI', description: 'Partida de Porto Montenegro em hidrofólio para Lustica Bay. Golfe no prestigiado Lustica Bay Golf Club, almoço local, depois um drink no Chedi Hotel antes do regresso de barco. 5 paragens, 6 horas de luxo.' },
   },
   ja: {
     'Sunrise Yoga on Deck': { title: 'デッキで日の出ヨガ', description: 'アドリア海の日の出とともに、ヨットのデッキで爽やかなヨガセッション。' },
@@ -384,6 +393,7 @@ export const experienceTranslations: AllExperienceTranslations = {
     'L\'Odyssey — Heritage Sail Charter': 'ロディセイ — ヘリテージセーリングチャーター',
     'Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d\'oeuvres dinner with wine and entertainment.': 'コトル湾で忘れられないプライベート体験のために、82フィートのヘリテージ帆船をチャーターしてください。専属クルー、グルメケータリング、エンターテイメント付きの半日または終日チャーターからお選びください。',
     'L\'Odyssey - Sailing Charter': 'ロディセイ - セーリングチャーター',
+    'SMOOTH SEA X GOLFSKI': { title: 'SMOOTH SEA X GOLFSKI', description: 'ポルトモンテネグロから水中翼船でルシュティカ湾へ。名門ルシュティカベイゴルフクラブでゴルフ、ランチ、チェディホテルでドリンクを楽しみ、船で帰港。5か所、6時間の贅沢。' },
   },
 };
 

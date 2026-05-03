@@ -1102,6 +1102,30 @@ async def seed_data_internal():
             "created_at": datetime.utcnow()
         },
 
+        # SMOOTH SEA X GOLFSKI
+        {
+            "id": str(uuid.uuid4()),
+            "title": "SMOOTH SEA X GOLFSKI",
+            "description": "Starting from Porto Montenegro, a sleek hydrofoil boat takes you across the bay to Lustica Bay. From there, you will be taken to the prestigious Lustica Bay Golf Club. Take a golf lesson or hit the driving range, then play a few holes. Enjoy lunch at the club before heading to The Chedi Hotel for a drink with stunning views. Return by hydrofoil boat to Porto Montenegro. 5 stops, 6 hours of pure luxury.",
+            "category": "yacht_experiences",
+            "location": "Porto Montenegro, Tivat",
+            "date": "2025-06-01",
+            "image_url": "https://images.unsplash.com/photo-1616749147147-6c0c1adf073b?w=800",
+            "capacity": 5,
+            "available_spots": 5,
+            "duration_hours": 6,
+            "amenities": ["Hydrofoil Boat Transfer", "Lustica Bay Golf Club", "Golf Lesson or Driving Range", "Lunch at the Club", "Drinks at The Chedi Hotel"],
+            "included": ["Hydrofoil boat transfers", "Golf access", "Lunch", "Drink at The Chedi Hotel"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Per Person", "description": "Full experience including boat transfers, golf, lunch & drinks", "price": 350, "max_per_booking": 5}
+            ],
+            "time_slots": [
+                {"id": str(uuid.uuid4()), "start_time": "09:00", "end_time": "15:00", "available_spots": 5}
+            ],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+
         # WEDDING AND EVENT PLANNING
         {
             "id": str(uuid.uuid4()),
