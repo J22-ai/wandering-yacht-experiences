@@ -195,10 +195,24 @@ export default function ExploreScreen() {
       activeOpacity={0.85}
     >
       <View style={styles.experienceImageWrap}>
-        <Image
-          source={{ uri: experience.image_url || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800' }}
-          style={styles.experienceImage}
-        />
+        {experience.card_layout === 'split' && experience.images?.length >= 2 ? (
+          <View style={styles.splitImageContainer}>
+            <Image
+              source={{ uri: experience.images[0] }}
+              style={styles.splitImageLeft}
+            />
+            <View style={styles.splitDivider} />
+            <Image
+              source={{ uri: experience.images[1] }}
+              style={styles.splitImageRight}
+            />
+          </View>
+        ) : (
+          <Image
+            source={{ uri: experience.image_url || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800' }}
+            style={styles.experienceImage}
+          />
+        )}
         <View style={styles.imageOverlay} />
         <View style={styles.imageBadge}>
           <Text style={styles.imageBadgeText}>{t('detail_from')} €{getLowestPrice(experience)}</Text>
