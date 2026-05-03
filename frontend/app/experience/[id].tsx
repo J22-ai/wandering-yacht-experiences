@@ -102,7 +102,10 @@ export default function ExperienceDetailScreen() {
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [booking, setBooking] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [ticketSectionY, setTicketSectionY] = useState(0);
   const imageScrollRef = React.useRef<ScrollView>(null);
+  const ticketSectionRef = React.useRef<View>(null);
+  const mainScrollRef = React.useRef<ScrollView>(null);
 
   useEffect(() => {
     if (token) {
@@ -241,7 +244,7 @@ export default function ExperienceDetailScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView ref={mainScrollRef} showsVerticalScrollIndicator={false}>
         {/* Hero Image Gallery */}
         <View style={styles.heroContainer}>
           {experience.images && experience.images.length > 1 ? (
@@ -489,7 +492,7 @@ export default function ExperienceDetailScreen() {
           )}
 
           {/* Ticket Selection */}
-          <View style={styles.section}>
+          <View ref={ticketSectionRef} onLayout={(e) => setTicketSectionY(e.nativeEvent.layout.y)} style={styles.section}>
             <Text style={styles.sectionTitle}>{t('detail_select_tickets')}</Text>
             {experience.ticket_types.map((ticket) => (
               <View key={ticket.id} style={styles.ticketCard}>
@@ -581,8 +584,15 @@ export default function ExperienceDetailScreen() {
             styles.bookButton,
             (getTotalTickets() === 0 || booking) && styles.bookButtonDisabled,
           ]}
-          onPress={handleBookNow}
-          disabled={getTotalTickets() === 0 || booking}
+          onPress={() => {
+            if (getTotalTickets() === 0) {
+              // Scroll to ticket section so user can select tickets
+              mainScrollRef.current?.scrollTo({ y: ticketSectionY - 50, animated: true });
+            } else {
+              handleBookNow();
+            }
+          }}
+          disabled={booking}
         >
           {booking ? (
             <ActivityIndicator color="#fff" />
