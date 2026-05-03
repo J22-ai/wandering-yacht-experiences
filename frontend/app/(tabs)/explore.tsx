@@ -200,12 +200,12 @@ export default function ExploreScreen() {
         {experience.card_layout === 'split' && experience.images?.length >= 2 ? (
           <View style={styles.splitImageContainer}>
             <Image
-              source={{ uri: experience.images[0] }}
+              source={{ uri: experience.images[1] || experience.images[0] }}
               style={styles.splitImageLeft}
             />
             <View style={styles.splitDivider} />
             <Image
-              source={{ uri: experience.images[1] }}
+              source={{ uri: experience.images[2] || experience.images[1] }}
               style={styles.splitImageRight}
             />
           </View>
