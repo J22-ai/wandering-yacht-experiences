@@ -657,7 +657,7 @@ export default function CheckoutScreen() {
           <>
             {/* Accepted Card Brands */}
             <View style={styles.cardBrandsSection}>
-              <Text style={styles.cardBrandsLabel}>{t('checkout_payment')}</Text>
+              <Text style={styles.cardBrandsLabel}>{t('checkout_payment') || 'PAYMENT'}</Text>
               <View style={styles.cardBrandsRow}>
                 <View style={styles.cardBrand}>
                   <Text style={styles.cardBrandVisa}>VISA</Text>
@@ -705,10 +705,17 @@ export default function CheckoutScreen() {
               />
             )}
           </>
+        ) : clientSecret && publishableKey && !termsAccepted ? (
+          <View style={[styles.card, { alignItems: 'center', paddingVertical: 24 }]}>
+            <Ionicons name="document-text-outline" size={32} color="#1a3a4a" />
+            <Text style={[styles.loadingText, { marginTop: 8, textAlign: 'center', fontWeight: '600' }]}>
+              {t('terms_accept_to_pay') || 'Accept Terms & Conditions above to proceed to payment'}
+            </Text>
+          </View>
         ) : (
           <View style={[styles.card, styles.centerContent]}>
             <ActivityIndicator size="small" color="#1a3a4a" />
-            <Text style={styles.loadingText}>Preparing payment...</Text>
+            <Text style={styles.loadingText}>{t('checkout_preparing') || 'Preparing payment...'}</Text>
           </View>
         )}
 

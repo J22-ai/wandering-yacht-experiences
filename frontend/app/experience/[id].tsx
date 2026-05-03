@@ -205,7 +205,10 @@ export default function ExperienceDetailScreen() {
       console.log('Creating booking...', bookingData);
       const result = await api.createBooking(bookingData);
       console.log('Booking created:', result.id);
+      // Don't reset booking state - keep the spinner showing during navigation
       router.push(`/checkout/${result.id}`);
+      // Leave booking=true so the button stays in loading state until screen changes
+      return;
     } catch (error: any) {
       console.error('Booking error:', error);
       const errMsg = error.message || 'Failed to create booking';
@@ -214,7 +217,6 @@ export default function ExperienceDetailScreen() {
       } else {
         Alert.alert('Error', errMsg);
       }
-    } finally {
       setBooking(false);
     }
   };
