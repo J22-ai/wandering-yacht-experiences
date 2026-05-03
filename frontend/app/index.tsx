@@ -35,7 +35,7 @@ export default function WelcomeScreen() {
           resizeMode="contain"
           defaultSource={require('../assets/images/wy-logo-solid.png')}
         />
-        <Text style={styles.loadingBrandName}>WANDERING YACHT</Text>
+        <Text style={styles.loadingBrandName}>WANDERING{'\n'}YACHT</Text>
       </View>
     );
   }
