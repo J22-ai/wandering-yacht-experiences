@@ -85,6 +85,7 @@ interface Experience {
     items: string[];
   }>;
   images?: string[];
+  card_layout?: string;
 }
 
 export default function ExperienceDetailScreen() {
@@ -101,6 +102,7 @@ export default function ExperienceDetailScreen() {
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [booking, setBooking] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const imageScrollRef = React.useRef<ScrollView>(null);
 
   useEffect(() => {
     if (token) {
@@ -113,6 +115,17 @@ export default function ExperienceDetailScreen() {
     try {
       const data = await api.getExperience(id as string);
       setExperience(data);
+      // For split-layout cards, show the 3rd image first (Golf Course view)
+      if (data.card_layout === 'split' && data.images && data.images.length >= 3) {
+        setActiveImageIndex(2);
+        // Scroll to the 3rd image after a short delay to allow layout
+        setTimeout(() => {
+          if (imageScrollRef.current) {
+            const screenWidth = Dimensions.get('window').width;
+            imageScrollRef.current.scrollTo({ x: screenWidth * 2, animated: false });
+          }
+        }, 300);
+      }
       // Initialize ticket counts
       const counts: { [key: string]: number } = {};
       data.ticket_types.forEach((t: TicketType) => {
@@ -245,6 +258,7 @@ export default function ExperienceDetailScreen() {
           {experience.images && experience.images.length > 1 ? (
             <>
               <ScrollView
+                ref={imageScrollRef}
                 horizontal
                 pagingEnabled
                 showsHorizontalScrollIndicator={false}

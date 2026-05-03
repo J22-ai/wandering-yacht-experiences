@@ -97,6 +97,7 @@ class Experience(BaseModel):
     deposit_note: Optional[str] = None
     charter_packages: Optional[List[dict]] = None
     images: Optional[List[str]] = None
+    card_layout: Optional[str] = None
 
 # ======================== BOOKING MODELS ========================
 

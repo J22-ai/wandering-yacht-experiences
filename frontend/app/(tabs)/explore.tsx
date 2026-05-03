@@ -41,6 +41,8 @@ interface Experience {
     name: string;
     price: number;
   }>;
+  card_layout?: string;
+  images?: string[];
 }
 
 export default function ExploreScreen() {
@@ -600,5 +602,26 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#fff',
     fontWeight: '600',
+  },
+  // Split image card styles
+  splitImageContainer: {
+    flexDirection: 'row',
+    width: '100%',
+    height: 190,
+  },
+  splitImageLeft: {
+    flex: 1,
+    height: 190,
+    backgroundColor: '#e8e5e0',
+  },
+  splitDivider: {
+    width: 2,
+    height: 190,
+    backgroundColor: '#fff',
+  },
+  splitImageRight: {
+    flex: 1,
+    height: 190,
+    backgroundColor: '#e8e5e0',
   },
 });
