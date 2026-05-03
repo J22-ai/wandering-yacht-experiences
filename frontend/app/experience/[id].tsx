@@ -159,19 +159,28 @@ export default function ExperienceDetailScreen() {
 
   const handleBookNow = async () => {
     if (!user) {
-      Alert.alert(
-        t('detail_sign_in_required'),
-        t('auth_sign_in_subtitle'),
-        [
-          { text: t('cancel'), style: 'cancel' },
-          { text: t('sign_in'), onPress: () => router.push('/auth/login') },
-        ]
-      );
+      if (Platform.OS === 'web') {
+        const shouldLogin = confirm('Please sign in to book this experience. Go to login?');
+        if (shouldLogin) router.push('/auth/login');
+      } else {
+        Alert.alert(
+          t('detail_sign_in_required'),
+          t('auth_sign_in_subtitle'),
+          [
+            { text: t('cancel'), style: 'cancel' },
+            { text: t('sign_in'), onPress: () => router.push('/auth/login') },
+          ]
+        );
+      }
       return;
     }
 
     if (getTotalTickets() === 0) {
-      Alert.alert(t('error'), t('detail_select_tickets'));
+      if (Platform.OS === 'web') {
+        alert('Please select at least one ticket');
+      } else {
+        Alert.alert(t('error'), t('detail_select_tickets'));
+      }
       return;
     }
 
@@ -193,10 +202,18 @@ export default function ExperienceDetailScreen() {
         selected_date: selectedDate || undefined,
       };
 
+      console.log('Creating booking...', bookingData);
       const result = await api.createBooking(bookingData);
+      console.log('Booking created:', result.id);
       router.push(`/checkout/${result.id}`);
     } catch (error: any) {
-      Alert.alert('Error', error.message || 'Failed to create booking');
+      console.error('Booking error:', error);
+      const errMsg = error.message || 'Failed to create booking';
+      if (Platform.OS === 'web') {
+        alert('Booking Error: ' + errMsg);
+      } else {
+        Alert.alert('Error', errMsg);
+      }
     } finally {
       setBooking(false);
     }
