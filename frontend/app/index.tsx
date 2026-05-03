@@ -53,7 +53,7 @@ export default function WelcomeScreen() {
           style={styles.headerLogo}
           resizeMode="contain"
         />
-        <Text style={styles.brandName}>WANDERING YACHT</Text>
+        <Text style={styles.brandName}>WANDERING{'\n'}YACHT</Text>
         <TouchableOpacity
           style={styles.langGlobe}
           onPress={() => setShowLangPicker(true)}

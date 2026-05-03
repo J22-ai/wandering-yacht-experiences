@@ -2320,7 +2320,7 @@ async def download_app():
 </head><body>
 <div class="card">
   <img src="data:image/png;base64,{logo_b64}" alt="Wandering Yacht" style="width: 80px; height: 80px; margin-bottom: 12px;" />
-  <div class="logo-text">WANDERING YACHT</div>
+  <div class="logo-text">WANDERING<br>YACHT</div>
   <p class="tagline">Wander to Montenegro.<br>30+ Immersive Excursions created just for you.</p>
   
   <div class="qr-container">
