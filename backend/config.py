@@ -26,7 +26,7 @@ SMTP_EMAIL = os.environ.get('SMTP_EMAIL', 'booking@wanderingyacht.com')
 SMTP_PASSWORD = os.environ.get('SMTP_PASSWORD', '')
 
 # Google Calendar
-GOOGLE_CALENDAR_ID = "1f685ad064eff11c51f7a78b3f935f2380e2c5114ebfa4e17e7b02f98714b6a6@group.calendar.google.com"
+GOOGLE_CALENDAR_ID = os.environ.get("GOOGLE_CALENDAR_ID", "1f685ad064eff11c51f7a78b3f935f2380e2c5114ebfa4e17e7b02f98714b6a6@group.calendar.google.com")
 GOOGLE_CREDENTIALS_PATH = ROOT_DIR / "google_calendar_credentials.json"
 
 # WebAuthn / Passkey
