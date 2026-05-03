@@ -2289,6 +2289,14 @@ async def download_app():
     img.save(buffer, format='PNG')
     qr_base64 = base64.b64encode(buffer.getvalue()).decode()
     
+    # Logo as base64
+    logo_b64 = ""
+    try:
+        with open('/app/frontend/assets/images/wy-logo-solid.png', 'rb') as f:
+            logo_b64 = base64.b64encode(f.read()).decode()
+    except:
+        pass
+    
     return HTMLResponse(content=f"""<!DOCTYPE html>
 <html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -2311,6 +2319,7 @@ async def download_app():
 </style>
 </head><body>
 <div class="card">
+  <img src="data:image/png;base64,{logo_b64}" alt="Wandering Yacht" style="width: 80px; height: 80px; margin-bottom: 12px;" />
   <div class="logo-text">WANDERING YACHT</div>
   <p class="tagline">Wander to Montenegro.<br>30+ Immersive Excursions created just for you.</p>
   
