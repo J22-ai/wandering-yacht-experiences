@@ -115,17 +115,6 @@ export default function ExperienceDetailScreen() {
     try {
       const data = await api.getExperience(id as string);
       setExperience(data);
-      // For split-layout cards, show the 3rd image first (Golf Course view)
-      if (data.card_layout === 'split' && data.images && data.images.length >= 3) {
-        setActiveImageIndex(2);
-        // Scroll to the 3rd image after a short delay to allow layout
-        setTimeout(() => {
-          if (imageScrollRef.current) {
-            const screenWidth = Dimensions.get('window').width;
-            imageScrollRef.current.scrollTo({ x: screenWidth * 2, animated: false });
-          }
-        }, 300);
-      }
       // Initialize ticket counts
       const counts: { [key: string]: number } = {};
       data.ticket_types.forEach((t: TicketType) => {
