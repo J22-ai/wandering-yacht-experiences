@@ -1,5 +1,6 @@
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -2181,14 +2182,15 @@ async def privacy_policy():
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Privacy Policy — Wandering Yacht</title>
 <style>
+  @font-face { font-family: 'TraditionalArabic'; src: url('/api/fonts/TraditionalArabic-Regular.ttf') format('truetype'); }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f6f3; color: #2d3a3a; line-height: 1.7; }
+  body { font-family: 'TraditionalArabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f6f3; color: #2d3a3a; line-height: 1.7; }
   .header { background: #1a3a4a; color: #fff; padding: 40px 20px; text-align: center; }
-  .header h1 { font-size: 28px; letter-spacing: 4px; margin-bottom: 8px; }
-  .header p { opacity: 0.8; font-size: 14px; }
+  .header h1 { font-family: 'TraditionalArabic'; font-size: 28px; letter-spacing: 4px; margin-bottom: 8px; }
+  .header p { font-family: 'TraditionalArabic'; opacity: 0.8; font-size: 14px; }
   .container { max-width: 720px; margin: 0 auto; padding: 32px 20px 60px; }
-  h2 { color: #1a3a4a; font-size: 18px; margin: 28px 0 12px; }
-  p, li { font-size: 15px; margin-bottom: 12px; }
+  h2 { font-family: 'TraditionalArabic'; color: #1a3a4a; font-size: 18px; margin: 28px 0 12px; }
+  p, li { font-family: 'TraditionalArabic'; font-size: 15px; margin-bottom: 12px; }
   ul { padding-left: 24px; }
   .footer { text-align: center; padding: 24px; color: #7a8a8a; font-size: 13px; border-top: 1px solid #e0ddd8; margin-top: 40px; }
 </style>
@@ -2271,8 +2273,65 @@ async def privacy_policy():
 </div>
 </body></html>""", status_code=200)
 
+# ======================== QR CODE / SHARE PAGE ========================
+@api_router.get("/download", response_class=HTMLResponse)
+async def download_app():
+    """Shareable QR code page for customers to access the app."""
+    app_url = "https://wandering-yacht-1.preview.emergentagent.com"
+    
+    # Generate QR code as base64
+    import qrcode, io, base64
+    qr = qrcode.QRCode(version=1, box_size=10, border=4)
+    qr.add_data(app_url)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color='#1a3a4a', back_color='white')
+    buffer = io.BytesIO()
+    img.save(buffer, format='PNG')
+    qr_base64 = base64.b64encode(buffer.getvalue()).decode()
+    
+    return HTMLResponse(content=f"""<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WANDERING YACHT — Get The App</title>
+<style>
+  @font-face {{ font-family: 'TraditionalArabic'; src: url('/api/fonts/TraditionalArabic-Regular.ttf') format('truetype'); }}
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{ font-family: 'TraditionalArabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f6f3; color: #2d3a3a; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 20px; }}
+  .card {{ background: #fff; border-radius: 20px; padding: 40px 32px; text-align: center; max-width: 400px; width: 100%; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }}
+  .logo-text {{ font-family: 'TraditionalArabic'; font-size: 28px; font-weight: 700; color: #1a3a4a; letter-spacing: 6px; margin-bottom: 8px; }}
+  .tagline {{ font-family: 'TraditionalArabic'; font-size: 15px; color: #7a8a8a; margin-bottom: 28px; line-height: 1.5; }}
+  .qr-container {{ background: #fff; border-radius: 16px; padding: 16px; display: inline-block; margin-bottom: 24px; }}
+  .qr-container img {{ width: 220px; height: 220px; }}
+  .scan-text {{ font-family: 'TraditionalArabic'; font-size: 16px; font-weight: 600; color: #1a3a4a; margin-bottom: 8px; }}
+  .scan-sub {{ font-family: 'TraditionalArabic'; font-size: 13px; color: #7a8a8a; margin-bottom: 24px; }}
+  .open-btn {{ font-family: 'TraditionalArabic'; display: inline-block; background: #1a3a4a; color: #fff; text-decoration: none; padding: 16px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; letter-spacing: 1px; }}
+  .open-btn:hover {{ background: #0d2a36; }}
+  .divider {{ height: 1px; background: #e0ddd8; margin: 20px 0; width: 100%; }}
+  .no-download {{ font-family: 'TraditionalArabic'; font-size: 12px; color: #a0aab0; margin-top: 16px; }}
+</style>
+</head><body>
+<div class="card">
+  <div class="logo-text">WANDERING YACHT</div>
+  <p class="tagline">Wander to Montenegro.<br>30+ Immersive Excursions created just for you.</p>
+  
+  <div class="qr-container">
+    <img src="data:image/png;base64,{qr_base64}" alt="Scan to open Wandering Yacht" />
+  </div>
+  
+  <p class="scan-text">Scan to Open</p>
+  <p class="scan-sub">Point your phone camera at the QR code</p>
+  
+  <div class="divider"></div>
+  
+  <a href="{app_url}" class="open-btn">OPEN APP</a>
+  
+  <p class="no-download">No download required — opens in your browser</p>
+</div>
+</body></html>""", status_code=200)
+
 # Include the router in the main app
 app.include_router(api_router)
+app.mount("/api/fonts", StaticFiles(directory="/app/backend/static_fonts"), name="fonts")
 
 app.add_middleware(
     CORSMiddleware,

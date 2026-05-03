@@ -6,7 +6,7 @@ import { FavoritesProvider } from '../src/context/FavoritesContext';
 import { LanguageProvider } from '../src/context/LanguageContext';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { View, ActivityIndicator, StyleSheet, Text } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, Image } from 'react-native';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,9 +25,12 @@ export default function RootLayout() {
   if (!fontsLoaded && !fontError) {
     return (
       <View style={styles.loadingContainer}>
-        <Text style={styles.splashBrandTop}>WANDERING</Text>
-        <Text style={styles.splashBrandBottom}>YACHT</Text>
-        <ActivityIndicator size="large" color="#c17f59" style={{ marginTop: 24 }} />
+        <Image
+          source={require('../assets/images/wy-logo-solid.png')}
+          style={styles.splashLogo}
+          resizeMode="contain"
+        />
+        <ActivityIndicator size="small" color="#1a3a4a" style={{ marginTop: 24 }} />
       </View>
     );
   }
@@ -62,21 +65,12 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
-    backgroundColor: '#1a3a4a',
+    backgroundColor: '#ffffff',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  splashBrandTop: {
-    fontSize: 32,
-    color: '#ffffff',
-    fontWeight: '700',
-    letterSpacing: 6,
-  },
-  splashBrandBottom: {
-    fontSize: 32,
-    color: '#ffffff',
-    fontWeight: '700',
-    letterSpacing: 6,
-    marginTop: -2,
+  splashLogo: {
+    width: 120,
+    height: 120,
   },
 });
