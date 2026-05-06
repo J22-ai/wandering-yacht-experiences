@@ -1120,6 +1120,7 @@ async def seed_data_internal():
             "ticket_types": [
                 {"id": str(uuid.uuid4()), "name": "Per Person", "description": "Full experience including boat transfers, golf, lunch & drinks", "price": 350, "max_per_booking": 5}
             ],
+            "tags": ["dining", "nature", "quiet", "family", "sports", "golf", "luxury", "boat", "hydrofoil", "lunch", "group", "scenic", "relaxing", "outdoor", "active", "food"],
             "time_slots": [
                 {"id": str(uuid.uuid4()), "start_time": "09:00", "end_time": "15:00", "available_spots": 5}
             ],
