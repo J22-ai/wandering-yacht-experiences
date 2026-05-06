@@ -214,7 +214,7 @@ type TranslationStrings = {
 const translations: Record<Language, TranslationStrings> = {
   en: {
     welcome_title: 'Our Immersive Experiences',
-    welcome_subtitle: "Discover curated adventures—from Sunrise Yoga on luxury yachts to wild beauty Fiat Car Tours through Montenegro's most scenic routes.",
+    welcome_subtitle: "From Sunrise Yoga on luxury yachts to wild beauty Fiat Car Tours through Montenegro's most scenic routes.",
     welcome_location: 'MONTENEGRO',
     welcome_cta: 'Explore Experiences',
     welcome_signin: 'Sign In',
