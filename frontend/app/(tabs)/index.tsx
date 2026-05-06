@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  useWindowDimensions,
   RefreshControl,
   ImageBackground,
   Modal,
@@ -77,6 +78,8 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { user, token } = useAuth();
   const { t, language } = useLanguage();
+  const { width: windowWidth } = useWindowDimensions();
+  const cardWidth = (windowWidth - 44) / 2;
   const [categories, setCategories] = useState<Category[]>([]);
   const [featuredExperiences, setFeaturedExperiences] = useState<Experience[]>([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -166,7 +169,7 @@ export default function HomeScreen() {
             {featureItems.map((item, index) => (
               <TouchableOpacity
                 key={index}
-                style={styles.featureCard}
+                style={[styles.featureCard, { width: cardWidth }]}
                 onPress={() => router.push({ pathname: '/(tabs)/explore', params: { category: item.slug } })}
               >
                 <View style={styles.featureIconWrap}>
@@ -388,17 +391,17 @@ const styles = StyleSheet.create({
   featuresGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
     justifyContent: 'space-between',
+    paddingHorizontal: 0,
   },
   featureCard: {
-    width: '48%',
     backgroundColor: '#fff',
     borderRadius: 12,
     padding: 18,
     borderWidth: 1,
     borderColor: 'rgba(26, 58, 74, 0.08)',
     alignItems: 'center',
+    marginBottom: 12,
   },
   featureIconWrap: {
     marginBottom: 12,
