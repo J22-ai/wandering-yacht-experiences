@@ -209,6 +209,8 @@ type TranslationStrings = {
   terms_i_accept: string;
   terms_required: string;
   terms_accept: string;
+  // Price Tax Notice
+  price_incl_taxes: string;
 };
 
 const translations: Record<Language, TranslationStrings> = {
@@ -389,6 +391,7 @@ const translations: Record<Language, TranslationStrings> = {
     terms_i_accept: 'I accept the',
     terms_required: 'You must accept the Terms & Conditions to proceed',
     terms_accept: 'I Accept & Agree',
+    price_incl_taxes: 'incl. taxes',
   },
   ar: {
     welcome_title: 'تجاربنا الغامرة',
@@ -563,6 +566,7 @@ const translations: Record<Language, TranslationStrings> = {
     terms_i_accept: 'أوافق على',
     terms_required: 'يجب قبول الشروط والأحكام للمتابعة',
     terms_accept: 'أوافق وأقبل',
+    price_incl_taxes: 'شامل الضرائب',
   },
   fr: {
     welcome_title: 'Nos Expériences Immersives',
@@ -737,6 +741,7 @@ const translations: Record<Language, TranslationStrings> = {
     terms_i_accept: "J'accepte les",
     terms_required: 'Vous devez accepter les Conditions Générales pour continuer',
     terms_accept: "J'Accepte",
+    price_incl_taxes: 'taxes incl.',
   },
   it: {
     welcome_title: 'Le Nostre Esperienze Immersive',
@@ -911,6 +916,7 @@ const translations: Record<Language, TranslationStrings> = {
     terms_i_accept: 'Accetto i',
     terms_required: 'Devi accettare i Termini e Condizioni per procedere',
     terms_accept: 'Accetto',
+    price_incl_taxes: 'tasse incl.',
   },
   es: {
     welcome_title: 'Nuestras Experiencias Inmersivas',
@@ -1085,6 +1091,7 @@ const translations: Record<Language, TranslationStrings> = {
     terms_i_accept: 'Acepto los',
     terms_required: 'Debe aceptar los Términos y Condiciones para continuar',
     terms_accept: 'Acepto',
+    price_incl_taxes: 'imp. incl.',
   },
   de: {
     welcome_title: 'Unsere Immersiven Erlebnisse',
@@ -1259,6 +1266,7 @@ const translations: Record<Language, TranslationStrings> = {
     terms_i_accept: 'Ich akzeptiere die',
     terms_required: 'Sie müssen die AGB akzeptieren um fortzufahren',
     terms_accept: 'Ich Akzeptiere',
+    price_incl_taxes: 'inkl. Steuern',
   },
   ru: {
     welcome_title: 'Наши Иммерсивные Впечатления',
@@ -1433,6 +1441,7 @@ const translations: Record<Language, TranslationStrings> = {
     terms_i_accept: 'Я принимаю',
     terms_required: 'Необходимо принять Условия для продолжения',
     terms_accept: 'Принимаю',
+    price_incl_taxes: 'вкл. налоги',
   },
   hr: {
     welcome_title: 'Naša Impresivna Iskustva',
@@ -1607,6 +1616,7 @@ const translations: Record<Language, TranslationStrings> = {
     terms_i_accept: 'Prihvaćam',
     terms_required: 'Morate prihvatiti Uvjete i Odredbe za nastavak',
     terms_accept: 'Prihvaćam',
+    price_incl_taxes: 'uklj. porez',
   },
   zh: {
     welcome_title: '我们的沉浸式体验',
@@ -1781,6 +1791,7 @@ const translations: Record<Language, TranslationStrings> = {
     terms_i_accept: '我接受',
     terms_required: '您必须接受条款与条件才能继续',
     terms_accept: '我同意',
+    price_incl_taxes: '含税',
   },
   pt: {
     welcome_title: 'As Nossas Experiências Imersivas',
@@ -1955,6 +1966,7 @@ const translations: Record<Language, TranslationStrings> = {
     terms_i_accept: 'Aceito os',
     terms_required: 'Deve aceitar os Termos e Condições para continuar',
     terms_accept: 'Aceito',
+    price_incl_taxes: 'imp. incl.',
   },
   ja: {
     welcome_title: '没入型体験',
@@ -2129,6 +2141,7 @@ const translations: Record<Language, TranslationStrings> = {
     terms_i_accept: '以下に同意します：',
     terms_required: '続行するには利用規約に同意する必要があります',
     terms_accept: '同意する',
+    price_incl_taxes: '税込',
   },
 };
 

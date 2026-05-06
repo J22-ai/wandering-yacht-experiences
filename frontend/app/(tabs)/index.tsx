@@ -233,6 +233,7 @@ export default function HomeScreen() {
                 <View style={styles.experienceFooter}>
                   <Text style={styles.priceLabel}>{t('detail_from')}</Text>
                   <Text style={styles.experiencePrice}>€{getLowestPrice(experience)}</Text>
+                  <Text style={styles.taxNote}>{t('price_incl_taxes')}</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -336,7 +337,7 @@ export default function HomeScreen() {
                     <Ionicons name="location-outline" size={13} color="#7a8a8a" />
                     <Text style={styles.searchResultLocation} numberOfLines={1}>{exp.location}</Text>
                   </View>
-                  <Text style={styles.searchResultPrice}>{t('search_from')} €{getLowestPrice(exp)}</Text>
+                  <Text style={styles.searchResultPrice}>{t('search_from')} €{getLowestPrice(exp)} {t('price_incl_taxes')}</Text>
                 </View>
                 <Ionicons name="chevron-forward" size={18} color="#9ca3a3" />
               </TouchableOpacity>
@@ -528,6 +529,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: '#1a2a30',
     fontWeight: '600',
+  },
+  taxNote: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 11,
+    color: '#9ca3a3',
+    marginLeft: 4,
   },
   ctaSection: {
     backgroundColor: '#1a3a4a',

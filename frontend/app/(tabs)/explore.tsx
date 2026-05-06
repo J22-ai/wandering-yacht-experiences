@@ -218,6 +218,7 @@ export default function ExploreScreen() {
         <View style={styles.imageOverlay} />
         <View style={styles.imageBadge}>
           <Text style={styles.imageBadgeText}>{t('detail_from')} €{getLowestPrice(experience)}</Text>
+          <Text style={styles.imageBadgeTax}>{t('price_incl_taxes')}</Text>
         </View>
       </View>
       <View style={styles.experienceContent}>
@@ -501,6 +502,12 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#fff',
     fontWeight: '700',
+  },
+  imageBadgeTax: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 10,
+    color: 'rgba(255,255,255,0.8)',
+    textAlign: 'center',
   },
   experienceContent: {
     padding: 16,

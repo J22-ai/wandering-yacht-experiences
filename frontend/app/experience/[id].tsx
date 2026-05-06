@@ -518,7 +518,7 @@ export default function ExperienceDetailScreen() {
                 <View style={styles.ticketInfo}>
                   <Text style={styles.ticketName}>{translateContent(language, ticket.name)}</Text>
                   <Text style={styles.ticketDescription}>{translateContent(language, ticket.description)}</Text>
-                  <Text style={styles.ticketPrice}>€{ticket.price}</Text>
+                  <Text style={styles.ticketPrice}>€{ticket.price} <Text style={styles.ticketTaxNote}>{t('price_incl_taxes')}</Text></Text>
                 </View>
                 <View style={styles.ticketCounter}>
                   <TouchableOpacity
@@ -597,6 +597,7 @@ export default function ExperienceDetailScreen() {
         <View style={styles.priceContainer}>
           <Text style={styles.priceLabel}>{t('detail_total')}</Text>
           <Text style={styles.priceValue}>€{getTotalPrice().toFixed(2)}</Text>
+          <Text style={styles.priceTaxNote}>{t('price_incl_taxes')}</Text>
         </View>
         <TouchableOpacity
           style={[
@@ -973,9 +974,14 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#1a3a4a',
     fontSize: 20,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '700',
     marginTop: 8,
+  },
+  ticketTaxNote: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 11,
+    color: '#9ca3a3',
+    fontWeight: '400',
   },
   ticketCounter: {
     flexDirection: 'row',
@@ -1032,8 +1038,12 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     color: '#1a2a30',
     fontSize: 26,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '700',
+  },
+  priceTaxNote: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 11,
+    color: '#9ca3a3',
   },
   bookButton: {
     flexDirection: 'row',
