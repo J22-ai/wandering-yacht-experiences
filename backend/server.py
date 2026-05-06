@@ -1162,8 +1162,9 @@ async def seed_data_internal():
             "amenities": ["Professional Photographer", "Classic Wooden Boat", "Champagne", "Scenic Route", "Digital Gallery"],
             "included": ["Private boat charter", "Professional photographer", "Champagne & canapés", "50+ edited photos", "Online gallery", "Captain"],
             "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "1 Hour Session", "description": "1-hour photo experience for the couple", "price": 600, "max_per_booking": 1},
                 {"id": str(uuid.uuid4()), "name": "Couple's Session", "description": "2-hour photo experience for the couple", "price": 1200, "max_per_booking": 1},
-                {"id": str(uuid.uuid4()), "name": "With Drone Photography", "description": "Includes aerial drone shots", "price": 1600, "max_per_booking": 1}
+                {"id": str(uuid.uuid4()), "name": "Drone Photography", "description": "Includes aerial drone shots", "price": 1600, "max_per_booking": 1}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
