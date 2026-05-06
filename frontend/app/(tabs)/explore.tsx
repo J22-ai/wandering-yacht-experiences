@@ -288,35 +288,35 @@ export default function ExploreScreen() {
         ) : null}
       </View>
 
-      {/* Category List - only when no category pre-selected AND no search query */}
-      {!selectedCategory && !searchQuery.trim() && (
-        <View style={styles.categoryList}>
-          {categories.map((category) => (
-            <TouchableOpacity
-              key={category.id}
-              style={styles.categoryRow}
-              onPress={() => setSelectedCategory(category.slug)}
-              activeOpacity={0.7}
-            >
-              <View style={styles.categoryIconWrap}>
-                <Ionicons name={getCategoryIcon(category.slug)} size={18} color="#c17f59" />
-              </View>
-              <Text style={styles.categoryRowText}>{getCategoryName(category.slug)}</Text>
-              <Ionicons name="chevron-forward" size={18} color="#c17f59" />
-            </TouchableOpacity>
-          ))}
-        </View>
-      )}
-
       {/* Results */}
       <ScrollView
         style={styles.resultsContainer}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 100 }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#1a3a4a" />
         }
       >
+        {/* Category List - only when no category pre-selected AND no search query */}
+        {!selectedCategory && !searchQuery.trim() && (
+          <View style={styles.categoryList}>
+            {categories.map((category) => (
+              <TouchableOpacity
+                key={category.id}
+                style={styles.categoryRow}
+                onPress={() => setSelectedCategory(category.slug)}
+                activeOpacity={0.7}
+              >
+                <View style={styles.categoryIconWrap}>
+                  <Ionicons name={getCategoryIcon(category.slug)} size={18} color="#c17f59" />
+                </View>
+                <Text style={styles.categoryRowText}>{getCategoryName(category.slug)}</Text>
+                <Ionicons name="chevron-forward" size={18} color="#c17f59" />
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+
         <Text style={styles.resultsCount}>
           {filteredExperiences.length} {t('explore_results_count')}{filteredExperiences.length !== 1 ? 's' : ''}
         </Text>
@@ -374,6 +374,7 @@ const styles = StyleSheet.create({
     color: '#1a2a30',
     fontSize: 26,
     fontWeight: '300',
+    textAlign: 'center',
   },
   searchContainer: {
     flexDirection: 'row',
@@ -395,7 +396,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   categoryList: {
-    paddingHorizontal: 16,
     paddingTop: 10,
     paddingBottom: 4,
   },
