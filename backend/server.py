@@ -1212,7 +1212,7 @@ async def seed_data_internal():
             "ticket_types": [
                 {"id": str(uuid.uuid4()), "name": "Intimate Wedding (up to 50 guests)", "description": "Exclusive venue with all amenities for an intimate celebration", "price": 25000, "max_per_booking": 1},
                 {"id": str(uuid.uuid4()), "name": "Grand Wedding (up to 78 Staying Overnight Guests)", "description": "Up to 100 Guests attending — Full venue takeover with complete wedding production", "price": 67000, "max_per_booking": 1},
-                {"id": str(uuid.uuid4()), "name": "Ultimate Dream (up to 150 guests)", "description": "The complete Mamma Mia experience — every detail perfected", "price": 75000, "max_per_booking": 1}
+                {"id": str(uuid.uuid4()), "name": "Ultimate Dream — The Mamma Mia Experience", "description": "Take over the entire Hotel as your Wedding venue. Stay 3 days, 3 nights. Includes planned wedding, food, water and juices.", "price": 110000, "max_per_booking": 1}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
@@ -1427,7 +1427,7 @@ async def add_new_experiences():
             "ticket_types": [
                 {"id": str(uuid_mod.uuid4()), "name": "Intimate Wedding (up to 50 guests)", "description": "Exclusive venue with all amenities for an intimate celebration", "price": 25000, "max_per_booking": 1},
                 {"id": str(uuid_mod.uuid4()), "name": "Grand Wedding (up to 100 guests)", "description": "Full venue takeover with complete wedding production", "price": 45000, "max_per_booking": 1},
-                {"id": str(uuid_mod.uuid4()), "name": "Ultimate Dream (up to 150 guests)", "description": "The complete Mamma Mia experience — every detail perfected", "price": 75000, "max_per_booking": 1}
+                {"id": str(uuid_mod.uuid4()), "name": "Ultimate Dream — The Mamma Mia Experience", "description": "Take over the entire Hotel as your Wedding venue. Stay 3 days, 3 nights. Includes planned wedding, food, water and juices.", "price": 110000, "max_per_booking": 1}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
