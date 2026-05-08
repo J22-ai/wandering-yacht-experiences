@@ -646,7 +646,7 @@ async def seed_data_internal():
                 {"id": str(uuid.uuid4()), "name": "Wellness Package", "description": "Complete morning wellness", "price": 120, "max_per_booking": 4}
             ],
             "time_slots": [
-                {"id": str(uuid.uuid4()), "start_time": "07:00", "end_time": "11:00", "available_spots": 10}
+                {"id": str(uuid.uuid4()), "start_time": "08:00", "end_time": "12:00", "available_spots": 10}
             ],
             "is_active": True,
             "created_at": datetime.utcnow()
