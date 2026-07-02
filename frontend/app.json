@@ -57,7 +57,8 @@
           "faceIDPermission": "Sign in quickly with Face ID"
         }
       ],
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
