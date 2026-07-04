@@ -520,7 +520,11 @@ export default function ExperienceDetailScreen() {
                   <Text style={styles.ticketName}>{translateContent(language, ticket.name)}</Text>
                   <Text style={styles.ticketDescription}>{translateContent(language, ticket.description)}</Text>
                   <Text style={styles.ticketPrice}>€{ticket.price} <Text style={styles.ticketTaxNote}>{t('price_incl_taxes')}</Text></Text>
-                  {!user && <Text style={styles.ticketProfilePrompt}>Create a Profile to Book</Text>}
+                  {!user && (
+                    <TouchableOpacity onPress={() => router.push('/auth/register')}>
+                      <Text style={styles.ticketProfilePrompt}>Create a Profile to Book</Text>
+                    </TouchableOpacity>
+                  )}
                 </View>
                 <View style={styles.ticketCounter}>
                   <TouchableOpacity
@@ -597,13 +601,16 @@ export default function ExperienceDetailScreen() {
       {/* Sign In Prompt Banner */}
       {showSignInPrompt && (
         <View style={styles.signInBanner}>
-          <Text style={styles.signInBannerText}>Please sign in to book this experience</Text>
+          <Text style={styles.signInBannerText}>Create a Profile to Book</Text>
           <View style={styles.signInBannerButtons}>
             <TouchableOpacity onPress={() => setShowSignInPrompt(false)} style={styles.signInBannerCancel}>
               <Text style={styles.signInBannerCancelText}>{t('cancel')}</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => router.push('/auth/login')} style={styles.signInBannerBtn}>
-              <Text style={styles.signInBannerBtnText}>{t('sign_in')}</Text>
+            <TouchableOpacity onPress={() => router.push('/auth/register')} style={styles.signInBannerBtn}>
+              <Text style={styles.signInBannerBtnText}>{t('sign_up')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push('/auth/login')} style={styles.signInBannerCancel}>
+              <Text style={styles.signInBannerCancelText}>{t('sign_in')}</Text>
             </TouchableOpacity>
           </View>
         </View>
