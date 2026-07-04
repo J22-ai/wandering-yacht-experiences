@@ -588,6 +588,7 @@ export default function CheckoutScreen() {
                 • Cancellations made 24–72 hours before: 50% refund.{'\n'}
                 • Cancellations made less than 24 hours before or no-shows: No refund.{'\n'}
                 • Deposit payments are non-refundable unless the Company cancels the Experience.{'\n\n'}
+                Bad Weather Cancellation: Cancellations due to bad weather are accepted only for the day before the booking. Same-day weather cancellations are not eligible for refund.{'\n\n'}
                 The Company reserves the right to cancel any Experience at its sole discretion for safety, operational, or logistical reasons, in which case a full refund or reschedule will be provided.
               </Text>
 

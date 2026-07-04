@@ -202,6 +202,14 @@ export default function ProfileScreen() {
 
         {/* Auth Actions */}
         <View style={styles.bottomActions}>
+          <TouchableOpacity
+            style={styles.termsLink}
+            onPress={() => router.push('/terms')}
+          >
+            <Ionicons name="document-text-outline" size={18} color="#c17f59" />
+            <Text style={styles.termsLinkText}>Terms & Conditions</Text>
+          </TouchableOpacity>
+
           {user ? (
             <>
               <Text style={styles.welcomeText}>{t('profile_welcome')}, {user.full_name}</Text>
@@ -417,6 +425,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     textAlign: 'center',
+  },
+  termsLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    marginBottom: 16,
+  },
+  termsLinkText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#c17f59',
+    fontSize: 14,
+    marginLeft: 8,
+    textDecorationLine: 'underline',
   },
   languageSection: {
     paddingHorizontal: 20,

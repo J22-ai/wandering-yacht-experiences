@@ -2301,6 +2301,92 @@ async def privacy_policy():
 </div>
 </body></html>""", status_code=200)
 
+@api_router.get("/terms-and-conditions", response_class=HTMLResponse)
+async def terms_and_conditions():
+    """Public terms and conditions page for App Store submission."""
+    return HTMLResponse(content="""<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms & Conditions — Wandering Yacht</title>
+<style>
+  @font-face { font-family: 'TraditionalArabic'; src: url('/api/fonts/TraditionalArabic-Regular.ttf') format('truetype'); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'TraditionalArabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f6f3; color: #2d3a3a; line-height: 1.7; }
+  .header { background: #1a3a4a; color: #fff; padding: 40px 20px; text-align: center; }
+  .header h1 { font-family: 'TraditionalArabic'; font-size: 28px; letter-spacing: 4px; margin-bottom: 8px; }
+  .header p { font-family: 'TraditionalArabic'; opacity: 0.8; font-size: 14px; }
+  .container { max-width: 720px; margin: 0 auto; padding: 32px 20px 60px; }
+  h2 { font-family: 'TraditionalArabic'; color: #1a3a4a; font-size: 18px; margin: 28px 0 12px; }
+  p, li { font-family: 'TraditionalArabic'; font-size: 15px; margin-bottom: 12px; }
+  ul { padding-left: 24px; }
+  .footer { text-align: center; padding: 24px; color: #7a8a8a; font-size: 13px; border-top: 1px solid #e0ddd8; margin-top: 40px; }
+</style>
+</head><body>
+<div class="header">
+  <h1>WANDERING YACHT</h1>
+  <p>Terms & Conditions</p>
+</div>
+<div class="container">
+  <p><strong>Effective Date:</strong> January 1, 2025</p>
+
+  <h2>1. Assumption of Risk & Liability Waiver</h2>
+  <p>By booking and participating in any experience, charter, tour, or activity ("Experience") offered by Wandering Yacht d.o.o. ("Company"), you acknowledge and accept that such activities involve inherent risks including, but not limited to, risks associated with water-based activities, boating, swimming, adverse weather conditions, physical exertion, wildlife encounters, and transportation by land or sea.</p>
+  <p>You voluntarily assume all risks of personal injury, illness, death, or property damage arising from your participation. The Company, its owners, directors, officers, employees, agents, contractors, guides, captains, crew members, and affiliates shall not be held liable for any injury, loss, damage, or expense of any kind, whether direct or indirect, arising from or related to your participation in any Experience.</p>
+  <p>This waiver applies to all claims, including but not limited to negligence, breach of contract, or breach of statutory duty, to the fullest extent permitted by applicable law.</p>
+
+  <h2>2. Medical Fitness & Personal Responsibility</h2>
+  <p>Participants must be in adequate physical and mental health to take part in the booked Experience. You are responsible for disclosing any medical conditions, allergies, dietary restrictions, mobility limitations, or other health concerns that may affect your participation.</p>
+  <p>The Company reserves the right to refuse participation to any individual deemed unfit for safety reasons, without refund.</p>
+  <p>Participants must follow all safety instructions provided by guides, captains, and crew at all times. Failure to comply may result in immediate removal from the Experience without refund.</p>
+
+  <h2>3. Weather & Itinerary Changes</h2>
+  <p>Experiences may be modified, rerouted, or relocated due to weather conditions, sea state, mechanical issues, or other factors beyond the Company's control. The Company reserves the right to alter itineraries, change departure times, substitute vessels, or move activities to alternative indoor or outdoor locations as necessary for safety.</p>
+  <p>No refunds will be issued for itinerary modifications made in the interest of safety. In cases of full cancellation by the Company due to extreme weather or force majeure, a full reschedule or credit will be offered.</p>
+
+  <h2>4. Cancellation & Refund Policy</h2>
+  <ul>
+    <li>Cancellations made 72+ hours before the Experience: Full refund minus processing fees.</li>
+    <li>Cancellations made 24–72 hours before: 50% refund.</li>
+    <li>Cancellations made less than 24 hours before or no-shows: No refund.</li>
+    <li>Deposit payments are non-refundable unless the Company cancels the Experience.</li>
+  </ul>
+  <p><strong>Bad Weather Cancellation:</strong> Cancellations due to bad weather are accepted only for the day before the booking. Same-day weather cancellations are not eligible for refund.</p>
+  <p>The Company reserves the right to cancel any Experience at its sole discretion for safety, operational, or logistical reasons, in which case a full refund or reschedule will be provided.</p>
+
+  <h2>5. Privacy & Data Protection</h2>
+  <p>Wandering Yacht is committed to protecting your personal information. We collect personal data (name, email, phone number, WhatsApp number, payment details) solely for the purpose of processing bookings, communicating about your Experiences, and improving our services.</p>
+  <p>We will never sell, rent, or share your personal information with third parties for marketing purposes. Your data may only be shared with trusted service providers (payment processors, email services) strictly necessary to fulfil your booking.</p>
+  <p>You may request access to, correction of, or deletion of your personal data at any time by contacting booking@wanderingyacht.com.</p>
+
+  <h2>6. Photography & Media</h2>
+  <p>The Company may take photographs or video during Experiences for promotional purposes. By participating, you grant the Company a non-exclusive, royalty-free license to use such media. If you do not wish to be photographed, please inform your guide or captain at the start of the Experience.</p>
+
+  <h2>7. Alcohol & Substance Policy</h2>
+  <p>Where alcoholic beverages are included in an Experience (e.g., wine tastings), consumption is at your own risk. The Company is not responsible for any incidents arising from alcohol consumption. Participants must be of legal drinking age. The Company reserves the right to refuse service to intoxicated individuals.</p>
+
+  <h2>8. Minors</h2>
+  <p>Participants under the age of 18 must be accompanied by a parent or legal guardian who accepts these Terms & Conditions on their behalf. The accompanying adult assumes full responsibility for the minor's safety and conduct.</p>
+
+  <h2>9. Personal Belongings</h2>
+  <p>The Company is not responsible for any loss, theft, or damage to personal belongings, including electronic devices, jewellery, or other valuables, during any Experience. Participants are advised to leave valuables in a secure location.</p>
+
+  <h2>10. Force Majeure</h2>
+  <p>The Company shall not be liable for any failure or delay in performing obligations due to events beyond its reasonable control, including but not limited to natural disasters, pandemics, government restrictions, civil unrest, strikes, or severe weather events.</p>
+
+  <h2>11. Governing Law</h2>
+  <p>These Terms & Conditions are governed by and construed in accordance with the laws of Montenegro. Any disputes arising from these terms shall be subject to the exclusive jurisdiction of the courts of Montenegro.</p>
+
+  <h2>12. Contact</h2>
+  <p>For questions regarding these Terms & Conditions, please contact:</p>
+  <p><strong>Wandering Yacht</strong><br>
+  Email: <a href="mailto:booking@wanderingyacht.com">booking@wanderingyacht.com</a></p>
+
+  <div class="footer">
+    &copy; 2025 Wandering Yacht d.o.o. — All rights reserved.
+  </div>
+</div>
+</body></html>""", status_code=200)
+
 # ======================== QR CODE / SHARE PAGE ========================
 @api_router.get("/download", response_class=HTMLResponse)
 async def download_app():
