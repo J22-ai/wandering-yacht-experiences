@@ -68,9 +68,10 @@ def send_booking_email(to_email: str, customer_name: str, booking: dict, experie
         <p style="margin:10px 0 0;color:#c17f59;font-family:Georgia,serif;font-size:13px;letter-spacing:2px;">{'DEPOSIT CONFIRMATION' if is_deposit else 'BOOKING CONFIRMATION'}</p>
     </td></tr>
     <tr><td style="padding:30px 40px 10px;">
-        <p style="margin:0;font-family:Georgia,serif;color:#1a3a4a;font-size:16px;">Dear {customer_name},</p>
+        <p style="margin:0;font-family:Georgia,serif;color:#c17f59;font-size:18px;font-weight:bold;">Welcome to the Wandering Yacht Club!</p>
+        <p style="margin:12px 0 0;font-family:Georgia,serif;color:#1a3a4a;font-size:16px;">Dear {customer_name},</p>
         <p style="margin:10px 0 0;font-family:Georgia,serif;color:#5a6a6a;font-size:14px;line-height:22px;">
-            {'Your deposit has been received and your dates are now secured.' if is_deposit else 'Thank you for your booking. Your experience has been confirmed.'}
+            {'Thank you for purchasing! Your deposit has been received and your dates are now secured.' if is_deposit else 'Thank you for purchasing! Your experience has been confirmed and we cannot wait to welcome you aboard.'}
         </p>
     </td></tr>
     <tr><td style="padding:10px 40px;">
