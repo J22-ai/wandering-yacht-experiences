@@ -109,7 +109,7 @@ export default function ProfileScreen() {
             resizeMode="contain"
           />
           <Text style={styles.brandName}>WANDERING{'\n'}YACHT</Text>
-          <Text style={styles.aboutUsTitle}>{t('about_title')}</Text>
+          <Text style={styles.aboutUsTitle}>{user ? t('about_title') : 'Create a Profile to Book'}</Text>
         </View>
 
         {/* Favorites Section */}
