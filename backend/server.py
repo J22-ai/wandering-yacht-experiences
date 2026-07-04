@@ -2369,6 +2369,7 @@ async def download_app():
 # Include the router in the main app
 app.include_router(api_router)
 app.mount("/api/fonts", StaticFiles(directory="/app/backend/static_fonts"), name="fonts")
+app.mount("/api/screenshots", StaticFiles(directory="/app/backend/store-screenshots"), name="screenshots")
 
 app.add_middleware(
     CORSMiddleware,
