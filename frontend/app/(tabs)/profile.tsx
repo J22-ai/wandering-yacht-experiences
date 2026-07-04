@@ -211,6 +211,14 @@ export default function ProfileScreen() {
             <Text style={styles.termsLinkText}>Terms & Conditions</Text>
           </TouchableOpacity>
 
+          <TouchableOpacity
+            style={styles.termsLink}
+            onPress={() => router.push('/about')}
+          >
+            <Ionicons name="information-circle-outline" size={18} color="#c17f59" />
+            <Text style={styles.termsLinkText}>{t('about_title')}</Text>
+          </TouchableOpacity>
+
           {user ? (
             <>
               <Text style={styles.welcomeText}>{t('profile_welcome')}, {user.full_name}</Text>
