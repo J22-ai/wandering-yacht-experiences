@@ -512,7 +512,12 @@ export default function ExperienceDetailScreen() {
           )}
 
           {/* Ticket Selection */}
-          <View ref={ticketSectionRef} onLayout={(e) => setTicketSectionY(e.nativeEvent.layout.y)} style={styles.section}>
+          <View 
+            ref={ticketSectionRef} 
+            onLayout={(e) => setTicketSectionY(e.nativeEvent.layout.y)} 
+            style={styles.section}
+            {...(Platform.OS === 'web' ? { 'data-ticket-section': 'true' } as any : {})}
+          >
             <Text style={styles.sectionTitle}>{t('detail_select_tickets')}</Text>
             {experience.ticket_types.map((ticket) => (
               <View key={ticket.id} style={styles.ticketCard}>
@@ -641,7 +646,17 @@ export default function ExperienceDetailScreen() {
           onPress={() => {
             if (getTotalTickets() === 0) {
               // Scroll to ticket section so user can select tickets
-              mainScrollRef.current?.scrollTo({ y: ticketSectionY - 50, animated: true });
+              if (Platform.OS === 'web') {
+                // Use native scrollIntoView for web reliability
+                const ticketEl = document.querySelector('[data-ticket-section="true"]');
+                if (ticketEl) {
+                  ticketEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                  mainScrollRef.current?.scrollTo({ y: ticketSectionY - 120, animated: true });
+                }
+              } else {
+                mainScrollRef.current?.scrollTo({ y: ticketSectionY - 120, animated: true });
+              }
             } else {
               handleBookNow();
             }
