@@ -86,3 +86,4 @@ credentials.json
 *.pem
 *.key
 .credentials
+backend/store-screenshots/wandering-yacht-project.zip
