@@ -647,7 +647,7 @@ export default function ExperienceDetailScreen() {
             </View>
           )}
 
-          <View style={{ height: 140 }} />
+          <View style={{ height: 90 }} />
         </View>
       </ScrollView>
 
@@ -697,7 +697,7 @@ export default function ExperienceDetailScreen() {
               if (Platform.OS === 'web') {
                 const ticketEl = document.querySelector('[data-ticket-section="true"]');
                 if (ticketEl) {
-                  ticketEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  ticketEl.scrollIntoView({ behavior: 'smooth', block: 'end' });
                 } else {
                   mainScrollRef.current?.scrollTo({ y: ticketSectionY - 200, animated: true });
                 }
