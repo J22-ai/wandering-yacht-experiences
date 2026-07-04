@@ -61,12 +61,12 @@ export default function AboutScreen() {
             style={styles.logo}
             resizeMode="contain"
           />
+          <Text style={styles.brandName}>WANDERING{'\n'}YACHT</Text>
         </View>
 
         {/* About Content */}
         <View style={styles.aboutSection}>
           <Text style={styles.sectionLabel}>{t('about_title').toUpperCase()}</Text>
-          <Text style={styles.sectionTitle}>Wandering Yacht</Text>
           <View style={styles.divider} />
           <Text style={styles.bodyText}>
             Born from the love of the sea, family Yacht Charters during summer holidays and intrigued by the way water connects us all to life; Wandering Yacht was born. Starting in a strategic location on the Adriatic Sea, between London and Dubai, the first location started in Porto Montenegro, Tivat, Montenegro. The worlds most luxurious port, which has everything to travel to, embark on a journey from and return to, after a sea voyage is completed.
@@ -284,6 +284,15 @@ const styles = StyleSheet.create({
   logo: {
     width: 100,
     height: 100,
+  },
+  brandName: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a3a4a',
+    fontSize: 26,
+    fontWeight: '400',
+    letterSpacing: 5,
+    marginTop: 16,
+    textAlign: 'center',
   },
   aboutSection: {
     paddingHorizontal: 24,
