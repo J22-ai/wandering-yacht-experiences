@@ -592,6 +592,16 @@ export default function ExperienceDetailScreen() {
         </View>
       </ScrollView>
 
+      {/* Terms & Conditions Link */}
+      <TouchableOpacity
+        style={styles.termsBar}
+        onPress={() => router.push('/terms')}
+      >
+        <Ionicons name="document-text-outline" size={16} color="#c17f59" />
+        <Text style={styles.termsBarText}>Terms & Conditions</Text>
+        <Ionicons name="chevron-forward" size={14} color="#c17f59" />
+      </TouchableOpacity>
+
       {/* Bottom Bar */}
       <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 16 }]}>
         <View style={styles.priceContainer}>
@@ -1044,6 +1054,22 @@ const styles = StyleSheet.create({
     fontFamily: 'TraditionalArabic',
     fontSize: 11,
     color: '#9ca3a3',
+  },
+  termsBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    backgroundColor: '#f0ede8',
+    borderTopWidth: 1,
+    borderTopColor: '#e0ddd7',
+  },
+  termsBarText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    color: '#c17f59',
+    marginHorizontal: 6,
+    textDecorationLine: 'underline',
   },
   bookButton: {
     flexDirection: 'row',
