@@ -282,29 +282,29 @@ const styles = StyleSheet.create({
   logoContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 30,
-    paddingBottom: 20,
+    paddingTop: 16,
+    paddingBottom: 10,
   },
   logo: {
-    width: 150,
-    height: 150,
+    width: 120,
+    height: 120,
   },
   brandName: {
     fontFamily: 'TraditionalArabic',
     color: '#1a3a4a',
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: '400',
     letterSpacing: 5,
-    marginTop: 20,
+    marginTop: 14,
     textAlign: 'center',
   },
   aboutUsTitle: {
     fontFamily: 'TraditionalArabic',
     color: '#c17f59',
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '300',
     letterSpacing: 3,
-    marginTop: 12,
+    marginTop: 8,
     textAlign: 'center',
   },
   favoritesSection: {
@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
   },
   bottomActions: {
     paddingHorizontal: 40,
-    paddingBottom: 40,
+    paddingBottom: 20,
     alignItems: 'center',
   },
   welcomeText: {
