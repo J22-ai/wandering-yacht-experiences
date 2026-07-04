@@ -157,11 +157,12 @@ export default function ExperienceDetailScreen() {
     return Object.values(ticketCounts).reduce((sum, count) => sum + count, 0);
   };
 
+  const [showSignInPrompt, setShowSignInPrompt] = useState(false);
+
   const handleBookNow = async () => {
     if (!user) {
       if (Platform.OS === 'web') {
-        const shouldLogin = confirm('Please sign in to book this experience. Go to login?');
-        if (shouldLogin) router.push('/auth/login');
+        setShowSignInPrompt(true);
       } else {
         Alert.alert(
           t('detail_sign_in_required'),
@@ -177,7 +178,7 @@ export default function ExperienceDetailScreen() {
 
     if (getTotalTickets() === 0) {
       if (Platform.OS === 'web') {
-        alert('Please select at least one ticket');
+        window.alert('Please select at least one ticket');
       } else {
         Alert.alert(t('error'), t('detail_select_tickets'));
       }
@@ -591,6 +592,21 @@ export default function ExperienceDetailScreen() {
           <View style={{ height: 140 }} />
         </View>
       </ScrollView>
+
+      {/* Sign In Prompt Banner */}
+      {showSignInPrompt && (
+        <View style={styles.signInBanner}>
+          <Text style={styles.signInBannerText}>Please sign in to book this experience</Text>
+          <View style={styles.signInBannerButtons}>
+            <TouchableOpacity onPress={() => setShowSignInPrompt(false)} style={styles.signInBannerCancel}>
+              <Text style={styles.signInBannerCancelText}>{t('cancel')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push('/auth/login')} style={styles.signInBannerBtn}>
+              <Text style={styles.signInBannerBtnText}>{t('sign_in')}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
 
       {/* Terms & Conditions Link */}
       <TouchableOpacity
@@ -1070,6 +1086,48 @@ const styles = StyleSheet.create({
     color: '#c17f59',
     marginHorizontal: 6,
     textDecorationLine: 'underline',
+  },
+  signInBanner: {
+    backgroundColor: '#1a3a4a',
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+  },
+  signInBannerText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  signInBannerButtons: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  signInBannerCancel: {
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.4)',
+  },
+  signInBannerCancelText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#fff',
+    fontSize: 14,
+  },
+  signInBannerBtn: {
+    paddingVertical: 8,
+    paddingHorizontal: 24,
+    borderRadius: 6,
+    backgroundColor: '#c17f59',
+  },
+  signInBannerBtnText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
   },
   bookButton: {
     flexDirection: 'row',
