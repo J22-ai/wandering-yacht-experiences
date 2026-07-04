@@ -263,6 +263,12 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
+        {/* Wandering Yacht + About Us */}
+        <View style={styles.bottomBrandSection}>
+          <Text style={styles.bottomBrandName}>WANDERING{'\n'}YACHT</Text>
+          <Text style={styles.bottomAboutLabel}>{t('about_title')}</Text>
+        </View>
+
         {/* About & Contact Buttons */}
         <View style={styles.bottomLinksSection}>
           <TouchableOpacity
@@ -570,6 +576,27 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#1a3a4a',
     fontWeight: '600',
+  },
+  bottomBrandSection: {
+    alignItems: 'center',
+    paddingVertical: 24,
+  },
+  bottomBrandName: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a3a4a',
+    fontSize: 26,
+    fontWeight: '400',
+    letterSpacing: 5,
+    textAlign: 'center',
+  },
+  bottomAboutLabel: {
+    fontFamily: 'TraditionalArabic',
+    color: '#c17f59',
+    fontSize: 15,
+    fontWeight: '300',
+    letterSpacing: 3,
+    marginTop: 10,
+    textAlign: 'center',
   },
   bottomLinksSection: {
     paddingHorizontal: 16,
