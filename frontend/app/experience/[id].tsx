@@ -520,6 +520,7 @@ export default function ExperienceDetailScreen() {
                   <Text style={styles.ticketName}>{translateContent(language, ticket.name)}</Text>
                   <Text style={styles.ticketDescription}>{translateContent(language, ticket.description)}</Text>
                   <Text style={styles.ticketPrice}>€{ticket.price} <Text style={styles.ticketTaxNote}>{t('price_incl_taxes')}</Text></Text>
+                  {!user && <Text style={styles.ticketProfilePrompt}>Create a Profile to Book</Text>}
                 </View>
                 <View style={styles.ticketCounter}>
                   <TouchableOpacity
@@ -1008,6 +1009,13 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: '#9ca3a3',
     fontWeight: '400',
+  },
+  ticketProfilePrompt: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 12,
+    color: '#c17f59',
+    marginTop: 4,
+    fontStyle: 'italic',
   },
   ticketCounter: {
     flexDirection: 'row',
