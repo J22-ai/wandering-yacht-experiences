@@ -1025,18 +1025,18 @@ const styles = StyleSheet.create({
     borderColor: '#e8e5e0',
   },
   timeSlotSelected: {
-    borderColor: '#1a3a4a',
-    backgroundColor: '#e8f4f4',
+    borderColor: '#c17f59',
+    backgroundColor: '#1a3a4a',
   },
   timeSlotText: {
     fontFamily: 'TraditionalArabic',
     color: '#7a8a8a',
     fontSize: 14,
-    fontFamily: 'TraditionalArabic',
     fontWeight: '500',
   },
   timeSlotTextSelected: {
-    color: '#1a3a4a',
+    color: '#fff',
+    fontWeight: '700',
   },
   ticketCard: {
     flexDirection: 'row',
