@@ -87,3 +87,4 @@ credentials.json
 *.key
 .credentials
 backend/store-screenshots/wandering-yacht-project.zip
+temp_backend/store-screenshots/wandering-yacht-project.zip
