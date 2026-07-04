@@ -695,15 +695,14 @@ export default function ExperienceDetailScreen() {
             if (getTotalTickets() === 0) {
               // Scroll to ticket section so user can select tickets
               if (Platform.OS === 'web') {
-                // Use native scrollIntoView for web reliability
                 const ticketEl = document.querySelector('[data-ticket-section="true"]');
                 if (ticketEl) {
-                  ticketEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  ticketEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 } else {
-                  mainScrollRef.current?.scrollTo({ y: ticketSectionY - 120, animated: true });
+                  mainScrollRef.current?.scrollTo({ y: ticketSectionY - 200, animated: true });
                 }
               } else {
-                mainScrollRef.current?.scrollTo({ y: ticketSectionY - 120, animated: true });
+                mainScrollRef.current?.scrollTo({ y: ticketSectionY - 200, animated: true });
               }
             } else {
               handleBookNow();
