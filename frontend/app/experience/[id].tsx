@@ -697,12 +697,14 @@ export default function ExperienceDetailScreen() {
               if (Platform.OS === 'web') {
                 const ticketEl = document.querySelector('[data-ticket-section="true"]');
                 if (ticketEl) {
-                  ticketEl.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                  // Scroll the ticket section to the very top of the viewport
+                  // This maximizes the space available for ticket cards above the bottom bar
+                  ticketEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 } else {
-                  mainScrollRef.current?.scrollTo({ y: ticketSectionY - 200, animated: true });
+                  mainScrollRef.current?.scrollTo({ y: ticketSectionY, animated: true });
                 }
               } else {
-                mainScrollRef.current?.scrollTo({ y: ticketSectionY - 200, animated: true });
+                mainScrollRef.current?.scrollTo({ y: ticketSectionY, animated: true });
               }
             } else {
               handleBookNow();
@@ -1042,9 +1044,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#fff',
-    padding: 20,
+    padding: 14,
     borderRadius: 16,
-    marginBottom: 12,
+    marginBottom: 8,
     borderWidth: 1,
     borderColor: '#e8e5e0',
   },
@@ -1069,9 +1071,9 @@ const styles = StyleSheet.create({
   ticketPrice: {
     fontFamily: 'TraditionalArabic',
     color: '#1a3a4a',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '700',
-    marginTop: 8,
+    marginTop: 4,
   },
   ticketTaxNote: {
     fontFamily: 'TraditionalArabic',
