@@ -22,6 +22,7 @@ import { useFavorites } from '../../src/context/FavoritesContext';
 import { useLanguage } from '../../src/context/LanguageContext';
 import { getTranslatedExperience } from '../../src/i18n/experienceTranslations';
 import { translateContent } from '../../src/i18n/contentTranslations';
+import TransferBookingFields from '../../src/components/TransferBookingFields';
 
 const { width } = Dimensions.get('window');
 
@@ -159,6 +160,14 @@ export default function ExperienceDetailScreen() {
 
   const [showSignInPrompt, setShowSignInPrompt] = useState(false);
 
+  // Transfer booking fields
+  const [pickupLocation, setPickupLocation] = useState({ address: '', lat: null as number | null, lng: null as number | null });
+  const [dropoffLocation, setDropoffLocation] = useState({ address: '', lat: null as number | null, lng: null as number | null });
+  const [pickupTime, setPickupTime] = useState('');
+  const [dropoffTime, setDropoffTime] = useState('');
+
+  const isTransferExperience = experience?.title?.toLowerCase().includes('transfer') || experience?.title?.toLowerCase().includes('minivan');
+
   const handleBookNow = async () => {
     if (!user) {
       if (Platform.OS === 'web') {
@@ -185,6 +194,19 @@ export default function ExperienceDetailScreen() {
       return;
     }
 
+    // Validate transfer fields if this is a transfer experience
+    if (isTransferExperience) {
+      if (!pickupLocation.address || !dropoffLocation.address || !pickupTime || !dropoffTime) {
+        const msg = 'Please fill in all transfer details: pickup/dropoff locations and times';
+        if (Platform.OS === 'web') {
+          window.alert(msg);
+        } else {
+          Alert.alert('Transfer Details Required', msg);
+        }
+        return;
+      }
+    }
+
     setBooking(true);
     try {
       const tickets = experience!.ticket_types
@@ -196,12 +218,22 @@ export default function ExperienceDetailScreen() {
           price_per_ticket: t.price,
         }));
 
-      const bookingData = {
+      const bookingData: any = {
         experience_id: experience!.id,
         tickets,
         time_slot_id: selectedTimeSlot || undefined,
         selected_date: selectedDate || undefined,
       };
+
+      // Add transfer details if applicable
+      if (isTransferExperience) {
+        bookingData.transfer_details = {
+          pickup_location: pickupLocation,
+          dropoff_location: dropoffLocation,
+          pickup_time: pickupTime,
+          dropoff_time: dropoffTime,
+        };
+      }
 
       console.log('Creating booking...', bookingData);
       const result = await api.createBooking(bookingData);
@@ -508,6 +540,22 @@ export default function ExperienceDetailScreen() {
                   <Text style={styles.seasonDates}>June 15 — Sep 15</Text>
                 </View>
               </View>
+            </View>
+          )}
+
+          {/* Transfer Details (only for Mercedes Transfer) */}
+          {isTransferExperience && (
+            <View style={styles.section}>
+              <TransferBookingFields
+                pickupLocation={pickupLocation}
+                dropoffLocation={dropoffLocation}
+                pickupTime={pickupTime}
+                dropoffTime={dropoffTime}
+                onPickupLocationChange={setPickupLocation}
+                onDropoffLocationChange={setDropoffLocation}
+                onPickupTimeChange={setPickupTime}
+                onDropoffTimeChange={setDropoffTime}
+              />
             </View>
           )}
 
