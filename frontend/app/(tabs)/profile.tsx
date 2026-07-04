@@ -109,6 +109,7 @@ export default function ProfileScreen() {
             resizeMode="contain"
           />
           <Text style={styles.brandName}>WANDERING{'\n'}YACHT</Text>
+          <Text style={styles.aboutUsTitle}>{t('about_title')}</Text>
         </View>
 
         {/* Favorites Section */}
@@ -295,6 +296,15 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     letterSpacing: 5,
     marginTop: 20,
+    textAlign: 'center',
+  },
+  aboutUsTitle: {
+    fontFamily: 'TraditionalArabic',
+    color: '#c17f59',
+    fontSize: 16,
+    fontWeight: '300',
+    letterSpacing: 3,
+    marginTop: 12,
     textAlign: 'center',
   },
   favoritesSection: {
