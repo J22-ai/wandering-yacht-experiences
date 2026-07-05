@@ -46,8 +46,7 @@
       [
         "@stripe/stripe-react-native",
         {
-          "merchantIdentifier": "merchant.com.wanderingyacht",
-          "enableGooglePay": true
+          "enableGooglePay": false
         }
       ],
       "expo-secure-store",
