@@ -12,13 +12,15 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.wanderingyacht.app",
       "infoPlist": {
-        "NSFaceIDUsageDescription": "Sign in quickly with Face ID"
+        "NSFaceIDUsageDescription": "Sign in quickly with Face ID",
+        "NSCameraUsageDescription": "Take photos for your profile or to share your experience",
+        "NSPhotoLibraryUsageDescription": "Select photos from your library to share"
       }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#1a3a4a"
+        "backgroundColor": "#0d1b2a"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.wanderingyacht.app",
@@ -40,7 +42,7 @@
           "image": "./assets/images/wy-logo-solid.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#1a3a4a"
+          "backgroundColor": "#0d1b2a"
         }
       ],
       "expo-secure-store",
