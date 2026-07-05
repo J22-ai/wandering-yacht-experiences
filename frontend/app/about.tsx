@@ -101,22 +101,7 @@ export default function AboutScreen() {
           <TouchableOpacity
             style={styles.linkRow}
             onPress={() => {
-              if (Platform.OS === 'web') {
-                try {
-                  (window.top || window.parent || window).open('https://www.instagram.com/wanderingyacht/', '_blank');
-                } catch {
-                  window.open('https://www.instagram.com/wanderingyacht/', '_blank');
-                }
-              } else {
-                // Try Instagram app deep link first, fall back to web
-                Linking.canOpenURL('instagram://user?username=wanderingyacht').then((supported) => {
-                  if (supported) {
-                    Linking.openURL('instagram://user?username=wanderingyacht');
-                  } else {
-                    Linking.openURL('https://www.instagram.com/wanderingyacht/');
-                  }
-                });
-              }
+              Linking.openURL('https://www.instagram.com/wanderingyacht/');
             }}
           >
             <Ionicons name="logo-instagram" size={20} color="#1a3a4a" />
@@ -126,21 +111,7 @@ export default function AboutScreen() {
           <TouchableOpacity
             style={styles.linkRow}
             onPress={() => {
-              if (Platform.OS === 'web') {
-                try {
-                  (window.top || window.parent || window).open('https://www.youtube.com/@WanderingYacht', '_blank');
-                } catch {
-                  window.open('https://www.youtube.com/@WanderingYacht', '_blank');
-                }
-              } else {
-                Linking.canOpenURL('vnd.youtube://www.youtube.com/@WanderingYacht').then((supported) => {
-                  if (supported) {
-                    Linking.openURL('vnd.youtube://www.youtube.com/@WanderingYacht');
-                  } else {
-                    Linking.openURL('https://www.youtube.com/@WanderingYacht');
-                  }
-                });
-              }
+              Linking.openURL('https://www.youtube.com/@WanderingYacht');
             }}
           >
             <Ionicons name="logo-youtube" size={20} color="#1a3a4a" />
