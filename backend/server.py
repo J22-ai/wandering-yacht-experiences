@@ -1240,6 +1240,92 @@ async def seed_data_internal():
             "is_active": True,
             "created_at": datetime.utcnow()
         },
+        # Additional Experiences
+        {
+            "id": str(uuid.uuid4()),
+            "title": "24M Luxury Motor Yacht Charter",
+            "description": "Experience the Adriatic aboard a stunning 24-meter Ferretti motor yacht, built in 2015. Available for daily and weekly charters departing from Porto Montenegro in Tivat. Day charters accommodate up to 14 guests with snacks and lunch included. Weekly charters for 6-8 guests depending on crew configuration, with daily breakfast and one meal included. Full crew includes Captain, 2 Deckhands and a Chef.",
+            "category": "water_adventures",
+            "location": "Porto Montenegro, Tivat",
+            "date": "2025-08-01",
+            "image_url": "https://customer-assets.emergentagent.com/job_ac874aeb-cfb2-4c82-a97b-ff79f3b1c447/artifacts/eugsoh0e_IMG_3430.jpeg",
+            "images": [
+                "https://customer-assets.emergentagent.com/job_ac874aeb-cfb2-4c82-a97b-ff79f3b1c447/artifacts/eugsoh0e_IMG_3430.jpeg",
+                "https://customer-assets.emergentagent.com/job_ac874aeb-cfb2-4c82-a97b-ff79f3b1c447/artifacts/qu1r7ku2_IMG_3435.jpeg",
+                "https://customer-assets.emergentagent.com/job_ac874aeb-cfb2-4c82-a97b-ff79f3b1c447/artifacts/gz1vlblo_IMG_3428.jpeg"
+            ],
+            "capacity": 10,
+            "available_spots": 10,
+            "duration_hours": 12,
+            "amenities": ["Sun Deck", "Captain & crew", "Private Bathroom", "Bluetooth Audio", "Water Toys", "Safety Equipment"],
+            "included": ["Captain", "2 Deckhands", "Chef", "Snacks", "Lunch", "1 Jet Ski", "1 Tender", "Fuel", "Bottled water & Wi-Fi"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Full Day Charter - Low Season (up to 14 guests)", "description": "Full day low season charter. Includes crew, snacks and lunch", "price": 8600, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Full Day Charter - High Season (up to 14 guests)", "description": "Full day high season charter. Includes crew, snacks and lunch", "price": 9800, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Weekly Charter - Low Season (6-8 guests)", "description": "7-day low season charter. Includes crew, daily breakfast and one meal per day", "price": 68000, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Weekly Charter - High Season (6-8 guests)", "description": "7-day high season charter. Includes crew, daily breakfast and one meal per day", "price": 78000, "max_per_booking": 1}
+            ],
+            "tags": ["yacht", "charter", "luxury", "ferretti", "motor yacht", "weekly"],
+            "requires_deposit": True,
+            "deposit_percentage": 30.0,
+            "taxes_included": True,
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Spa Day at Mamula Island",
+            "description": "Retreat, find your balance, immerse in your sanctuary. Depart by sea at 9:00am from Porto Montenegro to the stunning Mamula Island, spending a full day in the beautiful and elegant spa. Choose from massage therapies, facials and more wellness offerings to bring back your vitality. A complete day of pampering with lunch included, returning at 6:00pm.",
+            "category": "yacht_experiences",
+            "location": "Porto Montenegro, Tivat",
+            "date": "2025-08-01",
+            "image_url": "https://images.unsplash.com/photo-1488345979593-09db0f85545f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBzcGF8ZW58MHx8fGJsdWV8MTc3NzA2MTk3NXww&ixlib=rb-4.1.0&q=85",
+            "images": [
+                "https://images.unsplash.com/photo-1488345979593-09db0f85545f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBzcGF8ZW58MHx8fGJsdWV8MTc3NzA2MTk3NXww&ixlib=rb-4.1.0&q=85",
+                "https://images.pexels.com/photos/28410687/pexels-photo-28410687.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+            ],
+            "capacity": 8,
+            "available_spots": 8,
+            "duration_hours": 9,
+            "amenities": ["Massage Therapies", "Recovery", "Bodywork", "Body Scrubs", "Hydrotherapy", "Finnish Sauna", "Steam Bath", "Salt Room", "Sound Healing", "Meditation", "Yoga", "Pilates"],
+            "included": ["Boat transfer to Mamula Island", "Boat transfer back to Porto Montenegro", "3 spa treatments", "Lunch", "Thermal Lounge access", "Pool access"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Full Day Spa Package (per person)", "description": "Complete day at Mamula Island Spa. Includes 3 treatments, lunch, sea transfers and thermal lounge & pool access. 9:00am - 6:00pm.", "price": 980, "max_per_booking": 10}
+            ],
+            "tags": ["spa", "wellness", "mamula", "island", "massage", "sauna", "luxury"],
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "title": "L'Odyssey - Sailing Charter",
+            "description": "Charter our vintage 82 Ft Heritage Sailing Vessel for an unforgettable private experience on the Bay of Kotor. Choose from a Half Day or Full Day charter with dedicated crew, gourmet catering, and curated entertainment. Morning charters feature a picnic lunch with swimming and music. Sunset charters offer a sushi and hors d'oeuvres dinner with wine and entertainment.",
+            "category": "water_adventures",
+            "location": "Porto Montenegro",
+            "date": "2025-08-01",
+            "image_url": "https://customer-assets.emergentagent.com/job_ac874aeb-cfb2-4c82-a97b-ff79f3b1c447/artifacts/qv4wit5n_WhatsApp%20Image%202026-04-25%20at%2019.58.33.jpeg",
+            "images": [
+                "https://customer-assets.emergentagent.com/job_ac874aeb-cfb2-4c82-a97b-ff79f3b1c447/artifacts/qv4wit5n_WhatsApp%20Image%202026-04-25%20at%2019.58.33.jpeg",
+                "https://customer-assets.emergentagent.com/job_ac874aeb-cfb2-4c82-a97b-ff79f3b1c447/artifacts/a5qd559o_WhatsApp%20Image%202026-04-25%20at%2019.51.45.jpeg"
+            ],
+            "capacity": 10,
+            "available_spots": 10,
+            "duration_hours": 8,
+            "amenities": ["Classic Sails", "Wooden Deck", "Professional Crew", "Authentic Experience", "Swimming", "Music", "Entertainment"],
+            "included": ["Captain", "Crew", "Catering", "Beverages", "Safety equipment", "Music & Entertainment"],
+            "ticket_types": [
+                {"id": str(uuid.uuid4()), "name": "Half Day Charter - Low Season", "description": "4 hour private charter, low season", "price": 1760, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Half Day Charter - High Season", "description": "4 hour private charter, high season", "price": 2690, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Full Day Charter - Low Season", "description": "8 hour private charter, low season", "price": 3400, "max_per_booking": 1},
+                {"id": str(uuid.uuid4()), "name": "Full Day Charter - High Season", "description": "8 hour private charter, high season", "price": 4900, "max_per_booking": 1}
+            ],
+            "tags": ["charter", "private", "heritage", "sailing"],
+            "requires_deposit": True,
+            "deposit_percentage": 30.0,
+            "taxes_included": True,
+            "is_active": True,
+            "created_at": datetime.utcnow()
+        },
     ]
     
     await db.experiences.insert_many(experiences)
