@@ -579,6 +579,12 @@ async def seed_data():
         return {"message": "Data already seeded", "count": count}
     return await seed_data_internal()
 
+@api_router.post("/reseed")
+async def reseed_data():
+    """Force reseed - deletes all experiences and reseeds"""
+    await db.experiences.delete_many({})
+    return await seed_data_internal()
+
 async def seed_data_internal():
     
     experiences = [
