@@ -14,7 +14,8 @@
       "infoPlist": {
         "NSFaceIDUsageDescription": "Sign in quickly with Face ID",
         "NSCameraUsageDescription": "Take photos for your profile or to share your experience",
-        "NSPhotoLibraryUsageDescription": "Select photos from your library to share"
+        "NSPhotoLibraryUsageDescription": "Select photos from your library to share",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -57,6 +58,11 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ebe296e8-2e1b-4e06-bbea-2023ca0aa483"
+      }
     }
   }
 }
