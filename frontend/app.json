@@ -2,7 +2,7 @@
   "expo": {
     "name": "WANDERING YACHT",
     "slug": "wandering-yacht",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "wanderingyacht",
@@ -11,6 +11,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.wanderingyacht.app",
+      "buildNumber": "2",
       "infoPlist": {
         "NSFaceIDUsageDescription": "Sign in quickly with Face ID"
       }

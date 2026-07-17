@@ -18,7 +18,8 @@
     },
     "production": {
       "ios": {
-        "bundleIdentifier": "com.wanderingyacht.app"
+        "bundleIdentifier": "com.wanderingyacht.app",
+        "autoIncrement": true
       },
       "android": {
         "buildType": "app-bundle"
