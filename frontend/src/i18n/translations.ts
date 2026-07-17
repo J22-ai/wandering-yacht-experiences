@@ -220,7 +220,7 @@ const translations: Record<Language, TranslationStrings> = {
     welcome_title: 'Our Immersive Experiences',
     welcome_subtitle: "Yoga, Golf, Tours & More",
     welcome_location: 'MONTENEGRO',
-    welcome_cta: 'Explore Experiences',
+    welcome_cta: 'EXPLORE NOW',
     welcome_signin: 'Sign In',
     welcome_already: 'Already have an account?',
     sign_in: 'Sign In',
