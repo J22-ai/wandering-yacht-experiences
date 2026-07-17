@@ -1,6 +1,6 @@
 import Constants from 'expo-constants';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://wandering-yacht-experiences-production.up.railway.app';
 
 class ApiService {
   private token: string | null = null;

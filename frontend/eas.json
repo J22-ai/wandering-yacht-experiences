@@ -5,10 +5,16 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_BACKEND_URL": "https://wandering-yacht-experiences-production.up.railway.app"
+      }
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_BACKEND_URL": "https://wandering-yacht-experiences-production.up.railway.app"
+      }
     },
     "production": {
       "ios": {
@@ -16,6 +22,9 @@
       },
       "android": {
         "buildType": "app-bundle"
+      },
+      "env": {
+        "EXPO_PUBLIC_BACKEND_URL": "https://wandering-yacht-experiences-production.up.railway.app"
       }
     }
   },
