@@ -290,8 +290,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 12,
     elevation: 6,
-    borderWidth: 3,
-    borderColor: '#FF1744',
   },
   exploreButtonText: {
     fontFamily: 'TraditionalArabic',
