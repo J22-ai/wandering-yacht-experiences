@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 6,
     borderWidth: 3,
-    borderColor: '#8B0000',
+    borderColor: '#E31837',
   },
   exploreButtonText: {
     fontFamily: 'TraditionalArabic',
