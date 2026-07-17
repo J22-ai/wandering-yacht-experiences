@@ -585,6 +585,18 @@ async def reseed_data():
     await db.experiences.delete_many({})
     return await seed_data_internal()
 
+@api_router.post("/admin/update-ticket-price")
+async def update_ticket_price(title_contains: str, ticket_name: str, new_price: float):
+    """Update a specific ticket price for an experience"""
+    result = await db.experiences.update_one(
+        {"title": {"$regex": title_contains, "$options": "i"}},
+        {"$set": {"ticket_types.$[elem].price": new_price}},
+        array_filters=[{"elem.name": ticket_name}]
+    )
+    if result.modified_count > 0:
+        return {"message": f"Updated {ticket_name} to €{new_price}", "modified": result.modified_count}
+    return {"message": "No matching experience or ticket found", "modified": 0}
+
 async def seed_data_internal():
     
     experiences = [
