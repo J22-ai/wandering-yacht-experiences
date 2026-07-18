@@ -88,3 +88,6 @@ credentials.json
 .credentials
 backend/store-screenshots/wandering-yacht-project.zip
 temp_backend/store-screenshots/wandering-yacht-project.zip
+.env
+.env.*
+*.env
