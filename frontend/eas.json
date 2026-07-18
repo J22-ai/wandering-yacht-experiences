@@ -17,13 +17,7 @@
       }
     },
     "production": {
-      "ios": {
-        "bundleIdentifier": "com.wanderingyacht.app",
-        "autoIncrement": true
-      },
-      "android": {
-        "buildType": "app-bundle"
-      },
+      "autoIncrement": true,
       "env": {
         "EXPO_PUBLIC_BACKEND_URL": "https://wandering-yacht-experiences-production.up.railway.app"
       }
