@@ -66,8 +66,7 @@
     "extra": {
       "eas": {
         "projectId": "ebe296e8-2e1b-4e06-bbea-2023ca0aa483"
-      },
-      "BACKEND_URL": "https://wandering-yacht-experiences-production.up.railway.app"
+      }
     }
   }
 }
