@@ -10,8 +10,8 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.wanderingyacht.app",
-      "buildNumber": "6",
+      "bundleIdentifier": "com.judyblue22.wanderingyacht",
+      "buildNumber": "7",
       "infoPlist": {
         "NSFaceIDUsageDescription": "Sign in quickly with Face ID",
         "NSCameraUsageDescription": "Take photos for your profile or to share your experience",
@@ -25,9 +25,9 @@
         "backgroundColor": "#0d1b2a"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.wanderingyacht.app",
+      "package": "com.judyblue22.wanderingyacht",
       "permissions": [
-        "USE_BIOMETRIC",
+        "USE_BIOMETPCICK",
         "USE_FINGERPRINT"
       ]
     },
