@@ -10,8 +10,8 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.wanderingyacht.app",
-      "buildNumber": "6",
+      "bundleIdentifier": "judyblue22.wanderingyacht.app",
+      "buildNumber": "7",
       "infoPlist": {
         "NSFaceIDUsageDescription": "Sign in quickly with Face ID",
         "NSCameraUsageDescription": "Take photos for your profile or to share your experience",
