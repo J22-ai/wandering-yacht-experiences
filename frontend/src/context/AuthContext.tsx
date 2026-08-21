@@ -43,7 +43,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const timer = setTimeout(() => {
       loadStoredAuth();
     }, 100);
-    return () => clearTimeout(timer);
+    
+    // Safety timeout - ensure isLoading is false after 5 seconds max
+    const safetyTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+    
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(safetyTimer);
+    };
   }, []);
 
   const loadStoredAuth = async () => {
@@ -68,18 +77,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const checkBiometricStatus = async () => {
     try {
-      const available = await biometricService.isAvailable();
-      setIsBiometricAvailable(available);
+      // Add timeout for biometric check
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Biometric check timeout')), 3000)
+      );
       
-      if (available) {
-        const label = await biometricService.getBiometricLabel();
-        setBiometricLabel(label);
+      const checkPromise = (async () => {
+        const available = await biometricService.isAvailable();
+        setIsBiometricAvailable(available);
         
-        const enabled = await biometricService.isEnabled();
-        setIsBiometricEnabled(enabled);
-      }
+        if (available) {
+          const label = await biometricService.getBiometricLabel();
+          setBiometricLabel(label);
+          
+          const enabled = await biometricService.isEnabled();
+          setIsBiometricEnabled(enabled);
+        }
+      })();
+      
+      await Promise.race([checkPromise, timeoutPromise]);
     } catch (err) {
       console.error('Biometric status check failed:', err);
+      // Don't block app launch if biometric check fails
+      setIsBiometricAvailable(false);
     }
   };
 

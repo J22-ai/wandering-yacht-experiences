@@ -16,6 +16,7 @@ export default function WelcomeScreen() {
   const { user, isLoading } = useAuth();
   const { language, setLanguage, t } = useLanguage();
   const [showLangPicker, setShowLangPicker] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     if (!isLoading) {
@@ -25,6 +26,14 @@ export default function WelcomeScreen() {
       SplashScreen.hideAsync().catch(() => {});
     }
   }, [user, isLoading]);
+
+  // Safety timeout - ensure we don't stay on loading forever
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      SplashScreen.hideAsync().catch(() => {});
+    }, 6000);
+    return () => clearTimeout(timeout);
+  }, []);
 
   if (isLoading) {
     return (
@@ -40,11 +49,16 @@ export default function WelcomeScreen() {
     );
   }
 
+  const backgroundSource = imageError 
+    ? require('../assets/images/wy-logo-solid.png')
+    : { uri: 'https://images.pexels.com/photos/29071814/pexels-photo-29071814.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=1200&w=800' };
+
   return (
     <ImageBackground
-      source={{ uri: 'https://images.pexels.com/photos/29071814/pexels-photo-29071814.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=1200&w=800' }}
-      style={styles.container}
+      source={backgroundSource}
+      style={[styles.container, imageError && styles.fallbackBackground]}
       resizeMode="cover"
+      onError={() => setImageError(true)}
     >
       {/* Header with centered logo, brand name, and language globe */}
       <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
@@ -131,6 +145,9 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  fallbackBackground: {
+    backgroundColor: '#1a3a4a',
   },
   loadingContainer: {
     flex: 1,
