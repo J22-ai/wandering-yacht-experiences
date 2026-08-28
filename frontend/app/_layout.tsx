@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { AuthProvider } from '../src/context/AuthContext';
@@ -15,14 +15,28 @@ export default function RootLayout() {
     'TraditionalArabic': require('../assets/fonts/TraditionalArabic-Regular.ttf'),
     'TraditionalArabic-Bold': require('../assets/fonts/TraditionalArabic-Bold.ttf'),
   });
+  
+  // Safety timeout - proceed even if fonts don't load
+  const [forceReady, setForceReady] = useState(false);
+
+  useEffect(() => {
+    // Safety timeout after 3 seconds
+    const timeout = setTimeout(() => {
+      setForceReady(true);
+      SplashScreen.hideAsync().catch(() => {});
+    }, 3000);
+    
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
     if (fontsLoaded || fontError) {
-      SplashScreen.hideAsync();
+      SplashScreen.hideAsync().catch(() => {});
     }
   }, [fontsLoaded, fontError]);
 
-  if (!fontsLoaded && !fontError) {
+  // Proceed if fonts loaded, error occurred, OR timeout reached
+  if (!fontsLoaded && !fontError && !forceReady) {
     return (
       <View style={styles.loadingContainer}>
         <Image
