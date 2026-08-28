@@ -9,9 +9,9 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.wanderingyacht.app",
-      "buildNumber": "10",
+      "buildNumber": "11",
       "infoPlist": {
         "NSFaceIDUsageDescription": "Sign in quickly with Face ID",
         "NSCameraUsageDescription": "Take photos for your profile or to share your experience",
