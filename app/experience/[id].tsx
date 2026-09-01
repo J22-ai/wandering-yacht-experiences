@@ -1,0 +1,1352 @@
+import React, { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  Dimensions,
+  Alert,
+  ActivityIndicator,
+  Linking,
+  Platform,
+} from 'react-native';
+import { useRouter, useLocalSearchParams } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Calendar } from 'react-native-calendars';
+import { api } from '../../src/services/api';
+import { useAuth } from '../../src/context/AuthContext';
+import { useFavorites } from '../../src/context/FavoritesContext';
+import { useLanguage } from '../../src/context/LanguageContext';
+import { getTranslatedExperience } from '../../src/i18n/experienceTranslations';
+import { translateContent } from '../../src/i18n/contentTranslations';
+import TransferBookingFields from '../../src/components/TransferBookingFields';
+
+const { width } = Dimensions.get('window');
+
+const openMapLink = (location: string) => {
+  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
+  if (Platform.OS === 'web') {
+    try {
+      (window.top || window.parent || window).open(mapUrl, '_blank');
+    } catch {
+      window.open(mapUrl, '_blank');
+    }
+  } else {
+    // Try native maps app first, fall back to browser
+    const nativeUrl = Platform.OS === 'ios'
+      ? `maps:?q=${encodeURIComponent(location)}`
+      : `geo:0,0?q=${encodeURIComponent(location)}`;
+    Linking.canOpenURL(nativeUrl).then((supported) => {
+      if (supported) {
+        Linking.openURL(nativeUrl);
+      } else {
+        Linking.openURL(mapUrl);
+      }
+    });
+  }
+};
+
+interface TicketType {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  max_per_booking: number;
+}
+
+interface Experience {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  location: string;
+  date: string;
+  image_url: string;
+  capacity: number;
+  available_spots: number;
+  ticket_types: TicketType[];
+  time_slots?: Array<{
+    id: string;
+    start_time: string;
+    end_time: string;
+    available_spots: number;
+  }>;
+  duration_hours: number;
+  amenities: string[];
+  included: string[];
+  requires_deposit?: boolean;
+  deposit_percentage?: number;
+  taxes_included?: boolean;
+  deposit_note?: string;
+  charter_packages?: Array<{
+    title: string;
+    items: string[];
+  }>;
+  images?: string[];
+  card_layout?: string;
+}
+
+export default function ExperienceDetailScreen() {
+  const router = useRouter();
+  const { id } = useLocalSearchParams();
+  const insets = useSafeAreaInsets();
+  const { user, token } = useAuth();
+  const { toggleFavorite, isFavorite } = useFavorites();
+  const { t, language } = useLanguage();
+  const [experience, setExperience] = useState<Experience | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [ticketCounts, setTicketCounts] = useState<{ [key: string]: number }>({});
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string>('');
+  const [booking, setBooking] = useState(false);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [ticketSectionY, setTicketSectionY] = useState(0);
+  const imageScrollRef = React.useRef<ScrollView>(null);
+  const ticketSectionRef = React.useRef<View>(null);
+  const mainScrollRef = React.useRef<ScrollView>(null);
+
+  useEffect(() => {
+    if (token) {
+      api.setToken(token);
+    }
+    loadExperience();
+  }, [id, token]);
+
+  const loadExperience = async () => {
+    try {
+      const data = await api.getExperience(id as string);
+      setExperience(data);
+      // Initialize ticket counts
+      const counts: { [key: string]: number } = {};
+      data.ticket_types.forEach((t: TicketType) => {
+        counts[t.id] = 0;
+      });
+      setTicketCounts(counts);
+      // Select first time slot if available
+      if (data.time_slots && data.time_slots.length > 0) {
+        setSelectedTimeSlot(data.time_slots[0].id);
+      }
+    } catch (error) {
+      console.error('Error loading experience:', error);
+      Alert.alert('Error', 'Failed to load experience');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateTicketCount = (ticketId: string, delta: number) => {
+    if (!experience) return;
+    const ticket = experience.ticket_types.find((t) => t.id === ticketId);
+    if (!ticket) return;
+
+    const currentCount = ticketCounts[ticketId] || 0;
+    const newCount = Math.max(0, Math.min(ticket.max_per_booking, currentCount + delta));
+    setTicketCounts({ ...ticketCounts, [ticketId]: newCount });
+  };
+
+  const getTotalPrice = () => {
+    if (!experience) return 0;
+    return experience.ticket_types.reduce((total, ticket) => {
+      return total + (ticketCounts[ticket.id] || 0) * ticket.price;
+    }, 0);
+  };
+
+  const getTotalTickets = () => {
+    return Object.values(ticketCounts).reduce((sum, count) => sum + count, 0);
+  };
+
+  const [showSignInPrompt, setShowSignInPrompt] = useState(false);
+
+  // Transfer booking fields
+  const [pickupLocation, setPickupLocation] = useState({ address: '', lat: null as number | null, lng: null as number | null });
+  const [dropoffLocation, setDropoffLocation] = useState({ address: '', lat: null as number | null, lng: null as number | null });
+  const [pickupTime, setPickupTime] = useState('');
+  const [dropoffTime, setDropoffTime] = useState('');
+
+  const isTransferExperience = experience?.title?.toLowerCase().includes('transfer') || experience?.title?.toLowerCase().includes('minivan');
+
+  const handleBookNow = async () => {
+    if (!user) {
+      if (Platform.OS === 'web') {
+        setShowSignInPrompt(true);
+      } else {
+        Alert.alert(
+          t('detail_sign_in_required'),
+          t('auth_sign_in_subtitle'),
+          [
+            { text: t('cancel'), style: 'cancel' },
+            { text: t('sign_in'), onPress: () => router.push('/auth/login') },
+          ]
+        );
+      }
+      return;
+    }
+
+    if (getTotalTickets() === 0) {
+      if (Platform.OS === 'web') {
+        window.alert('Please select at least one ticket');
+      } else {
+        Alert.alert(t('error'), t('detail_select_tickets'));
+      }
+      return;
+    }
+
+    // Validate transfer fields if this is a transfer experience
+    if (isTransferExperience) {
+      if (!pickupLocation.address || !dropoffLocation.address || !pickupTime || !dropoffTime) {
+        const msg = 'Please fill in all transfer details: pickup/dropoff locations and times';
+        if (Platform.OS === 'web') {
+          window.alert(msg);
+        } else {
+          Alert.alert('Transfer Details Required', msg);
+        }
+        return;
+      }
+    }
+
+    setBooking(true);
+    try {
+      const tickets = experience!.ticket_types
+        .filter((t) => ticketCounts[t.id] > 0)
+        .map((t) => ({
+          ticket_type_id: t.id,
+          ticket_name: t.name,
+          quantity: ticketCounts[t.id],
+          price_per_ticket: t.price,
+        }));
+
+      const bookingData: any = {
+        experience_id: experience!.id,
+        tickets,
+        time_slot_id: selectedTimeSlot || undefined,
+        selected_date: selectedDate || undefined,
+      };
+
+      // Add transfer details if applicable
+      if (isTransferExperience) {
+        bookingData.transfer_details = {
+          pickup_location: pickupLocation,
+          dropoff_location: dropoffLocation,
+          pickup_time: pickupTime,
+          dropoff_time: dropoffTime,
+        };
+      }
+
+      console.log('Creating booking...', bookingData);
+      const result = await api.createBooking(bookingData);
+      console.log('Booking created:', result.id);
+      // Don't reset booking state - keep the spinner showing during navigation
+      router.push(`/checkout/${result.id}`);
+      // Leave booking=true so the button stays in loading state until screen changes
+      return;
+    } catch (error: any) {
+      console.error('Booking error:', error);
+      const errMsg = error.message || 'Failed to create booking';
+      if (Platform.OS === 'web') {
+        alert('Booking Error: ' + errMsg);
+      } else {
+        Alert.alert('Error', errMsg);
+      }
+      setBooking(false);
+    }
+  };
+
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  };
+
+  const getCategoryLabel = (category: string) => {
+    const catKeyMap: { [key: string]: string } = {
+      'water_adventures': 'cat_water_adventures',
+      'yacht_experiences': 'cat_wellness_on_deck',
+      'culinary_tours': 'cat_culinary_excursions',
+      'nature_escapes': 'cat_nature_escapes',
+      'concierge_services': 'cat_concierge_services',
+      'weddings_events': 'cat_weddings_events',
+      'experiences': 'cat_experiences',
+    };
+    if (catKeyMap[category]) return t(catKeyMap[category]);
+    return category.replace(/[_-]/g, ' ');
+  };
+
+  if (loading) {
+    return (
+      <View style={[styles.container, styles.loadingContainer]}>
+        <ActivityIndicator size="large" color="#1a3a4a" />
+      </View>
+    );
+  }
+
+  if (!experience) {
+    return (
+      <View style={[styles.container, styles.loadingContainer]}>
+        <Text style={styles.errorText}>{t('detail_not_found')}</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <ScrollView ref={mainScrollRef} showsVerticalScrollIndicator={false}>
+        {/* Hero Image Gallery */}
+        <View style={styles.heroContainer}>
+          {experience.images && experience.images.length > 1 ? (
+            <>
+              <ScrollView
+                ref={imageScrollRef}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                onScroll={(e) => {
+                  const idx = Math.round(e.nativeEvent.contentOffset.x / Dimensions.get('window').width);
+                  setActiveImageIndex(idx);
+                }}
+                scrollEventThrottle={16}
+              >
+                {experience.images.map((imgUrl, idx) => (
+                  <Image
+                    key={idx}
+                    source={{ uri: imgUrl }}
+                    style={[styles.heroImage, { width: Dimensions.get('window').width }]}
+                  />
+                ))}
+              </ScrollView>
+              {/* Pagination dots */}
+              <View style={styles.paginationDots}>
+                {experience.images.map((_, idx) => (
+                  <View
+                    key={idx}
+                    style={[styles.dot, activeImageIndex === idx && styles.dotActive]}
+                  />
+                ))}
+              </View>
+            </>
+          ) : (
+            <Image
+              source={{ uri: experience.image_url || 'https://images.unsplash.com/photo-1531419746980-63af10612bf3?w=1200' }}
+              style={styles.heroImage}
+            />
+          )}
+          <View style={[styles.heroOverlay, { paddingTop: insets.top }]}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => router.back()}
+              hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
+              activeOpacity={0.6}
+            >
+              <Ionicons name="arrow-back" size={24} color="#1a2a30" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.shareButton} onPress={() => experience && toggleFavorite(experience.id)}>
+              <Ionicons
+                name={experience && isFavorite(experience.id) ? 'heart' : 'heart-outline'}
+                size={24}
+                color={experience && isFavorite(experience.id) ? '#e74c3c' : '#1a2a30'}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.content}>
+          {/* Category Badge */}
+          <View style={styles.categoryBadge}>
+            <Text style={styles.categoryText}>
+              {getCategoryLabel(experience.category).toUpperCase()}
+            </Text>
+          </View>
+
+          {/* Title */}
+          <Text style={styles.title}>{getTranslatedExperience(language, experience.title)?.title || experience.title}</Text>
+          
+          {/* Location - Clickable to open maps */}
+          <TouchableOpacity
+            style={styles.locationRow}
+            onPress={() => openMapLink(experience.location)}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="location-outline" size={18} color="#c17f59" />
+            <Text style={styles.location}>{experience.location}</Text>
+            <Ionicons name="open-outline" size={14} color="#c17f59" />
+          </TouchableOpacity>
+
+          {/* Quick Info Cards */}
+          <View style={styles.quickInfo}>
+            {experience.duration_hours > 0 && (
+              <View style={styles.infoCard}>
+                <Ionicons name="time-outline" size={22} color="#1a3a4a" />
+                <Text style={styles.infoLabel}>{t('detail_duration')}</Text>
+                <Text style={styles.infoValue}>
+                  {experience.duration_hours >= 1 ? `${experience.duration_hours} ${experience.duration_hours > 1 ? t('detail_hours') : t('detail_hour')}` : `${Math.round(experience.duration_hours * 60)} ${t('detail_minutes')}`}
+                </Text>
+              </View>
+            )}
+            <View style={styles.infoCard}>
+              <Ionicons name="people-outline" size={22} color="#1a3a4a" />
+              <Text style={styles.infoLabel}>{t('detail_available_spots')}</Text>
+              <Text style={styles.infoValue}>{experience.available_spots} {t('detail_spots')}</Text>
+            </View>
+          </View>
+
+          {/* Select Date - Calendar */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t('detail_select_date')}</Text>
+            <View style={styles.calendarContainer}>
+              <Calendar
+                minDate={new Date().toISOString().split('T')[0]}
+                onDayPress={(day: any) => setSelectedDate(day.dateString)}
+                markedDates={{
+                  [selectedDate]: {
+                    selected: true,
+                    selectedColor: '#1a3a4a',
+                    selectedTextColor: '#fff',
+                  },
+                }}
+                theme={{
+                  backgroundColor: '#fff',
+                  calendarBackground: '#fff',
+                  textSectionTitleColor: '#7a8a8a',
+                  selectedDayBackgroundColor: '#1a3a4a',
+                  selectedDayTextColor: '#fff',
+                  todayTextColor: '#1a3a4a',
+                  dayTextColor: '#1a2a30',
+                  textDisabledColor: '#d0d0d0',
+                  arrowColor: '#1a3a4a',
+                  monthTextColor: '#1a2a30',
+                  textMonthFontWeight: '600',
+                  textDayFontSize: 14,
+                  textMonthFontSize: 16,
+                  textDayHeaderFontSize: 13,
+                  textDayFontFamily: 'TraditionalArabic',
+                  textMonthFontFamily: 'TraditionalArabic',
+                  textDayHeaderFontFamily: 'TraditionalArabic',
+                }}
+              />
+            </View>
+            {selectedDate ? (
+              <Text style={styles.selectedDateText}>
+                Selected: {new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+              </Text>
+            ) : (
+              <Text style={styles.selectDateHint}>{t('detail_tap_date')}</Text>
+            )}
+          </View>
+
+          {/* Description */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t('detail_about')}</Text>
+            <Text style={styles.description}>{getTranslatedExperience(language, experience.title)?.description || experience.description}</Text>
+          </View>
+
+          {/* What's Included */}
+          {experience.included && experience.included.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>{t('detail_whats_included')}</Text>
+              <View style={styles.includedList}>
+                {experience.included.map((item, idx) => (
+                  <View key={idx} style={styles.includedItem}>
+                    <View style={styles.checkCircle}>
+                      <Ionicons name="checkmark" size={14} color="#fff" />
+                    </View>
+                    <Text style={styles.includedText}>{translateContent(language, item)}</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          )}
+
+          {/* Amenities */}
+          {experience.amenities && experience.amenities.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>{t('detail_amenities')}</Text>
+              <View style={styles.amenitiesGrid}>
+                {experience.amenities.map((amenity, idx) => (
+                  <View key={idx} style={styles.amenityChip}>
+                    <Text style={styles.amenityText}>{translateContent(language, amenity)}</Text>
+                  </View>
+                ))}
+              </View>
+              {/* Charter Packages - structured display */}
+              {experience.charter_packages && experience.charter_packages.length > 0 && (
+                <View style={styles.charterPackagesWrap}>
+                  {experience.charter_packages.map((pkg, idx) => (
+                    <View key={idx} style={styles.charterPackageCard}>
+                      <View style={styles.charterPackageHeader}>
+                        <Ionicons name={idx === 0 ? 'sunny-outline' : 'partly-sunny-outline'} size={16} color="#c17f59" />
+                        <Text style={styles.charterPackageTitle}>{translateContent(language, pkg.title)}</Text>
+                      </View>
+                      <View style={styles.charterPackageItems}>
+                        {pkg.items.map((item, iIdx) => (
+                          <View key={iIdx} style={styles.charterPackageItem}>
+                            <View style={styles.charterDot} />
+                            <Text style={styles.charterPackageItemText}>{translateContent(language, item)}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              )}
+            </View>
+          )}
+
+          {/* Time Slots */}
+          {experience.time_slots && experience.time_slots.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>{t('detail_select_time')}</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {experience.time_slots.map((slot) => (
+                  <TouchableOpacity
+                    key={slot.id}
+                    style={[
+                      styles.timeSlot,
+                      selectedTimeSlot === slot.id && styles.timeSlotSelected,
+                    ]}
+                    onPress={() => setSelectedTimeSlot(slot.id)}
+                  >
+                    <Text
+                      style={[
+                        styles.timeSlotText,
+                        selectedTimeSlot === slot.id && styles.timeSlotTextSelected,
+                      ]}
+                    >
+                      {slot.start_time} - {slot.end_time}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+          )}
+
+          {/* Season Dates - shown when experience has seasonal pricing */}
+          {experience.ticket_types.some(t => t.name.toLowerCase().includes('season')) && (
+            <View style={styles.seasonCard}>
+              <View style={styles.seasonRow}>
+                <View style={styles.seasonBlock}>
+                  <Text style={styles.seasonLabel}>LOW SEASON</Text>
+                  <Text style={styles.seasonDates}>May 1 — June 14</Text>
+                  <Text style={styles.seasonDates}>Sep 16 — Oct 31</Text>
+                </View>
+                <View style={styles.seasonDividerVert} />
+                <View style={styles.seasonBlock}>
+                  <Text style={[styles.seasonLabel, { color: '#c17f59' }]}>HIGH SEASON</Text>
+                  <Text style={styles.seasonDates}>June 15 — Sep 15</Text>
+                </View>
+              </View>
+            </View>
+          )}
+
+          {/* Transfer Details (only for Mercedes Transfer) */}
+          {isTransferExperience && (
+            <View style={styles.section}>
+              <TransferBookingFields
+                pickupLocation={pickupLocation}
+                dropoffLocation={dropoffLocation}
+                pickupTime={pickupTime}
+                dropoffTime={dropoffTime}
+                onPickupLocationChange={setPickupLocation}
+                onDropoffLocationChange={setDropoffLocation}
+                onPickupTimeChange={setPickupTime}
+                onDropoffTimeChange={setDropoffTime}
+              />
+            </View>
+          )}
+
+          {/* Ticket Selection */}
+          <View 
+            ref={ticketSectionRef} 
+            onLayout={(e) => setTicketSectionY(e.nativeEvent.layout.y)} 
+            style={styles.section}
+            {...(Platform.OS === 'web' ? { 'data-ticket-section': 'true' } as any : {})}
+          >
+            <Text style={styles.sectionTitle}>{t('detail_select_tickets')}</Text>
+            {experience.ticket_types.map((ticket) => (
+              <View key={ticket.id} style={styles.ticketCard}>
+                <View style={styles.ticketInfo}>
+                  <Text style={styles.ticketName}>{translateContent(language, ticket.name)}</Text>
+                  <Text style={styles.ticketDescription}>{translateContent(language, ticket.description)}</Text>
+                  <Text style={styles.ticketPrice}>€{ticket.price} <Text style={styles.ticketTaxNote}>{t('price_incl_taxes')}</Text></Text>
+                  {!user && (
+                    <TouchableOpacity onPress={() => router.push('/auth/register')}>
+                      <Text style={styles.ticketProfilePrompt}>Create a Profile to Book</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+                <View style={styles.ticketCounter}>
+                  <TouchableOpacity
+                    style={[
+                      styles.counterButton,
+                      ticketCounts[ticket.id] === 0 && styles.counterButtonDisabled,
+                    ]}
+                    onPress={() => updateTicketCount(ticket.id, -1)}
+                    disabled={ticketCounts[ticket.id] === 0}
+                  >
+                    <Ionicons name="remove" size={18} color={ticketCounts[ticket.id] === 0 ? '#c4c9c9' : '#1a3a4a'} />
+                  </TouchableOpacity>
+                  <Text style={styles.counterValue}>{ticketCounts[ticket.id] || 0}</Text>
+                  <TouchableOpacity
+                    style={styles.counterButton}
+                    onPress={() => updateTicketCount(ticket.id, 1)}
+                  >
+                    <Ionicons name="add" size={18} color="#1a3a4a" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))}
+          </View>
+
+          {/* Deposit Notice for charter experiences */}
+          {experience.requires_deposit && (
+            <View style={styles.depositNotice}>
+              <View style={styles.depositNoticeHeader}>
+                <Ionicons name="boat-outline" size={18} color="#1a3a4a" />
+                <Text style={styles.depositNoticeTitle}>DEPOSIT OF {experience.deposit_percentage || 30}% NEEDED TODAY</Text>
+              </View>
+              <Text style={styles.depositNoticeSubline}>{experience.deposit_note || 'For Half-Day and Full-Day Charter Bookings'}</Text>
+              <Text style={styles.depositNoticeText}>
+                A {experience.deposit_percentage || 30}% deposit is required to proceed with your booking and block your dates immediately. The remaining balance will be invoiced separately.
+              </Text>
+              <View style={styles.taxNotice}>
+                <Ionicons name="receipt-outline" size={15} color={experience.taxes_included ? '#2a7a5a' : '#c47a20'} />
+                <Text style={[styles.taxNoticeText, { color: experience.taxes_included ? '#2a7a5a' : '#c47a20' }]}>
+                  {experience.taxes_included
+                    ? 'Taxes of 21% are included'
+                    : 'Taxes of 21% are added upon Checkout'}
+                </Text>
+              </View>
+            </View>
+          )}
+
+          {/* Fleet Inquiry Banner - for charter/water adventure experiences */}
+          {experience.requires_deposit && (
+            <View style={styles.fleetBanner}>
+              <View style={styles.fleetDivider} />
+              <Text style={styles.fleetText}>
+                Please inquire about our entire fleet of yachts that you can charter in Montenegro, Croatia, Albania and Greece.
+              </Text>
+              <TouchableOpacity
+                style={styles.fleetButton}
+                onPress={() => {
+                  const subject = encodeURIComponent('NEW INQUIRY for CHARTERING AN ADDITIONAL YACHT');
+                  const body = encodeURIComponent('Hello Wandering Yacht,\n\nI would like to inquire about chartering a yacht from your fleet outside of the Wandering Yacht Experiences app.\n\nPlease share available options for:\n- Destination: \n- Dates: \n- Number of guests: \n\nThank you.');
+                  Linking.openURL(`mailto:info@wanderingyacht.com?subject=${subject}&body=${body}`);
+                }}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="mail-outline" size={16} color="#fff" />
+                <Text style={styles.fleetButtonText}>Inquire Here</Text>
+              </TouchableOpacity>
+              <View style={styles.fleetDivider} />
+            </View>
+          )}
+
+          <View style={{ height: 90 }} />
+        </View>
+      </ScrollView>
+
+      {/* Sign In Prompt Banner */}
+      {showSignInPrompt && (
+        <View style={styles.signInBanner}>
+          <Text style={styles.signInBannerText}>Create a Profile to Book</Text>
+          <View style={styles.signInBannerButtons}>
+            <TouchableOpacity onPress={() => setShowSignInPrompt(false)} style={styles.signInBannerCancel}>
+              <Text style={styles.signInBannerCancelText}>{t('cancel')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push('/auth/register')} style={styles.signInBannerBtn}>
+              <Text style={styles.signInBannerBtnText}>{t('sign_up')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push('/auth/login')} style={styles.signInBannerCancel}>
+              <Text style={styles.signInBannerCancelText}>{t('sign_in')}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+
+      {/* Terms & Conditions Link */}
+      <TouchableOpacity
+        style={styles.termsBar}
+        onPress={() => router.push('/terms')}
+      >
+        <Ionicons name="document-text-outline" size={16} color="#c17f59" />
+        <Text style={styles.termsBarText}>Terms & Conditions</Text>
+        <Ionicons name="chevron-forward" size={14} color="#c17f59" />
+      </TouchableOpacity>
+
+      {/* Bottom Bar */}
+      <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 16 }]}>
+        <View style={styles.priceContainer}>
+          <Text style={styles.priceLabel}>{t('detail_total')}</Text>
+          <Text style={styles.priceValue}>€{getTotalPrice().toFixed(2)}</Text>
+          <Text style={styles.priceTaxNote}>{t('price_incl_taxes')}</Text>
+        </View>
+        <TouchableOpacity
+          style={[
+            styles.bookButton,
+            (getTotalTickets() === 0 || booking) && styles.bookButtonDisabled,
+          ]}
+          onPress={() => {
+            if (getTotalTickets() === 0) {
+              // Scroll to ticket section so user can select tickets
+              if (Platform.OS === 'web') {
+                const ticketEl = document.querySelector('[data-ticket-section="true"]');
+                if (ticketEl) {
+                  // Scroll the ticket section to the very top of the viewport
+                  // This maximizes the space available for ticket cards above the bottom bar
+                  ticketEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                  mainScrollRef.current?.scrollTo({ y: ticketSectionY, animated: true });
+                }
+              } else {
+                mainScrollRef.current?.scrollTo({ y: ticketSectionY, animated: true });
+              }
+            } else {
+              handleBookNow();
+            }
+          }}
+          disabled={booking}
+        >
+          {booking ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <>
+              <Text style={styles.bookButtonText}>
+                {getTotalTickets() === 0 ? t('detail_select_tickets') : t('detail_book_now')}
+              </Text>
+              {getTotalTickets() > 0 && (
+                <Ionicons name="arrow-forward" size={18} color="#fff" />
+              )}
+            </>
+          )}
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#faf9f7',
+  },
+  loadingContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a2a30',
+    fontSize: 16,
+    fontFamily: 'TraditionalArabic',
+  },
+  heroContainer: {
+    height: 320,
+    position: 'relative',
+  },
+  heroImage: {
+    width: '100%',
+    height: '100%',
+  },
+  paginationDots: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 16,
+    left: 0,
+    right: 0,
+    gap: 6,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: 'rgba(255,255,255,0.4)',
+  },
+  dotActive: {
+    backgroundColor: '#fff',
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+  heroOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 20,
+    zIndex: 10,
+  },
+  backButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  shareButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  content: {
+    padding: 20,
+    marginTop: -30,
+    backgroundColor: '#faf9f7',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+  },
+  categoryBadge: {
+    backgroundColor: '#e8f4f4',
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    borderRadius: 6,
+    alignSelf: 'flex-start',
+    marginBottom: 12,
+  },
+  categoryText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a3a4a',
+    fontSize: 11,
+    fontFamily: 'TraditionalArabic',
+    fontWeight: '600',
+    letterSpacing: 1,
+  },
+  title: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a2a30',
+    fontSize: 28,
+    fontFamily: 'TraditionalArabic',
+    fontWeight: '600',
+    marginBottom: 8,
+    lineHeight: 34,
+  },
+  locationRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 24,
+  },
+  location: {
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
+    fontSize: 15,
+    fontFamily: 'TraditionalArabic',
+  },
+  quickInfo: {
+    flexDirection: 'row',
+    gap: 12,
+    marginBottom: 28,
+  },
+  infoCard: {
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 16,
+    borderRadius: 14,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#e8e5e0',
+  },
+  infoLabel: {
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
+    fontSize: 12,
+    fontFamily: 'TraditionalArabic',
+    marginTop: 8,
+  },
+  infoValue: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a2a30',
+    fontSize: 13,
+    fontFamily: 'TraditionalArabic',
+    fontWeight: '600',
+    marginTop: 4,
+    textAlign: 'center',
+  },
+  section: {
+    marginBottom: 28,
+  },
+  sectionTitle: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a2a30',
+    fontSize: 20,
+    fontFamily: 'TraditionalArabic',
+    fontWeight: '600',
+    marginBottom: 16,
+  },
+  calendarContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#e8e5e0',
+  },
+  selectedDateText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a3a4a',
+    fontSize: 15,
+    fontFamily: 'TraditionalArabic',
+    fontWeight: '600',
+    marginTop: 12,
+    textAlign: 'center',
+  },
+  selectDateHint: {
+    fontFamily: 'TraditionalArabic',
+    color: '#9ca3a3',
+    fontSize: 14,
+    fontFamily: 'TraditionalArabic',
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  description: {
+    fontFamily: 'TraditionalArabic',
+    color: '#5a6a6a',
+    fontSize: 15,
+    fontFamily: 'TraditionalArabic',
+    lineHeight: 24,
+  },
+  includedList: {
+    gap: 12,
+  },
+  includedItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  checkCircle: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#1a3a4a',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  includedText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a2a30',
+    fontSize: 15,
+    fontFamily: 'TraditionalArabic',
+  },
+  amenitiesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  amenityChip: {
+    backgroundColor: '#fff',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#e8e5e0',
+  },
+  amenityText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#5a6a6a',
+    fontSize: 14,
+  },
+  // Charter packages
+  charterPackagesWrap: {
+    marginTop: 16,
+    gap: 12,
+  },
+  charterPackageCard: {
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#e0dcd5',
+    overflow: 'hidden',
+  },
+  charterPackageHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#faf7f3',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ebe8e3',
+  },
+  charterPackageTitle: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a3a4a',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  charterPackageItems: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    gap: 6,
+  },
+  charterPackageItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  charterDot: {
+    width: 5,
+    height: 5,
+    borderRadius: 3,
+    backgroundColor: '#c17f59',
+  },
+  charterPackageItemText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#5a6a6a',
+    fontSize: 13,
+  },
+  timeSlot: {
+    backgroundColor: '#fff',
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    borderRadius: 12,
+    marginRight: 12,
+    borderWidth: 2,
+    borderColor: '#e8e5e0',
+  },
+  timeSlotSelected: {
+    borderColor: '#c17f59',
+    backgroundColor: '#1a3a4a',
+  },
+  timeSlotText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  timeSlotTextSelected: {
+    color: '#fff',
+    fontWeight: '700',
+  },
+  ticketCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 14,
+    borderRadius: 16,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#e8e5e0',
+  },
+  ticketInfo: {
+    flex: 1,
+    marginRight: 16,
+  },
+  ticketName: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a2a30',
+    fontSize: 17,
+    fontFamily: 'TraditionalArabic',
+    fontWeight: '600',
+  },
+  ticketDescription: {
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
+    fontSize: 13,
+    fontFamily: 'TraditionalArabic',
+    marginTop: 4,
+  },
+  ticketPrice: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a3a4a',
+    fontSize: 18,
+    fontWeight: '700',
+    marginTop: 4,
+  },
+  ticketTaxNote: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 11,
+    color: '#9ca3a3',
+    fontWeight: '400',
+  },
+  ticketProfilePrompt: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 12,
+    color: '#c17f59',
+    marginTop: 4,
+    fontStyle: 'italic',
+  },
+  ticketCounter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  counterButton: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: '#f0ebe4',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  counterButtonDisabled: {
+    opacity: 0.5,
+  },
+  counterValue: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a2a30',
+    fontSize: 18,
+    fontFamily: 'TraditionalArabic',
+    fontWeight: '600',
+    minWidth: 28,
+    textAlign: 'center',
+  },
+  bottomBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#e8e5e0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 12,
+    elevation: 10,
+  },
+  priceContainer: {},
+  priceLabel: {
+    fontFamily: 'TraditionalArabic',
+    color: '#7a8a8a',
+    fontSize: 13,
+    fontFamily: 'TraditionalArabic',
+  },
+  priceValue: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a2a30',
+    fontSize: 26,
+    fontWeight: '700',
+  },
+  priceTaxNote: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 11,
+    color: '#9ca3a3',
+  },
+  termsBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    backgroundColor: '#f0ede8',
+    borderTopWidth: 1,
+    borderTopColor: '#e0ddd7',
+  },
+  termsBarText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    color: '#c17f59',
+    marginHorizontal: 6,
+    textDecorationLine: 'underline',
+  },
+  signInBanner: {
+    backgroundColor: '#1a3a4a',
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+  },
+  signInBannerText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  signInBannerButtons: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  signInBannerCancel: {
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.4)',
+  },
+  signInBannerCancelText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#fff',
+    fontSize: 14,
+  },
+  signInBannerBtn: {
+    paddingVertical: 8,
+    paddingHorizontal: 24,
+    borderRadius: 6,
+    backgroundColor: '#c17f59',
+  },
+  signInBannerBtnText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  bookButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1a3a4a',
+    paddingHorizontal: 32,
+    paddingVertical: 16,
+    borderRadius: 28,
+    gap: 8,
+  },
+  bookButtonDisabled: {
+    opacity: 0.5,
+  },
+  bookButtonText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  // Deposit notice styles
+  depositNotice: {
+    backgroundColor: '#f0f7f7',
+    borderRadius: 14,
+    borderWidth: 1.5,
+    borderColor: '#1a3a4a',
+    padding: 16,
+    marginTop: 8,
+  },
+  depositNoticeHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
+  },
+  depositNoticeTitle: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a3a4a',
+    fontSize: 14,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  depositNoticeSubline: {
+    fontFamily: 'TraditionalArabic',
+    color: '#1a3a4a',
+    fontSize: 13,
+    fontWeight: '600',
+    fontStyle: 'italic',
+    marginBottom: 6,
+  },
+  depositNoticeText: {
+    fontFamily: 'TraditionalArabic',
+    color: '#5a6a6a',
+    fontSize: 13,
+    lineHeight: 20,
+  },
+  taxNotice: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 10,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#d8e2e2',
+  },
+  taxNoticeText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  // Fleet inquiry banner
+  fleetBanner: {
+    marginTop: 16,
+  },
+  // Season dates card
+  seasonCard: {
+    backgroundColor: '#f4f1ec',
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#e0dcd5',
+  },
+  seasonRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
+  seasonBlock: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  seasonDividerVert: {
+    width: 1,
+    backgroundColor: '#c8c3bb',
+    alignSelf: 'stretch',
+    marginHorizontal: 12,
+  },
+  seasonLabel: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#1a3a4a',
+    letterSpacing: 0.5,
+    marginBottom: 4,
+  },
+  seasonDates: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 13,
+    color: '#5a6a6a',
+    lineHeight: 20,
+  },
+  fleetDivider: {
+    height: 1,
+    backgroundColor: '#d0ccc5',
+    marginVertical: 12,
+  },
+  fleetText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 15,
+    color: '#3a4a50',
+    textAlign: 'center',
+    lineHeight: 22,
+    marginBottom: 14,
+    fontStyle: 'italic',
+  },
+  fleetButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1a3a4a',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 10,
+    gap: 8,
+    alignSelf: 'center',
+  },
+  fleetButtonText: {
+    fontFamily: 'TraditionalArabic',
+    fontSize: 15,
+    color: '#fff',
+    fontWeight: '600',
+  },
+});
