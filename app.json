@@ -11,8 +11,9 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.wanderingyacht.app",
-      "buildNumber": "13",
+      "buildNumber": "14",
       "infoPlist": {
+        "UIDeviceFamily": [1],
         "NSFaceIDUsageDescription": "Sign in quickly with Face ID",
         "NSCameraUsageDescription": "Take photos for your profile or to share your experience",
         "NSPhotoLibraryUsageDescription": "Select photos from your library to share",
