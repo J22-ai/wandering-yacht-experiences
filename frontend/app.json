@@ -9,17 +9,21 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.wanderingyacht.app",
-      "buildNumber": "2",
+      "buildNumber": "15",
       "infoPlist": {
-        "NSFaceIDUsageDescription": "Sign in quickly with Face ID"
+        "UIDeviceFamily": [1],
+        "NSFaceIDUsageDescription": "Sign in quickly with Face ID",
+        "NSCameraUsageDescription": "Take photos for your profile or to share your experience",
+        "NSPhotoLibraryUsageDescription": "Select photos from your library to share",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#1a3a4a"
+        "backgroundColor": "#0d1b2a"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.wanderingyacht.app",
@@ -41,13 +45,7 @@
           "image": "./assets/images/wy-logo-solid.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#1a3a4a"
-        }
-      ],
-      [
-        "@stripe/stripe-react-native",
-        {
-          "enableGooglePay": false
+          "backgroundColor": "#0d1b2a"
         }
       ],
       "expo-secure-store",

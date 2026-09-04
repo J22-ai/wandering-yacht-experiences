@@ -17,16 +17,9 @@
       }
     },
     "production": {
-      "autoIncrement": true,
+      "autoIncrement": false,
       "env": {
         "EXPO_PUBLIC_BACKEND_URL": "https://wandering-yacht-experiences-production.up.railway.app"
-      }
-    }
-  },
-  "submit": {
-    "production": {
-      "ios": {
-        "ascAppId": "6787703200"
       }
     }
   }
