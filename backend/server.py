@@ -2495,7 +2495,7 @@ async def terms_and_conditions():
 @api_router.get("/download", response_class=HTMLResponse)
 async def download_app():
     """Shareable QR code page for customers to access the app."""
-    app_url = "https://wandering-yacht-1.preview.emergentagent.com"
+    app_url = os.environ.get("APP_BASE_URL", "https://wandering-yacht-1.preview.emergentagent.com")
     
     # Generate QR code as base64
     import qrcode, io, base64
