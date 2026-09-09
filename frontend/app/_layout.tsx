@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -7,75 +7,86 @@ import { FavoritesProvider } from '../src/context/FavoritesContext';
 import { LanguageProvider } from '../src/context/LanguageContext';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { View, ActivityIndicator, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
-SplashScreen.preventAutoHideAsync();
+// Prevent auto-hide but don't block app if it fails
+try {
+  SplashScreen.preventAutoHideAsync();
+} catch (e) {
+  console.warn('SplashScreen.preventAutoHideAsync failed:', e);
+}
 
 export default function RootLayout() {
+  const [appIsReady, setAppIsReady] = useState(false);
+
   const [fontsLoaded, fontError] = useFonts({
     'TraditionalArabic': require('../assets/fonts/TraditionalArabic-Regular.ttf'),
     'TraditionalArabic-Bold': require('../assets/fonts/TraditionalArabic-Bold.ttf'),
   });
-  
-  // Safety timeout - proceed even if fonts don't load
-  const [forceReady, setForceReady] = useState(false);
 
   useEffect(() => {
-    // Safety timeout after 3 seconds
-    const timeout = setTimeout(() => {
-      setForceReady(true);
-      SplashScreen.hideAsync().catch(() => {});
-    }, 3000);
-    
-    return () => clearTimeout(timeout);
+    // Set app ready after a short delay, regardless of font status
+    const timer = setTimeout(() => {
+      setAppIsReady(true);
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
+    // Also set ready when fonts load (whichever comes first)
     if (fontsLoaded || fontError) {
-      SplashScreen.hideAsync().catch(() => {});
+      setAppIsReady(true);
     }
   }, [fontsLoaded, fontError]);
 
-  // Proceed if fonts loaded, error occurred, OR timeout reached
-  if (!fontsLoaded && !fontError && !forceReady) {
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      try {
+        await SplashScreen.hideAsync();
+      } catch (e) {
+        console.warn('SplashScreen.hideAsync failed:', e);
+      }
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    // Return a minimal view while loading
     return (
       <View style={styles.loadingContainer}>
-        <Image
-          source={require('../assets/images/wy-logo-solid.png')}
-          style={styles.splashLogo}
-          resizeMode="contain"
-        />
-        <ActivityIndicator size="small" color="#1a3a4a" style={{ marginTop: 24 }} />
+        <Text style={styles.loadingText}>Loading...</Text>
       </View>
     );
   }
 
   return (
-    <SafeAreaProvider>
-      <LanguageProvider>
-        <AuthProvider>
-          <FavoritesProvider>
-            <StatusBar style="dark" />
-            <Stack
-              screenOptions={{
-                headerShown: false,
-                contentStyle: { backgroundColor: '#faf9f7' },
-                animation: 'slide_from_right',
-              }}
-            >
-              <Stack.Screen name="index" />
-              <Stack.Screen name="(tabs)" />
-              <Stack.Screen name="auth/login" options={{ presentation: 'modal' }} />
-              <Stack.Screen name="auth/register" options={{ presentation: 'modal' }} />
-              <Stack.Screen name="experience/[id]" />
-              <Stack.Screen name="checkout/[bookingId]" />
-              <Stack.Screen name="about" />
-              <Stack.Screen name="ticket/[id]" options={{ presentation: 'modal' }} />
-            </Stack>
-          </FavoritesProvider>
-        </AuthProvider>
-      </LanguageProvider>
-    </SafeAreaProvider>
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+      <SafeAreaProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <FavoritesProvider>
+              <StatusBar style="dark" />
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  contentStyle: { backgroundColor: '#faf9f7' },
+                  animation: 'slide_from_right',
+                }}
+              >
+                <Stack.Screen name="index" />
+                <Stack.Screen name="(tabs)" />
+                <Stack.Screen name="auth/login" options={{ presentation: 'modal' }} />
+                <Stack.Screen name="auth/register" options={{ presentation: 'modal' }} />
+                <Stack.Screen name="experience/[id]" />
+                <Stack.Screen name="checkout/[bookingId]" />
+                <Stack.Screen name="about" />
+                <Stack.Screen name="ticket/[id]" options={{ presentation: 'modal' }} />
+              </Stack>
+            </FavoritesProvider>
+          </AuthProvider>
+        </LanguageProvider>
+      </SafeAreaProvider>
+    </View>
   );
 }
 
@@ -86,8 +97,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  splashLogo: {
-    width: 120,
-    height: 120,
+  loadingText: {
+    fontSize: 16,
+    color: '#1a3a4a',
   },
 });

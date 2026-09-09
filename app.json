@@ -11,7 +11,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.wanderingyacht.app",
-      "buildNumber": "17",
+      "buildNumber": "18",
       "infoPlist": {
         "UIDeviceFamily": [1],
         "NSFaceIDUsageDescription": "Sign in quickly with Face ID",
