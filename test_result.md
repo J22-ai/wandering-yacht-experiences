@@ -222,6 +222,9 @@ frontend:
       - working: true
         agent: "main"
         comment: "Self-verified two test-report low issues as false positives: actual login-submit child Text usesTraditionalArabic; language option testIDs exist and work. Extra320px width no horizontal overflow. Native real-device font/launch verification remains part of separate P0 TestFlight blocker."
+      - working: true
+        agent: "user"
+        comment: "User confirmed: looks great on Expo Go. Brand font appearance accepted in Expo Go; signed build22 TestFlight launch verification still pending."
   - task: "Recurring App Store launch freeze / iOS 27 scene compatibility"
     implemented: true
     working: "NA"
