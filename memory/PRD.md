@@ -36,8 +36,20 @@ The first diagnostic report suggested missing fonts or missing preventAutoHideAs
 - No Xcode, iOS simulator or physical Apple device available in this environment. Actual signed TestFlight build21 on iOS/iPadOS27 is NOT TESTED. Exact build18 freeze cause and full resolution remain unconfirmed until native verification. No GitHub save, expo.dev build/upload, or App Store submission performed by agent.
 
 ## Backlog
-- P0: Save to GitHub, build via expo.dev, exact signed build21 TestFlight fresh install / upgrade / cold start / offline startup. Collect native device crash or hang logs if it still freezes; no speculative splash edits.
+- P0: Save to GitHub, build via expo.dev, exact signed build22 TestFlight fresh install / upgrade / cold start / offline startup. Collect native device crash or hang logs if it still freezes; no speculative splash edits.
 - P1: Consolidate duplicate root/frontend projects with a planned migration and build-path verification; Android submission after iOS launch verification.
-- P1: Restore/test bundled brand fonts without blocking startup; web-compatible checkout if requested.
+- P1: Brand font restoration implemented and verified as described below; web-compatible checkout if requested.
 - P1: Consider native crash/launch diagnostics after this release is stable; no monitoring integration added in this task.
 - P2: Reconcile older conflicting email/test documentation; ticket email enhancements and Mac support only if requested.
+
+## Current follow-up: restore correct brand font
+- User: "Add the correct font please"; clarification skipped, proceeding with originally requested Traditional Arabic, not a substitute.
+- Original uploaded font located via attached assets: trado.ttf, https://customer-assets.emergentagent.com/job_ac874aeb-cfb2-4c82-a97b-ff79f3b1c447/artifacts/j8212gn3_trado.ttf . Both bundled TraditionalArabic-Regular.ttf files match its bytes exactly. SHA256 d79aa83116bf9922753fef5e7aac55dd450a9002f15eacbc214518cb020bf239.
+- Font metadata verified: family Traditional Arabic, PostScript TraditionalArabic, Regular/400. Legacy TraditionalArabic-Bold.ttf is a byte-identical copy of the regular font, NOT a genuine bold font; it is not loaded or embedded. Existing fontWeight styling preserved, not a claim to have a separate bold cut.
+- expo-font config now embeds the genuine regular face on iOS and Android. Android explicitly declares family TraditionalArabic, weight400; iOS uses embedded PostScript name TraditionalArabic, matching existing screen styles.
+- Added src/hooks/useBrandFonts.ts in both projects and invoked from both root layouts: local runtime loading for Expo Go/web with FontDisplay.SWAP; errors logged; no readiness gate, conditional return, suspense, navigation remount or splash hold. Native builds have the font available at launch through embedding.
+- Candidate now version1.0.1 build22. Existing iOS scene-lifecycle fix preserved. No backend/auth/payment logic changes, no credentials touched.
+- Verification passed (test_reports/iteration_2.json): FontFaceSet TraditionalArabic loaded, welcome/login actual text font family correct, language/navigation usable, no overflow at390px; additional main check at320px passed. Failed/7-second-delayed TTF requests in isolated tests did not block welcome or navigation. Hook/layout ESLint clean.
+- Scratch prebuild iOS: UIAppFonts includes TraditionalArabic-Regular.ttf and scene manifest retained. Android: xml_traditional_arabic.xml defines correct family/400 resource and font bytes match original. Root/frontend parity verified.
+- Testing report's two low issues were false positives, verified by main with browser: login-submit-button is a TouchableOpacity/View; its actual child Text already renders TraditionalArabic. Welcome language option testIDs already exist (welcome-language-en-button etc.) and were successfully clicked. No unnecessary styling/auth changes made.
+- Native signed TestFlight build22 remains NOT TESTED; no iOS/Android runtime available. Font work does not prove earlier Apple freeze resolved. No live API writes or credentials touched.

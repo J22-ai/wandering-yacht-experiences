@@ -205,6 +205,23 @@ backend:
         comment: "Payment confirmation working perfectly. Updates booking status to 'confirmed', payment_status to 'paid', and generates QR code as base64 PNG. QR code format verified: data:image/png;base64,... Demo mode allows testing without actual payment processing."
 
 frontend:
+  - task: "Restore genuine Traditional Arabic without blocking startup"
+    implemented: true
+    working: true
+    file: "/app/src/hooks/useBrandFonts.ts, /app/app/_layout.tsx, /app/app.json and frontend equivalents"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Verified regular font bytes match original user-uploaded trado.ttf; metadata family Traditional Arabic / PostScript TraditionalArabic / weight400. Legacy bold file is duplicate regular, intentionally not embedded. Added native font embedding and non-blocking useFonts hook for ExpoGo/web, FontDisplay.SWAP; no splash/readiness gates. Root/frontend mirror, build22, iOS27 scene fix preserved. Test actual loaded face+welcome/navigation and failure fallback, scratch native fonts resources. No LIVE mutations."
+      - working: true
+        agent: "testing"
+        comment: "iteration_2.json: font authenticity, font face loaded in preview, navigation, failed and delayedfont nonblocking fallback, native scratch UIAppFonts/AndroidXML resources and parity passed. Signed TestFlight runtime remains unavailable."
+      - working: true
+        agent: "main"
+        comment: "Self-verified two test-report low issues as false positives: actual login-submit child Text usesTraditionalArabic; language option testIDs exist and work. Extra320px width no horizontal overflow. Native real-device font/launch verification remains part of separate P0 TestFlight blocker."
   - task: "Recurring App Store launch freeze / iOS 27 scene compatibility"
     implemented: true
     working: "NA"
@@ -502,12 +519,14 @@ metadata:
         comment: "Anti-Bot Registration Protection testing completed successfully! ✅ ALL 5 TESTS PASSED with 100% success rate. Comprehensive testing verified: 1) Normal registration with anti-bot fields (website='', form_loaded_at=10s ago) succeeds and returns JWT token, 2) Registration without anti-bot fields still succeeds (fields are optional), 3) Honeypot detection works - when website field is filled ('http://spam.com'), returns 400 'Registration failed', 4) Fast submission detection works - when form_loaded_at is current time (0.1s elapsed), returns 400 'Registration failed', 5) Existing user login works correctly with registered credentials. Backend logs confirm proper warning messages: 'Honeypot triggered from IP' and 'Form submitted too fast (0.1s) from IP'. All anti-bot protection mechanisms are fully functional and production-ready."
 
 test_plan:
-  current_focus: ["Recurring App Store launch freeze / iOS 27 scene compatibility"]
+  current_focus: ["Restore genuine Traditional Arabic without blocking startup"]
   stuck_tasks: ["Recurring App Store launch freeze / iOS 27 scene compatibility"]
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
+  - agent: "main"
+    message: "Followup font restoration: test useBrandFonts runtime + expo-font native embedding for build22. Inspect original uploaded font metadata/hash; only regular supplied, do not claim true bold. Test rendered loaded TraditionalArabic via FontFaceSet and UI, failed/slow font request must not hold navigation, scratch iOS UIAppFonts/resource and Android XML family. Keep scene startup fix. Backend/payments/auth logic untouched; do not create live accounts/bookings/emails/payments."
   - agent: "main"
     message: "Current task: build18 Apple launch freeze, candidate build21 scene support patch. Read memory/PRD.md and memory/ios-release-checklist.md. Test root AND frontend config+package+source parity, Expo doctor, scratch iOS prebuild and generated AppDelegate/Info.plist, production iOS JS export and preview welcome/Explore/language/sign-in navigation (not auth mutation). No LIVE payment/booking/register/email/calendar actions or backend modifications. Report release-runtime as NOT TESTED on Linux; don't equate Metro/ExpoGo with signed TestFlight."
   - agent: "main"

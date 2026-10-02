@@ -10,7 +10,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.wanderingyacht.app",
-      "buildNumber": "21",
+      "buildNumber": "22",
       "infoPlist": {
         "UIDeviceFamily": [
           1
@@ -56,7 +56,29 @@
         }
       ],
       "expo-web-browser",
-      "expo-font",
+      [
+        "expo-font",
+        {
+          "ios": {
+            "fonts": [
+              "./assets/fonts/TraditionalArabic-Regular.ttf"
+            ]
+          },
+          "android": {
+            "fonts": [
+              {
+                "fontFamily": "TraditionalArabic",
+                "fontDefinitions": [
+                  {
+                    "path": "./assets/fonts/TraditionalArabic-Regular.ttf",
+                    "weight": 400
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
       [
         "@stripe/stripe-react-native",
         {

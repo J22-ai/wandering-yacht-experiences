@@ -5,9 +5,12 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider } from '../src/context/AuthContext';
 import { FavoritesProvider } from '../src/context/FavoritesContext';
 import { LanguageProvider } from '../src/context/LanguageContext';
+import { useBrandFonts } from '../src/hooks/useBrandFonts';
 
 // NO splash screen handling - just render immediately
 export default function RootLayout() {
+  useBrandFonts();
+
   return (
     <SafeAreaProvider>
       <LanguageProvider>

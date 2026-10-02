@@ -1,0 +1,63 @@
+{
+  "summary": "Frontend-only font restoration verification completed on public preview. TraditionalArabic regular asset authenticity, runtime loading, non-blocking startup behavior, navigation flow, and small-width overflow were tested.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Login submit button text",
+        "issue": "Computed fontFamily resolved to Times New Roman on login-submit-button while heading/inputs use TraditionalArabic.",
+        "testID": "login-submit-button",
+        "priority": "LOW",
+        "status": "FALSE_POSITIVE_VERIFIED_BY_MAIN",
+        "verification": "Parent testID targets a View, not text. Evaluated child Text via login-submit-button.get_by_text('Sign In', exact=True): computed fontFamily TraditionalArabic. Loaded FontFaceSet also confirmed. Existing styles.loginButtonText explicitly sets TraditionalArabic."
+      },
+      {
+        "component": "Welcome language modal options",
+        "issue": "No deterministic option testIDs detected for language choices (e.g., English option), reducing automation reliability.",
+        "testID": "welcome-language-button",
+        "priority": "LOW",
+        "status": "FALSE_POSITIVE_VERIFIED_BY_MAIN",
+        "verification": "Source and live DOM have welcome-language-en-button, ar/fr/it/es/de/ru/hr/tr/me/zh/pt/ja equivalents. Main opened modal and clicked English using exact existing testID successfully."
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/artifacts_iter_font",
+    "/app/test_reports/artifacts_iter_font_nav",
+    "/app/test_reports/artifacts_iter_font_delay",
+    "/app/test_reports/artifacts_iter_font_styles",
+    "/app/src/hooks/useBrandFonts.ts",
+    "/app/frontend/src/hooks/useBrandFonts.ts",
+    "/app/app.json",
+    "/app/frontend/app.json"
+  ],
+  "action_items": [
+    "If strict brand consistency is required, ensure login-submit-button label Text explicitly uses fontFamily TraditionalArabic.",
+    "Add stable testID attributes for language options in the welcome language modal for deterministic UI automation.",
+    "Native signed TestFlight build 22 still requires real-device verification; current environment cannot validate iOS/Android runtime binaries."
+  ],
+  "critical_code_review_comments": [
+    "Root and frontend app.json are identical and include expo-font plugin embedding TraditionalArabic-Regular.ttf with Android family + weight 400 and iOS font embedding.",
+    "useBrandFonts hook is intentionally non-blocking (no readiness gate), matching launch-freeze mitigation requirement.",
+    "Legacy TraditionalArabic-Bold.ttf is byte-identical to regular and should remain unclaimed as genuine bold cut."
+  ],
+  "updated_files": [
+    "/app/test_reports/iteration_2.json"
+  ],
+  "success_rate": {
+    "backend": "NA (skipped per request)",
+    "frontend": "90%"
+  },
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "remaining_verification": "Signed native TestFlight build22 only. Reported web styling/selector findings are cleared by main. Additional320px width check passed.",
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Verified public preview at 390x844. Real font load confirmed via FontFaceSet (TraditionalArabic status loaded). Simulated font abort and 7s delay both preserved immediate welcome rendering and navigation (no splash lock). No horizontal overflow detected at tested width.",
+  "rca_of_issue": "Simulated TraditionalArabic .ttf request failure/latency does not block startup because runtime hook does not gate rendering and uses SWAP behavior; fallback text renders while navigation remains reachable."
+}
