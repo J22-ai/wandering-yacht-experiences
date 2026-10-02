@@ -54,9 +54,8 @@ from services.qr import generate_qr_code
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from config import SMTP_HOST, SMTP_PORT, SMTP_EMAIL, SMTP_PASSWORD
 
-ROOT_DIR = Path(__file__).parent
+ROOT_DIR = Path(__file__).resolve().parent
 
 # Stripe configuration
 stripe.api_key = STRIPE_SECRET_KEY
@@ -2512,7 +2511,7 @@ async def download_app():
     try:
         with open('/app/frontend/assets/images/wy-logo-solid.png', 'rb') as f:
             logo_b64 = base64.b64encode(f.read()).decode()
-    except:
+    except OSError:
         pass
     
     return HTMLResponse(content=f"""<!DOCTYPE html>
@@ -2558,8 +2557,9 @@ async def download_app():
 
 # Include the router in the main app
 app.include_router(api_router)
-app.mount("/api/fonts", StaticFiles(directory="/app/backend/static_fonts"), name="fonts")
-app.mount("/api/screenshots", StaticFiles(directory="/app/backend/store-screenshots"), name="screenshots")
+# Resolve bundled assets beside this module, including flattened Railway builds.
+app.mount("/api/fonts", StaticFiles(directory=str(ROOT_DIR / "static_fonts")), name="fonts")
+app.mount("/api/screenshots", StaticFiles(directory=str(ROOT_DIR / "store-screenshots")), name="screenshots")
 
 app.add_middleware(
     CORSMiddleware,

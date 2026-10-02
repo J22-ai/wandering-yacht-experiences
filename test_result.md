@@ -105,6 +105,26 @@
 user_problem_statement: "Build WANDERING YACHT app with Experiences, Boat Rental, Yacht Charter, and Management categories. Users can pay in-app and get tickets with QR codes."
 
 backend:
+  - task: "Portable static asset mounts for Railway backend startup"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "Railway Uvicorn crashes importing /app/server.py at StaticFiles(directory=/app/backend/static_fonts): RuntimeError directory does not exist."
+      - working: "NA"
+        agent: "main"
+        comment: "Confirmed flattened backend layout and tracked assets. Changed BOTH fonts and screenshots mounts to str(ROOT_DIR / directory), ROOT_DIR based on resolved __file__. No bypass of asset validation, no frontend/auth/payment changes. Need nested/flattened layout regression plus read-only font/screenshots endpoint tests. Do not trigger live scheduler/emails/calendar/payments/DB writes."
+      - working: true
+        agent: "testing"
+        comment: "iteration_3.json: 14/14 regression tests passed. Nested and flattened layouts tested with realStaticFiles via sourceASTisolated fromliveintegrations. Read-only preview font/screenshot200 byteexact, missing404,traversalblocked,categories200. RemoteRailway startup stillnotverified; noGitHubpush/deploy performed."
+      - working: true
+        agent: "main"
+        comment: "Made regression helper paths portable and reran14/14passed. General deploymentchecker returned out-of-scopeKubernetes/Expoflags twice; refused recommendation to commitsecrets/changeworkingpreview. No overallhealthcheckpassclaimed. Exactstaticpathfixverified; actualRailwayrelease pendinguserpush. DoNOTchangeRailwayroot/start based onthiserror; __file__relativefixsupportsits existingflattenedlayout."
   - task: "User Authentication (Register/Login)"
     implemented: true
     working: true
@@ -522,12 +542,14 @@ metadata:
         comment: "Anti-Bot Registration Protection testing completed successfully! ✅ ALL 5 TESTS PASSED with 100% success rate. Comprehensive testing verified: 1) Normal registration with anti-bot fields (website='', form_loaded_at=10s ago) succeeds and returns JWT token, 2) Registration without anti-bot fields still succeeds (fields are optional), 3) Honeypot detection works - when website field is filled ('http://spam.com'), returns 400 'Registration failed', 4) Fast submission detection works - when form_loaded_at is current time (0.1s elapsed), returns 400 'Registration failed', 5) Existing user login works correctly with registered credentials. Backend logs confirm proper warning messages: 'Honeypot triggered from IP' and 'Form submitted too fast (0.1s) from IP'. All anti-bot protection mechanisms are fully functional and production-ready."
 
 test_plan:
-  current_focus: ["Restore genuine Traditional Arabic without blocking startup"]
+  current_focus: ["Portable static asset mounts for Railway backend startup"]
   stuck_tasks: ["Recurring App Store launch freeze / iOS 27 scene compatibility"]
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
+  - agent: "main"
+    message: "Current backend startup patch: ROOT_DIR-relative StaticFiles mounts resolve Railway flattened folder failure. Test old hardcoded behavior reproduces under sandbox guard and patched mounts succeed nested/flattened/CWD-independent; expected asset HTTP200 correctfontbytes + screenshot, missingasset404 and traversalprotection. Avoid importing server with its scheduler or live integrations; isolate exact mount statements via AST or safe test harness. Product has no mocked APIs. RemoteRailway restoration unverified until userpush/restart."
   - agent: "main"
     message: "Followup font restoration: test useBrandFonts runtime + expo-font native embedding for build22. Inspect original uploaded font metadata/hash; only regular supplied, do not claim true bold. Test rendered loaded TraditionalArabic via FontFaceSet and UI, failed/slow font request must not hold navigation, scratch iOS UIAppFonts/resource and Android XML family. Keep scene startup fix. Backend/payments/auth logic untouched; do not create live accounts/bookings/emails/payments."
   - agent: "main"
