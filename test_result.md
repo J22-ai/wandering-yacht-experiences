@@ -205,6 +205,26 @@ backend:
         comment: "Payment confirmation working perfectly. Updates booking status to 'confirmed', payment_status to 'paid', and generates QR code as base64 PNG. QR code format verified: data:image/png;base64,... Demo mode allows testing without actual payment processing."
 
 frontend:
+  - task: "Recurring App Store launch freeze / iOS 27 scene compatibility"
+    implemented: true
+    working: "NA"
+    file: "/app/app.json, /app/frontend/app.json, root/frontend package.json and yarn.lock"
+    stuck_count: 4
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "Apple again rejected version1.0 build18, frozen launch on iOS/iPadOS27 iPhone17 ProMax and iPadAirM3. ExpoGo success did not verify the submitted binary."
+      - working: "NA"
+        agent: "main"
+        comment: "Found confirmed missing scene-lifecycle opt-in required for SDK57 builds with Xcode27 (official Expo docs). Installed expo57.0.26/build-properties57.0.22 both roots and enabled ios.enableSceneSupport in app.json plugin; build21. Root installed modules were54 despite manifest57, now aligned. No auth/payment/backend/UI changes. Exact build18 cause unconfirmed: no native logs/Xcode metadata, and source was already1.0.1 build20. Need config/prebuild/iOS productionJS/preview tests; signed TestFlight runtime remains human verification."
+      - working: "NA"
+        agent: "testing"
+        comment: "iteration_1.json: Expo doctor both roots, source/config parity, scratch iOS prebuild scene manifest/AppDelegate, JS-only production export and preview navigation passed. Hermes bytecode unavailable on ARM64 host with x86-64 compiler; signed iOS27 TestFlight NOT TESTED. Missing testIDs reported."
+      - working: "NA"
+        agent: "main"
+        comment: "Resolved reported missing testIDs in welcome/profile/login controls in both source trees; repeated welcome/language/login/Explore/profile/language/login flow with deterministic selectors, all passed. No auth logic changes. Root/frontend parity confirmed; lint no errors with preexisting warnings. Native scene fix verified in generated code, but launch blocker cannot be marked working without exact signed build21 device test."
   - task: "Welcome/Landing Screen"
     implemented: true
     working: true
@@ -482,12 +502,14 @@ metadata:
         comment: "Anti-Bot Registration Protection testing completed successfully! ✅ ALL 5 TESTS PASSED with 100% success rate. Comprehensive testing verified: 1) Normal registration with anti-bot fields (website='', form_loaded_at=10s ago) succeeds and returns JWT token, 2) Registration without anti-bot fields still succeeds (fields are optional), 3) Honeypot detection works - when website field is filled ('http://spam.com'), returns 400 'Registration failed', 4) Fast submission detection works - when form_loaded_at is current time (0.1s elapsed), returns 400 'Registration failed', 5) Existing user login works correctly with registered credentials. Backend logs confirm proper warning messages: 'Honeypot triggered from IP' and 'Form submitted too fast (0.1s) from IP'. All anti-bot protection mechanisms are fully functional and production-ready."
 
 test_plan:
-  current_focus: []
-  stuck_tasks: []
+  current_focus: ["Recurring App Store launch freeze / iOS 27 scene compatibility"]
+  stuck_tasks: ["Recurring App Store launch freeze / iOS 27 scene compatibility"]
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
+  - agent: "main"
+    message: "Current task: build18 Apple launch freeze, candidate build21 scene support patch. Read memory/PRD.md and memory/ios-release-checklist.md. Test root AND frontend config+package+source parity, Expo doctor, scratch iOS prebuild and generated AppDelegate/Info.plist, production iOS JS export and preview welcome/Explore/language/sign-in navigation (not auth mutation). No LIVE payment/booking/register/email/calendar actions or backend modifications. Report release-runtime as NOT TESTED on Linux; don't equate Metro/ExpoGo with signed TestFlight."
   - agent: "main"
     message: "MVP completed. All core features implemented: 4 service categories, experience listings, booking system, Stripe payment integration, QR code ticket generation. Backend APIs tested via curl. Frontend screenshot verification shows UI working correctly."
   - agent: "testing"

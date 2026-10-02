@@ -192,12 +192,14 @@ export default function LoginScreen() {
 
   return (
     <KeyboardAvoidingView
+      testID="login-screen"
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
         <TouchableOpacity
           style={styles.backButton}
+          testID="login-close-button"
           onPress={() => router.back()}
         >
           <Ionicons name="close" size={24} color="#1a2a30" />
@@ -216,7 +218,7 @@ export default function LoginScreen() {
             style={styles.logo}
             resizeMode="contain"
           />
-          <Text style={styles.title}>{t('auth_welcome_back')}</Text>
+          <Text testID="login-title" style={styles.title}>{t('auth_welcome_back')}</Text>
           <Text style={styles.subtitle}>{t('auth_sign_in_subtitle')}</Text>
         </View>
 
@@ -225,11 +227,12 @@ export default function LoginScreen() {
           <View style={styles.biometricSection}>
             <TouchableOpacity
               style={styles.biometricButton}
+              testID="login-biometric-button"
               onPress={handleBiometricLogin}
               disabled={biometricLoading}
             >
               {biometricLoading ? (
-                <ActivityIndicator color="#1a3a4a" size="small" />
+                <ActivityIndicator testID="login-biometric-loading" color="#1a3a4a" size="small" />
               ) : (
                 <>
                   <Ionicons name={getBiometricIcon()} size={32} color="#1a3a4a" />
@@ -237,7 +240,7 @@ export default function LoginScreen() {
                     {t('auth_sign_in_with')} {biometricLabel}
                   </Text>
                   {storedEmail && (
-                    <Text style={styles.biometricEmail}>{storedEmail}</Text>
+                    <Text testID="login-biometric-email" style={styles.biometricEmail}>{storedEmail}</Text>
                   )}
                 </>
               )}
@@ -256,6 +259,7 @@ export default function LoginScreen() {
           <View style={styles.biometricSection}>
             <TouchableOpacity
               style={styles.passkeyButton}
+              testID="login-passkey-button"
               onPress={handlePasskeyLogin}
               disabled={loading}
             >
@@ -277,6 +281,7 @@ export default function LoginScreen() {
             <TextInput
               style={styles.input}
               placeholder={t('email')}
+              testID="login-email-input"
               placeholderTextColor="#9ca3a3"
               value={email}
               onChangeText={setEmail}
@@ -291,13 +296,14 @@ export default function LoginScreen() {
             <TextInput
               style={styles.input}
               placeholder={t('password')}
+              testID="login-password-input"
               placeholderTextColor="#9ca3a3"
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!showPassword}
               autoCapitalize="none"
             />
-            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            <TouchableOpacity testID="login-toggle-password-button" onPress={() => setShowPassword(!showPassword)}>
               <Ionicons
                 name={showPassword ? 'eye-off-outline' : 'eye-outline'}
                 size={20}
@@ -306,17 +312,18 @@ export default function LoginScreen() {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={styles.forgotPassword}>
+          <TouchableOpacity testID="login-forgot-password-button" style={styles.forgotPassword}>
             <Text style={styles.forgotPasswordText}>{t('auth_forgot_password')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[styles.loginButton, loading && styles.loginButtonDisabled]}
+            testID="login-submit-button"
             onPress={handleLogin}
             disabled={loading}
           >
             {loading ? (
-              <ActivityIndicator color="#fff" />
+              <ActivityIndicator testID="login-submit-loading" color="#fff" />
             ) : (
               <Text style={styles.loginButtonText}>{t('sign_in')}</Text>
             )}
@@ -325,7 +332,7 @@ export default function LoginScreen() {
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>{t('no_account')}</Text>
-          <TouchableOpacity onPress={() => router.replace('/auth/register')}>
+          <TouchableOpacity testID="login-register-button" onPress={() => router.replace('/auth/register')}>
             <Text style={styles.footerLink}>{t('create_account')}</Text>
           </TouchableOpacity>
         </View>

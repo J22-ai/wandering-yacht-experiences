@@ -99,7 +99,7 @@ export default function ProfileScreen() {
   };
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+    <View testID="profile-screen" style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
         {/* Centered Logo */}
         <View style={styles.logoContainer}>
@@ -109,7 +109,7 @@ export default function ProfileScreen() {
             resizeMode="contain"
           />
           <Text style={styles.brandName}>WANDERING{'\n'}YACHT</Text>
-          <Text style={styles.aboutUsTitle}>{!user ? 'Create a Profile to Book' : ''}</Text>
+          <Text testID="profile-account-prompt" style={styles.aboutUsTitle}>{!user ? 'Create a Profile to Book' : ''}</Text>
         </View>
 
         {/* Favorites Section */}
@@ -124,19 +124,21 @@ export default function ProfileScreen() {
             {favoriteExperiences.map((exp) => (
               <TouchableOpacity
                 key={exp.id}
+                testID={`profile-favorite-${exp.id}-button`}
                 style={styles.favoriteCard}
                 onPress={() => router.push(`/experience/${exp.id}`)}
                 activeOpacity={0.8}
               >
                 <Image source={{ uri: exp.image_url }} style={styles.favoriteImage} />
                 <View style={styles.favoriteInfo}>
-                  <Text style={styles.favoriteName} numberOfLines={1}>{exp.title}</Text>
+                  <Text testID={`profile-favorite-${exp.id}-name`} style={styles.favoriteName} numberOfLines={1}>{exp.title}</Text>
                   <Text style={styles.favoriteLocation} numberOfLines={1}>
                     <Ionicons name="location-outline" size={12} color="#7a8a8a" /> {exp.location}
                   </Text>
                 </View>
                 <TouchableOpacity
                   onPress={() => toggleFavorite(exp.id)}
+                  testID={`profile-remove-favorite-${exp.id}-button`}
                   style={styles.favoriteHeart}
                 >
                   <Ionicons name="heart" size={20} color="#e74c3c" />
@@ -147,6 +149,7 @@ export default function ProfileScreen() {
             {/* Save to Notes Button */}
             <TouchableOpacity
               style={styles.shareNotesBtn}
+              testID="profile-share-favorites-button"
               onPress={() => shareToNotes(allExperiences)}
               activeOpacity={0.8}
             >
@@ -160,11 +163,12 @@ export default function ProfileScreen() {
         <View style={styles.languageSection}>
           <TouchableOpacity
             style={styles.languageRow}
+            testID="profile-language-button"
             onPress={() => setShowLangPicker(true)}
           >
             <Ionicons name="globe-outline" size={20} color="#1a3a4a" />
             <Text style={styles.languageLabel}>{t('profile_language')}</Text>
-            <Text style={styles.languageCurrent}>
+            <Text testID="profile-current-language" style={styles.languageCurrent}>
               {LANGUAGES.find(l => l.code === language)?.flag} {LANGUAGES.find(l => l.code === language)?.name}
             </Text>
             <Ionicons name="chevron-forward" size={18} color="#9ca3a3" />
@@ -184,13 +188,14 @@ export default function ProfileScreen() {
               <Ionicons name={getBiometricIcon()} size={22} color="#1a3a4a" />
               <View style={styles.securityInfo}>
                 <Text style={styles.securityLabel}>{biometricLabel} {t('profile_biometric_login')}</Text>
-                <Text style={styles.securityDesc}>
+                <Text testID="profile-biometric-status" style={styles.securityDesc}>
                   {isBiometricEnabled
                     ? `${biometricLabel} ${t('profile_biometric_quick_signin')}`
                     : `${biometricLabel} ${t('profile_biometric_enable')}`}
                 </Text>
               </View>
               <Switch
+                testID="profile-biometric-switch"
                 value={isBiometricEnabled}
                 onValueChange={handleBiometricToggle}
                 disabled={biometricToggling}
@@ -206,6 +211,7 @@ export default function ProfileScreen() {
           <TouchableOpacity
             style={styles.termsLink}
             onPress={() => router.push('/terms')}
+            testID="profile-terms-button"
           >
             <Ionicons name="document-text-outline" size={18} color="#c17f59" />
             <Text style={styles.termsLinkText}>Terms & Conditions</Text>
@@ -214,6 +220,7 @@ export default function ProfileScreen() {
           <TouchableOpacity
             style={styles.termsLink}
             onPress={() => router.push('/about')}
+            testID="profile-about-button"
           >
             <Ionicons name="information-circle-outline" size={18} color="#c17f59" />
             <Text style={styles.termsLinkText}>{t('about_title')}</Text>
@@ -221,9 +228,10 @@ export default function ProfileScreen() {
 
           {user ? (
             <>
-              <Text style={styles.welcomeText}>{t('profile_welcome')}, {user.full_name}</Text>
+              <Text testID="profile-user-greeting" style={styles.welcomeText}>{t('profile_welcome')}, {user.full_name}</Text>
               <TouchableOpacity
                 style={styles.signOutButton}
+                testID="profile-sign-out-button"
                 onPress={handleLogout}
               >
                 <Text style={styles.signOutButtonText}>{t('profile_sign_out')}</Text>
@@ -233,12 +241,14 @@ export default function ProfileScreen() {
             <>
               <TouchableOpacity
                 style={styles.signInButton}
+                testID="profile-sign-in-button"
                 onPress={() => router.push('/auth/login')}
               >
                 <Text style={styles.signInButtonText}>{t('sign_in')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.registerButton}
+                testID="profile-register-button"
                 onPress={() => router.push('/auth/register')}
               >
                 <Text style={styles.registerButtonText}>{t('create_account')}</Text>
@@ -250,6 +260,7 @@ export default function ProfileScreen() {
 
       {/* Language Picker Modal */}
       <Modal
+        testID="profile-language-modal"
         visible={showLangPicker}
         transparent
         animationType="fade"
@@ -257,15 +268,17 @@ export default function ProfileScreen() {
       >
         <TouchableOpacity
           style={styles.langModalOverlay}
+          testID="profile-language-dismiss-button"
           activeOpacity={1}
           onPress={() => setShowLangPicker(false)}
         >
           <View style={styles.langModalContent}>
-            <Text style={styles.langModalTitle}>{t('profile_language')}</Text>
+            <Text testID="profile-language-title" style={styles.langModalTitle}>{t('profile_language')}</Text>
             <ScrollView style={{ maxHeight: 400 }} showsVerticalScrollIndicator={false}>
               {LANGUAGES.map((lang) => (
                 <TouchableOpacity
                   key={lang.code}
+                  testID={`profile-language-${lang.code}-button`}
                   style={[styles.langOption, language === lang.code && styles.langOptionActive]}
                   onPress={() => { setLanguage(lang.code); setShowLangPicker(false); }}
                 >

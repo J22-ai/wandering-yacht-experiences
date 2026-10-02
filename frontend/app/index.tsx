@@ -37,14 +37,14 @@ export default function WelcomeScreen() {
 
   if (isLoading) {
     return (
-      <View style={styles.loadingContainer}>
+      <View testID="welcome-loading" style={styles.loadingContainer}>
         <Image
           source={require('../assets/images/wy-logo-solid.png')}
           style={styles.loadingLogo}
           resizeMode="contain"
           defaultSource={require('../assets/images/wy-logo-solid.png')}
         />
-        <Text style={styles.loadingBrandName}>WANDERING{'\n'}YACHT</Text>
+        <Text testID="welcome-loading-brand" style={styles.loadingBrandName}>WANDERING{'\n'}YACHT</Text>
       </View>
     );
   }
@@ -55,6 +55,7 @@ export default function WelcomeScreen() {
 
   return (
     <ImageBackground
+      testID="welcome-screen"
       source={backgroundSource}
       style={[styles.container, imageError && styles.fallbackBackground]}
       resizeMode="cover"
@@ -67,13 +68,14 @@ export default function WelcomeScreen() {
           style={styles.headerLogo}
           resizeMode="contain"
         />
-        <Text style={styles.brandName}>WANDERING{'\n'}YACHT</Text>
+        <Text testID="welcome-brand" style={styles.brandName}>WANDERING{'\n'}YACHT</Text>
         <TouchableOpacity
           style={styles.langGlobe}
+          testID="welcome-language-button"
           onPress={() => setShowLangPicker(true)}
         >
           <Ionicons name="globe-outline" size={22} color="#1a3a4a" />
-          <Text style={styles.langGlobeText}>
+          <Text testID="welcome-current-language" style={styles.langGlobeText}>
             {LANGUAGES.find(l => l.code === language)?.flag}
           </Text>
         </TouchableOpacity>
@@ -81,15 +83,16 @@ export default function WelcomeScreen() {
 
       {/* Hero Content */}
       <View style={styles.heroContent}>
-        <Text style={styles.heroTitle}>
+        <Text testID="welcome-title" style={styles.heroTitle}>
           {t('welcome_title')}
         </Text>
-        <Text style={styles.heroCountry}>MONTENEGRO</Text>
-        <Text style={styles.heroSubtitle}>
+        <Text testID="welcome-country" style={styles.heroCountry}>MONTENEGRO</Text>
+        <Text testID="welcome-subtitle" style={styles.heroSubtitle}>
           {t('welcome_subtitle')}
         </Text>
         <TouchableOpacity
           style={styles.exploreButton}
+          testID="welcome-explore-button"
           onPress={() => router.replace('/(tabs)')}
         >
           <Text style={styles.exploreButtonText}>{t('welcome_cta')}</Text>
@@ -101,6 +104,7 @@ export default function WelcomeScreen() {
       <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 20 }]}>
         <TouchableOpacity
           style={styles.signInLink}
+          testID="welcome-sign-in-button"
           onPress={() => router.push('/auth/login')}
         >
           <Text style={styles.signInText}>{t('have_account')} </Text>
@@ -110,6 +114,7 @@ export default function WelcomeScreen() {
 
       {/* Language Picker Modal */}
       <Modal
+        testID="welcome-language-modal"
         visible={showLangPicker}
         transparent
         animationType="fade"
@@ -117,15 +122,17 @@ export default function WelcomeScreen() {
       >
         <TouchableOpacity
           style={styles.langModalOverlay}
+          testID="welcome-language-dismiss-button"
           activeOpacity={1}
           onPress={() => setShowLangPicker(false)}
         >
           <View style={styles.langModalContent}>
-            <Text style={styles.langModalTitle}>{t('profile_language')}</Text>
+            <Text testID="welcome-language-title" style={styles.langModalTitle}>{t('profile_language')}</Text>
             <ScrollView style={{ maxHeight: 400 }} showsVerticalScrollIndicator={false}>
               {LANGUAGES.map((lang) => (
                 <TouchableOpacity
                   key={lang.code}
+                  testID={`welcome-language-${lang.code}-button`}
                   style={[styles.langOption, language === lang.code && styles.langOptionActive]}
                   onPress={() => { setLanguage(lang.code); setShowLangPicker(false); }}
                 >

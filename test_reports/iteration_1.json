@@ -1,0 +1,63 @@
+{
+  "summary": "Frontend-only iOS launch-freeze investigation completed: root/frontend Expo SDK57 configs are aligned, Expo doctor passes in both directories, scratch iOS prebuild shows required scene lifecycle entries, production iOS JS export succeeds (with --no-bytecode workaround in this Linux environment), and public preview core flow is navigable without launch freeze.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Automation selectors across welcome/profile/login",
+        "issue": "Most interactive controls are missing testID/data-testid attributes, forcing brittle text/coordinate selectors and lowering regression reliability.",
+        "testID": "missing",
+        "priority": "MEDIUM",
+        "status": "RESOLVED_AFTER_REPORT",
+        "main_agent_verification": "Added stable testIDs to welcome/profile/login screens in both projects. Screenshot tool reran welcome/language/English/sign-in/close/Explore/profile/language/sign-in using exact testIDs successfully. No auth behavior changes."
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Offline cold reload in web preview",
+        "issue": "After toggling browser offline, full page reload fails with net::ERR_INTERNET_DISCONNECTED (web runtime limitation). Session already loaded remained interactive and could navigate locally.",
+        "affected_testIDs": []
+      }
+    ],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": [
+    "/tmp/wy_scratch/ios/WANDERINGYACHT/Info.plist",
+    "/tmp/wy_scratch/ios/WANDERINGYACHT/AppDelegate.swift",
+    "/tmp/wy_export_ios/metadata.json",
+    "/app/test_reports/artifacts_iter/",
+    "/app/test_reports/artifacts_iter2/",
+    "/app/test_reports/artifacts_iter3/",
+    "/root/.emergent/automation_output/20261002_104338/console_20261002_104338.log"
+  ],
+  "action_items": [
+    "Upload and human-test signed TestFlight build 1.0.1(21) on iOS/iPadOS 27 devices; this environment cannot validate native runtime freeze behavior.",
+    "Add testID props to critical controls (welcome language globe, Explore CTA, sign-in links/buttons, profile auth CTAs) for stable Expo web/mobile automation.",
+    "If App Store freeze reproduces on build21, collect native launch/crash/hang logs for that exact binary to determine root cause; current checks confirm config compatibility gap was addressed but do not prove build18 causal RCA."
+  ],
+  "critical_code_review_comments": [
+    "Confirmed config parity: /app and /app/frontend app/, src/, app.json, eas.json, package.json, yarn.lock are identical.",
+    "Confirmed versions in installed modules and manifests: expo 57.0.26 and expo-build-properties 57.0.22 in both roots.",
+    "Confirmed app.json plugin placement is correct: ios.enableSceneSupport=true under expo-build-properties (not in eas.json).",
+    "Scratch prebuild evidence matches Expo SDK57 scene lifecycle expectations: UIApplicationSceneManifest contains UISceneDelegateClassName=EXExpoAppSceneDelegate and AppDelegate conforms ExpoReactNativeFactoryProvider with modern startup path.",
+    "No React Native red screen encountered in preview flow tests."
+  ],
+  "updated_files": [
+    "/app/test_reports/iteration_1.json"
+  ],
+  "success_rate": {
+    "backend": "N/A (not requested)",
+    "frontend": "90%"
+  },
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "remaining_verification": "Exact signed TestFlight build1.0.1(21) on iOS/iPadOS27; no local/native runtime proof yet. Source/config and preview tests passed.",
+  "main_agent_environment_finding": "Confirmed via troubleshoot: Linux host aarch64, shipped hermesc ELF x86-64; Exec format error is compiler-host architecture mismatch. --no-bytecode verifies JS output only, not native/Hermes build.",
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Initial export with Hermes bytecode failed in this container due hermesc binary execution issue; rerun export with --no-bytecode succeeded and validated route/assets output. This is environment/tooling behavior, not proof of app runtime issue on iOS devices.",
+  "rca_of_issue": "Apple-reviewed binary was 1.0(18), while current workspace is 1.0.1(21). Confirmed previously missing scene lifecycle compatibility setting is now present and generated native files include expected SDK57/Xcode27 scene entries. Therefore: confirmed compatibility gap fixed in source/config; unconfirmed whether that alone caused build18 freeze due missing native logs and inability to run signed iOS27 runtime in this environment."
+}
