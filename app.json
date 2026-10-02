@@ -7,13 +7,14 @@
     "icon": "./assets/images/icon.png",
     "scheme": "wanderingyacht",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.wanderingyacht.app",
-      "buildNumber": "19",
+      "buildNumber": "20",
       "infoPlist": {
-        "UIDeviceFamily": [1],
+        "UIDeviceFamily": [
+          1
+        ],
         "NSFaceIDUsageDescription": "Sign in quickly with Face ID",
         "NSCameraUsageDescription": "Take photos for your profile or to share your experience",
         "NSPhotoLibraryUsageDescription": "Select photos from your library to share",
@@ -25,7 +26,6 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#0d1b2a"
       },
-      "edgeToEdgeEnabled": true,
       "package": "com.wanderingyacht.app",
       "permissions": [
         "USE_BIOMETRIC",
@@ -56,7 +56,15 @@
         }
       ],
       "expo-web-browser",
-      "expo-font"
+      "expo-font",
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "merchant.com.wanderingyacht.app"
+        }
+      ],
+      "expo-image",
+      "expo-status-bar"
     ],
     "experiments": {
       "typedRoutes": true
