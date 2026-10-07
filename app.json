@@ -10,7 +10,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.wanderingyacht.app",
-      "buildNumber": "22",
+      "buildNumber": "23",
       "infoPlist": {
         "UIDeviceFamily": [
           1
@@ -77,12 +77,6 @@
               }
             ]
           }
-        }
-      ],
-      [
-        "@stripe/stripe-react-native",
-        {
-          "merchantIdentifier": "merchant.com.wanderingyacht.app"
         }
       ],
       "expo-image",

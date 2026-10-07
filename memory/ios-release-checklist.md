@@ -1,5 +1,12 @@
 # iOS launch blocker: release verification
 
+## Current candidate: 1.0.1 (23), Apple Pay signing correction
+- Build22 failed during Xcode archive because the provisioning profile lacks Apple Pay/merchant entitlements. Both app.json files now remove the unused Stripe native config plugin. Existing checkout uses Stripe.js card entry in a WebView, not native Apple Pay; no card-payment logic changed.
+- Use **build23** for every build selection and device check below; references to build22 are historical font-verification context.
+- Confirm generated entitlements contain no `com.apple.developer.in-app-payments`, the bundle remains `com.wanderingyacht.app`, native font embedding and scene support remain. Do not add `enableApplePay: true`; it is not a supported Stripe0.64.0 plugin option.
+- Source/introspection verification does NOT mean the cloud archive or TestFlight launch passed. A new signed build is still required. No Apple credentials/profile or GitHub changes have been performed remotely by the agent.
+- Do not use real bookings to smoke-test checkout: mounting the screen creates a LIVE intent. No live charges, emails, calendar events or database mutations are authorized for this signing fix.
+
 ## Why another release is needed
 Apple reviewed **1.0 (18)**, not the **1.0.1 (20)** that was in this workspace. Scene support was prepared in build21; the current candidate is **1.0.1 (22)**, including restored Traditional Arabic font embedding. Do not infer the submitted binary's code from the current source or from Expo Go.
 

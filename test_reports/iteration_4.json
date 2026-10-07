@@ -1,0 +1,49 @@
+{
+  "summary": "Frontend-focused regression run completed for build23 signing fix. Verified root/frontend config parity, confirmed Stripe native plugin removal in both app.json files, validated introspection entitlements={}, generated fresh scratch iOS projects outside repo, and passed mobile smoke navigation at 390x844 without functional errors.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": [
+      {
+        "component": "RN web style props",
+        "issue": "Console warnings observed: deprecated textShadow*/shadow* style props on web preview; non-blocking for this signing fix.",
+        "priority": "LOW"
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/tests/test_ios_signing_config_regression.py",
+    "/app/test_reports/pytest/pytest_ios_signing_regression.xml",
+    "/app/test_reports/artifacts_iter4/01_welcome.jpeg",
+    "/app/test_reports/artifacts_iter4/02_login_screen.jpeg",
+    "/tmp/wy_scratch_root_b23_fresh/ios/WANDERINGYACHT/WANDERINGYACHT.entitlements",
+    "/tmp/wy_scratch_front_b23_fresh/ios/WANDERINGYACHT/WANDERINGYACHT.entitlements"
+  ],
+  "action_items": [
+    "User/main agent must rerun remote EAS signed archive for build23 and verify Xcode/Fastlane no longer requests Apple Pay capability.",
+    "Run TestFlight install/launch verification on physical iOS/iPadOS devices; this Linux run cannot verify signed IPA runtime.",
+    "Optional product follow-up: remove or relabel decorative Apple Pay badge in checkout UI unless true Apple Pay is implemented and provisioned."
+  ],
+  "critical_code_review_comments": [
+    "Root and frontend duplicated projects remain a drift risk; parity is currently good but needs consolidation planning.",
+    "Checkout UI still visually shows an Apple Pay badge while native Apple Pay is not implemented/provisioned, which can confuse release/signing expectations."
+  ],
+  "updated_files": [
+    "/app/tests/test_ios_signing_config_regression.py",
+    "/app/test_reports/iteration_4.json"
+  ],
+  "success_rate": {
+    "backend": "NA (skipped per request)",
+    "frontend": "100% (scope checks passed: 7/7 pytest + smoke flow pass)"
+  },
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "No auth submission, no checkout route with real booking, and no backend/payment mutation were performed. Fresh scratch prebuilds were generated only under /tmp/wy_scratch_root_b23_fresh and /tmp/wy_scratch_front_b23_fresh. Entitlements are empty dict in introspection and generated plist files, Info.plist retains UIAppFonts TraditionalArabic-Regular.ttf and UIApplicationSceneManifest with EXExpoAppSceneDelegate, and root/frontend generated iOS artifacts are byte-identical for entitlements/Info.plist/AppDelegate.",
+  "rca_of_issue": "Build failure a1134533-3fd6-4f32-a7df-a2cd4577abad was a signing entitlement mismatch: provisioning profile lacked Apple Pay capabilities while previous config/plugin path introduced Apple Pay expectations. Removing only the unused Stripe native config plugin from both app.json removes entitlement pressure in generated configs (entitlements remain {}), while keeping web card checkout unchanged. Remote signed archive verification is still required."
+}

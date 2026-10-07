@@ -225,6 +225,23 @@ backend:
         comment: "Payment confirmation working perfectly. Updates booking status to 'confirmed', payment_status to 'paid', and generates QR code as base64 PNG. QR code format verified: data:image/png;base64,... Demo mode allows testing without actual payment processing."
 
 frontend:
+  - task: "Remove unused native Apple Pay entitlement blocking EAS archive"
+    implemented: true
+    working: "NA"
+    file: "/app/app.json, /app/frontend/app.json"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "EAS build a1134533-3fd6-4f32-a7df-a2cd4577abad RUN_FASTLANE fails: AppStore_com_wanderingyacht_app_1790938749 profile lacks ApplePay, merchant.com.wanderingyacht.app and com.apple.developer.in-app-payments. User requested deploymentchecker, code-only fixes, noDocker."
+      - working: "NA"
+        agent: "main"
+        comment: "Native Stripe plugin unused: both app/src trees have no nativeSDK or ApplePay APIs; mobile checkout uses Stripe.js CardElement WebView. Removed unused plugin only in both app.json, build23; retained package and ALL payment/backend/auth code. Expo introspection both projects now entitlements={} and noStripe plugin history, font and scene manifests retained. Need scratch prebuild entitlements/scene/font verification, config parity, safe preview smoke. No live account/payment/booking/email/DB writes. Signed Xcode/TestFlight cannot be verified onLinux."
+      - working: "NA"
+        agent: "testing"
+        comment: "iteration_4.json: 7/7 regression tests pass. BOTH fresh scratch native projects have identical emptyentitlements, retained scene/font/build23. Preview welcome/language/Explore/Profile/SignIn smoke passes390x844, nooverflow. No new functional bugs. Signed EAS archive/TestFlight remains NOTTESTED and needs human rerun; do not mark remote build fixed from local checks. Existing nonblocking RNWebstyle deprecations outside native signing scope."
   - task: "Restore genuine Traditional Arabic without blocking startup"
     implemented: true
     working: true
@@ -542,12 +559,14 @@ metadata:
         comment: "Anti-Bot Registration Protection testing completed successfully! ✅ ALL 5 TESTS PASSED with 100% success rate. Comprehensive testing verified: 1) Normal registration with anti-bot fields (website='', form_loaded_at=10s ago) succeeds and returns JWT token, 2) Registration without anti-bot fields still succeeds (fields are optional), 3) Honeypot detection works - when website field is filled ('http://spam.com'), returns 400 'Registration failed', 4) Fast submission detection works - when form_loaded_at is current time (0.1s elapsed), returns 400 'Registration failed', 5) Existing user login works correctly with registered credentials. Backend logs confirm proper warning messages: 'Honeypot triggered from IP' and 'Form submitted too fast (0.1s) from IP'. All anti-bot protection mechanisms are fully functional and production-ready."
 
 test_plan:
-  current_focus: ["Portable static asset mounts for Railway backend startup"]
-  stuck_tasks: ["Recurring App Store launch freeze / iOS 27 scene compatibility"]
+  current_focus: ["Remove unused native Apple Pay entitlement blocking EAS archive"]
+  stuck_tasks: ["Remove unused native Apple Pay entitlement blocking EAS archive", "Recurring App Store launch freeze / iOS 27 scene compatibility"]
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
+  - agent: "main"
+    message: "Current task: build23 signing-only correction, removed unused StripeNative plugin from both app.json. Verify generated native entitlement ABSENT (fresh scratch prebuild only, never create tracked ios/), bundle/version parity, scene and TraditionalArabic retained, no runtime/payment changes. Add focused portable regression tests if useful. Preview safe welcome/language/Explore/sign-in navigation only; noauth submissions, no checkout withrealbooking because screen auto-creates LIVE intents, no backend writes. General deploymentchecker .env/supervisor findings unrelated and unsafe; don't apply. New sourcefinding balance screen auto-confirms without a collectionUI is separate documented blocker; no live testing. Report Xcode archive/signing/TestFlight as NOT TESTED, not fixed remotely."
   - agent: "main"
     message: "Current backend startup patch: ROOT_DIR-relative StaticFiles mounts resolve Railway flattened folder failure. Test old hardcoded behavior reproduces under sandbox guard and patched mounts succeed nested/flattened/CWD-independent; expected asset HTTP200 correctfontbytes + screenshot, missingasset404 and traversalprotection. Avoid importing server with its scheduler or live integrations; isolate exact mount statements via AST or safe test harness. Product has no mocked APIs. RemoteRailway restoration unverified until userpush/restart."
   - agent: "main"
