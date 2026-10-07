@@ -1,0 +1,48 @@
+{
+  "summary": "Frontend-only deployment regression testing completed for managed config-freeze flow. Reproduced freeze/prebuild behavior in fresh scratch copies for both root and frontend projects with installed Stripe 0.64.0, validated no Apple Pay entitlement injection without merchant config, and confirmed scene/font retention with iOS prebuild artifacts.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": [
+      {
+        "component": "RN web style props",
+        "issue": "Web preview still logs deprecated textShadow*/shadow* warnings; unrelated to iOS signing/config freeze scope.",
+        "priority": "LOW"
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/tests/test_ios_signing_config_regression.py",
+    "/app/tests/test_managed_pipeline_freeze_regression.py",
+    "/app/test_reports/pytest/pytest_ios_signing_iter5.xml",
+    "/app/test_reports/artifacts_iter5/01_frontend_load.jpeg",
+    "/app/node_modules/@stripe/stripe-react-native/src/plugin/withStripe.ts"
+  ],
+  "action_items": [
+    "Trigger a NEW remote EAS iOS build from updated source and validate remote-assigned build/version (historical failing build104 logs are pre-fix).",
+    "Verify generated cloud archive/TestFlight install on physical iOS/iPadOS devices; Linux run cannot validate signed IPA or provisioning/capability resolution end-to-end.",
+    "If cloud signing still fails, compare cloud-generated entitlements against local prebuild output from this iteration before changing dependencies or credentials."
+  ],
+  "critical_code_review_comments": [
+    "No Stripe native config plugin is present in root/frontend app.json; dependency presence alone did not execute entitlement injection in tested freeze/prebuild flow.",
+    "Existing older regression file still references fixed /tmp artifact paths; new portable freeze test avoids hardcoded artifact roots and should be preferred for future checks."
+  ],
+  "updated_files": [
+    "/app/tests/test_managed_pipeline_freeze_regression.py",
+    "/app/test_reports/iteration_5.json"
+  ],
+  "success_rate": {
+    "backend": "NA (skipped per request)",
+    "frontend": "100% (9/9 pytest passed + mobile web load smoke pass)"
+  },
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Resolved Stripe package evidence from installed node_modules: root path /app/node_modules/@stripe/stripe-react-native/package.json, frontend path /app/frontend/node_modules/@stripe/stripe-react-native/package.json, both version 0.64.0. Managed-freeze simulation in fresh scratch copies executed: expo config --type prebuild --json -> sanitized static app.json with overrides (name WANDERINGYACHT, slug wandering-yacht, version 1.0.1, ios.buildNumber 101 from version, projectId e2d8d630-a4ef-4de0-987b-11e96504aa5d), then introspect + expo prebuild --platform ios --no-install --clean. Generated entitlements stayed empty (no com.apple.developer.in-app-payments/merchant). Info.plist retained scene manifest and TraditionalArabic-Regular.ttf. This verifies generated projects only; remote signing/submission not tested.",
+  "rca_of_issue": "Historical failure logs map to buildID a1134533-3fd6-4f32-a7df-a2cd4577abad (remote build104) before the source fix commit; they do not represent a post-fix retry. Regression confirms installed Stripe plugin function behavior: setApplePayEntitlement(undefined,{}) returns {}, while explicit merchant adds com.apple.developer.in-app-payments. Therefore dependency installation/autolink presence alone is insufficient to reintroduce merchant entitlement in this tested managed freeze path."
+}

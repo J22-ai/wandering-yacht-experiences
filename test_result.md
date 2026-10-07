@@ -242,6 +242,12 @@ frontend:
       - working: "NA"
         agent: "testing"
         comment: "iteration_4.json: 7/7 regression tests pass. BOTH fresh scratch native projects have identical emptyentitlements, retained scene/font/build23. Preview welcome/language/Explore/Profile/SignIn smoke passes390x844, nooverflow. No new functional bugs. Signed EAS archive/TestFlight remains NOTTESTED and needs human rerun; do not mark remote build fixed from local checks. Existing nonblocking RNWebstyle deprecations outside native signing scope."
+      - working: "NA"
+        agent: "main"
+        comment: "Fuller userlogs repeat SAME buildIDa1134533-3fd6-4f32-a7df-a2cd4577abad Oct7 08:15-08:20, not anewfailedretry; fixcommit18d3e690 Oct7 08:40. Managed pipeline freezes expo prebuild config intoapp.json and overrides eas.json appVersionSource=remote/autoIncrement=true: actualfailedbuild104, NOTlocal23. Need fresh scratch reproduction of freeze/preparation and nativegeneration WITHinstalledStripepackage, verify noentitlement reinjection. No runtimefixneededbasedonoldlogs; do NOT uninstall/changeSDK speculatively."
+      - working: "NA"
+        agent: "testing"
+        comment: "iteration_5.json: 9/9passed including freshroot+frontend managedconfigfreeze/prebuild with installedStripe0.64.0. NoApplePayentitlements; font/scene preserved. Direct helperbehavior undefinedmerchant=>{}, explicitmerchant=>entitlement. Mainreran9/9 and Pythonlintclean. Thesearegeneratedprojectchecks, NOTremoteIPAverification. No furtherappcodechange justified by oldbuildlog; need NEWbuildID/actualremotenumber and TestFlightdevicecheck."
   - task: "Restore genuine Traditional Arabic without blocking startup"
     implemented: true
     working: true
@@ -565,6 +571,8 @@ test_plan:
   test_priority: "high_first"
 
 agent_communication:
+  - agent: "main"
+    message: "Followup testing required because userreposted sameissue with fuller managedpipeline. Repeat nativeconfigtest in FRESH scratch with current app/package/depsinstalled includingStripe, `expo config --type prebuild --json` freeze/remove_internal/mods -> app.json, simulate pipelinepublicidentity/version/project/build overrides, then prebuild --no-install and inspectentitlements/font/scene. NOsourceconfigrewrite/credentialfile/remoteEASaction/realpayments. Assert installedpackagecannotinventmerchantID; do not assume nativeautolinking invokesconfigplugin. Logsactualfailedbuild104 vs local23 docsnowcorrected. Add robust regression ifuseful usingapply_patch, inspectexistingtests. No freshremoteIDprovided. Report generatedprojectverification separatelyfromsignedbinary."
   - agent: "main"
     message: "Current task: build23 signing-only correction, removed unused StripeNative plugin from both app.json. Verify generated native entitlement ABSENT (fresh scratch prebuild only, never create tracked ios/), bundle/version parity, scene and TraditionalArabic retained, no runtime/payment changes. Add focused portable regression tests if useful. Preview safe welcome/language/Explore/sign-in navigation only; noauth submissions, no checkout withrealbooking because screen auto-creates LIVE intents, no backend writes. General deploymentchecker .env/supervisor findings unrelated and unsafe; don't apply. New sourcefinding balance screen auto-confirms without a collectionUI is separate documented blocker; no live testing. Report Xcode archive/signing/TestFlight as NOT TESTED, not fixed remotely."
   - agent: "main"

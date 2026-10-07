@@ -1,8 +1,15 @@
 # iOS launch blocker: release verification
 
+## IMPORTANT: managed EAS build numbering overrides local build23
+Full CodeBuild logs confirm the failed build ID `a1134533-3fd6-4f32-a7df-a2cd4577abad` was **remote build104** (103 incremented to104). The pipeline overwrites eas.json with `appVersionSource: remote` and `autoIncrement: true`, so app.json's23 is NOT the build number to look for in TestFlight through this flow.
+
+- Generate a new build from the source containing the Apple Pay config removal; record its **new build ID** and actual remote version/build. Do not reuse the old failed build's log as evidence of a failed retry.
+- Use that actual number for all TestFlight/device checks below. References to build23 mean the local source candidate only; build21/22 entries are historical.
+- Managed logs' projectId/name/version overrides are expected pipeline behavior, not grounds for changing bundle identifiers or Apple signing credentials. Do not guess the next remote number.
+
 ## Current candidate: 1.0.1 (23), Apple Pay signing correction
 - Build22 failed during Xcode archive because the provisioning profile lacks Apple Pay/merchant entitlements. Both app.json files now remove the unused Stripe native config plugin. Existing checkout uses Stripe.js card entry in a WebView, not native Apple Pay; no card-payment logic changed.
-- Use **build23** for every build selection and device check below; references to build22 are historical font-verification context.
+- Use the **actual remote number from the NEW EAS build** for selection/device checks; localbuild23 identifies this source revision only.
 - Confirm generated entitlements contain no `com.apple.developer.in-app-payments`, the bundle remains `com.wanderingyacht.app`, native font embedding and scene support remain. Do not add `enableApplePay: true`; it is not a supported Stripe0.64.0 plugin option.
 - Source/introspection verification does NOT mean the cloud archive or TestFlight launch passed. A new signed build is still required. No Apple credentials/profile or GitHub changes have been performed remotely by the agent.
 - Do not use real bookings to smoke-test checkout: mounting the screen creates a LIVE intent. No live charges, emails, calendar events or database mutations are authorized for this signing fix.
